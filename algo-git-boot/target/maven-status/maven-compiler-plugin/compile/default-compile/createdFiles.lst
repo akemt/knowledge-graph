@@ -1,0 +1,7 @@
+com\beyond\algo\infra\impl\GitLibSerivceImpl.class
+com\beyond\algo\model\GitConfigModel.class
+com\beyond\algo\infra\GitLibService.class
+com\beyond\algo\algogitboot\AlgoGitBootApplication.class
+com\beyond\algo\infra\JGitService.class
+META-INF\spring-configuration-metadata.json
+com\beyond\algo\infra\impl\JGitServiceImpl.class

@@ -1,0 +1,37 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.beyond.algo.model.GitConfigModel",
+      "name": "gitlib",
+      "type": "com.beyond.algo.model.GitConfigModel"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.beyond.algo.model.GitConfigModel",
+      "name": "gitlib.base-url",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.beyond.algo.model.GitConfigModel",
+      "name": "gitlib.local-base-path",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.beyond.algo.model.GitConfigModel",
+      "name": "gitlib.private-token",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.beyond.algo.model.GitConfigModel",
+      "name": "gitlib.root-name",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.beyond.algo.model.GitConfigModel",
+      "name": "gitlib.root-passwd",
+      "type": "java.lang.String"
+    }
+  ]
+}
