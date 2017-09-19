@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="algo-blog-boot" />
+        <module name="algo-git-boot" />
+        <module name="algocommon" />
+        <module name="common" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="algo-blog-boot" target="1.8" />
+      <module name="algo-git-boot" target="1.8" />
+      <module name="algocommon" target="1.5" />
+      <module name="algoplat" target="1.5" />
+      <module name="algoplat-web" target="1.5" />
+      <module name="common" target="1.5" />
+      <module name="gitdao" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/algo-blog-boot/algo-blog-boot.iml" filepath="$PROJECT_DIR$/algo-blog-boot/algo-blog-boot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/algo-git-boot/algo-git-boot.iml" filepath="$PROJECT_DIR$/algo-git-boot/algo-git-boot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/algoplat-web.iml" filepath="$PROJECT_DIR$/algoplat-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+    </modules>
+  </component>
+</project>
