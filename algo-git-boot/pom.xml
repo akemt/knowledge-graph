@@ -76,6 +76,12 @@
 			<artifactId>org.eclipse.jgit</artifactId>
 			<version>4.4.1.201607150455-r</version>
 		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.18</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
