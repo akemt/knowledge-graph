@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.AlOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlOrder" >
+    <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="order_rmb" property="orderRmb" jdbcType="DOUBLE" />
+    <result column="gold" property="gold" jdbcType="BIGINT" />
+    <result column="order_statue" property="orderStatue" jdbcType="CHAR" />
+    <result column="create_date" property="createDate" jdbcType="BIGINT" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from al_order
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.AlOrder" >
+    insert into al_order (order_id, user_id, activity_id, 
+      order_rmb, gold, order_statue, 
+      create_date)
+    values (#{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, 
+      #{orderRmb,jdbcType=DOUBLE}, #{gold,jdbcType=BIGINT}, #{orderStatue,jdbcType=CHAR}, 
+      #{createDate,jdbcType=BIGINT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlOrder" >
+    update al_order
+    set user_id = #{userId,jdbcType=INTEGER},
+      activity_id = #{activityId,jdbcType=INTEGER},
+      order_rmb = #{orderRmb,jdbcType=DOUBLE},
+      gold = #{gold,jdbcType=BIGINT},
+      order_statue = #{orderStatue,jdbcType=CHAR},
+      create_date = #{createDate,jdbcType=BIGINT}
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select order_id, user_id, activity_id, order_rmb, gold, order_statue, create_date
+    from al_order
+    where order_id = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select order_id, user_id, activity_id, order_rmb, gold, order_statue, create_date
+    from al_order
+  </select>
+</mapper>

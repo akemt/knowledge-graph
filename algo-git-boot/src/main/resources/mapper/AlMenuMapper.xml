@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.AlMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlMenu" >
+    <id column="menu_id" property="menuId" jdbcType="INTEGER" />
+    <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="sort_num" property="sortNum" jdbcType="SMALLINT" />
+    <result column="icon" property="icon" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="BIGINT" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from al_menu
+    where menu_id = #{menuId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.AlMenu" >
+    insert into al_menu (menu_id, menu_name, url, 
+      parent_id, sort_num, icon, 
+      create_date)
+    values (#{menuId,jdbcType=INTEGER}, #{menuName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=INTEGER}, #{sortNum,jdbcType=SMALLINT}, #{icon,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=BIGINT})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlMenu" >
+    update al_menu
+    set menu_name = #{menuName,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      sort_num = #{sortNum,jdbcType=SMALLINT},
+      icon = #{icon,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=BIGINT}
+    where menu_id = #{menuId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select menu_id, menu_name, url, parent_id, sort_num, icon, create_date
+    from al_menu
+    where menu_id = #{menuId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select menu_id, menu_name, url, parent_id, sort_num, icon, create_date
+    from al_menu
+  </select>
+</mapper>

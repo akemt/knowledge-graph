@@ -5,24 +5,18 @@
 
 <generatorConfiguration>
     <properties resource="application-dev.properties"/>
+    <!--<classPathEntry location="${mysqldb.classPath}" />-->
     <!-- 一个数据库一个context -->
     <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
             <property name="suppressDate" value="true"/>
         </commentGenerator>
-
-        <!--<property name="beginningDelimiter" value="`"/>
-        <property name="endingDelimiter" value="`"/>-->
-
-        <!--<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value="tk.mybatis.springboot.util.MyMapper"/>
-        </plugin>-->
         <!-- jdbc连接 -->
         <jdbcConnection driverClass="${spring.datasource.driverClassName}"
-                        connectionURL="jdbc:mysql://localhost:3306/algoplat?useUnicode=true"
-                        userId="algo"
-                        password="algo">
+                        connectionURL="${spring.datasource.url}"
+                        userId="${spring.datasource.username}"
+                        password="${spring.datasource.password}">
         </jdbcConnection>
         <!--生成Model类存放位置-->
         <javaModelGenerator targetPackage="com.beyond.algo.model" targetProject="src/main/java">
@@ -40,7 +34,6 @@
             <property name="methodNameCalculator" value=""/>
             <property name="rootInterface" value=""/>
         </javaClientGenerator>
-
         <table tableName="%">
             <!--mysql 配置-->
             <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
