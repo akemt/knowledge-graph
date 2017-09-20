@@ -5,8 +5,10 @@
 # IntelliJ project files
 .idea
 *.iml
+
 *.ipr
 *.iws
+
 out
 gen
 target/
