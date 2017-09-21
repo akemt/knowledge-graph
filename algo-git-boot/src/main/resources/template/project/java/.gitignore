@@ -1,0 +1,12 @@
+# Beyondalgo gitignore
+
+bin
+ivy
+dist
+logs
+
+*.class
+
+/project/target
+
+beyondalgo.zip
