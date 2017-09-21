@@ -13,4 +13,5 @@ public class GitConfigModel {
     private String rootPasswd;
     private String privateToken;
     private String localBasePath;
+
 }

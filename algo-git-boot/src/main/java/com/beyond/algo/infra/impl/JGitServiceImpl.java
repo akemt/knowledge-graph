@@ -1,5 +1,6 @@
 package com.beyond.algo.infra.impl;
 
+import com.beyond.algo.common.FileUntil;
 import com.beyond.algo.infra.JGitService;
 import com.beyond.algo.model.GitConfigModel;
 import org.eclipse.jgit.api.*;
@@ -85,6 +86,36 @@ public class JGitServiceImpl implements JGitService {
                     repo.close();
                 }
             }
+        }
+    }
+
+    /**
+     * 删除本地文件同时同步服务器
+     * author:zhangchuanzhi
+     * @param loaclGitPath
+     * @param username
+     * @param password
+     * @return
+     */
+    public boolean commitAndPushDelAllFiles(String loaclGitPath,String username,String password,String filePath) {
+        try {
+            logger.info("传入本地仓库路径：{}用户名：{} 用户密码：{} 文件路径：{}",loaclGitPath,username,password,filePath);
+            FileUntil.delFile(filePath);
+            FileRepository localRepo = new FileRepository( loaclGitPath);
+            Git git = new Git(localRepo);
+            AddCommand addCommand = git.add().setUpdate(true).addFilepattern(".");
+            addCommand.call();
+            CommitCommand commitCommand = git.commit();
+            commitCommand.setMessage("init project");
+            commitCommand.setAllowEmpty(true);
+            commitCommand.call();
+            PushCommand pushCommand = git.push();
+            pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
+            pushCommand.call();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
