@@ -8,6 +8,8 @@ import com.beyond.algo.infra.JGitService;
 import com.beyond.algo.model.GitUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -37,7 +39,7 @@ public class JGitServiceTest {
     @Test
     // 测试本地删除文件同时删除服务器
     public void commitAndPushDelAllFiles () throws Exception{
-        jGitService.commitAndPushDelAllFiles("E:/repo/test1/TestProject/.git","test1","test1234","E:/repo/test1/TestProject/222.txt");
+    jGitService.commitAndPushDelAllFiles("E:/repo/test1/TestProject/.git","test1","test1234","E:/repo/test1/TestProject/222.txt");
     }
 
     @Test
