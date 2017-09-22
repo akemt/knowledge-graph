@@ -5,6 +5,9 @@ import com.beyond.algo.common.ZipUtil;
 import com.beyond.algo.infra.BuildAntProjectService;
 import com.beyond.algo.infra.JGitService;
 import com.beyond.algo.model.GitUser;
+import com.beyond.algo.model.ProjectConfigModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +16,11 @@ import java.io.File;
 public class BuildAntProjectServiceImpl implements BuildAntProjectService {
     @Autowired
     private JGitService jGitService;
+    @Autowired
+    private ProjectConfigModel projectConfigModel;
 
+
+    private final static Logger logger = LoggerFactory.getLogger(BuildAntProjectServiceImpl.class);
     /**
      * ant项目进行编译打包同时解压到指定目录并且代码上传git上
      *
@@ -30,10 +37,10 @@ public class BuildAntProjectServiceImpl implements BuildAntProjectService {
     //    if(antCount>0&&buildCount>0){
     //    jGitService.initCommitAndPushAllFiles(gitUser.getPath()+"/.git",gitUser.getUsername(),gitUser.getPassword());
          if( FileUntil.searchFile(gitUser.getPath()))  {
-           ZipUtil.unZip(gitUser.getPath()+"/algorithm.zip",gitUser.getDescDir());
+           ZipUtil.unZip(gitUser.getPath()+"/"+projectConfigModel.getPackageName()+".zip",gitUser.getDescDir());
           // jGitService.initCommitAndPushAllFiles(gitUser.getPath()+"/.git",gitUser.getUsername(),gitUser.getPassword());
          }else{
-             System.out.println("没有zip包");
+             logger.info("没有zip");
          }
     //    }
     }
