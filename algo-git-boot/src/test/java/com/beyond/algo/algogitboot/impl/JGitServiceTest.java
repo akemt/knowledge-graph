@@ -23,7 +23,7 @@ public class JGitServiceTest {
     private JGitService jGitService;
     @Autowired
     private BuildAntProjectService buildAntProjectService;
-
+    private final static Logger logger = LoggerFactory.getLogger(JGitServiceTest.class);
     GitUser gitUser=new GitUser();
    @Test
     public void gitCloneProjectTest() throws Exception {
