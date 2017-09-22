@@ -37,7 +37,9 @@ public class BuildAntProjectServiceImpl implements BuildAntProjectService {
     //    if(antCount>0&&buildCount>0){
     //    jGitService.initCommitAndPushAllFiles(gitUser.getPath()+"/.git",gitUser.getUsername(),gitUser.getPassword());
          if( FileUntil.searchFile(gitUser.getPath()))  {
-           ZipUtil.unZip(gitUser.getPath()+"/"+projectConfigModel.getPackageName()+".zip",gitUser.getDescDir());
+             String localPath=gitUser.getPath()+"/"+projectConfigModel.getPackageName()+".zip";
+             logger.info("zip包路径:"+localPath);
+             ZipUtil.unZip(localPath,gitUser.getDescDir());
           // jGitService.initCommitAndPushAllFiles(gitUser.getPath()+"/.git",gitUser.getUsername(),gitUser.getPassword());
          }else{
              logger.info("没有zip");
