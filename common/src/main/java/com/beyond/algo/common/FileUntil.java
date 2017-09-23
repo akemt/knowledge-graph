@@ -25,8 +25,8 @@ public class FileUntil {
     }
     /**
      *
-     * 删除zip文件
-     * @param path  zip路径
+     * 删除文件
+     * @param path  路径
      */
     public static  void delFile(String path){
         File file=new File(path);
@@ -35,8 +35,8 @@ public class FileUntil {
     }
 
     /**
-     * 查找zip包是否存在
-     * @param path   zip路径
+     * 查找文件是否存在
+     * @param path   文件路径
      *
      */
     public static  boolean   searchFile(String path) {
