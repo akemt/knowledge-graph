@@ -18,7 +18,7 @@ public class ZipUtil {
      */
     public static void unZip(String zipPath, String descDir) throws IOException {
         unZipFiles(new File(zipPath), descDir);
-        FileUntil.delFile("E:/repo/test1/TestProject/algorithm.zip");
+        //FileUntil.delFile(zipPath);
     }
 
     /**
