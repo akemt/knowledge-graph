@@ -1,6 +1,6 @@
 package com.beyond.algo.infra.impl;
 
-import com.beyond.algo.common.FileUntil;
+import com.beyond.algo.common.FileUtil;
 import com.beyond.algo.infra.JGitService;
 import com.beyond.algo.model.GitConfigModel;
 import org.eclipse.jgit.api.*;
@@ -100,7 +100,7 @@ public class JGitServiceImpl implements JGitService {
     public boolean commitAndPushDelAllFiles(String loaclGitPath,String username,String password,String filePath) {
         try {
             logger.info("传入本地仓库路径：{}用户名：{} 用户密码：{} 文件路径：{}",loaclGitPath,username,password,filePath);
-            FileUntil.delFile(filePath);
+            FileUtil.delFile(filePath);
             FileRepository localRepo = new FileRepository( loaclGitPath);
             Git git = new Git(localRepo);
             AddCommand addCommand = git.add().setUpdate(true).addFilepattern(".");

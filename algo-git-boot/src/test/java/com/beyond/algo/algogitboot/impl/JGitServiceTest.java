@@ -1,7 +1,7 @@
 package com.beyond.algo.algogitboot.impl;
 
 
-import com.beyond.algo.common.FileUntil;
+import com.beyond.algo.common.FileUtil;
 import com.beyond.algo.infra.BuildAntProjectService;
 import com.beyond.algo.infra.GitLibService;
 import com.beyond.algo.infra.JGitService;
@@ -46,7 +46,7 @@ public class JGitServiceTest {
     // 本地文件写入保存
     public void writeAndSaveFile() throws Exception {
         String content = "124444444443";
-        FileUntil.writeFile("E:/repo/test1/TestProject/23.txt", content);
+        FileUtil.writeFile("E:/repo/test1/TestProject/23.txt", content);
 
     }
 

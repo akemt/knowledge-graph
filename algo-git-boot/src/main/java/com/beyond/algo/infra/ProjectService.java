@@ -1,7 +1,5 @@
 package com.beyond.algo.infra;
 
-import java.io.IOException;
-
 public interface ProjectService {
 
     /**
