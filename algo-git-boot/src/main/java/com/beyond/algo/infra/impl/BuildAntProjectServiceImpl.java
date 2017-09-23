@@ -1,6 +1,6 @@
 package com.beyond.algo.infra.impl;
 
-import com.beyond.algo.common.FileUntil;
+import com.beyond.algo.common.FileUtil;
 import com.beyond.algo.common.ZipUtil;
 import com.beyond.algo.infra.BuildAntProjectService;
 import com.beyond.algo.infra.JGitService;
@@ -36,7 +36,7 @@ public class BuildAntProjectServiceImpl implements BuildAntProjectService {
         int buildCount=processBuild.waitFor();
         // 如果构建打包没有问题
     //    if(antCount>0&&buildCount>0){
-         if( FileUntil.searchFile(gitUser.getPath()))  {
+         if( FileUtil.searchFile(gitUser.getPath()))  {
              String localPath=gitUser.getPath()+File.separator +projectConfigModel.getPackageName()+".zip";
              logger.info("zip包路径:"+localPath);
              ZipUtil.unZip(localPath,gitUser.getDescDir());

@@ -1,5 +1,6 @@
 package com.beyond.algo.infra.impl;
 
+import com.beyond.algo.common.FileUtil;
 import com.beyond.algo.infra.ProjectService;
 import com.beyond.algo.model.GitConfigModel;
 import com.beyond.algo.model.ProjectConfigModel;
@@ -10,7 +11,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,15 +26,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void initProject(String username, String projectName) throws Exception {
         // 获取根目录
-        createDir(gitConfigModel.getLocalBasePath());
+        FileUtil.createDir(gitConfigModel.getLocalBasePath());
 
         // 以用户名作为用户子目录名
         String userPath = gitConfigModel.getLocalBasePath() + File.separator + username;
-        createDir(userPath);
+        FileUtil.createDir(userPath);
 
         // 以项目名作为项目子目录名
         String projectPath = userPath + File.separator + projectName;
-        createDir(projectPath);
+        FileUtil.createDir(projectPath);
 
         // 先将直接拷贝的文件复制到目录下
         String templatePath = new ClassPathResource("template/project/java").getFile().getPath();
@@ -61,23 +61,11 @@ public class ProjectServiceImpl implements ProjectService {
 
         // 生成算法主类
         String srcPath = projectPath + File.separator + "src";
-        createDir(srcPath);
+        FileUtil.createDir(srcPath);
         String packetPath = srcPath + File.separator + projectConfigModel.getPackageName();
-        createDir(packetPath);
+        FileUtil.createDir(packetPath);
         String mainClassPath = packetPath + File.separator + projectName;
-        createDir(mainClassPath);
+        FileUtil.createDir(mainClassPath);
         FreemarkerUtil.createFile(templatePath, "Main.java.ftl", mainClassPath, projectName + ".java", paramMap);
-    }
-
-    /**
-     * 指定文件夹路径，若不存在则创建文件夹
-     *
-     * @param dirPath 文件夹路径
-     */
-    private void createDir(String dirPath){
-        File dir = new File(dirPath);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
     }
 }
