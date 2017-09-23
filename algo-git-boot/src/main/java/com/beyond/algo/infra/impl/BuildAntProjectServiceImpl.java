@@ -31,6 +31,7 @@ public class BuildAntProjectServiceImpl implements BuildAntProjectService {
         // 运行window下ant构建指令
         Process processAnt = Runtime.getRuntime().exec("cmd /c ant",null,new File(gitUser.getPath()));
         Process processBuild= Runtime.getRuntime().exec("cmd /c build.sh",null,new File(gitUser.getPath()));
+       // Process processAnt = Runtime.getRuntime().exec(cmd); String cmd = "/home/heyutao/workspace/ChunkOperator/sh/cpu.sh"
         int antCount=processAnt.waitFor();
         int buildCount=processBuild.waitFor();
         // 如果构建打包没有问题
