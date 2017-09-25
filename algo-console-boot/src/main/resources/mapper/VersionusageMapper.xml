@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.VersionusageMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Versionusage" >
+    <id column="UsgSn" property="usgsn" jdbcType="VARCHAR" />
+    <result column="ModSn" property="modsn" jdbcType="VARCHAR" />
+    <result column="StarCnt" property="starcnt" jdbcType="INTEGER" />
+    <result column="FollowCnt" property="followcnt" jdbcType="INTEGER" />
+    <result column="CallCnt" property="callcnt" jdbcType="INTEGER" />
+    <result column="CreditCnt" property="creditcnt" jdbcType="DECIMAL" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Versionusage" >
+    insert into VersionUsage (UsgSn, ModSn, StarCnt, 
+      FollowCnt, CallCnt, CreditCnt
+      )
+    values (#{usgsn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{starcnt,jdbcType=INTEGER}, 
+      #{followcnt,jdbcType=INTEGER}, #{callcnt,jdbcType=INTEGER}, #{creditcnt,jdbcType=DECIMAL}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Versionusage" >
+    update VersionUsage
+    set ModSn = #{modsn,jdbcType=VARCHAR},
+      StarCnt = #{starcnt,jdbcType=INTEGER},
+      FollowCnt = #{followcnt,jdbcType=INTEGER},
+      CallCnt = #{callcnt,jdbcType=INTEGER},
+      CreditCnt = #{creditcnt,jdbcType=DECIMAL}
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+  </select>
+</mapper>

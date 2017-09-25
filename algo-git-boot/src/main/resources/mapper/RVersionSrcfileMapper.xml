@@ -1,33 +1,303 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.mapper.RVersionSrcfileMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile" >
-    <id column="Sn" property="sn" jdbcType="VARCHAR" />
-    <result column="VerSn" property="versn" jdbcType="VARCHAR" />
-    <result column="SFLSn" property="sflsn" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond.algo.mapper.RVersionSrcfileMapper">
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile">
+    <id column="Sn" jdbcType="VARCHAR" property="sn" />
+    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
+    <result column="SFLSn" jdbcType="VARCHAR" property="sflsn" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from R_Version_SrcFile
     where Sn = #{sn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile" >
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile">
     insert into R_Version_SrcFile (Sn, VerSn, SFLSn
       )
     values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile">
     update R_Version_SrcFile
     set VerSn = #{versn,jdbcType=VARCHAR},
       SFLSn = #{sflsn,jdbcType=VARCHAR}
     where Sn = #{sn,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select Sn, VerSn, SFLSn
     from R_Version_SrcFile
     where Sn = #{sn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile">
+    <id column="Sn" jdbcType="VARCHAR" property="sn" />
+    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
+    <result column="SFLSn" jdbcType="VARCHAR" property="sflsn" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    insert into R_Version_SrcFile (Sn, VerSn, SFLSn
+      )
+    values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    update R_Version_SrcFile
+    set VerSn = #{versn,jdbcType=VARCHAR},
+      SFLSn = #{sflsn,jdbcType=VARCHAR}
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile">
+    <id column="Sn" jdbcType="VARCHAR" property="sn" />
+    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
+    <result column="SFLSn" jdbcType="VARCHAR" property="sflsn" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    insert into R_Version_SrcFile (Sn, VerSn, SFLSn
+      )
+    values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    update R_Version_SrcFile
+    set VerSn = #{versn,jdbcType=VARCHAR},
+      SFLSn = #{sflsn,jdbcType=VARCHAR}
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile">
+    <id column="Sn" jdbcType="VARCHAR" property="sn" />
+    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
+    <result column="SFLSn" jdbcType="VARCHAR" property="sflsn" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    insert into R_Version_SrcFile (Sn, VerSn, SFLSn
+      )
+    values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    update R_Version_SrcFile
+    set VerSn = #{versn,jdbcType=VARCHAR},
+      SFLSn = #{sflsn,jdbcType=VARCHAR}
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile">
+    <id column="Sn" jdbcType="VARCHAR" property="sn" />
+    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
+    <result column="SFLSn" jdbcType="VARCHAR" property="sflsn" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    insert into R_Version_SrcFile (Sn, VerSn, SFLSn
+      )
+    values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    update R_Version_SrcFile
+    set VerSn = #{versn,jdbcType=VARCHAR},
+      SFLSn = #{sflsn,jdbcType=VARCHAR}
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile">
+    <id column="Sn" jdbcType="VARCHAR" property="sn" />
+    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
+    <result column="SFLSn" jdbcType="VARCHAR" property="sflsn" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    insert into R_Version_SrcFile (Sn, VerSn, SFLSn
+      )
+    values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    update R_Version_SrcFile
+    set VerSn = #{versn,jdbcType=VARCHAR},
+      SFLSn = #{sflsn,jdbcType=VARCHAR}
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile">
+    <id column="Sn" jdbcType="VARCHAR" property="sn" />
+    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
+    <result column="SFLSn" jdbcType="VARCHAR" property="sflsn" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    insert into R_Version_SrcFile (Sn, VerSn, SFLSn
+      )
+    values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    update R_Version_SrcFile
+    set VerSn = #{versn,jdbcType=VARCHAR},
+      SFLSn = #{sflsn,jdbcType=VARCHAR}
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile">
+    <id column="Sn" jdbcType="VARCHAR" property="sn" />
+    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
+    <result column="SFLSn" jdbcType="VARCHAR" property="sflsn" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    insert into R_Version_SrcFile (Sn, VerSn, SFLSn
+      )
+    values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    update R_Version_SrcFile
+    set VerSn = #{versn,jdbcType=VARCHAR},
+      SFLSn = #{sflsn,jdbcType=VARCHAR}
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile">
+    <id column="Sn" jdbcType="VARCHAR" property="sn" />
+    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
+    <result column="SFLSn" jdbcType="VARCHAR" property="sflsn" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    insert into R_Version_SrcFile (Sn, VerSn, SFLSn
+      )
+    values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    update R_Version_SrcFile
+    set VerSn = #{versn,jdbcType=VARCHAR},
+      SFLSn = #{sflsn,jdbcType=VARCHAR}
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile">
+    <id column="Sn" jdbcType="VARCHAR" property="sn" />
+    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
+    <result column="SFLSn" jdbcType="VARCHAR" property="sflsn" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    insert into R_Version_SrcFile (Sn, VerSn, SFLSn
+      )
+    values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile">
+    update R_Version_SrcFile
+    set VerSn = #{versn,jdbcType=VARCHAR},
+      SFLSn = #{sflsn,jdbcType=VARCHAR}
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Sn, VerSn, SFLSn
+    from R_Version_SrcFile
+    where Sn = #{sn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
     select Sn, VerSn, SFLSn
     from R_Version_SrcFile
   </select>

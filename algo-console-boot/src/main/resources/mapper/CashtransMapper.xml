@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.CashtransMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Cashtrans" >
+    <id column="TraSn" property="trasn" jdbcType="VARCHAR" />
+    <result column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
+    <result column="PayTime" property="paytime" jdbcType="TIMESTAMP" />
+    <result column="PaySrc" property="paysrc" jdbcType="VARCHAR" />
+    <result column="CashPayAmount" property="cashpayamount" jdbcType="DECIMAL" />
+    <result column="Currency" property="currency" jdbcType="VARCHAR" />
+    <result column="CreditPerUnit" property="creditperunit" jdbcType="DECIMAL" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Cashtrans" >
+    insert into CashTrans (TraSn, UsrSn, PayTime, 
+      PaySrc, CashPayAmount, Currency, 
+      CreditPerUnit, CreateTime)
+    values (#{trasn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{paytime,jdbcType=TIMESTAMP}, 
+      #{paysrc,jdbcType=VARCHAR}, #{cashpayamount,jdbcType=DECIMAL}, #{currency,jdbcType=VARCHAR}, 
+      #{creditperunit,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Cashtrans" >
+    update CashTrans
+    set UsrSn = #{usrsn,jdbcType=VARCHAR},
+      PayTime = #{paytime,jdbcType=TIMESTAMP},
+      PaySrc = #{paysrc,jdbcType=VARCHAR},
+      CashPayAmount = #{cashpayamount,jdbcType=DECIMAL},
+      Currency = #{currency,jdbcType=VARCHAR},
+      CreditPerUnit = #{creditperunit,jdbcType=DECIMAL},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP}
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+  </select>
+</mapper>

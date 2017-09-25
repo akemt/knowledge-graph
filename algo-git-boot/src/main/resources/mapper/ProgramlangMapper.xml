@@ -1,29 +1,263 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.mapper.ProgramlangMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang" >
-    <id column="LanSn" property="lansn" jdbcType="VARCHAR" />
-    <result column="LanName" property="lanname" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond.algo.mapper.ProgramlangMapper">
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang">
+    <id column="LanSn" jdbcType="VARCHAR" property="lansn" />
+    <result column="LanName" jdbcType="VARCHAR" property="lanname" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from ProgramLang
     where LanSn = #{lansn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.Programlang" >
+  <insert id="insert" parameterType="com.beyond.algo.model.Programlang">
     insert into ProgramLang (LanSn, LanName)
     values (#{lansn,jdbcType=VARCHAR}, #{lanname,jdbcType=VARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang">
     update ProgramLang
     set LanName = #{lanname,jdbcType=VARCHAR}
     where LanSn = #{lansn,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select LanSn, LanName
     from ProgramLang
     where LanSn = #{lansn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang">
+    <id column="LanSn" jdbcType="VARCHAR" property="lansn" />
+    <result column="LanName" jdbcType="VARCHAR" property="lanname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Programlang">
+    insert into ProgramLang (LanSn, LanName)
+    values (#{lansn,jdbcType=VARCHAR}, #{lanname,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang">
+    update ProgramLang
+    set LanName = #{lanname,jdbcType=VARCHAR}
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang">
+    <id column="LanSn" jdbcType="VARCHAR" property="lansn" />
+    <result column="LanName" jdbcType="VARCHAR" property="lanname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Programlang">
+    insert into ProgramLang (LanSn, LanName)
+    values (#{lansn,jdbcType=VARCHAR}, #{lanname,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang">
+    update ProgramLang
+    set LanName = #{lanname,jdbcType=VARCHAR}
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang">
+    <id column="LanSn" jdbcType="VARCHAR" property="lansn" />
+    <result column="LanName" jdbcType="VARCHAR" property="lanname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Programlang">
+    insert into ProgramLang (LanSn, LanName)
+    values (#{lansn,jdbcType=VARCHAR}, #{lanname,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang">
+    update ProgramLang
+    set LanName = #{lanname,jdbcType=VARCHAR}
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang">
+    <id column="LanSn" jdbcType="VARCHAR" property="lansn" />
+    <result column="LanName" jdbcType="VARCHAR" property="lanname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Programlang">
+    insert into ProgramLang (LanSn, LanName)
+    values (#{lansn,jdbcType=VARCHAR}, #{lanname,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang">
+    update ProgramLang
+    set LanName = #{lanname,jdbcType=VARCHAR}
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang">
+    <id column="LanSn" jdbcType="VARCHAR" property="lansn" />
+    <result column="LanName" jdbcType="VARCHAR" property="lanname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Programlang">
+    insert into ProgramLang (LanSn, LanName)
+    values (#{lansn,jdbcType=VARCHAR}, #{lanname,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang">
+    update ProgramLang
+    set LanName = #{lanname,jdbcType=VARCHAR}
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang">
+    <id column="LanSn" jdbcType="VARCHAR" property="lansn" />
+    <result column="LanName" jdbcType="VARCHAR" property="lanname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Programlang">
+    insert into ProgramLang (LanSn, LanName)
+    values (#{lansn,jdbcType=VARCHAR}, #{lanname,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang">
+    update ProgramLang
+    set LanName = #{lanname,jdbcType=VARCHAR}
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang">
+    <id column="LanSn" jdbcType="VARCHAR" property="lansn" />
+    <result column="LanName" jdbcType="VARCHAR" property="lanname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Programlang">
+    insert into ProgramLang (LanSn, LanName)
+    values (#{lansn,jdbcType=VARCHAR}, #{lanname,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang">
+    update ProgramLang
+    set LanName = #{lanname,jdbcType=VARCHAR}
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang">
+    <id column="LanSn" jdbcType="VARCHAR" property="lansn" />
+    <result column="LanName" jdbcType="VARCHAR" property="lanname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Programlang">
+    insert into ProgramLang (LanSn, LanName)
+    values (#{lansn,jdbcType=VARCHAR}, #{lanname,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang">
+    update ProgramLang
+    set LanName = #{lanname,jdbcType=VARCHAR}
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Programlang">
+    <id column="LanSn" jdbcType="VARCHAR" property="lansn" />
+    <result column="LanName" jdbcType="VARCHAR" property="lanname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Programlang">
+    insert into ProgramLang (LanSn, LanName)
+    values (#{lansn,jdbcType=VARCHAR}, #{lanname,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Programlang">
+    update ProgramLang
+    set LanName = #{lanname,jdbcType=VARCHAR}
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select LanSn, LanName
+    from ProgramLang
+    where LanSn = #{lansn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
     select LanSn, LanName
     from ProgramLang
   </select>
