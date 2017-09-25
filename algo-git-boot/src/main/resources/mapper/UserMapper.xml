@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.User" >
+    <id column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
+    <result column="AccSn" property="accsn" jdbcType="VARCHAR" />
+    <result column="Use_UsrSn" property="useUsrsn" jdbcType="VARCHAR" />
+    <result column="PyiSn" property="pyisn" jdbcType="VARCHAR" />
+    <result column="UsrName" property="usrname" jdbcType="VARCHAR" />
+    <result column="UsrCode" property="usrcode" jdbcType="VARCHAR" />
+    <result column="UsrUrl" property="usrurl" jdbcType="VARCHAR" />
+    <result column="IsOrg" property="isorg" jdbcType="VARCHAR" />
+    <result column="Email" property="email" jdbcType="VARCHAR" />
+    <result column="Passwd" property="passwd" jdbcType="VARCHAR" />
+    <result column="NeedNotify" property="neednotify" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from User
+    where UsrSn = #{usrsn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.User" >
+    insert into User (UsrSn, AccSn, Use_UsrSn, 
+      PyiSn, UsrName, UsrCode, 
+      UsrUrl, IsOrg, Email, 
+      Passwd, NeedNotify)
+    values (#{usrsn,jdbcType=VARCHAR}, #{accsn,jdbcType=VARCHAR}, #{useUsrsn,jdbcType=VARCHAR}, 
+      #{pyisn,jdbcType=VARCHAR}, #{usrname,jdbcType=VARCHAR}, #{usrcode,jdbcType=VARCHAR}, 
+      #{usrurl,jdbcType=VARCHAR}, #{isorg,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{passwd,jdbcType=VARCHAR}, #{neednotify,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.User" >
+    update User
+    set AccSn = #{accsn,jdbcType=VARCHAR},
+      Use_UsrSn = #{useUsrsn,jdbcType=VARCHAR},
+      PyiSn = #{pyisn,jdbcType=VARCHAR},
+      UsrName = #{usrname,jdbcType=VARCHAR},
+      UsrCode = #{usrcode,jdbcType=VARCHAR},
+      UsrUrl = #{usrurl,jdbcType=VARCHAR},
+      IsOrg = #{isorg,jdbcType=VARCHAR},
+      Email = #{email,jdbcType=VARCHAR},
+      Passwd = #{passwd,jdbcType=VARCHAR},
+      NeedNotify = #{neednotify,jdbcType=VARCHAR}
+    where UsrSn = #{usrsn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
+    NeedNotify
+    from User
+    where UsrSn = #{usrsn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
+    NeedNotify
+    from User
+  </select>
+</mapper>

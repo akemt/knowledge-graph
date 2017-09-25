@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.ModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Module" >
+    <id column="ModSn" property="modsn" jdbcType="VARCHAR" />
+    <result column="UsgSn" property="usgsn" jdbcType="VARCHAR" />
+    <result column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
+    <result column="LanSn" property="lansn" jdbcType="VARCHAR" />
+    <result column="LicSn" property="licsn" jdbcType="VARCHAR" />
+    <result column="ModName" property="modname" jdbcType="VARCHAR" />
+    <result column="ModID" property="modid" jdbcType="VARCHAR" />
+    <result column="IsOpenSrc" property="isopensrc" jdbcType="VARCHAR" />
+    <result column="NeedWeb" property="needweb" jdbcType="VARCHAR" />
+    <result column="CallOther" property="callother" jdbcType="VARCHAR" />
+    <result column="EnvType" property="envtype" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Module
+    where ModSn = #{modsn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Module" >
+    insert into Module (ModSn, UsgSn, UsrSn, 
+      LanSn, LicSn, ModName, 
+      ModID, IsOpenSrc, NeedWeb, 
+      CallOther, EnvType)
+    values (#{modsn,jdbcType=VARCHAR}, #{usgsn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, 
+      #{lansn,jdbcType=VARCHAR}, #{licsn,jdbcType=VARCHAR}, #{modname,jdbcType=VARCHAR}, 
+      #{modid,jdbcType=VARCHAR}, #{isopensrc,jdbcType=VARCHAR}, #{needweb,jdbcType=VARCHAR}, 
+      #{callother,jdbcType=VARCHAR}, #{envtype,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Module" >
+    update Module
+    set UsgSn = #{usgsn,jdbcType=VARCHAR},
+      UsrSn = #{usrsn,jdbcType=VARCHAR},
+      LanSn = #{lansn,jdbcType=VARCHAR},
+      LicSn = #{licsn,jdbcType=VARCHAR},
+      ModName = #{modname,jdbcType=VARCHAR},
+      ModID = #{modid,jdbcType=VARCHAR},
+      IsOpenSrc = #{isopensrc,jdbcType=VARCHAR},
+      NeedWeb = #{needweb,jdbcType=VARCHAR},
+      CallOther = #{callother,jdbcType=VARCHAR},
+      EnvType = #{envtype,jdbcType=VARCHAR}
+    where ModSn = #{modsn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select ModSn, UsgSn, UsrSn, LanSn, LicSn, ModName, ModID, IsOpenSrc, NeedWeb, CallOther, 
+    EnvType
+    from Module
+    where ModSn = #{modsn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select ModSn, UsgSn, UsrSn, LanSn, LicSn, ModName, ModID, IsOpenSrc, NeedWeb, CallOther, 
+    EnvType
+    from Module
+  </select>
+</mapper>
