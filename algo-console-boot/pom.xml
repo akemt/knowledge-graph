@@ -69,7 +69,12 @@
 			<version>1.16.18</version>
 			<scope>provided</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.beyond.algo</groupId>
+            <artifactId>algo-dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
