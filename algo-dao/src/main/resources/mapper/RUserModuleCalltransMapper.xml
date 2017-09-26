@@ -1,22 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.beyond.algo.dao.mapper.RUserModuleCalltransMapper">
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.RUserModuleCalltrans">
-    <id column="UmcSn" jdbcType="VARCHAR" property="umcsn" />
-    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
-    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="StartTime" jdbcType="TIMESTAMP" property="starttime" />
-    <result column="EndTime" jdbcType="TIMESTAMP" property="endtime" />
-    <result column="Duration" jdbcType="TIMESTAMP" property="duration" />
-    <result column="BilledCallCnt" jdbcType="INTEGER" property="billedcallcnt" />
-    <result column="CallPayAmount" jdbcType="DECIMAL" property="callpayamount" />
-    <result column="ModCallCnt" jdbcType="INTEGER" property="modcallcnt" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.dao.mapper.RUserModuleCalltransMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.RUserModuleCalltrans" >
+    <id column="UmcSn" property="umcsn" jdbcType="VARCHAR" />
+    <result column="VerSn" property="versn" jdbcType="VARCHAR" />
+    <result column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
+    <result column="StartTime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="EndTime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="Duration" property="duration" jdbcType="TIMESTAMP" />
+    <result column="BilledCallCnt" property="billedcallcnt" jdbcType="INTEGER" />
+    <result column="CallPayAmount" property="callpayamount" jdbcType="DECIMAL" />
+    <result column="ModCallCnt" property="modcallcnt" jdbcType="INTEGER" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from R_User_Module_CallTrans
     where UmcSn = #{umcsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.RUserModuleCalltrans">
+  <insert id="insert" parameterType="com.beyond.algo.dao.model.RUserModuleCalltrans" >
     insert into R_User_Module_CallTrans (UmcSn, VerSn, UsrSn, 
       StartTime, EndTime, Duration, 
       BilledCallCnt, CallPayAmount, ModCallCnt
@@ -26,7 +26,7 @@
       #{billedcallcnt,jdbcType=INTEGER}, #{callpayamount,jdbcType=DECIMAL}, #{modcallcnt,jdbcType=INTEGER}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.RUserModuleCalltrans">
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.RUserModuleCalltrans" >
     update R_User_Module_CallTrans
     set VerSn = #{versn,jdbcType=VARCHAR},
       UsrSn = #{usrsn,jdbcType=VARCHAR},
@@ -38,205 +38,13 @@
       ModCallCnt = #{modcallcnt,jdbcType=INTEGER}
     where UmcSn = #{umcsn,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select UmcSn, VerSn, UsrSn, StartTime, EndTime, Duration, BilledCallCnt, CallPayAmount, 
     ModCallCnt
     from R_User_Module_CallTrans
     where UmcSn = #{umcsn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select UmcSn, VerSn, UsrSn, StartTime, EndTime, Duration, BilledCallCnt, CallPayAmount, 
-    ModCallCnt
-    from R_User_Module_CallTrans
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RUserModuleCalltrans">
-    <id column="UmcSn" jdbcType="VARCHAR" property="umcsn" />
-    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
-    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="StartTime" jdbcType="TIMESTAMP" property="starttime" />
-    <result column="EndTime" jdbcType="TIMESTAMP" property="endtime" />
-    <result column="Duration" jdbcType="TIMESTAMP" property="duration" />
-    <result column="BilledCallCnt" jdbcType="INTEGER" property="billedcallcnt" />
-    <result column="CallPayAmount" jdbcType="DECIMAL" property="callpayamount" />
-    <result column="ModCallCnt" jdbcType="INTEGER" property="modcallcnt" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from R_User_Module_CallTrans
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.RUserModuleCalltrans">
-    insert into R_User_Module_CallTrans (UmcSn, VerSn, UsrSn, 
-      StartTime, EndTime, Duration, 
-      BilledCallCnt, CallPayAmount, ModCallCnt
-      )
-    values (#{umcsn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, 
-      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{duration,jdbcType=TIMESTAMP}, 
-      #{billedcallcnt,jdbcType=INTEGER}, #{callpayamount,jdbcType=DECIMAL}, #{modcallcnt,jdbcType=INTEGER}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RUserModuleCalltrans">
-    update R_User_Module_CallTrans
-    set VerSn = #{versn,jdbcType=VARCHAR},
-      UsrSn = #{usrsn,jdbcType=VARCHAR},
-      StartTime = #{starttime,jdbcType=TIMESTAMP},
-      EndTime = #{endtime,jdbcType=TIMESTAMP},
-      Duration = #{duration,jdbcType=TIMESTAMP},
-      BilledCallCnt = #{billedcallcnt,jdbcType=INTEGER},
-      CallPayAmount = #{callpayamount,jdbcType=DECIMAL},
-      ModCallCnt = #{modcallcnt,jdbcType=INTEGER}
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select UmcSn, VerSn, UsrSn, StartTime, EndTime, Duration, BilledCallCnt, CallPayAmount, 
-    ModCallCnt
-    from R_User_Module_CallTrans
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select UmcSn, VerSn, UsrSn, StartTime, EndTime, Duration, BilledCallCnt, CallPayAmount, 
-    ModCallCnt
-    from R_User_Module_CallTrans
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RUserModuleCalltrans">
-    <id column="UmcSn" jdbcType="VARCHAR" property="umcsn" />
-    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
-    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="StartTime" jdbcType="TIMESTAMP" property="starttime" />
-    <result column="EndTime" jdbcType="TIMESTAMP" property="endtime" />
-    <result column="Duration" jdbcType="TIMESTAMP" property="duration" />
-    <result column="BilledCallCnt" jdbcType="INTEGER" property="billedcallcnt" />
-    <result column="CallPayAmount" jdbcType="DECIMAL" property="callpayamount" />
-    <result column="ModCallCnt" jdbcType="INTEGER" property="modcallcnt" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from R_User_Module_CallTrans
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.RUserModuleCalltrans">
-    insert into R_User_Module_CallTrans (UmcSn, VerSn, UsrSn, 
-      StartTime, EndTime, Duration, 
-      BilledCallCnt, CallPayAmount, ModCallCnt
-      )
-    values (#{umcsn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, 
-      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{duration,jdbcType=TIMESTAMP}, 
-      #{billedcallcnt,jdbcType=INTEGER}, #{callpayamount,jdbcType=DECIMAL}, #{modcallcnt,jdbcType=INTEGER}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RUserModuleCalltrans">
-    update R_User_Module_CallTrans
-    set VerSn = #{versn,jdbcType=VARCHAR},
-      UsrSn = #{usrsn,jdbcType=VARCHAR},
-      StartTime = #{starttime,jdbcType=TIMESTAMP},
-      EndTime = #{endtime,jdbcType=TIMESTAMP},
-      Duration = #{duration,jdbcType=TIMESTAMP},
-      BilledCallCnt = #{billedcallcnt,jdbcType=INTEGER},
-      CallPayAmount = #{callpayamount,jdbcType=DECIMAL},
-      ModCallCnt = #{modcallcnt,jdbcType=INTEGER}
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select UmcSn, VerSn, UsrSn, StartTime, EndTime, Duration, BilledCallCnt, CallPayAmount, 
-    ModCallCnt
-    from R_User_Module_CallTrans
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select UmcSn, VerSn, UsrSn, StartTime, EndTime, Duration, BilledCallCnt, CallPayAmount, 
-    ModCallCnt
-    from R_User_Module_CallTrans
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RUserModuleCalltrans">
-    <id column="UmcSn" jdbcType="VARCHAR" property="umcsn" />
-    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
-    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="StartTime" jdbcType="TIMESTAMP" property="starttime" />
-    <result column="EndTime" jdbcType="TIMESTAMP" property="endtime" />
-    <result column="Duration" jdbcType="TIMESTAMP" property="duration" />
-    <result column="BilledCallCnt" jdbcType="INTEGER" property="billedcallcnt" />
-    <result column="CallPayAmount" jdbcType="DECIMAL" property="callpayamount" />
-    <result column="ModCallCnt" jdbcType="INTEGER" property="modcallcnt" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from R_User_Module_CallTrans
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.RUserModuleCalltrans">
-    insert into R_User_Module_CallTrans (UmcSn, VerSn, UsrSn, 
-      StartTime, EndTime, Duration, 
-      BilledCallCnt, CallPayAmount, ModCallCnt
-      )
-    values (#{umcsn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, 
-      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{duration,jdbcType=TIMESTAMP}, 
-      #{billedcallcnt,jdbcType=INTEGER}, #{callpayamount,jdbcType=DECIMAL}, #{modcallcnt,jdbcType=INTEGER}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RUserModuleCalltrans">
-    update R_User_Module_CallTrans
-    set VerSn = #{versn,jdbcType=VARCHAR},
-      UsrSn = #{usrsn,jdbcType=VARCHAR},
-      StartTime = #{starttime,jdbcType=TIMESTAMP},
-      EndTime = #{endtime,jdbcType=TIMESTAMP},
-      Duration = #{duration,jdbcType=TIMESTAMP},
-      BilledCallCnt = #{billedcallcnt,jdbcType=INTEGER},
-      CallPayAmount = #{callpayamount,jdbcType=DECIMAL},
-      ModCallCnt = #{modcallcnt,jdbcType=INTEGER}
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select UmcSn, VerSn, UsrSn, StartTime, EndTime, Duration, BilledCallCnt, CallPayAmount, 
-    ModCallCnt
-    from R_User_Module_CallTrans
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select UmcSn, VerSn, UsrSn, StartTime, EndTime, Duration, BilledCallCnt, CallPayAmount, 
-    ModCallCnt
-    from R_User_Module_CallTrans
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RUserModuleCalltrans">
-    <id column="UmcSn" jdbcType="VARCHAR" property="umcsn" />
-    <result column="VerSn" jdbcType="VARCHAR" property="versn" />
-    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="StartTime" jdbcType="TIMESTAMP" property="starttime" />
-    <result column="EndTime" jdbcType="TIMESTAMP" property="endtime" />
-    <result column="Duration" jdbcType="TIMESTAMP" property="duration" />
-    <result column="BilledCallCnt" jdbcType="INTEGER" property="billedcallcnt" />
-    <result column="CallPayAmount" jdbcType="DECIMAL" property="callpayamount" />
-    <result column="ModCallCnt" jdbcType="INTEGER" property="modcallcnt" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from R_User_Module_CallTrans
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.RUserModuleCalltrans">
-    insert into R_User_Module_CallTrans (UmcSn, VerSn, UsrSn, 
-      StartTime, EndTime, Duration, 
-      BilledCallCnt, CallPayAmount, ModCallCnt
-      )
-    values (#{umcsn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, 
-      #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, #{duration,jdbcType=TIMESTAMP}, 
-      #{billedcallcnt,jdbcType=INTEGER}, #{callpayamount,jdbcType=DECIMAL}, #{modcallcnt,jdbcType=INTEGER}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RUserModuleCalltrans">
-    update R_User_Module_CallTrans
-    set VerSn = #{versn,jdbcType=VARCHAR},
-      UsrSn = #{usrsn,jdbcType=VARCHAR},
-      StartTime = #{starttime,jdbcType=TIMESTAMP},
-      EndTime = #{endtime,jdbcType=TIMESTAMP},
-      Duration = #{duration,jdbcType=TIMESTAMP},
-      BilledCallCnt = #{billedcallcnt,jdbcType=INTEGER},
-      CallPayAmount = #{callpayamount,jdbcType=DECIMAL},
-      ModCallCnt = #{modcallcnt,jdbcType=INTEGER}
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select UmcSn, VerSn, UsrSn, StartTime, EndTime, Duration, BilledCallCnt, CallPayAmount, 
-    ModCallCnt
-    from R_User_Module_CallTrans
-    where UmcSn = #{umcsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectAll" resultMap="BaseResultMap" >
     select UmcSn, VerSn, UsrSn, StartTime, EndTime, Duration, BilledCallCnt, CallPayAmount, 
     ModCallCnt
     from R_User_Module_CallTrans

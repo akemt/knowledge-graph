@@ -1,13 +1,11 @@
 package com.beyond.algo.dao.model;
 
+import java.util.Date;
+
 public class User {
     private String usrsn;
 
-    private String accsn;
-
-    private String useUsrsn;
-
-    private String pyisn;
+    private String ownerid;
 
     private String usrname;
 
@@ -23,6 +21,10 @@ public class User {
 
     private String neednotify;
 
+    private Date createdate;
+
+    private Date updatedate;
+
     public String getUsrsn() {
         return usrsn;
     }
@@ -31,28 +33,12 @@ public class User {
         this.usrsn = usrsn == null ? null : usrsn.trim();
     }
 
-    public String getAccsn() {
-        return accsn;
+    public String getOwnerid() {
+        return ownerid;
     }
 
-    public void setAccsn(String accsn) {
-        this.accsn = accsn == null ? null : accsn.trim();
-    }
-
-    public String getUseUsrsn() {
-        return useUsrsn;
-    }
-
-    public void setUseUsrsn(String useUsrsn) {
-        this.useUsrsn = useUsrsn == null ? null : useUsrsn.trim();
-    }
-
-    public String getPyisn() {
-        return pyisn;
-    }
-
-    public void setPyisn(String pyisn) {
-        this.pyisn = pyisn == null ? null : pyisn.trim();
+    public void setOwnerid(String ownerid) {
+        this.ownerid = ownerid == null ? null : ownerid.trim();
     }
 
     public String getUsrname() {
@@ -109,5 +95,21 @@ public class User {
 
     public void setNeednotify(String neednotify) {
         this.neednotify = neednotify == null ? null : neednotify.trim();
+    }
+
+    public Date getCreatedate() {
+        return createdate;
+    }
+
+    public void setCreatedate(Date createdate) {
+        this.createdate = createdate;
+    }
+
+    public Date getUpdatedate() {
+        return updatedate;
+    }
+
+    public void setUpdatedate(Date updatedate) {
+        this.updatedate = updatedate;
     }
 }

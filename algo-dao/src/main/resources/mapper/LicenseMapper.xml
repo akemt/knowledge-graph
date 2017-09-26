@@ -1,153 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.beyond.algo.dao.mapper.LicenseMapper">
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.License">
-    <id column="LicSn" jdbcType="VARCHAR" property="licsn" />
-    <result column="LicName" jdbcType="VARCHAR" property="licname" />
-    <result column="LicContent" jdbcType="LONGVARCHAR" property="liccontent" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.dao.mapper.LicenseMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.License" >
+    <id column="LicSn" property="licsn" jdbcType="VARCHAR" />
+    <result column="LicName" property="licname" jdbcType="VARCHAR" />
+    <result column="LicContent" property="liccontent" jdbcType="LONGVARCHAR" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from License
     where LicSn = #{licsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.License">
+  <insert id="insert" parameterType="com.beyond.algo.dao.model.License" >
     insert into License (LicSn, LicName, LicContent
       )
     values (#{licsn,jdbcType=VARCHAR}, #{licname,jdbcType=VARCHAR}, #{liccontent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.License">
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.License" >
     update License
     set LicName = #{licname,jdbcType=VARCHAR},
       LicContent = #{liccontent,jdbcType=LONGVARCHAR}
     where LicSn = #{licsn,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select LicSn, LicName, LicContent
     from License
     where LicSn = #{licsn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select LicSn, LicName, LicContent
-    from License
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.License">
-    <id column="LicSn" jdbcType="VARCHAR" property="licsn" />
-    <result column="LicName" jdbcType="VARCHAR" property="licname" />
-    <result column="LicContent" jdbcType="LONGVARCHAR" property="liccontent" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from License
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.License">
-    insert into License (LicSn, LicName, LicContent
-      )
-    values (#{licsn,jdbcType=VARCHAR}, #{licname,jdbcType=VARCHAR}, #{liccontent,jdbcType=LONGVARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.License">
-    update License
-    set LicName = #{licname,jdbcType=VARCHAR},
-      LicContent = #{liccontent,jdbcType=LONGVARCHAR}
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select LicSn, LicName, LicContent
-    from License
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select LicSn, LicName, LicContent
-    from License
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.License">
-    <id column="LicSn" jdbcType="VARCHAR" property="licsn" />
-    <result column="LicName" jdbcType="VARCHAR" property="licname" />
-    <result column="LicContent" jdbcType="LONGVARCHAR" property="liccontent" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from License
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.License">
-    insert into License (LicSn, LicName, LicContent
-      )
-    values (#{licsn,jdbcType=VARCHAR}, #{licname,jdbcType=VARCHAR}, #{liccontent,jdbcType=LONGVARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.License">
-    update License
-    set LicName = #{licname,jdbcType=VARCHAR},
-      LicContent = #{liccontent,jdbcType=LONGVARCHAR}
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select LicSn, LicName, LicContent
-    from License
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select LicSn, LicName, LicContent
-    from License
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.License">
-    <id column="LicSn" jdbcType="VARCHAR" property="licsn" />
-    <result column="LicName" jdbcType="VARCHAR" property="licname" />
-    <result column="LicContent" jdbcType="LONGVARCHAR" property="liccontent" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from License
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.License">
-    insert into License (LicSn, LicName, LicContent
-      )
-    values (#{licsn,jdbcType=VARCHAR}, #{licname,jdbcType=VARCHAR}, #{liccontent,jdbcType=LONGVARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.License">
-    update License
-    set LicName = #{licname,jdbcType=VARCHAR},
-      LicContent = #{liccontent,jdbcType=LONGVARCHAR}
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select LicSn, LicName, LicContent
-    from License
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select LicSn, LicName, LicContent
-    from License
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.License">
-    <id column="LicSn" jdbcType="VARCHAR" property="licsn" />
-    <result column="LicName" jdbcType="VARCHAR" property="licname" />
-    <result column="LicContent" jdbcType="LONGVARCHAR" property="liccontent" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from License
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.License">
-    insert into License (LicSn, LicName, LicContent
-      )
-    values (#{licsn,jdbcType=VARCHAR}, #{licname,jdbcType=VARCHAR}, #{liccontent,jdbcType=LONGVARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.License">
-    update License
-    set LicName = #{licname,jdbcType=VARCHAR},
-      LicContent = #{liccontent,jdbcType=LONGVARCHAR}
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select LicSn, LicName, LicContent
-    from License
-    where LicSn = #{licsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectAll" resultMap="BaseResultMap" >
     select LicSn, LicName, LicContent
     from License
   </select>

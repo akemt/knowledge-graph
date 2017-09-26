@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.beyond.algo.dao.mapper.PaymentinfoMapper">
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Paymentinfo">
-    <id column="PyiSn" jdbcType="VARCHAR" property="pyisn" />
-    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="Street" jdbcType="VARCHAR" property="street" />
-    <result column="City" jdbcType="VARCHAR" property="city" />
-    <result column="Country" jdbcType="VARCHAR" property="country" />
-    <result column="ZipCode" jdbcType="VARCHAR" property="zipcode" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.dao.mapper.PaymentinfoMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Paymentinfo" >
+    <id column="PyiSn" property="pyisn" jdbcType="VARCHAR" />
+    <result column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
+    <result column="Street" property="street" jdbcType="VARCHAR" />
+    <result column="City" property="city" jdbcType="VARCHAR" />
+    <result column="Country" property="country" jdbcType="VARCHAR" />
+    <result column="ZipCode" property="zipcode" jdbcType="VARCHAR" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from PaymentInfo
     where PyiSn = #{pyisn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.Paymentinfo">
+  <insert id="insert" parameterType="com.beyond.algo.dao.model.Paymentinfo" >
     insert into PaymentInfo (PyiSn, UsrSn, Street, 
       City, Country, ZipCode
       )
@@ -21,7 +21,7 @@
       #{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Paymentinfo">
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Paymentinfo" >
     update PaymentInfo
     set UsrSn = #{usrsn,jdbcType=VARCHAR},
       Street = #{street,jdbcType=VARCHAR},
@@ -30,164 +30,12 @@
       ZipCode = #{zipcode,jdbcType=VARCHAR}
     where PyiSn = #{pyisn,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select PyiSn, UsrSn, Street, City, Country, ZipCode
     from PaymentInfo
     where PyiSn = #{pyisn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select PyiSn, UsrSn, Street, City, Country, ZipCode
-    from PaymentInfo
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Paymentinfo">
-    <id column="PyiSn" jdbcType="VARCHAR" property="pyisn" />
-    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="Street" jdbcType="VARCHAR" property="street" />
-    <result column="City" jdbcType="VARCHAR" property="city" />
-    <result column="Country" jdbcType="VARCHAR" property="country" />
-    <result column="ZipCode" jdbcType="VARCHAR" property="zipcode" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from PaymentInfo
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.Paymentinfo">
-    insert into PaymentInfo (PyiSn, UsrSn, Street, 
-      City, Country, ZipCode
-      )
-    values (#{pyisn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Paymentinfo">
-    update PaymentInfo
-    set UsrSn = #{usrsn,jdbcType=VARCHAR},
-      Street = #{street,jdbcType=VARCHAR},
-      City = #{city,jdbcType=VARCHAR},
-      Country = #{country,jdbcType=VARCHAR},
-      ZipCode = #{zipcode,jdbcType=VARCHAR}
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select PyiSn, UsrSn, Street, City, Country, ZipCode
-    from PaymentInfo
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select PyiSn, UsrSn, Street, City, Country, ZipCode
-    from PaymentInfo
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Paymentinfo">
-    <id column="PyiSn" jdbcType="VARCHAR" property="pyisn" />
-    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="Street" jdbcType="VARCHAR" property="street" />
-    <result column="City" jdbcType="VARCHAR" property="city" />
-    <result column="Country" jdbcType="VARCHAR" property="country" />
-    <result column="ZipCode" jdbcType="VARCHAR" property="zipcode" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from PaymentInfo
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.Paymentinfo">
-    insert into PaymentInfo (PyiSn, UsrSn, Street, 
-      City, Country, ZipCode
-      )
-    values (#{pyisn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Paymentinfo">
-    update PaymentInfo
-    set UsrSn = #{usrsn,jdbcType=VARCHAR},
-      Street = #{street,jdbcType=VARCHAR},
-      City = #{city,jdbcType=VARCHAR},
-      Country = #{country,jdbcType=VARCHAR},
-      ZipCode = #{zipcode,jdbcType=VARCHAR}
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select PyiSn, UsrSn, Street, City, Country, ZipCode
-    from PaymentInfo
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select PyiSn, UsrSn, Street, City, Country, ZipCode
-    from PaymentInfo
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Paymentinfo">
-    <id column="PyiSn" jdbcType="VARCHAR" property="pyisn" />
-    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="Street" jdbcType="VARCHAR" property="street" />
-    <result column="City" jdbcType="VARCHAR" property="city" />
-    <result column="Country" jdbcType="VARCHAR" property="country" />
-    <result column="ZipCode" jdbcType="VARCHAR" property="zipcode" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from PaymentInfo
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.Paymentinfo">
-    insert into PaymentInfo (PyiSn, UsrSn, Street, 
-      City, Country, ZipCode
-      )
-    values (#{pyisn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Paymentinfo">
-    update PaymentInfo
-    set UsrSn = #{usrsn,jdbcType=VARCHAR},
-      Street = #{street,jdbcType=VARCHAR},
-      City = #{city,jdbcType=VARCHAR},
-      Country = #{country,jdbcType=VARCHAR},
-      ZipCode = #{zipcode,jdbcType=VARCHAR}
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select PyiSn, UsrSn, Street, City, Country, ZipCode
-    from PaymentInfo
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select PyiSn, UsrSn, Street, City, Country, ZipCode
-    from PaymentInfo
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Paymentinfo">
-    <id column="PyiSn" jdbcType="VARCHAR" property="pyisn" />
-    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="Street" jdbcType="VARCHAR" property="street" />
-    <result column="City" jdbcType="VARCHAR" property="city" />
-    <result column="Country" jdbcType="VARCHAR" property="country" />
-    <result column="ZipCode" jdbcType="VARCHAR" property="zipcode" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from PaymentInfo
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.Paymentinfo">
-    insert into PaymentInfo (PyiSn, UsrSn, Street, 
-      City, Country, ZipCode
-      )
-    values (#{pyisn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
-      #{city,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{zipcode,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Paymentinfo">
-    update PaymentInfo
-    set UsrSn = #{usrsn,jdbcType=VARCHAR},
-      Street = #{street,jdbcType=VARCHAR},
-      City = #{city,jdbcType=VARCHAR},
-      Country = #{country,jdbcType=VARCHAR},
-      ZipCode = #{zipcode,jdbcType=VARCHAR}
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select PyiSn, UsrSn, Street, City, Country, ZipCode
-    from PaymentInfo
-    where PyiSn = #{pyisn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectAll" resultMap="BaseResultMap" >
     select PyiSn, UsrSn, Street, City, Country, ZipCode
     from PaymentInfo
   </select>

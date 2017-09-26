@@ -1,26 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.beyond.algo.dao.mapper.ModuleversionMapper">
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Moduleversion">
-    <id column="VerSn" jdbcType="VARCHAR" property="versn" />
-    <result column="ModSn" jdbcType="VARCHAR" property="modsn" />
-    <result column="VerCodeL1" jdbcType="INTEGER" property="vercodel1" />
-    <result column="VerCodeL2" jdbcType="INTEGER" property="vercodel2" />
-    <result column="VerCodeL3" jdbcType="INTEGER" property="vercodel3" />
-    <result column="VerLoyaltyFee" jdbcType="REAL" property="verloyaltyfee" />
-    <result column="VerRunUrl" jdbcType="VARCHAR" property="verrunurl" />
-    <result column="VerRunPort" jdbcType="VARCHAR" property="verrunport" />
-    <result column="VerCompiled" jdbcType="VARCHAR" property="vercompiled" />
-    <result column="VerIsDirty" jdbcType="VARCHAR" property="verisdirty" />
-    <result column="VerUrl" jdbcType="VARCHAR" property="verurl" />
-    <result column="VerDependency" jdbcType="LONGVARCHAR" property="verdependency" />
-    <result column="VerDescription" jdbcType="LONGVARCHAR" property="verdescription" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.dao.mapper.ModuleversionMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Moduleversion" >
+    <id column="VerSn" property="versn" jdbcType="VARCHAR" />
+    <result column="ModSn" property="modsn" jdbcType="VARCHAR" />
+    <result column="VerCodeL1" property="vercodel1" jdbcType="INTEGER" />
+    <result column="VerCodeL2" property="vercodel2" jdbcType="INTEGER" />
+    <result column="VerCodeL3" property="vercodel3" jdbcType="INTEGER" />
+    <result column="VerLoyaltyFee" property="verloyaltyfee" jdbcType="REAL" />
+    <result column="VerRunUrl" property="verrunurl" jdbcType="VARCHAR" />
+    <result column="VerRunPort" property="verrunport" jdbcType="VARCHAR" />
+    <result column="VerCompiled" property="vercompiled" jdbcType="VARCHAR" />
+    <result column="VerIsDirty" property="verisdirty" jdbcType="VARCHAR" />
+    <result column="VerUrl" property="verurl" jdbcType="VARCHAR" />
+    <result column="VerDependency" property="verdependency" jdbcType="LONGVARCHAR" />
+    <result column="VerDescription" property="verdescription" jdbcType="LONGVARCHAR" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from ModuleVersion
     where VerSn = #{versn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.Moduleversion">
+  <insert id="insert" parameterType="com.beyond.algo.dao.model.Moduleversion" >
     insert into ModuleVersion (VerSn, ModSn, VerCodeL1, 
       VerCodeL2, VerCodeL3, VerLoyaltyFee, 
       VerRunUrl, VerRunPort, VerCompiled, 
@@ -32,7 +32,7 @@
       #{verisdirty,jdbcType=VARCHAR}, #{verurl,jdbcType=VARCHAR}, #{verdependency,jdbcType=LONGVARCHAR}, 
       #{verdescription,jdbcType=LONGVARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Moduleversion">
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Moduleversion" >
     update ModuleVersion
     set ModSn = #{modsn,jdbcType=VARCHAR},
       VerCodeL1 = #{vercodel1,jdbcType=INTEGER},
@@ -48,245 +48,13 @@
       VerDescription = #{verdescription,jdbcType=LONGVARCHAR}
     where VerSn = #{versn,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select VerSn, ModSn, VerCodeL1, VerCodeL2, VerCodeL3, VerLoyaltyFee, VerRunUrl, VerRunPort, 
     VerCompiled, VerIsDirty, VerUrl, VerDependency, VerDescription
     from ModuleVersion
     where VerSn = #{versn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select VerSn, ModSn, VerCodeL1, VerCodeL2, VerCodeL3, VerLoyaltyFee, VerRunUrl, VerRunPort, 
-    VerCompiled, VerIsDirty, VerUrl, VerDependency, VerDescription
-    from ModuleVersion
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Moduleversion">
-    <id column="VerSn" jdbcType="VARCHAR" property="versn" />
-    <result column="ModSn" jdbcType="VARCHAR" property="modsn" />
-    <result column="VerCodeL1" jdbcType="INTEGER" property="vercodel1" />
-    <result column="VerCodeL2" jdbcType="INTEGER" property="vercodel2" />
-    <result column="VerCodeL3" jdbcType="INTEGER" property="vercodel3" />
-    <result column="VerLoyaltyFee" jdbcType="REAL" property="verloyaltyfee" />
-    <result column="VerRunUrl" jdbcType="VARCHAR" property="verrunurl" />
-    <result column="VerRunPort" jdbcType="VARCHAR" property="verrunport" />
-    <result column="VerCompiled" jdbcType="VARCHAR" property="vercompiled" />
-    <result column="VerIsDirty" jdbcType="VARCHAR" property="verisdirty" />
-    <result column="VerUrl" jdbcType="VARCHAR" property="verurl" />
-    <result column="VerDependency" jdbcType="LONGVARCHAR" property="verdependency" />
-    <result column="VerDescription" jdbcType="LONGVARCHAR" property="verdescription" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from ModuleVersion
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.Moduleversion">
-    insert into ModuleVersion (VerSn, ModSn, VerCodeL1, 
-      VerCodeL2, VerCodeL3, VerLoyaltyFee, 
-      VerRunUrl, VerRunPort, VerCompiled, 
-      VerIsDirty, VerUrl, VerDependency, 
-      VerDescription)
-    values (#{versn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{vercodel1,jdbcType=INTEGER}, 
-      #{vercodel2,jdbcType=INTEGER}, #{vercodel3,jdbcType=INTEGER}, #{verloyaltyfee,jdbcType=REAL}, 
-      #{verrunurl,jdbcType=VARCHAR}, #{verrunport,jdbcType=VARCHAR}, #{vercompiled,jdbcType=VARCHAR}, 
-      #{verisdirty,jdbcType=VARCHAR}, #{verurl,jdbcType=VARCHAR}, #{verdependency,jdbcType=LONGVARCHAR}, 
-      #{verdescription,jdbcType=LONGVARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Moduleversion">
-    update ModuleVersion
-    set ModSn = #{modsn,jdbcType=VARCHAR},
-      VerCodeL1 = #{vercodel1,jdbcType=INTEGER},
-      VerCodeL2 = #{vercodel2,jdbcType=INTEGER},
-      VerCodeL3 = #{vercodel3,jdbcType=INTEGER},
-      VerLoyaltyFee = #{verloyaltyfee,jdbcType=REAL},
-      VerRunUrl = #{verrunurl,jdbcType=VARCHAR},
-      VerRunPort = #{verrunport,jdbcType=VARCHAR},
-      VerCompiled = #{vercompiled,jdbcType=VARCHAR},
-      VerIsDirty = #{verisdirty,jdbcType=VARCHAR},
-      VerUrl = #{verurl,jdbcType=VARCHAR},
-      VerDependency = #{verdependency,jdbcType=LONGVARCHAR},
-      VerDescription = #{verdescription,jdbcType=LONGVARCHAR}
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select VerSn, ModSn, VerCodeL1, VerCodeL2, VerCodeL3, VerLoyaltyFee, VerRunUrl, VerRunPort, 
-    VerCompiled, VerIsDirty, VerUrl, VerDependency, VerDescription
-    from ModuleVersion
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select VerSn, ModSn, VerCodeL1, VerCodeL2, VerCodeL3, VerLoyaltyFee, VerRunUrl, VerRunPort, 
-    VerCompiled, VerIsDirty, VerUrl, VerDependency, VerDescription
-    from ModuleVersion
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Moduleversion">
-    <id column="VerSn" jdbcType="VARCHAR" property="versn" />
-    <result column="ModSn" jdbcType="VARCHAR" property="modsn" />
-    <result column="VerCodeL1" jdbcType="INTEGER" property="vercodel1" />
-    <result column="VerCodeL2" jdbcType="INTEGER" property="vercodel2" />
-    <result column="VerCodeL3" jdbcType="INTEGER" property="vercodel3" />
-    <result column="VerLoyaltyFee" jdbcType="REAL" property="verloyaltyfee" />
-    <result column="VerRunUrl" jdbcType="VARCHAR" property="verrunurl" />
-    <result column="VerRunPort" jdbcType="VARCHAR" property="verrunport" />
-    <result column="VerCompiled" jdbcType="VARCHAR" property="vercompiled" />
-    <result column="VerIsDirty" jdbcType="VARCHAR" property="verisdirty" />
-    <result column="VerUrl" jdbcType="VARCHAR" property="verurl" />
-    <result column="VerDependency" jdbcType="LONGVARCHAR" property="verdependency" />
-    <result column="VerDescription" jdbcType="LONGVARCHAR" property="verdescription" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from ModuleVersion
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.Moduleversion">
-    insert into ModuleVersion (VerSn, ModSn, VerCodeL1, 
-      VerCodeL2, VerCodeL3, VerLoyaltyFee, 
-      VerRunUrl, VerRunPort, VerCompiled, 
-      VerIsDirty, VerUrl, VerDependency, 
-      VerDescription)
-    values (#{versn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{vercodel1,jdbcType=INTEGER}, 
-      #{vercodel2,jdbcType=INTEGER}, #{vercodel3,jdbcType=INTEGER}, #{verloyaltyfee,jdbcType=REAL}, 
-      #{verrunurl,jdbcType=VARCHAR}, #{verrunport,jdbcType=VARCHAR}, #{vercompiled,jdbcType=VARCHAR}, 
-      #{verisdirty,jdbcType=VARCHAR}, #{verurl,jdbcType=VARCHAR}, #{verdependency,jdbcType=LONGVARCHAR}, 
-      #{verdescription,jdbcType=LONGVARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Moduleversion">
-    update ModuleVersion
-    set ModSn = #{modsn,jdbcType=VARCHAR},
-      VerCodeL1 = #{vercodel1,jdbcType=INTEGER},
-      VerCodeL2 = #{vercodel2,jdbcType=INTEGER},
-      VerCodeL3 = #{vercodel3,jdbcType=INTEGER},
-      VerLoyaltyFee = #{verloyaltyfee,jdbcType=REAL},
-      VerRunUrl = #{verrunurl,jdbcType=VARCHAR},
-      VerRunPort = #{verrunport,jdbcType=VARCHAR},
-      VerCompiled = #{vercompiled,jdbcType=VARCHAR},
-      VerIsDirty = #{verisdirty,jdbcType=VARCHAR},
-      VerUrl = #{verurl,jdbcType=VARCHAR},
-      VerDependency = #{verdependency,jdbcType=LONGVARCHAR},
-      VerDescription = #{verdescription,jdbcType=LONGVARCHAR}
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select VerSn, ModSn, VerCodeL1, VerCodeL2, VerCodeL3, VerLoyaltyFee, VerRunUrl, VerRunPort, 
-    VerCompiled, VerIsDirty, VerUrl, VerDependency, VerDescription
-    from ModuleVersion
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select VerSn, ModSn, VerCodeL1, VerCodeL2, VerCodeL3, VerLoyaltyFee, VerRunUrl, VerRunPort, 
-    VerCompiled, VerIsDirty, VerUrl, VerDependency, VerDescription
-    from ModuleVersion
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Moduleversion">
-    <id column="VerSn" jdbcType="VARCHAR" property="versn" />
-    <result column="ModSn" jdbcType="VARCHAR" property="modsn" />
-    <result column="VerCodeL1" jdbcType="INTEGER" property="vercodel1" />
-    <result column="VerCodeL2" jdbcType="INTEGER" property="vercodel2" />
-    <result column="VerCodeL3" jdbcType="INTEGER" property="vercodel3" />
-    <result column="VerLoyaltyFee" jdbcType="REAL" property="verloyaltyfee" />
-    <result column="VerRunUrl" jdbcType="VARCHAR" property="verrunurl" />
-    <result column="VerRunPort" jdbcType="VARCHAR" property="verrunport" />
-    <result column="VerCompiled" jdbcType="VARCHAR" property="vercompiled" />
-    <result column="VerIsDirty" jdbcType="VARCHAR" property="verisdirty" />
-    <result column="VerUrl" jdbcType="VARCHAR" property="verurl" />
-    <result column="VerDependency" jdbcType="LONGVARCHAR" property="verdependency" />
-    <result column="VerDescription" jdbcType="LONGVARCHAR" property="verdescription" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from ModuleVersion
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.Moduleversion">
-    insert into ModuleVersion (VerSn, ModSn, VerCodeL1, 
-      VerCodeL2, VerCodeL3, VerLoyaltyFee, 
-      VerRunUrl, VerRunPort, VerCompiled, 
-      VerIsDirty, VerUrl, VerDependency, 
-      VerDescription)
-    values (#{versn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{vercodel1,jdbcType=INTEGER}, 
-      #{vercodel2,jdbcType=INTEGER}, #{vercodel3,jdbcType=INTEGER}, #{verloyaltyfee,jdbcType=REAL}, 
-      #{verrunurl,jdbcType=VARCHAR}, #{verrunport,jdbcType=VARCHAR}, #{vercompiled,jdbcType=VARCHAR}, 
-      #{verisdirty,jdbcType=VARCHAR}, #{verurl,jdbcType=VARCHAR}, #{verdependency,jdbcType=LONGVARCHAR}, 
-      #{verdescription,jdbcType=LONGVARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Moduleversion">
-    update ModuleVersion
-    set ModSn = #{modsn,jdbcType=VARCHAR},
-      VerCodeL1 = #{vercodel1,jdbcType=INTEGER},
-      VerCodeL2 = #{vercodel2,jdbcType=INTEGER},
-      VerCodeL3 = #{vercodel3,jdbcType=INTEGER},
-      VerLoyaltyFee = #{verloyaltyfee,jdbcType=REAL},
-      VerRunUrl = #{verrunurl,jdbcType=VARCHAR},
-      VerRunPort = #{verrunport,jdbcType=VARCHAR},
-      VerCompiled = #{vercompiled,jdbcType=VARCHAR},
-      VerIsDirty = #{verisdirty,jdbcType=VARCHAR},
-      VerUrl = #{verurl,jdbcType=VARCHAR},
-      VerDependency = #{verdependency,jdbcType=LONGVARCHAR},
-      VerDescription = #{verdescription,jdbcType=LONGVARCHAR}
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select VerSn, ModSn, VerCodeL1, VerCodeL2, VerCodeL3, VerLoyaltyFee, VerRunUrl, VerRunPort, 
-    VerCompiled, VerIsDirty, VerUrl, VerDependency, VerDescription
-    from ModuleVersion
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select VerSn, ModSn, VerCodeL1, VerCodeL2, VerCodeL3, VerLoyaltyFee, VerRunUrl, VerRunPort, 
-    VerCompiled, VerIsDirty, VerUrl, VerDependency, VerDescription
-    from ModuleVersion
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Moduleversion">
-    <id column="VerSn" jdbcType="VARCHAR" property="versn" />
-    <result column="ModSn" jdbcType="VARCHAR" property="modsn" />
-    <result column="VerCodeL1" jdbcType="INTEGER" property="vercodel1" />
-    <result column="VerCodeL2" jdbcType="INTEGER" property="vercodel2" />
-    <result column="VerCodeL3" jdbcType="INTEGER" property="vercodel3" />
-    <result column="VerLoyaltyFee" jdbcType="REAL" property="verloyaltyfee" />
-    <result column="VerRunUrl" jdbcType="VARCHAR" property="verrunurl" />
-    <result column="VerRunPort" jdbcType="VARCHAR" property="verrunport" />
-    <result column="VerCompiled" jdbcType="VARCHAR" property="vercompiled" />
-    <result column="VerIsDirty" jdbcType="VARCHAR" property="verisdirty" />
-    <result column="VerUrl" jdbcType="VARCHAR" property="verurl" />
-    <result column="VerDependency" jdbcType="LONGVARCHAR" property="verdependency" />
-    <result column="VerDescription" jdbcType="LONGVARCHAR" property="verdescription" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from ModuleVersion
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.Moduleversion">
-    insert into ModuleVersion (VerSn, ModSn, VerCodeL1, 
-      VerCodeL2, VerCodeL3, VerLoyaltyFee, 
-      VerRunUrl, VerRunPort, VerCompiled, 
-      VerIsDirty, VerUrl, VerDependency, 
-      VerDescription)
-    values (#{versn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{vercodel1,jdbcType=INTEGER}, 
-      #{vercodel2,jdbcType=INTEGER}, #{vercodel3,jdbcType=INTEGER}, #{verloyaltyfee,jdbcType=REAL}, 
-      #{verrunurl,jdbcType=VARCHAR}, #{verrunport,jdbcType=VARCHAR}, #{vercompiled,jdbcType=VARCHAR}, 
-      #{verisdirty,jdbcType=VARCHAR}, #{verurl,jdbcType=VARCHAR}, #{verdependency,jdbcType=LONGVARCHAR}, 
-      #{verdescription,jdbcType=LONGVARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Moduleversion">
-    update ModuleVersion
-    set ModSn = #{modsn,jdbcType=VARCHAR},
-      VerCodeL1 = #{vercodel1,jdbcType=INTEGER},
-      VerCodeL2 = #{vercodel2,jdbcType=INTEGER},
-      VerCodeL3 = #{vercodel3,jdbcType=INTEGER},
-      VerLoyaltyFee = #{verloyaltyfee,jdbcType=REAL},
-      VerRunUrl = #{verrunurl,jdbcType=VARCHAR},
-      VerRunPort = #{verrunport,jdbcType=VARCHAR},
-      VerCompiled = #{vercompiled,jdbcType=VARCHAR},
-      VerIsDirty = #{verisdirty,jdbcType=VARCHAR},
-      VerUrl = #{verurl,jdbcType=VARCHAR},
-      VerDependency = #{verdependency,jdbcType=LONGVARCHAR},
-      VerDescription = #{verdescription,jdbcType=LONGVARCHAR}
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select VerSn, ModSn, VerCodeL1, VerCodeL2, VerCodeL3, VerLoyaltyFee, VerRunUrl, VerRunPort, 
-    VerCompiled, VerIsDirty, VerUrl, VerDependency, VerDescription
-    from ModuleVersion
-    where VerSn = #{versn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+  <select id="selectAll" resultMap="BaseResultMap" >
     select VerSn, ModSn, VerCodeL1, VerCodeL2, VerCodeL3, VerLoyaltyFee, VerRunUrl, VerRunPort, 
     VerCompiled, VerIsDirty, VerUrl, VerDependency, VerDescription
     from ModuleVersion

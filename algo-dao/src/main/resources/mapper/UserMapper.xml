@@ -1,264 +1,57 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.beyond.algo.dao.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.User">
-    <id column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="AccSn" jdbcType="VARCHAR" property="accsn" />
-    <result column="Use_UsrSn" jdbcType="VARCHAR" property="useUsrsn" />
-    <result column="PyiSn" jdbcType="VARCHAR" property="pyisn" />
-    <result column="UsrName" jdbcType="VARCHAR" property="usrname" />
-    <result column="UsrCode" jdbcType="VARCHAR" property="usrcode" />
-    <result column="UsrUrl" jdbcType="VARCHAR" property="usrurl" />
-    <result column="IsOrg" jdbcType="VARCHAR" property="isorg" />
-    <result column="Email" jdbcType="VARCHAR" property="email" />
-    <result column="Passwd" jdbcType="VARCHAR" property="passwd" />
-    <result column="NeedNotify" jdbcType="VARCHAR" property="neednotify" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.dao.mapper.
+" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.User" >
+    <id column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
+    <result column="OwnerID" property="ownerid" jdbcType="VARCHAR" />
+    <result column="UsrName" property="usrname" jdbcType="VARCHAR" />
+    <result column="UsrCode" property="usrcode" jdbcType="VARCHAR" />
+    <result column="UsrUrl" property="usrurl" jdbcType="VARCHAR" />
+    <result column="IsOrg" property="isorg" jdbcType="VARCHAR" />
+    <result column="Email" property="email" jdbcType="VARCHAR" />
+    <result column="Passwd" property="passwd" jdbcType="VARCHAR" />
+    <result column="NeedNotify" property="neednotify" jdbcType="VARCHAR" />
+    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="UpdateDate" property="updatedate" jdbcType="TIMESTAMP" />
   </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from User
     where UsrSn = #{usrsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.User">
-    insert into User (UsrSn, AccSn, Use_UsrSn, 
-      PyiSn, UsrName, UsrCode, 
-      UsrUrl, IsOrg, Email, 
-      Passwd, NeedNotify)
-    values (#{usrsn,jdbcType=VARCHAR}, #{accsn,jdbcType=VARCHAR}, #{useUsrsn,jdbcType=VARCHAR}, 
-      #{pyisn,jdbcType=VARCHAR}, #{usrname,jdbcType=VARCHAR}, #{usrcode,jdbcType=VARCHAR}, 
-      #{usrurl,jdbcType=VARCHAR}, #{isorg,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{passwd,jdbcType=VARCHAR}, #{neednotify,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.beyond.algo.dao.model.User" >
+    insert into User (UsrSn, OwnerID, UsrName, 
+      UsrCode, UsrUrl, IsOrg, 
+      Email, Passwd, NeedNotify, 
+      CreateDate, UpdateDate)
+    values (#{usrsn,jdbcType=VARCHAR}, #{ownerid,jdbcType=VARCHAR}, #{usrname,jdbcType=VARCHAR}, 
+      #{usrcode,jdbcType=VARCHAR}, #{usrurl,jdbcType=VARCHAR}, #{isorg,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR}, #{neednotify,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{updatedate,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.User">
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.User" >
     update User
-    set AccSn = #{accsn,jdbcType=VARCHAR},
-      Use_UsrSn = #{useUsrsn,jdbcType=VARCHAR},
-      PyiSn = #{pyisn,jdbcType=VARCHAR},
+    set OwnerID = #{ownerid,jdbcType=VARCHAR},
       UsrName = #{usrname,jdbcType=VARCHAR},
       UsrCode = #{usrcode,jdbcType=VARCHAR},
       UsrUrl = #{usrurl,jdbcType=VARCHAR},
       IsOrg = #{isorg,jdbcType=VARCHAR},
       Email = #{email,jdbcType=VARCHAR},
       Passwd = #{passwd,jdbcType=VARCHAR},
-      NeedNotify = #{neednotify,jdbcType=VARCHAR}
+      NeedNotify = #{neednotify,jdbcType=VARCHAR},
+      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      UpdateDate = #{updatedate,jdbcType=TIMESTAMP}
     where UsrSn = #{usrsn,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
-    NeedNotify
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select UsrSn, OwnerID, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, NeedNotify, 
+    CreateDate, UpdateDate
     from User
     where UsrSn = #{usrsn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
-    NeedNotify
-    from User
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.User">
-    <id column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="AccSn" jdbcType="VARCHAR" property="accsn" />
-    <result column="Use_UsrSn" jdbcType="VARCHAR" property="useUsrsn" />
-    <result column="PyiSn" jdbcType="VARCHAR" property="pyisn" />
-    <result column="UsrName" jdbcType="VARCHAR" property="usrname" />
-    <result column="UsrCode" jdbcType="VARCHAR" property="usrcode" />
-    <result column="UsrUrl" jdbcType="VARCHAR" property="usrurl" />
-    <result column="IsOrg" jdbcType="VARCHAR" property="isorg" />
-    <result column="Email" jdbcType="VARCHAR" property="email" />
-    <result column="Passwd" jdbcType="VARCHAR" property="passwd" />
-    <result column="NeedNotify" jdbcType="VARCHAR" property="neednotify" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from User
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.User">
-    insert into User (UsrSn, AccSn, Use_UsrSn, 
-      PyiSn, UsrName, UsrCode, 
-      UsrUrl, IsOrg, Email, 
-      Passwd, NeedNotify)
-    values (#{usrsn,jdbcType=VARCHAR}, #{accsn,jdbcType=VARCHAR}, #{useUsrsn,jdbcType=VARCHAR}, 
-      #{pyisn,jdbcType=VARCHAR}, #{usrname,jdbcType=VARCHAR}, #{usrcode,jdbcType=VARCHAR}, 
-      #{usrurl,jdbcType=VARCHAR}, #{isorg,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{passwd,jdbcType=VARCHAR}, #{neednotify,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.User">
-    update User
-    set AccSn = #{accsn,jdbcType=VARCHAR},
-      Use_UsrSn = #{useUsrsn,jdbcType=VARCHAR},
-      PyiSn = #{pyisn,jdbcType=VARCHAR},
-      UsrName = #{usrname,jdbcType=VARCHAR},
-      UsrCode = #{usrcode,jdbcType=VARCHAR},
-      UsrUrl = #{usrurl,jdbcType=VARCHAR},
-      IsOrg = #{isorg,jdbcType=VARCHAR},
-      Email = #{email,jdbcType=VARCHAR},
-      Passwd = #{passwd,jdbcType=VARCHAR},
-      NeedNotify = #{neednotify,jdbcType=VARCHAR}
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
-    NeedNotify
-    from User
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
-    NeedNotify
-    from User
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.User">
-    <id column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="AccSn" jdbcType="VARCHAR" property="accsn" />
-    <result column="Use_UsrSn" jdbcType="VARCHAR" property="useUsrsn" />
-    <result column="PyiSn" jdbcType="VARCHAR" property="pyisn" />
-    <result column="UsrName" jdbcType="VARCHAR" property="usrname" />
-    <result column="UsrCode" jdbcType="VARCHAR" property="usrcode" />
-    <result column="UsrUrl" jdbcType="VARCHAR" property="usrurl" />
-    <result column="IsOrg" jdbcType="VARCHAR" property="isorg" />
-    <result column="Email" jdbcType="VARCHAR" property="email" />
-    <result column="Passwd" jdbcType="VARCHAR" property="passwd" />
-    <result column="NeedNotify" jdbcType="VARCHAR" property="neednotify" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from User
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.User">
-    insert into User (UsrSn, AccSn, Use_UsrSn, 
-      PyiSn, UsrName, UsrCode, 
-      UsrUrl, IsOrg, Email, 
-      Passwd, NeedNotify)
-    values (#{usrsn,jdbcType=VARCHAR}, #{accsn,jdbcType=VARCHAR}, #{useUsrsn,jdbcType=VARCHAR}, 
-      #{pyisn,jdbcType=VARCHAR}, #{usrname,jdbcType=VARCHAR}, #{usrcode,jdbcType=VARCHAR}, 
-      #{usrurl,jdbcType=VARCHAR}, #{isorg,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{passwd,jdbcType=VARCHAR}, #{neednotify,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.User">
-    update User
-    set AccSn = #{accsn,jdbcType=VARCHAR},
-      Use_UsrSn = #{useUsrsn,jdbcType=VARCHAR},
-      PyiSn = #{pyisn,jdbcType=VARCHAR},
-      UsrName = #{usrname,jdbcType=VARCHAR},
-      UsrCode = #{usrcode,jdbcType=VARCHAR},
-      UsrUrl = #{usrurl,jdbcType=VARCHAR},
-      IsOrg = #{isorg,jdbcType=VARCHAR},
-      Email = #{email,jdbcType=VARCHAR},
-      Passwd = #{passwd,jdbcType=VARCHAR},
-      NeedNotify = #{neednotify,jdbcType=VARCHAR}
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
-    NeedNotify
-    from User
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
-    NeedNotify
-    from User
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.User">
-    <id column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="AccSn" jdbcType="VARCHAR" property="accsn" />
-    <result column="Use_UsrSn" jdbcType="VARCHAR" property="useUsrsn" />
-    <result column="PyiSn" jdbcType="VARCHAR" property="pyisn" />
-    <result column="UsrName" jdbcType="VARCHAR" property="usrname" />
-    <result column="UsrCode" jdbcType="VARCHAR" property="usrcode" />
-    <result column="UsrUrl" jdbcType="VARCHAR" property="usrurl" />
-    <result column="IsOrg" jdbcType="VARCHAR" property="isorg" />
-    <result column="Email" jdbcType="VARCHAR" property="email" />
-    <result column="Passwd" jdbcType="VARCHAR" property="passwd" />
-    <result column="NeedNotify" jdbcType="VARCHAR" property="neednotify" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from User
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.User">
-    insert into User (UsrSn, AccSn, Use_UsrSn, 
-      PyiSn, UsrName, UsrCode, 
-      UsrUrl, IsOrg, Email, 
-      Passwd, NeedNotify)
-    values (#{usrsn,jdbcType=VARCHAR}, #{accsn,jdbcType=VARCHAR}, #{useUsrsn,jdbcType=VARCHAR}, 
-      #{pyisn,jdbcType=VARCHAR}, #{usrname,jdbcType=VARCHAR}, #{usrcode,jdbcType=VARCHAR}, 
-      #{usrurl,jdbcType=VARCHAR}, #{isorg,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{passwd,jdbcType=VARCHAR}, #{neednotify,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.User">
-    update User
-    set AccSn = #{accsn,jdbcType=VARCHAR},
-      Use_UsrSn = #{useUsrsn,jdbcType=VARCHAR},
-      PyiSn = #{pyisn,jdbcType=VARCHAR},
-      UsrName = #{usrname,jdbcType=VARCHAR},
-      UsrCode = #{usrcode,jdbcType=VARCHAR},
-      UsrUrl = #{usrurl,jdbcType=VARCHAR},
-      IsOrg = #{isorg,jdbcType=VARCHAR},
-      Email = #{email,jdbcType=VARCHAR},
-      Passwd = #{passwd,jdbcType=VARCHAR},
-      NeedNotify = #{neednotify,jdbcType=VARCHAR}
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
-    NeedNotify
-    from User
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
-    NeedNotify
-    from User
-  </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.User">
-    <id column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
-    <result column="AccSn" jdbcType="VARCHAR" property="accsn" />
-    <result column="Use_UsrSn" jdbcType="VARCHAR" property="useUsrsn" />
-    <result column="PyiSn" jdbcType="VARCHAR" property="pyisn" />
-    <result column="UsrName" jdbcType="VARCHAR" property="usrname" />
-    <result column="UsrCode" jdbcType="VARCHAR" property="usrcode" />
-    <result column="UsrUrl" jdbcType="VARCHAR" property="usrurl" />
-    <result column="IsOrg" jdbcType="VARCHAR" property="isorg" />
-    <result column="Email" jdbcType="VARCHAR" property="email" />
-    <result column="Passwd" jdbcType="VARCHAR" property="passwd" />
-    <result column="NeedNotify" jdbcType="VARCHAR" property="neednotify" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from User
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.User">
-    insert into User (UsrSn, AccSn, Use_UsrSn, 
-      PyiSn, UsrName, UsrCode, 
-      UsrUrl, IsOrg, Email, 
-      Passwd, NeedNotify)
-    values (#{usrsn,jdbcType=VARCHAR}, #{accsn,jdbcType=VARCHAR}, #{useUsrsn,jdbcType=VARCHAR}, 
-      #{pyisn,jdbcType=VARCHAR}, #{usrname,jdbcType=VARCHAR}, #{usrcode,jdbcType=VARCHAR}, 
-      #{usrurl,jdbcType=VARCHAR}, #{isorg,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{passwd,jdbcType=VARCHAR}, #{neednotify,jdbcType=VARCHAR})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.User">
-    update User
-    set AccSn = #{accsn,jdbcType=VARCHAR},
-      Use_UsrSn = #{useUsrsn,jdbcType=VARCHAR},
-      PyiSn = #{pyisn,jdbcType=VARCHAR},
-      UsrName = #{usrname,jdbcType=VARCHAR},
-      UsrCode = #{usrcode,jdbcType=VARCHAR},
-      UsrUrl = #{usrurl,jdbcType=VARCHAR},
-      IsOrg = #{isorg,jdbcType=VARCHAR},
-      Email = #{email,jdbcType=VARCHAR},
-      Passwd = #{passwd,jdbcType=VARCHAR},
-      NeedNotify = #{neednotify,jdbcType=VARCHAR}
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
-    NeedNotify
-    from User
-    where UsrSn = #{usrsn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select UsrSn, AccSn, Use_UsrSn, PyiSn, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, 
-    NeedNotify
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select UsrSn, OwnerID, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, NeedNotify, 
+    CreateDate, UpdateDate
     from User
   </select>
 </mapper>
