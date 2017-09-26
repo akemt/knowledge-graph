@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond.algo.dao.mapper.VersionusageMapper">
+  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Versionusage">
+    <id column="UsgSn" jdbcType="VARCHAR" property="usgsn" />
+    <result column="ModSn" jdbcType="VARCHAR" property="modsn" />
+    <result column="StarCnt" jdbcType="INTEGER" property="starcnt" />
+    <result column="FollowCnt" jdbcType="INTEGER" property="followcnt" />
+    <result column="CallCnt" jdbcType="INTEGER" property="callcnt" />
+    <result column="CreditCnt" jdbcType="DECIMAL" property="creditcnt" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.dao.model.Versionusage">
+    insert into VersionUsage (UsgSn, ModSn, StarCnt, 
+      FollowCnt, CallCnt, CreditCnt
+      )
+    values (#{usgsn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{starcnt,jdbcType=INTEGER}, 
+      #{followcnt,jdbcType=INTEGER}, #{callcnt,jdbcType=INTEGER}, #{creditcnt,jdbcType=DECIMAL}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Versionusage">
+    update VersionUsage
+    set ModSn = #{modsn,jdbcType=VARCHAR},
+      StarCnt = #{starcnt,jdbcType=INTEGER},
+      FollowCnt = #{followcnt,jdbcType=INTEGER},
+      CallCnt = #{callcnt,jdbcType=INTEGER},
+      CreditCnt = #{creditcnt,jdbcType=DECIMAL}
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Versionusage">
+    <id column="UsgSn" jdbcType="VARCHAR" property="usgsn" />
+    <result column="ModSn" jdbcType="VARCHAR" property="modsn" />
+    <result column="StarCnt" jdbcType="INTEGER" property="starcnt" />
+    <result column="FollowCnt" jdbcType="INTEGER" property="followcnt" />
+    <result column="CallCnt" jdbcType="INTEGER" property="callcnt" />
+    <result column="CreditCnt" jdbcType="DECIMAL" property="creditcnt" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Versionusage">
+    insert into VersionUsage (UsgSn, ModSn, StarCnt, 
+      FollowCnt, CallCnt, CreditCnt
+      )
+    values (#{usgsn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{starcnt,jdbcType=INTEGER}, 
+      #{followcnt,jdbcType=INTEGER}, #{callcnt,jdbcType=INTEGER}, #{creditcnt,jdbcType=DECIMAL}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Versionusage">
+    update VersionUsage
+    set ModSn = #{modsn,jdbcType=VARCHAR},
+      StarCnt = #{starcnt,jdbcType=INTEGER},
+      FollowCnt = #{followcnt,jdbcType=INTEGER},
+      CallCnt = #{callcnt,jdbcType=INTEGER},
+      CreditCnt = #{creditcnt,jdbcType=DECIMAL}
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Versionusage">
+    <id column="UsgSn" jdbcType="VARCHAR" property="usgsn" />
+    <result column="ModSn" jdbcType="VARCHAR" property="modsn" />
+    <result column="StarCnt" jdbcType="INTEGER" property="starcnt" />
+    <result column="FollowCnt" jdbcType="INTEGER" property="followcnt" />
+    <result column="CallCnt" jdbcType="INTEGER" property="callcnt" />
+    <result column="CreditCnt" jdbcType="DECIMAL" property="creditcnt" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Versionusage">
+    insert into VersionUsage (UsgSn, ModSn, StarCnt, 
+      FollowCnt, CallCnt, CreditCnt
+      )
+    values (#{usgsn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{starcnt,jdbcType=INTEGER}, 
+      #{followcnt,jdbcType=INTEGER}, #{callcnt,jdbcType=INTEGER}, #{creditcnt,jdbcType=DECIMAL}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Versionusage">
+    update VersionUsage
+    set ModSn = #{modsn,jdbcType=VARCHAR},
+      StarCnt = #{starcnt,jdbcType=INTEGER},
+      FollowCnt = #{followcnt,jdbcType=INTEGER},
+      CallCnt = #{callcnt,jdbcType=INTEGER},
+      CreditCnt = #{creditcnt,jdbcType=DECIMAL}
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Versionusage">
+    <id column="UsgSn" jdbcType="VARCHAR" property="usgsn" />
+    <result column="ModSn" jdbcType="VARCHAR" property="modsn" />
+    <result column="StarCnt" jdbcType="INTEGER" property="starcnt" />
+    <result column="FollowCnt" jdbcType="INTEGER" property="followcnt" />
+    <result column="CallCnt" jdbcType="INTEGER" property="callcnt" />
+    <result column="CreditCnt" jdbcType="DECIMAL" property="creditcnt" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Versionusage">
+    insert into VersionUsage (UsgSn, ModSn, StarCnt, 
+      FollowCnt, CallCnt, CreditCnt
+      )
+    values (#{usgsn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{starcnt,jdbcType=INTEGER}, 
+      #{followcnt,jdbcType=INTEGER}, #{callcnt,jdbcType=INTEGER}, #{creditcnt,jdbcType=DECIMAL}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Versionusage">
+    update VersionUsage
+    set ModSn = #{modsn,jdbcType=VARCHAR},
+      StarCnt = #{starcnt,jdbcType=INTEGER},
+      FollowCnt = #{followcnt,jdbcType=INTEGER},
+      CallCnt = #{callcnt,jdbcType=INTEGER},
+      CreditCnt = #{creditcnt,jdbcType=DECIMAL}
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Versionusage">
+    <id column="UsgSn" jdbcType="VARCHAR" property="usgsn" />
+    <result column="ModSn" jdbcType="VARCHAR" property="modsn" />
+    <result column="StarCnt" jdbcType="INTEGER" property="starcnt" />
+    <result column="FollowCnt" jdbcType="INTEGER" property="followcnt" />
+    <result column="CallCnt" jdbcType="INTEGER" property="callcnt" />
+    <result column="CreditCnt" jdbcType="DECIMAL" property="creditcnt" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Versionusage">
+    insert into VersionUsage (UsgSn, ModSn, StarCnt, 
+      FollowCnt, CallCnt, CreditCnt
+      )
+    values (#{usgsn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{starcnt,jdbcType=INTEGER}, 
+      #{followcnt,jdbcType=INTEGER}, #{callcnt,jdbcType=INTEGER}, #{creditcnt,jdbcType=DECIMAL}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Versionusage">
+    update VersionUsage
+    set ModSn = #{modsn,jdbcType=VARCHAR},
+      StarCnt = #{starcnt,jdbcType=INTEGER},
+      FollowCnt = #{followcnt,jdbcType=INTEGER},
+      CallCnt = #{callcnt,jdbcType=INTEGER},
+      CreditCnt = #{creditcnt,jdbcType=DECIMAL}
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+    where UsgSn = #{usgsn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select UsgSn, ModSn, StarCnt, FollowCnt, CallCnt, CreditCnt
+    from VersionUsage
+  </select>
+</mapper>

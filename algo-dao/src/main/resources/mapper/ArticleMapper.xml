@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond.algo.dao.mapper.ArticleMapper">
+  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Article">
+    <result column="AtlSn" jdbcType="VARCHAR" property="atlsn" />
+    <result column="Title" jdbcType="VARCHAR" property="title" />
+    <result column="Abstracts" jdbcType="VARCHAR" property="abstracts" />
+    <result column="Keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="DOI" jdbcType="VARCHAR" property="doi" />
+    <result column="Author" jdbcType="VARCHAR" property="author" />
+    <result column="CiteInfo" jdbcType="VARCHAR" property="citeinfo" />
+  </resultMap>
+  <insert id="insert" parameterType="com.beyond.algo.dao.model.Article">
+    insert into Article (AtlSn, Title, Abstracts, 
+      Keywords, DOI, Author, 
+      CiteInfo)
+    values (#{atlsn,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{abstracts,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{doi,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{citeinfo,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select AtlSn, Title, Abstracts, Keywords, DOI, Author, CiteInfo
+    from Article
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Article">
+    <result column="AtlSn" jdbcType="VARCHAR" property="atlsn" />
+    <result column="Title" jdbcType="VARCHAR" property="title" />
+    <result column="Abstracts" jdbcType="VARCHAR" property="abstracts" />
+    <result column="Keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="DOI" jdbcType="VARCHAR" property="doi" />
+    <result column="Author" jdbcType="VARCHAR" property="author" />
+    <result column="CiteInfo" jdbcType="VARCHAR" property="citeinfo" />
+  </resultMap>
+  <insert id="insert" parameterType="com.beyond.algo.model.Article">
+    insert into Article (AtlSn, Title, Abstracts, 
+      Keywords, DOI, Author, 
+      CiteInfo)
+    values (#{atlsn,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{abstracts,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{doi,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{citeinfo,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select AtlSn, Title, Abstracts, Keywords, DOI, Author, CiteInfo
+    from Article
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Article">
+    <result column="AtlSn" jdbcType="VARCHAR" property="atlsn" />
+    <result column="Title" jdbcType="VARCHAR" property="title" />
+    <result column="Abstracts" jdbcType="VARCHAR" property="abstracts" />
+    <result column="Keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="DOI" jdbcType="VARCHAR" property="doi" />
+    <result column="Author" jdbcType="VARCHAR" property="author" />
+    <result column="CiteInfo" jdbcType="VARCHAR" property="citeinfo" />
+  </resultMap>
+  <insert id="insert" parameterType="com.beyond.algo.model.Article">
+    insert into Article (AtlSn, Title, Abstracts, 
+      Keywords, DOI, Author, 
+      CiteInfo)
+    values (#{atlsn,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{abstracts,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{doi,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{citeinfo,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select AtlSn, Title, Abstracts, Keywords, DOI, Author, CiteInfo
+    from Article
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Article">
+    <result column="AtlSn" jdbcType="VARCHAR" property="atlsn" />
+    <result column="Title" jdbcType="VARCHAR" property="title" />
+    <result column="Abstract" jdbcType="VARCHAR" property="abstract" />
+    <result column="Keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="DOI" jdbcType="VARCHAR" property="doi" />
+    <result column="Author" jdbcType="VARCHAR" property="author" />
+    <result column="CiteInfo" jdbcType="VARCHAR" property="citeinfo" />
+  </resultMap>
+  <insert id="insert" parameterType="com.beyond.algo.model.Article">
+    insert into Article (AtlSn, Title, Abstract, 
+      Keywords, DOI, Author, 
+      CiteInfo)
+    values (#{atlsn,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{abstract,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{doi,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{citeinfo,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select AtlSn, Title, Abstract, Keywords, DOI, Author, CiteInfo
+    from Article
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Article">
+    <result column="AtlSn" jdbcType="VARCHAR" property="atlsn" />
+    <result column="Title" jdbcType="VARCHAR" property="title" />
+    <result column="Abstract" jdbcType="VARCHAR" property="abstract" />
+    <result column="Keywords" jdbcType="VARCHAR" property="keywords" />
+    <result column="DOI" jdbcType="VARCHAR" property="doi" />
+    <result column="Author" jdbcType="VARCHAR" property="author" />
+    <result column="CiteInfo" jdbcType="VARCHAR" property="citeinfo" />
+  </resultMap>
+  <insert id="insert" parameterType="com.beyond.algo.model.Article">
+    insert into Article (AtlSn, Title, Abstract, 
+      Keywords, DOI, Author, 
+      CiteInfo)
+    values (#{atlsn,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{abstract,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{doi,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{citeinfo,jdbcType=VARCHAR})
+  </insert>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select AtlSn, Title, Abstract, Keywords, DOI, Author, CiteInfo
+    from Article
+  </select>
+</mapper>

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond.algo.dao.mapper.CashtransMapper">
+  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Cashtrans">
+    <id column="TraSn" jdbcType="VARCHAR" property="trasn" />
+    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
+    <result column="PayTime" jdbcType="TIMESTAMP" property="paytime" />
+    <result column="PaySrc" jdbcType="VARCHAR" property="paysrc" />
+    <result column="CashPayAmount" jdbcType="DECIMAL" property="cashpayamount" />
+    <result column="Currency" jdbcType="VARCHAR" property="currency" />
+    <result column="CreditPerUnit" jdbcType="DECIMAL" property="creditperunit" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.dao.model.Cashtrans">
+    insert into CashTrans (TraSn, UsrSn, PayTime, 
+      PaySrc, CashPayAmount, Currency, 
+      CreditPerUnit, CreateTime)
+    values (#{trasn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{paytime,jdbcType=TIMESTAMP}, 
+      #{paysrc,jdbcType=VARCHAR}, #{cashpayamount,jdbcType=DECIMAL}, #{currency,jdbcType=VARCHAR}, 
+      #{creditperunit,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Cashtrans">
+    update CashTrans
+    set UsrSn = #{usrsn,jdbcType=VARCHAR},
+      PayTime = #{paytime,jdbcType=TIMESTAMP},
+      PaySrc = #{paysrc,jdbcType=VARCHAR},
+      CashPayAmount = #{cashpayamount,jdbcType=DECIMAL},
+      Currency = #{currency,jdbcType=VARCHAR},
+      CreditPerUnit = #{creditperunit,jdbcType=DECIMAL},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP}
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Cashtrans">
+    <id column="TraSn" jdbcType="VARCHAR" property="trasn" />
+    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
+    <result column="PayTime" jdbcType="TIMESTAMP" property="paytime" />
+    <result column="PaySrc" jdbcType="VARCHAR" property="paysrc" />
+    <result column="CashPayAmount" jdbcType="DECIMAL" property="cashpayamount" />
+    <result column="Currency" jdbcType="VARCHAR" property="currency" />
+    <result column="CreditPerUnit" jdbcType="DECIMAL" property="creditperunit" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Cashtrans">
+    insert into CashTrans (TraSn, UsrSn, PayTime, 
+      PaySrc, CashPayAmount, Currency, 
+      CreditPerUnit, CreateTime)
+    values (#{trasn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{paytime,jdbcType=TIMESTAMP}, 
+      #{paysrc,jdbcType=VARCHAR}, #{cashpayamount,jdbcType=DECIMAL}, #{currency,jdbcType=VARCHAR}, 
+      #{creditperunit,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Cashtrans">
+    update CashTrans
+    set UsrSn = #{usrsn,jdbcType=VARCHAR},
+      PayTime = #{paytime,jdbcType=TIMESTAMP},
+      PaySrc = #{paysrc,jdbcType=VARCHAR},
+      CashPayAmount = #{cashpayamount,jdbcType=DECIMAL},
+      Currency = #{currency,jdbcType=VARCHAR},
+      CreditPerUnit = #{creditperunit,jdbcType=DECIMAL},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP}
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Cashtrans">
+    <id column="TraSn" jdbcType="VARCHAR" property="trasn" />
+    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
+    <result column="PayTime" jdbcType="TIMESTAMP" property="paytime" />
+    <result column="PaySrc" jdbcType="VARCHAR" property="paysrc" />
+    <result column="CashPayAmount" jdbcType="DECIMAL" property="cashpayamount" />
+    <result column="Currency" jdbcType="VARCHAR" property="currency" />
+    <result column="CreditPerUnit" jdbcType="DECIMAL" property="creditperunit" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Cashtrans">
+    insert into CashTrans (TraSn, UsrSn, PayTime, 
+      PaySrc, CashPayAmount, Currency, 
+      CreditPerUnit, CreateTime)
+    values (#{trasn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{paytime,jdbcType=TIMESTAMP}, 
+      #{paysrc,jdbcType=VARCHAR}, #{cashpayamount,jdbcType=DECIMAL}, #{currency,jdbcType=VARCHAR}, 
+      #{creditperunit,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Cashtrans">
+    update CashTrans
+    set UsrSn = #{usrsn,jdbcType=VARCHAR},
+      PayTime = #{paytime,jdbcType=TIMESTAMP},
+      PaySrc = #{paysrc,jdbcType=VARCHAR},
+      CashPayAmount = #{cashpayamount,jdbcType=DECIMAL},
+      Currency = #{currency,jdbcType=VARCHAR},
+      CreditPerUnit = #{creditperunit,jdbcType=DECIMAL},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP}
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Cashtrans">
+    <id column="TraSn" jdbcType="VARCHAR" property="trasn" />
+    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
+    <result column="PayTime" jdbcType="TIMESTAMP" property="paytime" />
+    <result column="PaySrc" jdbcType="VARCHAR" property="paysrc" />
+    <result column="CashPayAmount" jdbcType="DECIMAL" property="cashpayamount" />
+    <result column="Currency" jdbcType="VARCHAR" property="currency" />
+    <result column="CreditPerUnit" jdbcType="DECIMAL" property="creditperunit" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Cashtrans">
+    insert into CashTrans (TraSn, UsrSn, PayTime, 
+      PaySrc, CashPayAmount, Currency, 
+      CreditPerUnit, CreateTime)
+    values (#{trasn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{paytime,jdbcType=TIMESTAMP}, 
+      #{paysrc,jdbcType=VARCHAR}, #{cashpayamount,jdbcType=DECIMAL}, #{currency,jdbcType=VARCHAR}, 
+      #{creditperunit,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Cashtrans">
+    update CashTrans
+    set UsrSn = #{usrsn,jdbcType=VARCHAR},
+      PayTime = #{paytime,jdbcType=TIMESTAMP},
+      PaySrc = #{paysrc,jdbcType=VARCHAR},
+      CashPayAmount = #{cashpayamount,jdbcType=DECIMAL},
+      Currency = #{currency,jdbcType=VARCHAR},
+      CreditPerUnit = #{creditperunit,jdbcType=DECIMAL},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP}
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+  </select>
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Cashtrans">
+    <id column="TraSn" jdbcType="VARCHAR" property="trasn" />
+    <result column="UsrSn" jdbcType="VARCHAR" property="usrsn" />
+    <result column="PayTime" jdbcType="TIMESTAMP" property="paytime" />
+    <result column="PaySrc" jdbcType="VARCHAR" property="paysrc" />
+    <result column="CashPayAmount" jdbcType="DECIMAL" property="cashpayamount" />
+    <result column="Currency" jdbcType="VARCHAR" property="currency" />
+    <result column="CreditPerUnit" jdbcType="DECIMAL" property="creditperunit" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.Cashtrans">
+    insert into CashTrans (TraSn, UsrSn, PayTime, 
+      PaySrc, CashPayAmount, Currency, 
+      CreditPerUnit, CreateTime)
+    values (#{trasn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{paytime,jdbcType=TIMESTAMP}, 
+      #{paysrc,jdbcType=VARCHAR}, #{cashpayamount,jdbcType=DECIMAL}, #{currency,jdbcType=VARCHAR}, 
+      #{creditperunit,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Cashtrans">
+    update CashTrans
+    set UsrSn = #{usrsn,jdbcType=VARCHAR},
+      PayTime = #{paytime,jdbcType=TIMESTAMP},
+      PaySrc = #{paysrc,jdbcType=VARCHAR},
+      CashPayAmount = #{cashpayamount,jdbcType=DECIMAL},
+      Currency = #{currency,jdbcType=VARCHAR},
+      CreditPerUnit = #{creditperunit,jdbcType=DECIMAL},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP}
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+    where TraSn = #{trasn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select TraSn, UsrSn, PayTime, PaySrc, CashPayAmount, Currency, CreditPerUnit, CreateTime
+    from CashTrans
+  </select>
+</mapper>
