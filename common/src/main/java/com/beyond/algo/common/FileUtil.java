@@ -48,9 +48,9 @@ public class FileUtil {
     }
 
     /**
-     * 指定文件夹路径，若不存在则创建文件夹
+     * 指定文件或文件夹路径，若不存在则创建
      *
-     * @param dirPath 文件夹路径
+     * @param dirPath 路径
      */
     public static void createDir(String dirPath) {
         File dir = new File(dirPath);
