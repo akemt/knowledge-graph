@@ -12,4 +12,6 @@ public class GitUser {
     private String password;
     // 用户zip解压目标路径
     private String descDir;
+    // 用户全名
+    private String fullName;
 }
