@@ -4,15 +4,14 @@ import com.beyond.algo.common.AlgoplatResult;
 import com.beyond.algo.common.BaseEnum;
 import com.beyond.algo.dao.model.User;
 import com.beyond.algo.infra.UserServer;
-import org.apache.ibatis.reflection.ExceptionUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 
 
 /**
