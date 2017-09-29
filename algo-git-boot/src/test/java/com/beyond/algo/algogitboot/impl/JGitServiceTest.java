@@ -27,19 +27,19 @@ public class JGitServiceTest {
 
     @Test
     public void gitCloneProjectTest() throws Exception {
-        jGitService.gitCloneProject("http://192.168.1.88/test1/testproject.git", "TestProject", "test1", "test1234");
+      //  jGitService.gitCloneProject("http://192.168.1.88/test1/testproject.git", "TestProject", "test1", "test1234");
     }
 
     @Test
     public void initCommitAllFilesTest() throws Exception {
 
-        jGitService.initCommitAndPushAllFiles("E:/repo/test1/TestProject/.git", "test1", "test1234");
+     //   jGitService.initCommitAndPushAllFiles("E:/repo/test1/TestProject/.git", "test1", "test1234");
     }
 
     @Test
     // 测试本地删除文件同时删除服务器
     public void commitAndPushDelAllFiles() throws Exception {
-        jGitService.commitAndPushDelAllFiles("E:/repo/test1/TestProject/.git", "test1", "test1234", "E:/repo/test1/TestProject/222.txt");
+    //    jGitService.commitAndPushDelAllFiles("E:/repo/test1/TestProject/.git", "test1", "test1234", "E:/repo/test1/TestProject/222.txt");
     }
 
     @Test
