@@ -14,4 +14,13 @@ public class GitUser {
     private String descDir;
     // 用户全名
     private String fullName;
+    // 用户邮箱
+    private String email;
+    // 项目名称
+    private String projectName;
+    // gitlib 路径地址
+    private String projectRepoURI;
+    // 文件路径
+    private String filePath;
+
 }
