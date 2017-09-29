@@ -19,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 
 import java.util.Date;
@@ -44,7 +46,7 @@ public class UserServerImpl implements UserServer {
         user.setUpdatedate(new Date());
         user.setCreatedate(new Date());
         logger.info("密码："+projectConfigEntity.getPassword());
-        String passWord=PasswordEncrypUtil.encrypt(user.getPasswd().getBytes(),projectConfigEntity.getPassword()).toString();
+        String passWord= new BASE64Encoder().encode(PasswordEncrypUtil.encrypt(user.getPasswd().getBytes(),projectConfigEntity.getPassword()));
         user.setPasswd(passWord);
         userMapper.insert(user);
         return Result.successResponse();
@@ -58,14 +60,17 @@ public class UserServerImpl implements UserServer {
      */
     @Override
     public Result userLogin(User user) throws Exception{
+        String password=user.getPasswd();
         user = userMapper.selectUsrname(user.getUsrname());
       // 如果没有这个用户
         if(Assert.isNULL(user)){
               return Result.failureResponse();
         }
+        BASE64Decoder decoder = new BASE64Decoder();
+        byte[] buf = decoder.decodeBuffer(user.getPasswd());
       // 对比密码
-       String passwordEncryp = PasswordEncrypUtil.decrypt(user.getPasswd().getBytes(),projectConfigEntity.getPassword()).toString();
-        if(!passwordEncryp.equals(user.getPasswd())){
+       String passwordEncryp = new String(PasswordEncrypUtil.decrypt(buf,projectConfigEntity.getPassword()));
+        if(!passwordEncryp.equals(password)){
             return  Result.failureResponse();
         }
      return  Result.successResponse();

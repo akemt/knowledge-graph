@@ -2,6 +2,8 @@ package com.beyond.algo.controller;
 
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
+import com.beyond.algo.common.Result;
+import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.infra.BuildAntProjectService;
 import com.beyond.algo.infra.GitLibService;
 import com.beyond.algo.infra.JGitService;
@@ -42,7 +44,7 @@ public class GitLibController {
      */
     @RequestMapping(value="/addGitLibUser", method= RequestMethod.POST)
     public @ResponseBody
-    Result addGitLibUser(GitUser gitUser)  {
+     Result addGitLibUser(GitUser gitUser)  {
         logger.info("用户名：{}用户全称：{} 用户密码：{} 用户邮箱：{}",gitUser.getUsername(),gitUser.getFullName(),gitUser.getPassword(),gitUser.getEmail());
         boolean  result = false;
         try {
@@ -59,16 +61,15 @@ public class GitLibController {
 
     /**
      * @author ：zhangchuanzhi
-     * @Description:在gitlib上创建用户
+     * @Description:在gitlib上创建项目
      * @param：GitUser
      * @Modify By :zhangchuanzhi
      * @date ：9:31 2017/9/28
      */
 
     @RequestMapping(value="/createProject", method=RequestMethod.POST)
-    public @ResponseBody
-    Result createGitLibProject(GitUser gitUser)  {
-        logger.info("用户名：{} 用户密码：{} ",gitUser.getUsername(),gitUser.getPassword());
+    public @ResponseBody Result createGitLibProject(GitUser gitUser)  {
+        logger.info("用户名：{} 用户密码：{} 项目名称：{}",gitUser.getUsername(),gitUser.getPassword(),gitUser.getProjectName());
         boolean result= false;
         try {
             result = gitLibService.createGitLibProject(gitUser);
@@ -90,8 +91,7 @@ public class GitLibController {
      * @date ：9:43 2017/9/28
      */
     @RequestMapping(value="/cloneProject", method=RequestMethod.POST)
-    public @ResponseBody
-    Result gitCloneProject(GitUser gitUser)  {
+    public @ResponseBody Result gitCloneProject(GitUser gitUser)  {
         logger.info("gitCloneProject方法用户名：{} 用户密码{} 项目名称：{}",gitUser.getUsername(),gitUser.getPassword(),gitUser.getProjectName());
         try {
             jGitService.gitCloneProject(gitUser);
@@ -125,8 +125,7 @@ public class GitLibController {
      * @return
      */
     @RequestMapping(value="/del", method=RequestMethod.POST)
-    public @ResponseBody
-    Result commitAndPushDelAllFiles(GitUser gitUser) {
+    public @ResponseBody Result commitAndPushDelAllFiles(GitUser gitUser) {
         try {
             boolean result= jGitService.commitAndPushDelAllFiles(gitUser);
             if(result){
@@ -146,8 +145,7 @@ public class GitLibController {
      * @return
      */
     @RequestMapping(value="/showStatus", method=RequestMethod.POST)
-    public @ResponseBody
-    Result gitShowStatus(String path) {
+    public @ResponseBody Result gitShowStatus(String path) {
         try {
             File repoDir =new File(path);
             jGitService.gitShowStatus(repoDir);
