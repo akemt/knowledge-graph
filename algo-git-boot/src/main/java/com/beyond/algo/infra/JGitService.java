@@ -1,10 +1,16 @@
 package com.beyond.algo.infra;
 
+import com.beyond.algo.model.GitUser;
+
+import java.io.File;
+
 public interface JGitService {
 
-    void gitCloneProject(String projectRepoURI,String projectName,String username,String password) throws  Exception;
+    void gitCloneProject(GitUser gitUser) throws  Exception;
 
-    boolean initCommitAndPushAllFiles(String loaclGitPath,String username,String password);
+    boolean initCommitAndPushAllFiles(GitUser gitUser);
 
-    boolean commitAndPushDelAllFiles(String loaclGitPath,String username,String password,String filePath);
+    boolean commitAndPushDelAllFiles(GitUser gitUser) throws Exception;
+
+    public void gitShowStatus(File repoDir);
 }

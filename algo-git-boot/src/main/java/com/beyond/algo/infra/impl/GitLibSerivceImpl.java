@@ -3,6 +3,7 @@ package com.beyond.algo.infra.impl;
 import com.beyond.algo.infra.GitLibService;
 import com.beyond.algo.infra.JGitService;
 import com.beyond.algo.model.GitConfigModel;
+import com.beyond.algo.model.GitUser;
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.models.GitlabProject;
 import org.gitlab.api.models.GitlabSession;
@@ -23,11 +24,12 @@ public class GitLibSerivceImpl implements GitLibService {
     private JGitService jGitService;
 
     @Override
-    public boolean addGitLibUser(String email, String password,String username,String fullName) throws Exception {
+    public boolean addGitLibUser(GitUser gitUser) throws Exception {
         //GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getGitBaseUrl(),gitConfigModel.getGitRootName(),gitConfigModel.getGitRootPasswd());
         //GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getGitBaseUrl(),gitlabSession.getPrivateToken());
+        logger.info("addGitLibUser方法调用时候gitlib的地址:"+gitConfigModel.getBaseUrl());
         GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(),"jsu-pVsb8T5JegQjMGzM");
-        GitlabUser gitlabUser = gitlabAPI.createUser(email,password,username,fullName,null,null,null,null,100000,null,null,null,false,false,true);
+        GitlabUser gitlabUser = gitlabAPI.createUser(gitUser.getEmail(),gitUser.getPassword(),gitUser.getUsername(),gitUser.getFullName(),null,null,null,null,100000,null,null,null,false,false,true);
         if(gitlabUser.getId()!=null && gitlabUser.getId()!=0){
             return true;
         }else{
@@ -37,11 +39,13 @@ public class GitLibSerivceImpl implements GitLibService {
     }
 
     @Override
-    public boolean createGitLibProject(String projectName, String username, String password) throws Exception {
-        GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getBaseUrl(),username,password);
+    public boolean createGitLibProject(GitUser gitUser) throws Exception {
+        logger.info("createGitLibProject方法调用时候gitlib的地址:"+gitConfigModel.getBaseUrl());
+        GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getBaseUrl(),gitUser.getUsername(),gitUser.getPassword());
         GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(),gitlabSession.getPrivateToken());
-        GitlabProject gitlabProject = gitlabAPI.createProject(projectName);
-        jGitService.gitCloneProject(gitlabProject.getHttpUrl(),projectName,username,password);
+        GitlabProject gitlabProject = gitlabAPI.createProject(gitUser.getProjectName());
+        gitUser.setProjectRepoURI(gitlabProject.getHttpUrl());
+        jGitService.gitCloneProject(gitUser);
         return true;
     }
 }
