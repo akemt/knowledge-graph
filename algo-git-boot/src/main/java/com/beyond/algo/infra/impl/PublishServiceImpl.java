@@ -17,13 +17,13 @@ import java.util.Map;
 public class PublishServiceImpl implements PublishService {
 
     @Autowired
-    PublishConfigModel publishConfigModel;
+    private PublishConfigModel publishConfigModel;
     @Autowired
     private ProjectConfigModel projectConfigModel;
 
     @Override
     public void initBootProject(String username, String projectName, String projectDescription, String algoVersion) throws Exception {
-// 获取根目录
+        // 获取根目录
         FileUtil.createDir(publishConfigModel.getLocalBasePath());
 
         // 以用户名作为用户子目录名
