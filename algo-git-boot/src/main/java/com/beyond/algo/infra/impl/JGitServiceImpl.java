@@ -3,6 +3,7 @@ package com.beyond.algo.infra.impl;
 import com.beyond.algo.common.FileUtil;
 import com.beyond.algo.infra.JGitService;
 import com.beyond.algo.model.GitConfigModel;
+import com.beyond.algo.model.GitUser;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -23,26 +24,26 @@ public class JGitServiceImpl implements JGitService {
     private GitConfigModel gitConfigModel;
 
     @Override
-    public void gitCloneProject(String projectRepoURI, String projectName, String username, String password) throws GitAPIException {
+    public void gitCloneProject(GitUser gitUser) throws GitAPIException {
         //Git git = Git.cloneRepository().setURI(projectRepoURI).setDirectory(new File("E:/repo")).call();
         CloneCommand cloneCommand = Git.cloneRepository();
-        cloneCommand.setURI(projectRepoURI);
-        cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
-        cloneCommand.setDirectory(new File(gitConfigModel.getLocalBasePath() + "/" + username + "/" + projectName));
+        cloneCommand.setURI(gitUser.getProjectRepoURI());
+        cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsername(), gitUser.getPassword()));
+        cloneCommand.setDirectory(new File(gitConfigModel.getLocalBasePath() + File.separator + gitUser.getUsername() + File.separator + gitUser.getProjectName()));
         cloneCommand.call();
-        initCommitAndPushAllFiles(gitConfigModel.getLocalBasePath() + "/" + username + "/" + projectName+"/.git",username,password);
+        gitUser.setPath(gitConfigModel.getLocalBasePath() + File.separator + gitUser.getUsername() + File.separator + gitUser.getProjectName()+File.separator+".git");
+        initCommitAndPushAllFiles(gitUser);
     }
 
     /**
      * 初始化时提交本地所有代码到远端仓库
-     * @param loaclGitPath
-     * @param username
-     * @param password
+     * @param :GitUser
      * @return
      */
-    public boolean initCommitAndPushAllFiles(String loaclGitPath,String username,String password) {
+    public boolean initCommitAndPushAllFiles(GitUser gitUser) {
+        logger.info("initCommit方法传入本地仓库路径：{}用户名：{} 用户密码",gitUser.getPath(),gitUser.getUsername(),gitUser.getPassword());
         try {
-            FileRepository localRepo = new FileRepository( loaclGitPath);
+            FileRepository localRepo = new FileRepository( gitUser.getPath());
             Git git = new Git(localRepo);
             AddCommand addCommand = git.add().addFilepattern(".");
             addCommand.call();
@@ -52,7 +53,7 @@ public class JGitServiceImpl implements JGitService {
             commitCommand.setAllowEmpty(true);
             commitCommand.call();
             PushCommand pushCommand = git.push();
-            pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
+            pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsername(), gitUser.getPassword()));
             pushCommand.call();
             return true;
         } catch (Exception e) {
@@ -65,6 +66,7 @@ public class JGitServiceImpl implements JGitService {
      *
      * @param repoDir
      */
+    @Override
     public void gitShowStatus(File repoDir) {
         File RepoGitDir = new File(repoDir.getAbsolutePath() + "/.git");
         if (!RepoGitDir.exists()) {
@@ -92,16 +94,16 @@ public class JGitServiceImpl implements JGitService {
     /**
      * 删除本地文件同时同步服务器
      * author:zhangchuanzhi
-     * @param loaclGitPath
-     * @param username
-     * @param password
+     * @param: loaclGitPath
+     * @param :username
+     * @param :password
+     * @param :filePath
      * @return
      */
-    public boolean commitAndPushDelAllFiles(String loaclGitPath,String username,String password,String filePath) {
-        try {
-            logger.info("传入本地仓库路径：{}用户名：{} 用户密码：{} 文件路径：{}",loaclGitPath,username,password,filePath);
-            FileUtil.delFile(filePath);
-            FileRepository localRepo = new FileRepository( loaclGitPath);
+    public boolean commitAndPushDelAllFiles(GitUser gitUser)  throws Exception{
+            logger.info("commitAndPushDelAllFiles方法传入本地仓库路径：{}用户名：{} 用户密码：{} 文件路径：{}",gitUser.getPath(),gitUser.getUsername(),gitUser.getPassword(),gitUser.getFilePath());
+            FileUtil.delFile(gitUser.getFilePath());
+            FileRepository localRepo = new FileRepository( gitUser.getPath());
             Git git = new Git(localRepo);
             AddCommand addCommand = git.add().setUpdate(true).addFilepattern(".");
             addCommand.call();
@@ -110,12 +112,10 @@ public class JGitServiceImpl implements JGitService {
             commitCommand.setAllowEmpty(true);
             commitCommand.call();
             PushCommand pushCommand = git.push();
-            pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(username, password));
+            pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsername(), gitUser.getPassword()));
             pushCommand.call();
             return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+
+
     }
 }
