@@ -1,8 +1,8 @@
 package com.beyond.algo.controller;
 
-import com.beyond.algo.common.AlgoplatResult;
-import com.beyond.algo.common.BaseEnum;
-import com.beyond.algo.dao.model.User;
+import com.beyond.algo.common.Result;
+import com.beyond.algo.common.ResultEnum;
+import com.beyond.algo.model.User;
 import com.beyond.algo.infra.UserServer;
 
 import org.slf4j.Logger;
@@ -37,14 +37,14 @@ public class UserController {
      */
     @RequestMapping(value="/register", method=RequestMethod.POST)
     public @ResponseBody
-    AlgoplatResult<Object> register(User user){
+    Result<Object> register(User user){
         logger.info("用户名:{},用户密码:{},用户邮箱:{}", user.getUsrname(), user.getPasswd(),user.getEmail());
         try {
-            AlgoplatResult result = userService.createUser(user);
+            Result result = userService.createUser(user);
             return result;
         } catch (Exception e) {
             logger.info("注册失败",e);
-            return new AlgoplatResult<Object>(BaseEnum.FAILURE.code, e.getMessage());
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
     }
     /**
@@ -56,15 +56,15 @@ public class UserController {
      */
     @RequestMapping(value="/login", method=RequestMethod.POST)
     @ResponseBody
-    public AlgoplatResult userLogin(User user) {
+    public Result userLogin(User user) {
         logger.info("用户名:{},用户密码:{}", user.getUsrname(), user.getPasswd());
         try {
 
-            AlgoplatResult result = userService.userLogin(user);
+            Result result = userService.userLogin(user);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
-            return new AlgoplatResult<Object>(BaseEnum.FAILURE.code, e.getMessage());
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
     }
 

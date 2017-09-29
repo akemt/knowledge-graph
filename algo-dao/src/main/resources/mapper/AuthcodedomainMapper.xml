@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.AuthcodedomainMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Authcodedomain" >
+<mapper namespace="com.beyond.algo.mapper.AuthcodedomainMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Authcodedomain" >
     <id column="AddSn" property="addsn" jdbcType="VARCHAR" />
     <result column="AcdSn" property="acdsn" jdbcType="VARCHAR" />
     <result column="AddUrl" property="addurl" jdbcType="VARCHAR" />
@@ -10,13 +10,13 @@
     delete from AuthCodeDomain
     where AddSn = #{addsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.Authcodedomain" >
+  <insert id="insert" parameterType="com.beyond.algo.model.Authcodedomain" >
     insert into AuthCodeDomain (AddSn, AcdSn, AddUrl
       )
     values (#{addsn,jdbcType=VARCHAR}, #{acdsn,jdbcType=VARCHAR}, #{addurl,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Authcodedomain" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Authcodedomain" >
     update AuthCodeDomain
     set AcdSn = #{acdsn,jdbcType=VARCHAR},
       AddUrl = #{addurl,jdbcType=VARCHAR}

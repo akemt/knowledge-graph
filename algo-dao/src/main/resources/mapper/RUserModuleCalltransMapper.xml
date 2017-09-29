@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.RUserModuleCalltransMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.RUserModuleCalltrans" >
+<mapper namespace="com.beyond.algo.mapper.RUserModuleCalltransMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RUserModuleCalltrans" >
     <id column="UmcSn" property="umcsn" jdbcType="VARCHAR" />
     <result column="VerSn" property="versn" jdbcType="VARCHAR" />
     <result column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
@@ -16,7 +16,7 @@
     delete from R_User_Module_CallTrans
     where UmcSn = #{umcsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.RUserModuleCalltrans" >
+  <insert id="insert" parameterType="com.beyond.algo.model.RUserModuleCalltrans" >
     insert into R_User_Module_CallTrans (UmcSn, VerSn, UsrSn, 
       StartTime, EndTime, Duration, 
       BilledCallCnt, CallPayAmount, ModCallCnt
@@ -26,7 +26,7 @@
       #{billedcallcnt,jdbcType=INTEGER}, #{callpayamount,jdbcType=DECIMAL}, #{modcallcnt,jdbcType=INTEGER}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.RUserModuleCalltrans" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RUserModuleCalltrans" >
     update R_User_Module_CallTrans
     set VerSn = #{versn,jdbcType=VARCHAR},
       UsrSn = #{usrsn,jdbcType=VARCHAR},

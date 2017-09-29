@@ -1,10 +1,7 @@
 package com.beyond.algo.infra;
 
-import com.beyond.algo.common.AlgoplatResult;
-import com.beyond.algo.dao.model.User;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.beyond.algo.common.Result;
+import com.beyond.algo.model.User;
 
 
 /**
@@ -13,6 +10,6 @@ import javax.servlet.http.HttpServletResponse;
  * @date ：13:32 2017/9/25
  */
 public interface UserServer {
-    AlgoplatResult createUser(User user);
-    AlgoplatResult userLogin(User user) throws Exception;
+    Result createUser(User user);
+    Result userLogin(User user) throws Exception;
 }

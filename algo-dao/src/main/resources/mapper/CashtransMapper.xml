@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.CashtransMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Cashtrans" >
+<mapper namespace="com.beyond.algo.mapper.CashtransMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Cashtrans" >
     <id column="TraSn" property="trasn" jdbcType="VARCHAR" />
     <result column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
     <result column="PayTime" property="paytime" jdbcType="TIMESTAMP" />
@@ -15,7 +15,7 @@
     delete from CashTrans
     where TraSn = #{trasn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.Cashtrans" >
+  <insert id="insert" parameterType="com.beyond.algo.model.Cashtrans" >
     insert into CashTrans (TraSn, UsrSn, PayTime, 
       PaySrc, CashPayAmount, Currency, 
       CreditPerUnit, CreateTime)
@@ -23,7 +23,7 @@
       #{paysrc,jdbcType=VARCHAR}, #{cashpayamount,jdbcType=DECIMAL}, #{currency,jdbcType=VARCHAR}, 
       #{creditperunit,jdbcType=DECIMAL}, #{createtime,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Cashtrans" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Cashtrans" >
     update CashTrans
     set UsrSn = #{usrsn,jdbcType=VARCHAR},
       PayTime = #{paytime,jdbcType=TIMESTAMP},

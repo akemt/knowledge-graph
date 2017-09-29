@@ -1,7 +1,7 @@
 package com.beyond.algo.controller;
 
-import com.beyond.algo.common.AlgoplatResult;
-import com.beyond.algo.common.BaseEnum;
+import com.beyond.algo.common.Result;
+import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.infra.BuildAntProjectService;
 import com.beyond.algo.infra.GitLibService;
 import com.beyond.algo.infra.JGitService;
@@ -42,19 +42,19 @@ public class GitLibController {
      */
     @RequestMapping(value="/addGitLibUser", method= RequestMethod.POST)
     public @ResponseBody
-     AlgoplatResult addGitLibUser(GitUser gitUser)  {
+    Result addGitLibUser(GitUser gitUser)  {
         logger.info("用户名：{}用户全称：{} 用户密码：{} 用户邮箱：{}",gitUser.getUsername(),gitUser.getFullName(),gitUser.getPassword(),gitUser.getEmail());
         boolean  result = false;
         try {
             result = gitLibService.addGitLibUser(gitUser);
         } catch (Exception e) {
             e.printStackTrace();
-            return new AlgoplatResult<Object>(BaseEnum.FAILURE.code, e.getMessage());
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
         if(result){
-            return AlgoplatResult.successResponse();
+            return Result.successResponse();
         }
-        return AlgoplatResult.failureResponse();
+        return Result.failureResponse();
     }
 
     /**
@@ -66,19 +66,20 @@ public class GitLibController {
      */
 
     @RequestMapping(value="/createProject", method=RequestMethod.POST)
-    public @ResponseBody AlgoplatResult createGitLibProject(GitUser gitUser)  {
+    public @ResponseBody
+    Result createGitLibProject(GitUser gitUser)  {
         logger.info("用户名：{} 用户密码：{} ",gitUser.getUsername(),gitUser.getPassword());
         boolean result= false;
         try {
             result = gitLibService.createGitLibProject(gitUser);
         } catch (Exception e) {
             e.printStackTrace();
-            return new AlgoplatResult<Object>(BaseEnum.FAILURE.code, e.getMessage());
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
         if(result){
-            return AlgoplatResult.successResponse();
+            return Result.successResponse();
         }
-        return AlgoplatResult.failureResponse();
+        return Result.failureResponse();
 
     }
     /**
@@ -89,15 +90,16 @@ public class GitLibController {
      * @date ：9:43 2017/9/28
      */
     @RequestMapping(value="/cloneProject", method=RequestMethod.POST)
-    public @ResponseBody AlgoplatResult gitCloneProject(GitUser gitUser)  {
+    public @ResponseBody
+    Result gitCloneProject(GitUser gitUser)  {
         logger.info("gitCloneProject方法用户名：{} 用户密码{} 项目名称：{}",gitUser.getUsername(),gitUser.getPassword(),gitUser.getProjectName());
         try {
             jGitService.gitCloneProject(gitUser);
         } catch (Exception e) {
             e.printStackTrace();
-            return new AlgoplatResult<Object>(BaseEnum.FAILURE.code, e.getMessage());
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
-        return AlgoplatResult.successResponse();
+        return Result.successResponse();
 
     }
 
@@ -108,12 +110,13 @@ public class GitLibController {
      * @return
      */
     @RequestMapping(value="/commit", method=RequestMethod.POST)
-    public @ResponseBody AlgoplatResult initCommitAndPushAllFiles(GitUser gitUser) {
+    public @ResponseBody
+    Result initCommitAndPushAllFiles(GitUser gitUser) {
             boolean result= jGitService.initCommitAndPushAllFiles(gitUser);
             if(result){
-                return AlgoplatResult.successResponse();
+                return Result.successResponse();
             }
-            return AlgoplatResult.failureResponse();
+            return Result.failureResponse();
     }
     /**
      * @Description:删除本地文件同时同步服务器
@@ -122,17 +125,18 @@ public class GitLibController {
      * @return
      */
     @RequestMapping(value="/del", method=RequestMethod.POST)
-    public @ResponseBody AlgoplatResult commitAndPushDelAllFiles(GitUser gitUser) {
+    public @ResponseBody
+    Result commitAndPushDelAllFiles(GitUser gitUser) {
         try {
             boolean result= jGitService.commitAndPushDelAllFiles(gitUser);
             if(result){
-                return AlgoplatResult.successResponse();
+                return Result.successResponse();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new AlgoplatResult<Object>(BaseEnum.FAILURE.code, e.getMessage());
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
-        return AlgoplatResult.failureResponse();
+        return Result.failureResponse();
     }
 
     /**
@@ -142,15 +146,16 @@ public class GitLibController {
      * @return
      */
     @RequestMapping(value="/showStatus", method=RequestMethod.POST)
-    public @ResponseBody AlgoplatResult gitShowStatus(String path) {
+    public @ResponseBody
+    Result gitShowStatus(String path) {
         try {
             File repoDir =new File(path);
             jGitService.gitShowStatus(repoDir);
         } catch (Exception e) {
             e.printStackTrace();
-            return new AlgoplatResult<Object>(BaseEnum.FAILURE.code, e.getMessage());
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
-        return AlgoplatResult.successResponse();
+        return Result.successResponse();
     }
 
     /**

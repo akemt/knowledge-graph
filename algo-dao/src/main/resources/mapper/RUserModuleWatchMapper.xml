@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.RUserModuleWatchMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.RUserModuleWatch" >
+<mapper namespace="com.beyond.algo.mapper.RUserModuleWatchMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RUserModuleWatch" >
     <id column="WtcSn" property="wtcsn" jdbcType="VARCHAR" />
     <result column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
     <result column="ModSn" property="modsn" jdbcType="VARCHAR" />
@@ -12,13 +12,13 @@
     delete from R_User_Module_Watch
     where WtcSn = #{wtcsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.RUserModuleWatch" >
+  <insert id="insert" parameterType="com.beyond.algo.model.RUserModuleWatch" >
     insert into R_User_Module_Watch (WtcSn, UsrSn, ModSn, 
       WtcHasStar, WtcHasFollow)
     values (#{wtcsn,jdbcType=VARCHAR}, #{usrsn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, 
       #{wtchasstar,jdbcType=VARCHAR}, #{wtchasfollow,jdbcType=VARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.RUserModuleWatch" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RUserModuleWatch" >
     update R_User_Module_Watch
     set UsrSn = #{usrsn,jdbcType=VARCHAR},
       ModSn = #{modsn,jdbcType=VARCHAR},

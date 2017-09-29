@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.SrcfileMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Srcfile" >
+<mapper namespace="com.beyond.algo.mapper.SrcfileMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Srcfile" >
     <id column="SFLSn" property="sflsn" jdbcType="VARCHAR" />
     <result column="SFLName" property="sflname" jdbcType="VARCHAR" />
     <result column="SFLUrl" property="sflurl" jdbcType="VARCHAR" />
@@ -10,13 +10,13 @@
     delete from SrcFile
     where SFLSn = #{sflsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.Srcfile" >
+  <insert id="insert" parameterType="com.beyond.algo.model.Srcfile" >
     insert into SrcFile (SFLSn, SFLName, SFLUrl
       )
     values (#{sflsn,jdbcType=VARCHAR}, #{sflname,jdbcType=VARCHAR}, #{sflurl,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Srcfile" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Srcfile" >
     update SrcFile
     set SFLName = #{sflname,jdbcType=VARCHAR},
       SFLUrl = #{sflurl,jdbcType=VARCHAR}

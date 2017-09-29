@@ -6,12 +6,12 @@ package com.beyond.algo.infra.impl;
  * @date ：13:26 2017/9/25
  */
 
-import com.beyond.algo.common.AlgoplatResult;
+import com.beyond.algo.common.Result;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.PasswordEncrypUtil;
 import com.beyond.algo.common.UUIDUtil;
-import com.beyond.algo.dao.mapper.UserMapper;
-import com.beyond.algo.dao.model.User;
+import com.beyond.algo.mapper.UserMapper;
+import com.beyond.algo.model.User;
 import com.beyond.algo.infra.UserServer;
 
 import com.beyond.algo.model.ProjectConfigEntity;
@@ -38,7 +38,7 @@ public class UserServerImpl implements UserServer {
  * @date ：13:16 2017/9/25
  */
     @Override
-    public AlgoplatResult createUser(User user){
+    public Result createUser(User user){
         String uuid= UUIDUtil.creatUUID();
         user.setUsrsn(uuid);
         user.setUpdatedate(new Date());
@@ -47,7 +47,7 @@ public class UserServerImpl implements UserServer {
         String passWord=PasswordEncrypUtil.encrypt(user.getPasswd().getBytes(),projectConfigEntity.getPassword()).toString();
         user.setPasswd(passWord);
         userMapper.insert(user);
-        return AlgoplatResult.successResponse();
+        return Result.successResponse();
     }
     /**
      * @author ：zhangchuanzhi
@@ -57,18 +57,18 @@ public class UserServerImpl implements UserServer {
      * @date ：15:26 2017/9/28
      */
     @Override
-    public AlgoplatResult userLogin(User user) throws Exception{
+    public Result userLogin(User user) throws Exception{
         user = userMapper.selectUsrname(user.getUsrname());
       // 如果没有这个用户
         if(Assert.isNULL(user)){
-              return AlgoplatResult.failureResponse();
+              return Result.failureResponse();
         }
       // 对比密码
        String passwordEncryp = PasswordEncrypUtil.decrypt(user.getPasswd().getBytes(),projectConfigEntity.getPassword()).toString();
         if(!passwordEncryp.equals(user.getPasswd())){
-            return  AlgoplatResult.failureResponse();
+            return  Result.failureResponse();
         }
-     return  AlgoplatResult.successResponse();
+     return  Result.successResponse();
     }
 
 }
