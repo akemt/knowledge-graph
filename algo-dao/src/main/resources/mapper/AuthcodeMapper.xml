@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.AuthcodeMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Authcode" >
+<mapper namespace="com.beyond.algo.mapper.AuthcodeMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Authcode" >
     <id column="AcdSn" property="acdsn" jdbcType="VARCHAR" />
     <result column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
     <result column="AcdName" property="acdname" jdbcType="VARCHAR" />
@@ -15,7 +15,7 @@
     delete from AuthCode
     where AcdSn = #{acdsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.Authcode" >
+  <insert id="insert" parameterType="com.beyond.algo.model.Authcode" >
     insert into AuthCode (AcdSn, UsrSn, AcdName, 
       AcdID, CallFromClient, CallFromBrowser, 
       RestrictUrl, DataUseType)
@@ -23,7 +23,7 @@
       #{acdid,jdbcType=VARCHAR}, #{callfromclient,jdbcType=VARCHAR}, #{callfrombrowser,jdbcType=VARCHAR}, 
       #{restricturl,jdbcType=VARCHAR}, #{datausetype,jdbcType=VARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Authcode" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Authcode" >
     update AuthCode
     set UsrSn = #{usrsn,jdbcType=VARCHAR},
       AcdName = #{acdname,jdbcType=VARCHAR},

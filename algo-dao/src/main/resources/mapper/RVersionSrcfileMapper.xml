@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.RVersionSrcfileMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.RVersionSrcfile" >
+<mapper namespace="com.beyond.algo.mapper.RVersionSrcfileMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RVersionSrcfile" >
     <id column="Sn" property="sn" jdbcType="VARCHAR" />
     <result column="VerSn" property="versn" jdbcType="VARCHAR" />
     <result column="SFLSn" property="sflsn" jdbcType="VARCHAR" />
@@ -10,13 +10,13 @@
     delete from R_Version_SrcFile
     where Sn = #{sn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.RVersionSrcfile" >
+  <insert id="insert" parameterType="com.beyond.algo.model.RVersionSrcfile" >
     insert into R_Version_SrcFile (Sn, VerSn, SFLSn
       )
     values (#{sn,jdbcType=VARCHAR}, #{versn,jdbcType=VARCHAR}, #{sflsn,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.RVersionSrcfile" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RVersionSrcfile" >
     update R_Version_SrcFile
     set VerSn = #{versn,jdbcType=VARCHAR},
       SFLSn = #{sflsn,jdbcType=VARCHAR}

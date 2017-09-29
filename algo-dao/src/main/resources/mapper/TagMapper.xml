@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.TagMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Tag" >
+<mapper namespace="com.beyond.algo.mapper.TagMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Tag" >
     <id column="TagSn" property="tagsn" jdbcType="VARCHAR" />
     <result column="ModSn" property="modsn" jdbcType="VARCHAR" />
     <result column="TagValue" property="tagvalue" jdbcType="VARCHAR" />
@@ -10,13 +10,13 @@
     delete from Tag
     where TagSn = #{tagsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.Tag" >
+  <insert id="insert" parameterType="com.beyond.algo.model.Tag" >
     insert into Tag (TagSn, ModSn, TagValue
       )
     values (#{tagsn,jdbcType=VARCHAR}, #{modsn,jdbcType=VARCHAR}, #{tagvalue,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Tag" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Tag" >
     update Tag
     set ModSn = #{modsn,jdbcType=VARCHAR},
       TagValue = #{tagvalue,jdbcType=VARCHAR}

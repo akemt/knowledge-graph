@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.ModuleversionMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.Moduleversion" >
+<mapper namespace="com.beyond.algo.mapper.ModuleversionMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.Moduleversion" >
     <id column="VerSn" property="versn" jdbcType="VARCHAR" />
     <result column="ModSn" property="modsn" jdbcType="VARCHAR" />
     <result column="VerCodeL1" property="vercodel1" jdbcType="INTEGER" />
@@ -20,7 +20,7 @@
     delete from ModuleVersion
     where VerSn = #{versn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.Moduleversion" >
+  <insert id="insert" parameterType="com.beyond.algo.model.Moduleversion" >
     insert into ModuleVersion (VerSn, ModSn, VerCodeL1, 
       VerCodeL2, VerCodeL3, VerLoyaltyFee, 
       VerRunUrl, VerRunPort, VerCompiled, 
@@ -32,7 +32,7 @@
       #{verisdirty,jdbcType=VARCHAR}, #{verurl,jdbcType=VARCHAR}, #{verdependency,jdbcType=LONGVARCHAR}, 
       #{verdescription,jdbcType=LONGVARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.Moduleversion" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.Moduleversion" >
     update ModuleVersion
     set ModSn = #{modsn,jdbcType=VARCHAR},
       VerCodeL1 = #{vercodel1,jdbcType=INTEGER},

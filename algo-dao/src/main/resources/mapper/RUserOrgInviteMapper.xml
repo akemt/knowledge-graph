@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.RUserOrgInviteMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.RUserOrgInvite" >
+<mapper namespace="com.beyond.algo.mapper.RUserOrgInviteMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.RUserOrgInvite" >
     <id column="InvSn" property="invsn" jdbcType="VARCHAR" />
     <result column="OrgSn" property="orgsn" jdbcType="VARCHAR" />
     <result column="UsrSn" property="usrsn" jdbcType="VARCHAR" />
@@ -13,7 +13,7 @@
     delete from R_User_Org_Invite
     where InvSn = #{invsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.RUserOrgInvite" >
+  <insert id="insert" parameterType="com.beyond.algo.model.RUserOrgInvite" >
     insert into R_User_Org_Invite (InvSn, OrgSn, UsrSn, 
       UserEmail, IsPend, IsOldUser
       )
@@ -21,7 +21,7 @@
       #{useremail,jdbcType=VARCHAR}, #{ispend,jdbcType=VARCHAR}, #{isolduser,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.RUserOrgInvite" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.RUserOrgInvite" >
     update R_User_Org_Invite
     set OrgSn = #{orgsn,jdbcType=VARCHAR},
       UsrSn = #{usrsn,jdbcType=VARCHAR},

@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages={"com.beyond.algo.controller","com.beyond.algo.infra","com.beyond.algo.dao","com.beyond.algo.model"})
-@MapperScan(basePackages = "com.beyond.algo.dao.mapper")
+@ComponentScan(basePackages={"com.beyond.algo.controller","com.beyond.algo.infra","com.beyond.algo.model"})
+@MapperScan(basePackages = "com.beyond.algo.mapper")
 public class AlgoConsoleBootApplication {
 
 	public static void main(String[] args) {

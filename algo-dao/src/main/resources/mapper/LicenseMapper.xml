@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.dao.mapper.LicenseMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.dao.model.License" >
+<mapper namespace="com.beyond.algo.mapper.LicenseMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.License" >
     <id column="LicSn" property="licsn" jdbcType="VARCHAR" />
     <result column="LicName" property="licname" jdbcType="VARCHAR" />
     <result column="LicContent" property="liccontent" jdbcType="LONGVARCHAR" />
@@ -10,13 +10,13 @@
     delete from License
     where LicSn = #{licsn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.dao.model.License" >
+  <insert id="insert" parameterType="com.beyond.algo.model.License" >
     insert into License (LicSn, LicName, LicContent
       )
     values (#{licsn,jdbcType=VARCHAR}, #{licname,jdbcType=VARCHAR}, #{liccontent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.dao.model.License" >
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.License" >
     update License
     set LicName = #{licname,jdbcType=VARCHAR},
       LicContent = #{liccontent,jdbcType=LONGVARCHAR}
