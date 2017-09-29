@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
  * @date ：13:16 2017/9/25
  */
 @RestController
-@EnableAutoConfiguration
 @RequestMapping("/user")
 public class UserController {
 
