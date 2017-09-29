@@ -59,7 +59,7 @@ public class GitLibController {
 
     /**
      * @author ：zhangchuanzhi
-     * @Description:在gitlib上创建用户
+     * @Description:在gitlib上创建项目
      * @param：GitUser
      * @Modify By :zhangchuanzhi
      * @date ：9:31 2017/9/28
@@ -67,7 +67,7 @@ public class GitLibController {
 
     @RequestMapping(value="/createProject", method=RequestMethod.POST)
     public @ResponseBody AlgoplatResult createGitLibProject(GitUser gitUser)  {
-        logger.info("用户名：{} 用户密码：{} ",gitUser.getUsername(),gitUser.getPassword());
+        logger.info("用户名：{} 用户密码：{} 项目名称：{}",gitUser.getUsername(),gitUser.getPassword(),gitUser.getProjectName());
         boolean result= false;
         try {
             result = gitLibService.createGitLibProject(gitUser);
