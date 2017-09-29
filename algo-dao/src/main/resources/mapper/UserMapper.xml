@@ -53,4 +53,11 @@
     CreateDate, UpdateDate
     from User
   </select>
+  <select id="selectUsrname" resultMap="BaseResultMap" >
+    select UsrSn, OwnerID, UsrName, UsrCode, UsrUrl, IsOrg, Email, Passwd, NeedNotify,
+    CreateDate, UpdateDate
+    from User
+    where UsrName = #{usrname,jdbcType=VARCHAR}
+  </select>
+
 </mapper>
