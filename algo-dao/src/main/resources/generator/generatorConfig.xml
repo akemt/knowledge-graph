@@ -19,7 +19,7 @@
                         password="${datasource.password}">
         </jdbcConnection>
         <!--生成Model类存放位置-->
-        <javaModelGenerator targetPackage="com.beyond.algo.dao.model" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="com.beyond.algo.model" targetProject="src/main/java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
         </javaModelGenerator>
@@ -28,7 +28,7 @@
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
         <!--生成Dao类存放位置-->
-        <javaClientGenerator targetPackage="com.beyond.algo.dao.mapper" targetProject="src/main/java" type="XMLMAPPER">
+        <javaClientGenerator targetPackage="com.beyond.algo.mapper" targetProject="src/main/java" type="XMLMAPPER">
             <property name="enableSubPackages" value=""/>
             <property name="exampleMethodVisibility" value=""/>
             <property name="methodNameCalculator" value=""/>
