@@ -59,4 +59,15 @@ public class FileUtil {
         }
     }
 
+    public static  void showDirectoryAndFile(File file){
+        File[] files = file.listFiles();
+        for(File dirFile:files){
+            //   System.out.println(a.getAbsolutePath());
+            System.out.println(dirFile);
+            if(dirFile.isDirectory()){
+                showDirectoryAndFile(dirFile);
+            }
+        }
+    }
+
 }
