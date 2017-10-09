@@ -73,5 +73,4 @@ public class DESUtil {
         byte[] byteResult = cipher.doFinal(buf);
         return new String(byteResult);
     }
-
 }

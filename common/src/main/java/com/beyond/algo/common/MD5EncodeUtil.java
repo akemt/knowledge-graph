@@ -50,14 +50,4 @@ public class MD5EncodeUtil {
         }
         return sb.toString();
     }
-    /**
-     * 测试方法
-     *
-     * @param args
-     */
-    public static void main(String[] args) throws Exception {
-        String key = "123";
-        //System.out.println(sha(key));
-        System.out.println(md5(key));
-    }
 }

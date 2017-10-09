@@ -78,35 +78,4 @@ public class AESUtil {
 		}
 		return null;
 	}
-	/*
-	*
-	*
-	*测试方法
-	*
-	*
-	*/
-	public static void main(String[] args) {
-		String dataSource = "test";
-		String password = "123456ldjfjf78";
-		// 加密
-		System.out.println("加密前：" + dataSource);
-		//加密执行，返回一个数组
-		String encryptResult = null;
-		encryptResult = encrypt(dataSource , password);
-
-
-		System.out.println("加密后：" + encryptResult);
-		// 解密
-		//byte[] decryptFrom = parseHexStr2Byte(encryptResultStr);
-
-		//将数据库中的字符串取出，转换成数组。
-
-		String decryptResult = decrypt(encryptResult, password);
-		System.out.println("解密后：" + new String(decryptResult));
-		//前面这部分跟加进去的代码很相似
-		//String enStr = encryptString("123", "@#&^%-$#@Coupon#$%^&@*");
-		//System.out.println(enStr);
-		//System.out.println(decrypt("2DA4A4EEA4777CB2CC342815FC84B539", "@#&^%-$#@Coupon#$%^&@*"));
-	}
-
 }
