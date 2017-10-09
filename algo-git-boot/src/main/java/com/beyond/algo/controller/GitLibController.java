@@ -8,6 +8,7 @@ import com.beyond.algo.infra.BuildAntProjectService;
 import com.beyond.algo.infra.FileViewService;
 import com.beyond.algo.infra.GitLibService;
 import com.beyond.algo.infra.JGitService;
+import com.beyond.algo.model.FileDir;
 import com.beyond.algo.model.GitUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author ：zhangchuanzhi
@@ -167,12 +169,14 @@ public class GitLibController {
      * @date ：13:12 2017/9/28
      */
     @RequestMapping(value="/buildProject", method=RequestMethod.POST)
-    public @ResponseBody void buildAndUpLoadProject(GitUser gitUser){
+    public @ResponseBody Result buildAndUpLoadProject(GitUser gitUser){
         try {
             buildAntProjectService.buildAndUpLoadProject(gitUser);
         } catch (Exception e) {
             e.printStackTrace();
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
+        return Result.successResponse();
     }
 
     /**
@@ -183,11 +187,14 @@ public class GitLibController {
      * @date ：9:33 2017/10/9
      */
     @RequestMapping(value="/showFileTree", method=RequestMethod.POST)
-    public @ResponseBody void showFileTree(String path){
+    public @ResponseBody Result showFileTree(String path){
+        logger.info("文件tree路径：{}",path);
         try {
-            fileViewService.showFileTree(path);
+            List<FileDir> FileDirTree= fileViewService.showFileTree(path);
+            return  Result.ok(FileDirTree);
+
         } catch (Exception e) {
-            e.printStackTrace();
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
     }
 }
