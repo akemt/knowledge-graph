@@ -6,10 +6,7 @@ package com.beyond.algo.infra.impl;
  * @date ：13:26 2017/9/25
  */
 
-import com.beyond.algo.common.Result;
-import com.beyond.algo.common.Assert;
-import com.beyond.algo.common.PasswordEncrypUtil;
-import com.beyond.algo.common.UUIDUtil;
+import com.beyond.algo.common.*;
 import com.beyond.algo.mapper.AlgUserMapper;
 import com.beyond.algo.model.AlgUser;
 
@@ -47,8 +44,8 @@ public class UserServerImpl implements UserServer {
         user.setUsrSn(uuid);
         user.setUpdateDate(new Date());
         user.setCreateDate(new Date());
-        logger.info("密码："+projectConfigEntity.getPassword());
-        String passWord= new BASE64Encoder().encode(PasswordEncrypUtil.encrypt(user.getPasswd().getBytes(),projectConfigEntity.getPassword()));
+        logger.info("密码："+projectConfigEntity.getKeyAES());
+        String passWord= AESUtil.encrypt(user.getPasswd(),projectConfigEntity.getKeyAES());
         user.setPasswd(passWord);
         algUserMapper.insert(user);
         return Result.successResponse();
@@ -68,10 +65,8 @@ public class UserServerImpl implements UserServer {
         if(Assert.isNULL(user)){
               return Result.failureResponse();
         }
-        BASE64Decoder decoder = new BASE64Decoder();
-        byte[] buf = decoder.decodeBuffer(user.getPasswd());
       // 对比密码
-       String passwordEncryp = new String(PasswordEncrypUtil.decrypt(buf,projectConfigEntity.getPassword()));
+        String passwordEncryp = AESUtil.decrypt(user.getPasswd(),projectConfigEntity.getKeyAES());
         if(!passwordEncryp.equals(password)){
             return  Result.failureResponse();
         }

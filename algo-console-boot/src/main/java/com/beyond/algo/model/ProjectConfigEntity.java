@@ -13,5 +13,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix="pwencryp")
 @Data
 public class ProjectConfigEntity {
-    private String password;
+    //private String password;
+    private String keyDES;
+    private String keyAES;
 }
