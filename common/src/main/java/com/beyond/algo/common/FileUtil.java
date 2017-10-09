@@ -1,6 +1,10 @@
 package com.beyond.algo.common;
 
+import com.beyond.algo.model.FileDir;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtil {
 
@@ -59,15 +63,42 @@ public class FileUtil {
         }
     }
 
-    public static  void showDirectoryAndFile(File file){
-        File[] files = file.listFiles();
-        for(File dirFile:files){
-            //   System.out.println(a.getAbsolutePath());
-            System.out.println(dirFile);
-            if(dirFile.isDirectory()){
-                showDirectoryAndFile(dirFile);
-            }
+    /**
+     * 获得文件路径
+     *
+     * @param ：File f
+     */
+    public static List<FileDir> getPath(File f) {
+        String filePath=f.getAbsolutePath();
+        // 获得跟目录
+        String fileDir= filePath.substring(filePath.indexOf(File.separator)+1,filePath.indexOf(File.separator,3));
+        // 判断是否是跟目录
+        int i=f.getParent().indexOf(File.separator,3);
+        List<FileDir> fileDirList=new ArrayList<FileDir>();
+        if(i>0){
+            File fileFather =new File(f.getParent());
+            File fileGrandFather =new File(fileFather.getParent());
+            tree(fileGrandFather,fileDirList);
+        }else{
+            FileDir rootFileDir=new FileDir();
+            rootFileDir.setName(fileDir);
+            rootFileDir.setUrl(filePath);
+            fileDirList.add(rootFileDir);
         }
+        return fileDirList;
     }
 
+    /**
+     * 获得目录文件名
+     * @param ：dirPath 路径
+     */
+    private static void tree(File f,List<FileDir>fileDirList) {
+        File[] childs = f.listFiles();
+        for(int i=0; i<childs.length; i++) {
+            FileDir fileDir=new FileDir();
+            fileDir.setName(childs[i].getName());
+            fileDir.setUrl(childs[i].getAbsolutePath());
+            fileDirList.add(fileDir);
+        }
+    }
 }
