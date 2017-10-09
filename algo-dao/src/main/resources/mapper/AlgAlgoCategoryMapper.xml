@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.AlgAlgoCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgAlgoCategory" >
+    <id column="cat_sn" property="catSn" jdbcType="VARCHAR" />
+    <result column="cat_name" property="catName" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_algo_category
+    where cat_sn = #{catSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.AlgAlgoCategory" >
+    insert into alg_algo_category (cat_sn, cat_name)
+    values (#{catSn,jdbcType=VARCHAR}, #{catName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgAlgoCategory" >
+    update alg_algo_category
+    set cat_name = #{catName,jdbcType=VARCHAR}
+    where cat_sn = #{catSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select cat_sn, cat_name
+    from alg_algo_category
+    where cat_sn = #{catSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select cat_sn, cat_name
+    from alg_algo_category
+  </select>
+</mapper>

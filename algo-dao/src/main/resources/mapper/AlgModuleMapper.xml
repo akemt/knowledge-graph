@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.AlgModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgModule" >
+    <id column="mod_sn" property="modSn" jdbcType="VARCHAR" />
+    <result column="usr_sn" property="usrSn" jdbcType="VARCHAR" />
+    <result column="lan_sn" property="lanSn" jdbcType="VARCHAR" />
+    <result column="cat_sn" property="catSn" jdbcType="VARCHAR" />
+    <result column="lic_sn" property="licSn" jdbcType="VARCHAR" />
+    <result column="atl_sn" property="atlSn" jdbcType="VARCHAR" />
+    <result column="mod_name" property="modName" jdbcType="VARCHAR" />
+    <result column="mod_id" property="modId" jdbcType="VARCHAR" />
+    <result column="is_open_src" property="isOpenSrc" jdbcType="VARCHAR" />
+    <result column="need_web" property="needWeb" jdbcType="VARCHAR" />
+    <result column="need_call_other" property="needCallOther" jdbcType="VARCHAR" />
+    <result column="env_type" property="envType" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_module
+    where mod_sn = #{modSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.AlgModule" >
+    insert into alg_module (mod_sn, usr_sn, lan_sn, 
+      cat_sn, lic_sn, atl_sn, 
+      mod_name, mod_id, is_open_src, 
+      need_web, need_call_other, env_type
+      )
+    values (#{modSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{lanSn,jdbcType=VARCHAR}, 
+      #{catSn,jdbcType=VARCHAR}, #{licSn,jdbcType=VARCHAR}, #{atlSn,jdbcType=VARCHAR}, 
+      #{modName,jdbcType=VARCHAR}, #{modId,jdbcType=VARCHAR}, #{isOpenSrc,jdbcType=VARCHAR}, 
+      #{needWeb,jdbcType=VARCHAR}, #{needCallOther,jdbcType=VARCHAR}, #{envType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgModule" >
+    update alg_module
+    set usr_sn = #{usrSn,jdbcType=VARCHAR},
+      lan_sn = #{lanSn,jdbcType=VARCHAR},
+      cat_sn = #{catSn,jdbcType=VARCHAR},
+      lic_sn = #{licSn,jdbcType=VARCHAR},
+      atl_sn = #{atlSn,jdbcType=VARCHAR},
+      mod_name = #{modName,jdbcType=VARCHAR},
+      mod_id = #{modId,jdbcType=VARCHAR},
+      is_open_src = #{isOpenSrc,jdbcType=VARCHAR},
+      need_web = #{needWeb,jdbcType=VARCHAR},
+      need_call_other = #{needCallOther,jdbcType=VARCHAR},
+      env_type = #{envType,jdbcType=VARCHAR}
+    where mod_sn = #{modSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select mod_sn, usr_sn, lan_sn, cat_sn, lic_sn, atl_sn, mod_name, mod_id, is_open_src, 
+    need_web, need_call_other, env_type
+    from alg_module
+    where mod_sn = #{modSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select mod_sn, usr_sn, lan_sn, cat_sn, lic_sn, atl_sn, mod_name, mod_id, is_open_src, 
+    need_web, need_call_other, env_type
+    from alg_module
+  </select>
+</mapper>

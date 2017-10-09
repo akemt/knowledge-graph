@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.AlgModuleUsageMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgModuleUsage" >
+    <id column="usg_sn" property="usgSn" jdbcType="VARCHAR" />
+    <result column="mod_sn" property="modSn" jdbcType="VARCHAR" />
+    <result column="star_cnt" property="starCnt" jdbcType="BIGINT" />
+    <result column="follow_cnt" property="followCnt" jdbcType="BIGINT" />
+    <result column="call_cnt" property="callCnt" jdbcType="BIGINT" />
+    <result column="credit_cnt" property="creditCnt" jdbcType="DECIMAL" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_module_usage
+    where usg_sn = #{usgSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.AlgModuleUsage" >
+    insert into alg_module_usage (usg_sn, mod_sn, star_cnt, 
+      follow_cnt, call_cnt, credit_cnt
+      )
+    values (#{usgSn,jdbcType=VARCHAR}, #{modSn,jdbcType=VARCHAR}, #{starCnt,jdbcType=BIGINT}, 
+      #{followCnt,jdbcType=BIGINT}, #{callCnt,jdbcType=BIGINT}, #{creditCnt,jdbcType=DECIMAL}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgModuleUsage" >
+    update alg_module_usage
+    set mod_sn = #{modSn,jdbcType=VARCHAR},
+      star_cnt = #{starCnt,jdbcType=BIGINT},
+      follow_cnt = #{followCnt,jdbcType=BIGINT},
+      call_cnt = #{callCnt,jdbcType=BIGINT},
+      credit_cnt = #{creditCnt,jdbcType=DECIMAL}
+    where usg_sn = #{usgSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select usg_sn, mod_sn, star_cnt, follow_cnt, call_cnt, credit_cnt
+    from alg_module_usage
+    where usg_sn = #{usgSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select usg_sn, mod_sn, star_cnt, follow_cnt, call_cnt, credit_cnt
+    from alg_module_usage
+  </select>
+</mapper>

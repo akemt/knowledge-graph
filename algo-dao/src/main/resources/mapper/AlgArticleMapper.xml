@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.AlgArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgArticle" >
+    <id column="atl_sn" property="atlSn" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="abstract" property="abstract" jdbcType="VARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="doi" property="doi" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="cite_info" property="citeInfo" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_article
+    where atl_sn = #{atlSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.AlgArticle" >
+    insert into alg_article (atl_sn, title, abstract, 
+      keywords, doi, author, 
+      cite_info)
+    values (#{atlSn,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{abstract,jdbcType=VARCHAR}, 
+      #{keywords,jdbcType=VARCHAR}, #{doi,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{citeInfo,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgArticle" >
+    update alg_article
+    set title = #{title,jdbcType=VARCHAR},
+      abstract = #{abstract,jdbcType=VARCHAR},
+      keywords = #{keywords,jdbcType=VARCHAR},
+      doi = #{doi,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      cite_info = #{citeInfo,jdbcType=VARCHAR}
+    where atl_sn = #{atlSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select atl_sn, title, abstract, keywords, doi, author, cite_info
+    from alg_article
+    where atl_sn = #{atlSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select atl_sn, title, abstract, keywords, doi, author, cite_info
+    from alg_article
+  </select>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.AlgRUserModuleWatchMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgRUserModuleWatch" >
+    <id column="wtc_sn" property="wtcSn" jdbcType="VARCHAR" />
+    <result column="usr_sn" property="usrSn" jdbcType="VARCHAR" />
+    <result column="mod_sn" property="modSn" jdbcType="VARCHAR" />
+    <result column="wtc_has_star" property="wtcHasStar" jdbcType="VARCHAR" />
+    <result column="wtc_has_follow" property="wtcHasFollow" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_r_user_module_watch
+    where wtc_sn = #{wtcSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.AlgRUserModuleWatch" >
+    insert into alg_r_user_module_watch (wtc_sn, usr_sn, mod_sn, 
+      wtc_has_star, wtc_has_follow)
+    values (#{wtcSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{modSn,jdbcType=VARCHAR}, 
+      #{wtcHasStar,jdbcType=VARCHAR}, #{wtcHasFollow,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgRUserModuleWatch" >
+    update alg_r_user_module_watch
+    set usr_sn = #{usrSn,jdbcType=VARCHAR},
+      mod_sn = #{modSn,jdbcType=VARCHAR},
+      wtc_has_star = #{wtcHasStar,jdbcType=VARCHAR},
+      wtc_has_follow = #{wtcHasFollow,jdbcType=VARCHAR}
+    where wtc_sn = #{wtcSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select wtc_sn, usr_sn, mod_sn, wtc_has_star, wtc_has_follow
+    from alg_r_user_module_watch
+    where wtc_sn = #{wtcSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select wtc_sn, usr_sn, mod_sn, wtc_has_star, wtc_has_follow
+    from alg_r_user_module_watch
+  </select>
+</mapper>
