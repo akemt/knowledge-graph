@@ -13,7 +13,7 @@ import java.util.List;
  * @Description:展示文件树状结构
  * @date ：16:01 2017/9/29
  */
-@Service
+/*@Service
 public class FileViewServiceImpl implements FileViewService {
   @Override
     public List<FileDir> showFileTree(String path){
@@ -22,4 +22,4 @@ public class FileViewServiceImpl implements FileViewService {
       return fileDirList;
     }
 
-}
+}*/

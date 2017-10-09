@@ -5,7 +5,7 @@ import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.infra.BuildAntProjectService;
-import com.beyond.algo.infra.FileViewService;
+
 import com.beyond.algo.infra.GitLibService;
 import com.beyond.algo.infra.JGitService;
 import com.beyond.algo.model.FileDir;
@@ -37,8 +37,8 @@ public class GitLibController {
     private JGitService jGitService;
     @Autowired
     private BuildAntProjectService buildAntProjectService;
-    @Autowired
-    private FileViewService fileViewService;
+   /* @Autowired
+    private FileViewService fileViewService;*/
     private final static Logger logger = LoggerFactory.getLogger(GitLibController.class);
     /**
      * @author ：zhangchuanzhi
@@ -186,7 +186,7 @@ public class GitLibController {
      * @Modify By :zhangchuanzhi
      * @date ：9:33 2017/10/9
      */
-    @RequestMapping(value="/showFileTree", method=RequestMethod.POST)
+/*    @RequestMapping(value="/showFileTree", method=RequestMethod.POST)
     public @ResponseBody Result showFileTree(String path){
         logger.info("文件tree路径：{}",path);
         try {
@@ -196,5 +196,5 @@ public class GitLibController {
         } catch (Exception e) {
             return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
-    }
+    }*/
 }
