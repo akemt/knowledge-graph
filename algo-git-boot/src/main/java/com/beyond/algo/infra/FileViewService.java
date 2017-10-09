@@ -10,6 +10,6 @@ import java.util.List;
  * @date ：15:34 2017/9/29
  */
 public interface FileViewService {
-    List<FileDir> showDirectoryAndFile(String path);
+    List<FileDir> showFileTree(String path);
 
 }

@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class FileViewServiceImpl implements FileViewService {
   @Override
-    public List<FileDir> showDirectoryAndFile(String path){
+    public List<FileDir> showFileTree(String path){
       File filePath =new File(path);
       List<FileDir> fileDirList= FileUtil.getPath(filePath);
       return fileDirList;
