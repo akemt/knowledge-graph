@@ -10,22 +10,22 @@ import com.beyond.algo.common.*;
 import com.beyond.algo.mapper.AlgUserMapper;
 import com.beyond.algo.model.AlgUser;
 
-import com.beyond.algo.infra.UserServer;
+import com.beyond.algo.infra.UserService;
 
 import com.beyond.algo.model.ProjectConfigEntity;
+import com.beyond.algo.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
+
 
 
 import java.util.Date;
 
 @Service
-public class UserServerImpl implements UserServer {
-    private final static Logger logger = LoggerFactory.getLogger(UserServerImpl.class);
+public class UserServiceImpl implements UserService {
+    private final static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private AlgUserMapper algUserMapper;
 
@@ -72,6 +72,40 @@ public class UserServerImpl implements UserServer {
         }
      return  Result.successResponse();
     }
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:实现用户修改密码
+     * @param：User
+     * @Modify By :zhangchuanzhi
+     * @date ：15:09 2017/10/09
+     */
+    @Override
+    public Result changePassword(User user) {
+        // 判断两次输入密码是否一致
+         if(!user.getConfirmPassword().equals(user.getNewPassword())){
+             String message="两次输入新密码一致";
+             return Result.failure(message);
+         }else{
+             // 当两次输入密码一致时候判断输入新密码和原始密码是否一致
+             AlgUser  algUser =algUserMapper.selectByPrimaryKey(user.getUsrSn());
+             String passwordEncryp = AESUtil.decrypt(algUser.getPasswd(),projectConfigEntity.getKeyAES());
+             // 判断输入原始密码是否是数据库密码
+             if(user.getPasswd().equals(passwordEncryp)){
+                 if(user.getNewPassword().equals(passwordEncryp)){
+                     String message="原始密码和新密码一致";
+                     return Result.failure(message);
+                 }
+             }else{
+                 String message="输入原始密码不对";
+                 return Result.failure(message);
+             }
 
+         }
+         String newPassWord=AESUtil.encrypt(user.getNewPassword(),projectConfigEntity.getKeyAES());
+         user.setPasswd(newPassWord);
+         user.setUpdateDate(new Date());
+         algUserMapper.update(user);
+         return  Result.successResponse();
+    }
 }
 

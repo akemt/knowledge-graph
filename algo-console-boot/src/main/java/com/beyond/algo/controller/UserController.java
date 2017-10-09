@@ -4,7 +4,8 @@ import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.model.AlgUser;
 
-import com.beyond.algo.infra.UserServer;
+import com.beyond.algo.infra.UserService;
+import com.beyond.algo.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserServer userService;
+    private UserService userService;
 
     private final static Logger logger = LoggerFactory.getLogger(UserController.class);
     /**
@@ -65,5 +66,27 @@ public class UserController {
             return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
     }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户修改密码
+     * @param：User
+     * @Modify By :zhangchuanzhi
+     * @date ：8:49 2017/9/27
+     */
+   @RequestMapping(value="/changePassword", method=RequestMethod.POST)
+    @ResponseBody
+    public Result changePassword(User user) {
+       logger.info("用户唯一值:{},用户密码:{},用户确认密码:{},用户新密码:{}", user.getUsrSn(), user.getPasswd(),user.getConfirmPassword(),user.getNewPassword());
+        try {
+            Result result = userService.changePassword(user);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+        }
+    }
+
+
 
 }
