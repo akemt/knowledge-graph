@@ -1,6 +1,6 @@
 package com.beyond.algo.common;
 
-import com.beyond.algo.model.FileDir;
+
 
 import java.io.*;
 import java.util.ArrayList;
@@ -68,7 +68,7 @@ public class FileUtil {
      *
      * @param ：File f
      */
-    public static List<FileDir> getPath(File f) {
+   /* public static List<FileDir> getPath(File f) {
         String filePath=f.getAbsolutePath();
         // 获得跟目录
         String fileDir= filePath.substring(filePath.indexOf(File.separator)+1,filePath.indexOf(File.separator,3));
@@ -87,12 +87,12 @@ public class FileUtil {
         }
         return fileDirList;
     }
-
+*/
     /**
      * 获得目录文件名
      * @param ：dirPath 路径
      */
-    private static void tree(File f,List<FileDir>fileDirList) {
+   /* private static void tree(File f,List<FileDir>fileDirList) {
         File[] childs = f.listFiles();
         for(int i=0; i<childs.length; i++) {
             FileDir fileDir=new FileDir();
@@ -100,5 +100,5 @@ public class FileUtil {
             fileDir.setUrl(childs[i].getAbsolutePath());
             fileDirList.add(fileDir);
         }
-    }
+    }*/
 }
