@@ -13,4 +13,6 @@ public interface AlgUserMapper {
     List<AlgUser> selectAll();
 
     int updateByPrimaryKey(AlgUser record);
+
+    AlgUser selectUsrname(String usrsn);
 }
