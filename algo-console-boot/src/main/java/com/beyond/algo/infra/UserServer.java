@@ -1,7 +1,8 @@
 package com.beyond.algo.infra;
 
 import com.beyond.algo.common.Result;
-import com.beyond.algo.model.User;
+import com.beyond.algo.model.AlgUser;
+
 
 
 /**
@@ -10,6 +11,6 @@ import com.beyond.algo.model.User;
  * @date ：13:32 2017/9/25
  */
 public interface UserServer {
-    Result createUser(User user);
-    Result userLogin(User user) throws Exception;
+    Result createUser(AlgUser user);
+    Result userLogin(AlgUser user) throws Exception;
 }

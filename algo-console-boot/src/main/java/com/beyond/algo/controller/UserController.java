@@ -2,13 +2,12 @@ package com.beyond.algo.controller;
 
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
-import com.beyond.algo.model.User;
-import com.beyond.algo.infra.UserServer;
+import com.beyond.algo.model.AlgUser;
 
+import com.beyond.algo.infra.UserServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -36,8 +35,8 @@ public class UserController {
      */
     @RequestMapping(value="/register", method=RequestMethod.POST)
     public @ResponseBody
-    Result<Object> register(User user){
-        logger.info("用户名:{},用户密码:{},用户邮箱:{}", user.getUsrname(), user.getPasswd(),user.getEmail());
+    Result<Object> register(AlgUser user){
+        logger.info("用户名:{},用户密码:{},用户邮箱:{}", user.getUsrName(), user.getPasswd(),user.getEmail());
         try {
             Result result = userService.createUser(user);
             return result;
@@ -55,8 +54,8 @@ public class UserController {
      */
     @RequestMapping(value="/login", method=RequestMethod.POST)
     @ResponseBody
-    public Result userLogin(User user) {
-        logger.info("用户名:{},用户密码:{}", user.getUsrname(), user.getPasswd());
+    public Result userLogin(AlgUser user) {
+        logger.info("用户名:{},用户密码:{}", user.getUsrName(), user.getPasswd());
         try {
 
             Result result = userService.userLogin(user);
