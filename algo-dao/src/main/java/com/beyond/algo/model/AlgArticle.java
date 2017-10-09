@@ -5,7 +5,7 @@ public class AlgArticle {
 
     private String title;
 
-    private String abstract;
+    private String remark;
 
     private String keywords;
 
@@ -31,12 +31,12 @@ public class AlgArticle {
         this.title = title == null ? null : title.trim();
     }
 
-    public String getAbstract() {
-        return abstract;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setAbstract(String abstract) {
-        this.abstract = abstract == null ? null : abstract.trim();
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getKeywords() {
