@@ -14,4 +14,5 @@ public interface UserService {
     Result createUser(AlgUser user);
     Result userLogin(AlgUser user) throws Exception;
     Result changePassword(User user);
+    Result updateUserInformation(AlgUser user);
 }

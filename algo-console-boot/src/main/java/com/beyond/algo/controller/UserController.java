@@ -88,5 +88,26 @@ public class UserController {
     }
 
 
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户更新信息
+     * @param：User
+     * @Modify By :zhangchuanzhi
+     * @date ：9:14 2017/10/10
+     */
+
+    @RequestMapping(value="/updateUserInformation", method=RequestMethod.POST)
+    @ResponseBody
+    public Result updateUserInformation(AlgUser user) {
+        logger.info("用户名字:{},用户英文名:{},用户邮箱:{},用户电话:{},用户主页{},用户是短信还是邮箱发送{},用户唯一主键", user.getUsrName(), user.getUsrCode(),user.getEmail(),user.getTelephone(),user.getUsrUrl(),user.getNeedNotify(),user.getUsrSn());
+        try {
+            Result result = userService.updateUserInformation(user);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+        }
+    }
+
 
 }

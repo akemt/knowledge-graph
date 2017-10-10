@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+
 @Service
 public class UserServiceImpl implements UserService {
     private final static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
@@ -95,17 +96,56 @@ public class UserServiceImpl implements UserService {
                      String message="原始密码和新密码一致";
                      return Result.failure(message);
                  }
-             }else{
-                 String message="输入原始密码不对";
-                 return Result.failure(message);
              }
-
          }
          String newPassWord=AESUtil.encrypt(user.getNewPassword(),projectConfigEntity.getKeyAES());
          user.setPasswd(newPassWord);
          user.setUpdateDate(new Date());
          algUserMapper.update(user);
          return  Result.successResponse();
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:实现用户信息更改
+     * @param：User
+     * @Modify By :zhangchuanzhi
+     * @date ：9:15 2017/10/10
+     */
+    @Override
+    public Result updateUserInformation(AlgUser user){
+        // 判断邮箱是否合法
+        boolean emailFlag =NumCheckUtil.checkEmail(user.getEmail());
+        if(!emailFlag){
+            String message="邮箱不合法";
+            return Result.failure(message);
+        }
+        // 判断电话
+        boolean telFlag =NumCheckUtil.checkTel(user.getTelephone());
+        if(!telFlag){
+            String message="电话不合法";
+            return Result.failure(message);
+        }
+        // 判断个人主页
+        boolean webFlag =NumCheckUtil.checkWebsite(user.getUsrUrl());
+        if(!webFlag){
+            String message="个人主页不合法";
+            return Result.failure(message);
+        }
+        // 判断名字是否全是中文
+        boolean nameFlag =NumCheckUtil.isChineseStr(user.getUsrName());
+        if(!nameFlag){
+            String message="必须全是中文";
+            return Result.failure(message);
+        }
+        // 1：代码邮件 0：短信
+        if("1".equals(user.getNeedNotify())){
+            //多线程发送邮件
+        }else{
+           // 多线程发送短信
+        }
+        algUserMapper.update(user);
+        return  Result.successResponse();
     }
 }
 
