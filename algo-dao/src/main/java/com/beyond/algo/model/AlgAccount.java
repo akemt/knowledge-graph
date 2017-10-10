@@ -13,10 +13,6 @@ public class AlgAccount {
 
     private Float freeBal;
 
-    private Float cashAccount;
-
-    private Date cashSetTime;
-
     private Date freeSetTime;
 
     public String getAccSn() {
@@ -57,22 +53,6 @@ public class AlgAccount {
 
     public void setFreeBal(Float freeBal) {
         this.freeBal = freeBal;
-    }
-
-    public Float getCashAccount() {
-        return cashAccount;
-    }
-
-    public void setCashAccount(Float cashAccount) {
-        this.cashAccount = cashAccount;
-    }
-
-    public Date getCashSetTime() {
-        return cashSetTime;
-    }
-
-    public void setCashSetTime(Date freeSetTime) {
-        this.cashSetTime = cashSetTime;
     }
 
     public Date getFreeSetTime() {

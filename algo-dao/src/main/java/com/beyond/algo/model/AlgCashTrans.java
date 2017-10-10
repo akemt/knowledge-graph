@@ -9,13 +9,13 @@ public class AlgCashTrans {
 
     private Date payTime;
 
+    private String payNo;
+
+    private String status;
+
     private String paySrc;
 
     private Float cashPayAmount;
-
-    private String payNo;
-
-    private String 充值状态;
 
     private String currency;
 
@@ -47,6 +47,22 @@ public class AlgCashTrans {
         this.payTime = payTime;
     }
 
+    public String getPayNo() {
+        return payNo;
+    }
+
+    public void setPayNo(String payNo) {
+        this.payNo = payNo == null ? null : payNo.trim();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
+    }
+
     public String getPaySrc() {
         return paySrc;
     }
@@ -61,22 +77,6 @@ public class AlgCashTrans {
 
     public void setCashPayAmount(Float cashPayAmount) {
         this.cashPayAmount = cashPayAmount;
-    }
-
-    public String getPayNo() {
-        return payNo;
-    }
-
-    public void setPayNo(String payNo) {
-        this.payNo = payNo == null ? null : payNo.trim();
-    }
-
-    public String get充值状态() {
-        return 充值状态;
-    }
-
-    public void set充值状态(String 充值状态) {
-        this.充值状态 = 充值状态 == null ? null : 充值状态.trim();
     }
 
     public String getCurrency() {

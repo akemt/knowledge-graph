@@ -9,13 +9,13 @@ public class AlgCashHis {
 
     private String cashSrc;
 
-    private Float cashAmount;
-
     private String currency;
 
-    private String status;
+    private Float creditPerUnit;
 
     private String custNo;
+
+    private String status;
 
     private Date cashTime;
 
@@ -45,14 +45,6 @@ public class AlgCashHis {
         this.cashSrc = cashSrc == null ? null : cashSrc.trim();
     }
 
-    public Float getCashAmount() {
-        return cashAmount;
-    }
-
-    public void setCashAmount(Float cashAmount) {
-        this.cashAmount = cashAmount;
-    }
-
     public String getCurrency() {
         return currency;
     }
@@ -61,12 +53,12 @@ public class AlgCashHis {
         this.currency = currency == null ? null : currency.trim();
     }
 
-    public String getStatus() {
-        return status;
+    public Float getCreditPerUnit() {
+        return creditPerUnit;
     }
 
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
+    public void setCreditPerUnit(Float creditPerUnit) {
+        this.creditPerUnit = creditPerUnit;
     }
 
     public String getCustNo() {
@@ -75,6 +67,14 @@ public class AlgCashHis {
 
     public void setCustNo(String custNo) {
         this.custNo = custNo == null ? null : custNo.trim();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status == null ? null : status.trim();
     }
 
     public Date getCashTime() {
