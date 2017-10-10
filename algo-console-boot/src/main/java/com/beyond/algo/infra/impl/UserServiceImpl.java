@@ -144,6 +144,7 @@ public class UserServiceImpl implements UserService {
         }else{
            // 多线程发送短信
         }
+        user.setUpdateDate(new Date());
         algUserMapper.update(user);
         return  Result.successResponse();
     }
