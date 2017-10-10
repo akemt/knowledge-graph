@@ -13,6 +13,8 @@ public class AlgCashHis {
 
     private Float creditPerUnit;
 
+    private Float cash;
+
     private String custNo;
 
     private String status;
@@ -59,6 +61,14 @@ public class AlgCashHis {
 
     public void setCreditPerUnit(Float creditPerUnit) {
         this.creditPerUnit = creditPerUnit;
+    }
+
+    public Float getCash() {
+        return cash;
+    }
+
+    public void setCash(Float cash) {
+        this.cash = cash;
     }
 
     public String getCustNo() {
