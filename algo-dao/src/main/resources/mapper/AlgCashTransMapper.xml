@@ -7,6 +7,8 @@
     <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
     <result column="pay_src" property="paySrc" jdbcType="VARCHAR" />
     <result column="cash_pay_amount" property="cashPayAmount" jdbcType="REAL" />
+    <result column="pay_no" property="payNo" jdbcType="VARCHAR" />
+    <result column="充值状态" property="充值状态" jdbcType="VARCHAR" />
     <result column="currency" property="currency" jdbcType="VARCHAR" />
     <result column="credit_per_unit" property="creditPerUnit" jdbcType="REAL" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -17,11 +19,13 @@
   </delete>
   <insert id="insert" parameterType="com.beyond.algo.model.AlgCashTrans" >
     insert into alg_cash_trans (tra_sn, usr_sn, pay_time, 
-      pay_src, cash_pay_amount, currency, 
-      credit_per_unit, create_time)
+      pay_src, cash_pay_amount, pay_no, 
+      充值状态, currency, credit_per_unit, 
+      create_time)
     values (#{traSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, 
-      #{paySrc,jdbcType=VARCHAR}, #{cashPayAmount,jdbcType=REAL}, #{currency,jdbcType=VARCHAR}, 
-      #{creditPerUnit,jdbcType=REAL}, #{createTime,jdbcType=TIMESTAMP})
+      #{paySrc,jdbcType=VARCHAR}, #{cashPayAmount,jdbcType=REAL}, #{payNo,jdbcType=VARCHAR}, 
+      #{充值状态,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, #{creditPerUnit,jdbcType=REAL}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgCashTrans" >
     update alg_cash_trans
@@ -29,20 +33,22 @@
       pay_time = #{payTime,jdbcType=TIMESTAMP},
       pay_src = #{paySrc,jdbcType=VARCHAR},
       cash_pay_amount = #{cashPayAmount,jdbcType=REAL},
+      pay_no = #{payNo,jdbcType=VARCHAR},
+      充值状态 = #{充值状态,jdbcType=VARCHAR},
       currency = #{currency,jdbcType=VARCHAR},
       credit_per_unit = #{creditPerUnit,jdbcType=REAL},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where tra_sn = #{traSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select tra_sn, usr_sn, pay_time, pay_src, cash_pay_amount, currency, credit_per_unit, 
-    create_time
+    select tra_sn, usr_sn, pay_time, pay_src, cash_pay_amount, pay_no, 充值状态, currency, 
+    credit_per_unit, create_time
     from alg_cash_trans
     where tra_sn = #{traSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select tra_sn, usr_sn, pay_time, pay_src, cash_pay_amount, currency, credit_per_unit, 
-    create_time
+    select tra_sn, usr_sn, pay_time, pay_src, cash_pay_amount, pay_no, 充值状态, currency, 
+    credit_per_unit, create_time
     from alg_cash_trans
   </select>
 </mapper>

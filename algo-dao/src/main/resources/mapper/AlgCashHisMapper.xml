@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.AlgCashHisMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgCashHis" >
+    <id column="tra_sn" property="traSn" jdbcType="VARCHAR" />
+    <result column="usr_sn" property="usrSn" jdbcType="VARCHAR" />
+    <result column="cash_src" property="cashSrc" jdbcType="VARCHAR" />
+    <result column="cash_amount" property="cashAmount" jdbcType="REAL" />
+    <result column="currency" property="currency" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="cust_no" property="custNo" jdbcType="VARCHAR" />
+    <result column="cash_time" property="cashTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_cash_his
+    where tra_sn = #{traSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.AlgCashHis" >
+    insert into alg_cash_his (tra_sn, usr_sn, cash_src, 
+      cash_amount, currency, status, 
+      cust_no, cash_time, create_time
+      )
+    values (#{traSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{cashSrc,jdbcType=VARCHAR}, 
+      #{cashAmount,jdbcType=REAL}, #{currency,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{custNo,jdbcType=VARCHAR}, #{cashTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgCashHis" >
+    update alg_cash_his
+    set usr_sn = #{usrSn,jdbcType=VARCHAR},
+      cash_src = #{cashSrc,jdbcType=VARCHAR},
+      cash_amount = #{cashAmount,jdbcType=REAL},
+      currency = #{currency,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      cust_no = #{custNo,jdbcType=VARCHAR},
+      cash_time = #{cashTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where tra_sn = #{traSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select tra_sn, usr_sn, cash_src, cash_amount, currency, status, cust_no, cash_time, 
+    create_time
+    from alg_cash_his
+    where tra_sn = #{traSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select tra_sn, usr_sn, cash_src, cash_amount, currency, status, cust_no, cash_time, 
+    create_time
+    from alg_cash_his
+  </select>
+</mapper>
