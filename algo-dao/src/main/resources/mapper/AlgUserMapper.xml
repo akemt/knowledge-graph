@@ -65,40 +65,41 @@
 
     <update id="update" parameterType="com.beyond.algo.model.AlgUser" >
         update alg_user
-        set
-        <if test="ownerId != null" >
-            owner_id = #{ownerId,jdbcType=VARCHAR},
-        </if>
-        <if test="usrName != null" >
-            usr_name = #{usrName,jdbcType=VARCHAR},
-        </if>
-        <if test="usrCode != null" >
-            usr_code = #{usrCode,jdbcType=VARCHAR},
-        </if>
-        <if test="usrUrl != null" >
-            usr_url = #{usrUrl,jdbcType=VARCHAR},
-        </if>
-        <if test="isOrg != null" >
-            is_org = #{isOrg,jdbcType=VARCHAR},
-        </if>
-        <if test="email != null" >
-            email = #{email,jdbcType=VARCHAR},
-        </if>
-        <if test="passwd != null" >
-           passwd = #{passwd,jdbcType=VARCHAR},
-        </if>
-        <if test="telephone != null" >
-            telephone = #{telephone,jdbcType=VARCHAR},
-        </if>
-        <if test="needNotify != null" >
-           need_notify = #{needNotify,jdbcType=VARCHAR},
-        </if>
-        <if test="createDate != null" >
-          create_date = #{createDate,jdbcType=TIMESTAMP},
-        </if>
-        <if test="updateDate != null" >
-          update_date = #{updateDate,jdbcType=TIMESTAMP}
-        </if>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="ownerId != null" >
+                owner_id = #{ownerId,jdbcType=VARCHAR},
+            </if>
+            <if test="usrName != null" >
+                usr_name = #{usrName,jdbcType=VARCHAR},
+            </if>
+            <if test="usrCode != null" >
+                usr_code = #{usrCode,jdbcType=VARCHAR},
+            </if>
+            <if test="usrUrl != null" >
+                usr_url = #{usrUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="isOrg != null" >
+                is_org = #{isOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="passwd != null" >
+               passwd = #{passwd,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null" >
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="needNotify != null" >
+               need_notify = #{needNotify,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+              create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null" >
+              update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
         where usr_sn = #{usrSn,jdbcType=VARCHAR}
     </update>
 </mapper>
