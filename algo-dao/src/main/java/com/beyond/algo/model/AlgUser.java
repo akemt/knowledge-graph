@@ -19,6 +19,8 @@ public class AlgUser {
 
     private String passwd;
 
+    private String telephone;
+
     private String needNotify;
 
     private Date createDate;
@@ -87,6 +89,14 @@ public class AlgUser {
 
     public void setPasswd(String passwd) {
         this.passwd = passwd == null ? null : passwd.trim();
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone == null ? null : telephone.trim();
     }
 
     public String getNeedNotify() {

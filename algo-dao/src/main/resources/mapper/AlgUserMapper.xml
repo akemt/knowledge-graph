@@ -10,6 +10,7 @@
     <result column="is_org" property="isOrg" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="passwd" property="passwd" jdbcType="VARCHAR" />
+      <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
     <result column="need_notify" property="needNotify" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
@@ -21,11 +22,11 @@
   <insert id="insert" parameterType="com.beyond.algo.model.AlgUser" >
     insert into alg_user (usr_sn, owner_id, usr_name, 
       usr_code, usr_url, is_org, 
-      email, passwd, need_notify, 
+      email, passwd,telephone, need_notify,
       create_date, update_date)
     values (#{usrSn,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{usrName,jdbcType=VARCHAR}, 
       #{usrCode,jdbcType=VARCHAR}, #{usrUrl,jdbcType=VARCHAR}, #{isOrg,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR}, #{needNotify,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR}, #{needNotify,jdbcType=VARCHAR},
       #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgUser" >
@@ -37,25 +38,26 @@
       is_org = #{isOrg,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       passwd = #{passwd,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
       need_notify = #{needNotify,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd, need_notify, 
+    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
     create_date, update_date
     from alg_user
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd, need_notify, 
+    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
     create_date, update_date
     from alg_user
   </select>
 
   <select id="selectUsrname" resultMap="BaseResultMap" >
-    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd, need_notify,
+    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
     create_date, update_date
     from alg_user
     where usr_name = #{usrName,jdbcType=VARCHAR}
@@ -84,6 +86,9 @@
         </if>
         <if test="passwd != null" >
            passwd = #{passwd,jdbcType=VARCHAR},
+        </if>
+        <if test="telephone != null" >
+            telephone = #{telephone,jdbcType=VARCHAR},
         </if>
         <if test="needNotify != null" >
            need_notify = #{needNotify,jdbcType=VARCHAR},
