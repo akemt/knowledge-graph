@@ -39,42 +39,4 @@
     select acc_sn, usr_sn, cash_bal, earn_bal, free_bal, free_set_time
     from alg_account
   </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgAccount">
-    <id column="acc_sn" jdbcType="VARCHAR" property="accSn" />
-    <result column="usr_sn" jdbcType="VARCHAR" property="usrSn" />
-    <result column="cash_bal" jdbcType="REAL" property="cashBal" />
-    <result column="earn_bal" jdbcType="REAL" property="earnBal" />
-    <result column="free_bal" jdbcType="REAL" property="freeBal" />
-    <result column="free_set_time" jdbcType="TIMESTAMP" property="freeSetTime" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from alg_account
-    where acc_sn = #{accSn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.AlgAccount">
-    insert into alg_account (acc_sn, usr_sn, cash_bal, 
-      earn_bal, free_bal, free_set_time
-      )
-    values (#{accSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{cashBal,jdbcType=REAL}, 
-      #{earnBal,jdbcType=REAL}, #{freeBal,jdbcType=REAL}, #{freeSetTime,jdbcType=TIMESTAMP}
-      )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgAccount">
-    update alg_account
-    set usr_sn = #{usrSn,jdbcType=VARCHAR},
-      cash_bal = #{cashBal,jdbcType=REAL},
-      earn_bal = #{earnBal,jdbcType=REAL},
-      free_bal = #{freeBal,jdbcType=REAL},
-      free_set_time = #{freeSetTime,jdbcType=TIMESTAMP}
-    where acc_sn = #{accSn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select acc_sn, usr_sn, cash_bal, earn_bal, free_bal, free_set_time
-    from alg_account
-    where acc_sn = #{accSn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select acc_sn, usr_sn, cash_bal, earn_bal, free_bal, free_set_time
-    from alg_account
-  </select>
 </mapper>
