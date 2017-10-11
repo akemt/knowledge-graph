@@ -9,6 +9,8 @@ import com.beyond.algo.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -34,7 +36,7 @@ public class UserController {
      * @Modify By :zhangchuanzhi
      * @date ：13:16 2017/9/25
      */
-    @RequestMapping(value="/register", method=RequestMethod.POST)
+    @RequestMapping(value="/register", method=RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     Result<Object> register(AlgUser user){
         logger.info("用户名:{},用户密码:{},用户邮箱:{}", user.getUsrName(), user.getPasswd(),user.getEmail());
@@ -53,7 +55,8 @@ public class UserController {
      * @Modify By :zhangchuanzhi
      * @date ：8:49 2017/9/27
      */
-    @RequestMapping(value="/login", method=RequestMethod.POST)
+    @PreAuthorize("hasRole('admin')")
+    @RequestMapping(value="/login", method=RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public Result userLogin(AlgUser user) {
         logger.info("用户名:{},用户密码:{}", user.getUsrName(), user.getPasswd());
