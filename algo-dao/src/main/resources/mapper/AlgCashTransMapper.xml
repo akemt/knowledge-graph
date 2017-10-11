@@ -51,54 +51,5 @@
     credit_per_unit, create_time
     from alg_cash_trans
   </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgCashTrans">
-    <id column="tra_sn" jdbcType="VARCHAR" property="traSn" />
-    <result column="usr_sn" jdbcType="VARCHAR" property="usrSn" />
-    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
-    <result column="pay_no" jdbcType="VARCHAR" property="payNo" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="pay_src" jdbcType="VARCHAR" property="paySrc" />
-    <result column="cash_pay_amount" jdbcType="REAL" property="cashPayAmount" />
-    <result column="currency" jdbcType="VARCHAR" property="currency" />
-    <result column="credit_per_unit" jdbcType="REAL" property="creditPerUnit" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from alg_cash_trans
-    where tra_sn = #{traSn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.AlgCashTrans">
-    insert into alg_cash_trans (tra_sn, usr_sn, pay_time, 
-      pay_no, status, pay_src, 
-      cash_pay_amount, currency, credit_per_unit, 
-      create_time)
-    values (#{traSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, 
-      #{payNo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{paySrc,jdbcType=VARCHAR}, 
-      #{cashPayAmount,jdbcType=REAL}, #{currency,jdbcType=VARCHAR}, #{creditPerUnit,jdbcType=REAL}, 
-      #{createTime,jdbcType=TIMESTAMP})
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgCashTrans">
-    update alg_cash_trans
-    set usr_sn = #{usrSn,jdbcType=VARCHAR},
-      pay_time = #{payTime,jdbcType=TIMESTAMP},
-      pay_no = #{payNo,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      pay_src = #{paySrc,jdbcType=VARCHAR},
-      cash_pay_amount = #{cashPayAmount,jdbcType=REAL},
-      currency = #{currency,jdbcType=VARCHAR},
-      credit_per_unit = #{creditPerUnit,jdbcType=REAL},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
-    where tra_sn = #{traSn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select tra_sn, usr_sn, pay_time, pay_no, status, pay_src, cash_pay_amount, currency, 
-    credit_per_unit, create_time
-    from alg_cash_trans
-    where tra_sn = #{traSn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select tra_sn, usr_sn, pay_time, pay_no, status, pay_src, cash_pay_amount, currency, 
-    credit_per_unit, create_time
-    from alg_cash_trans
-  </select>
+
 </mapper>
