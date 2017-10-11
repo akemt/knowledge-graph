@@ -13,4 +13,6 @@ public interface AlgCashHisMapper {
     List<AlgCashHis> selectAll();
 
     int updateByPrimaryKey(AlgCashHis record);
+
+    String selectTotalCash(AlgCashHis  record);
 }
