@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public Result changePassword(User user) {
+    public Result changePassword(UserVo user) {
         // 判断两次输入密码是否一致
          if(!user.getConfirmPassword().equals(user.getNewPassword())){
              String message="两次输入新密码一致";
