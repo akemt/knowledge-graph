@@ -87,27 +87,27 @@ public class UserServiceImpl implements UserService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public Result changePassword(User user) {
+    public Result changePassword(UserVo userVo) {
         // 判断两次输入密码是否一致
-         if(!user.getConfirmPassword().equals(user.getNewPassword())){
+         if(!userVo.getConfirmPassword().equals(userVo.getNewPassword())){
              String message="两次输入新密码一致";
              return Result.failure(message);
          }else{
              // 当两次输入密码一致时候判断输入新密码和原始密码是否一致
-             AlgUser  algUser =algUserMapper.selectByPrimaryKey(user.getUsrSn());
+             AlgUser  algUser =algUserMapper.selectByPrimaryKey(userVo.getUsrSn());
              String passwordEncryp = AESUtil.decrypt(algUser.getPasswd(),projectConfigEntity.getKeyAES());
              // 判断输入原始密码是否是数据库密码
-             if(user.getPasswd().equals(passwordEncryp)){
-                 if(user.getNewPassword().equals(passwordEncryp)){
+             if(userVo.getPasswd().equals(passwordEncryp)){
+                 if(userVo.getNewPassword().equals(passwordEncryp)){
                      String message="原始密码和新密码一致";
                      return Result.failure(message);
                  }
              }
          }
-         String newPassWord=AESUtil.encrypt(user.getNewPassword(),projectConfigEntity.getKeyAES());
-         user.setPasswd(newPassWord);
-         user.setUpdateDate(new Date());
-         algUserMapper.update(user);
+         String newPassWord=AESUtil.encrypt(userVo.getNewPassword(),projectConfigEntity.getKeyAES());
+         userVo.setPasswd(newPassWord);
+         userVo.setUpdateDate(new Date());
+         algUserMapper.update(userVo);
          return  Result.successResponse();
     }
 
@@ -164,10 +164,37 @@ public class UserServiceImpl implements UserService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public UserAccount accountInformation(String accSn) {
+    public UserAccountVo accountInformation(String accSn) {
         AlgAccount algAccount = algAccountMapper.selectByPrimaryKey(accSn);
         logger.info("用户ID:{}",algAccount.getUsrSn());
-        UserAccount userAccount=new UserAccount();
+        UserAccountVo userAccountVo =new UserAccountVo();
+        if(Assert.isNotNULL(algAccount)){
+            AlgCashHis algCashHis=new AlgCashHis();
+            algCashHis.setUsrSn(algAccount.getUsrSn());
+            // 1代表已经体现
+            algCashHis.setStatus("1");
+            String cash= algCashHisMapper.selectTotalCash(algCashHis);
+            userAccountVo.setCashBal(algAccount.getCashBal());
+            userAccountVo.setEarnBal(algAccount.getEarnBal());
+            userAccountVo.setFreeBal(algAccount.getFreeBal());
+            userAccountVo.setUsrSn(algAccount.getUsrSn());
+            userAccountVo.setCash(cash);
+        }
+        return userAccountVo;
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户充值记录
+     * @param：User
+     * @Modify By :zhangchuanzhi
+     * @date ：15:09 2017/10/09
+     */
+/*    @Override
+    public AlgCashTrans payRecord(String usrSn) {
+        AlgAccount algAccount = algAccountMapper.selectByPrimaryKey(accSn);
+        logger.info("用户ID:{}",algAccount.getUsrSn());
+        UserAccountVo userAccount=new UserAccountVo();
         if(Assert.isNotNULL(algAccount)){
             AlgCashHis algCashHis=new AlgCashHis();
             algCashHis.setUsrSn(algAccount.getUsrSn());
@@ -181,6 +208,6 @@ public class UserServiceImpl implements UserService {
             userAccount.setCash(cash);
         }
         return userAccount;
-    }
+    }*/
 }
 

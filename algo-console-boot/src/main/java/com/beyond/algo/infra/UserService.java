@@ -2,8 +2,8 @@ package com.beyond.algo.infra;
 
 import com.beyond.algo.common.Result;
 import com.beyond.algo.model.AlgUser;
-import com.beyond.algo.model.User;
-import com.beyond.algo.model.UserAccount;
+import com.beyond.algo.model.UserVo;
+import com.beyond.algo.model.UserAccountVo;
 
 
 /**
@@ -14,7 +14,8 @@ import com.beyond.algo.model.UserAccount;
 public interface UserService {
     Result createUser(AlgUser user);
     Result userLogin(AlgUser user) throws Exception;
-    Result changePassword(User user);
+    Result changePassword(UserVo userVo);
     Result updateUserInformation(AlgUser user);
-    UserAccount accountInformation(String accSn);
+    UserAccountVo accountInformation(String accSn);
+  /*  AlgCashTrans payRecord(String usrSn);*/
 }
