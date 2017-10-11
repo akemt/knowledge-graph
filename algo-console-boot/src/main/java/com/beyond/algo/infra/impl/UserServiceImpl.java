@@ -184,33 +184,6 @@ public class UserServiceImpl implements UserService {
         return userAccountVo;
     }
 
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:用户充值记录
-     * @param：User
-     * @Modify By :zhangchuanzhi
-     * @date ：15:09 2017/10/09
-     */
-/*    @Override
-    public AlgCashTrans payRecord(String usrSn) {
-        AlgAccount algAccount = algAccountMapper.selectByPrimaryKey(accSn);
-        logger.info("用户ID:{}",algAccount.getUsrSn());
-        UserAccountVo userAccount=new UserAccountVo();
-        if(Assert.isNotNULL(algAccount)){
-            AlgCashHis algCashHis=new AlgCashHis();
-            algCashHis.setUsrSn(algAccount.getUsrSn());
-            // 1代表已经体现
-            algCashHis.setStatus("1");
-            String cash= algCashHisMapper.selectTotalCash(algCashHis);
-            userAccount.setCashBal(algAccount.getCashBal());
-            userAccount.setEarnBal(algAccount.getEarnBal());
-            userAccount.setFreeBal(algAccount.getFreeBal());
-            userAccount.setUsrSn(algAccount.getUsrSn());
-            userAccount.setCash(cash);
-        }
-        return userAccount;
-    }*/
-    }
     public AlgUser findByUsername(String username) throws UsernameNotFoundException{
         AlgUser user = algUserMapper.selectUsrname(username);
         return user;
