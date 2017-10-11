@@ -66,14 +66,6 @@
     </where>
   </sql>
 
-  <sql id="sql_group">
-    <where>
-      1=1
-      <if test="status != null" >
-        and status=#{status,jdbcType=VARCHAR}
-      </if>
-    </where>
-  </sql>
   <select id="selectTotalCash" resultType="java.lang.String" parameterType="com.beyond.algo.model.AlgCashHis" >
     <include refid="sql_sum"/>
     <include refid="sql_where"/>
