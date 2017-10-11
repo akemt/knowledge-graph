@@ -21,6 +21,8 @@ public class AlgCashTrans {
 
     private Float creditPerUnit;
 
+    private String description;
+
     private Date createTime;
 
     public String getTraSn() {
@@ -93,6 +95,14 @@ public class AlgCashTrans {
 
     public void setCreditPerUnit(Float creditPerUnit) {
         this.creditPerUnit = creditPerUnit;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     public Date getCreateTime() {
