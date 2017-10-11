@@ -5,7 +5,7 @@ package com.beyond.algo.model;
  * @Description:
  * @date ：12:35 2017/10/11
  */
-public class UserAccount extends AlgAccount {
+public class UserAccountVo extends AlgAccount {
 
     private String cash;
 
