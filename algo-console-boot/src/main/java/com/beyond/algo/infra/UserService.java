@@ -17,5 +17,5 @@ public interface UserService {
     Result changePassword(UserVo userVo);
     Result updateUserInformation(AlgUser user);
     UserAccountVo accountInformation(String accSn);
-  /*  AlgCashTrans payRecord(String usrSn);*/
+
 }
