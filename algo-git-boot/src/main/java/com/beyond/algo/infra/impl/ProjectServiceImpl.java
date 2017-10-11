@@ -37,7 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
         FileUtil.createDir(projectPath);
 
         // 先将直接拷贝的文件复制到目录下
-        String templatePath = new ClassPathResource("template/project/java").getFile().getPath();
+        String templatePath = new ClassPathResource("templates/project/java").getFile().getPath();
         String[] cloneFileArr = projectConfigModel.getCloneFiles().split(",");
         for (String cloneFileName : cloneFileArr) {
             File srcFile = new File(templatePath + File.separator + cloneFileName);

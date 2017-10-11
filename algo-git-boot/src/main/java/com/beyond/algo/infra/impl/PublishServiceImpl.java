@@ -47,7 +47,7 @@ public class PublishServiceImpl implements PublishService {
         paramMap.put("distFolder", publishConfigModel.getDistFolder());
         paramMap.put("packetName", projectConfigModel.getPackageName());
 
-        String templatePath = new ClassPathResource("template/boot/java").getFile().getPath();
+        String templatePath = new ClassPathResource("templates/boot/java").getFile().getPath();
         // 生成pom.xml文件
         FreemarkerUtil.createFile(templatePath, "pom.xml.ftl", projectPath, "pom.xml", paramMap);
 
