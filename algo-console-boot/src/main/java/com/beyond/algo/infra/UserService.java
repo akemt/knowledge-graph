@@ -3,6 +3,7 @@ package com.beyond.algo.infra;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.model.User;
+import com.beyond.algo.model.UserAccount;
 
 
 /**
@@ -15,4 +16,5 @@ public interface UserService {
     Result userLogin(AlgUser user) throws Exception;
     Result changePassword(User user);
     Result updateUserInformation(AlgUser user);
+    UserAccount accountInformation(String accSn);
 }
