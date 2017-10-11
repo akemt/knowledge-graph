@@ -17,6 +17,7 @@ import com.beyond.algo.infra.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
@@ -87,27 +88,27 @@ public class UserServiceImpl implements UserService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public Result changePassword(UserVo userVo) {
+    public Result changePassword(UserVo user) {
         // 判断两次输入密码是否一致
-         if(!userVo.getConfirmPassword().equals(userVo.getNewPassword())){
+         if(!user.getConfirmPassword().equals(user.getNewPassword())){
              String message="两次输入新密码一致";
              return Result.failure(message);
          }else{
              // 当两次输入密码一致时候判断输入新密码和原始密码是否一致
-             AlgUser  algUser =algUserMapper.selectByPrimaryKey(userVo.getUsrSn());
+             AlgUser  algUser =algUserMapper.selectByPrimaryKey(user.getUsrSn());
              String passwordEncryp = AESUtil.decrypt(algUser.getPasswd(),projectConfigEntity.getKeyAES());
              // 判断输入原始密码是否是数据库密码
-             if(userVo.getPasswd().equals(passwordEncryp)){
-                 if(userVo.getNewPassword().equals(passwordEncryp)){
+             if(user.getPasswd().equals(passwordEncryp)){
+                 if(user.getNewPassword().equals(passwordEncryp)){
                      String message="原始密码和新密码一致";
                      return Result.failure(message);
                  }
              }
          }
-         String newPassWord=AESUtil.encrypt(userVo.getNewPassword(),projectConfigEntity.getKeyAES());
-         userVo.setPasswd(newPassWord);
-         userVo.setUpdateDate(new Date());
-         algUserMapper.update(userVo);
+         String newPassWord=AESUtil.encrypt(user.getNewPassword(),projectConfigEntity.getKeyAES());
+         user.setPasswd(newPassWord);
+         user.setUpdateDate(new Date());
+         algUserMapper.update(user);
          return  Result.successResponse();
     }
 
@@ -209,5 +210,11 @@ public class UserServiceImpl implements UserService {
         }
         return userAccount;
     }*/
+    }
+    public AlgUser findByUsername(String username) throws UsernameNotFoundException{
+        AlgUser user = algUserMapper.selectUsrname(username);
+        return user;
+    }
+
 }
 
