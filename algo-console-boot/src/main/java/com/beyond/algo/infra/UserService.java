@@ -4,6 +4,7 @@ import com.beyond.algo.common.Result;
 import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.model.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import com.beyond.algo.model.UserAccount;
 
 
 /**
@@ -17,4 +18,5 @@ public interface UserService {
     Result changePassword(User user);
     Result updateUserInformation(AlgUser user);
     AlgUser findByUsername(String username) throws UsernameNotFoundException;
+    UserAccount accountInformation(String accSn);
 }

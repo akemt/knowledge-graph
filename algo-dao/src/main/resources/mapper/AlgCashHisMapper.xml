@@ -10,6 +10,7 @@
     <result column="cash" property="cash" jdbcType="REAL" />
     <result column="cust_no" property="custNo" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
     <result column="cash_time" property="cashTime" jdbcType="TIMESTAMP" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -20,12 +21,12 @@
   <insert id="insert" parameterType="com.beyond.algo.model.AlgCashHis" >
     insert into alg_cash_his (tra_sn, usr_sn, cash_src, 
       currency, credit_per_unit, cash, 
-      cust_no, status, cash_time, 
-      create_time)
+      cust_no, status, description, 
+      cash_time, create_time)
     values (#{traSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{cashSrc,jdbcType=VARCHAR}, 
       #{currency,jdbcType=VARCHAR}, #{creditPerUnit,jdbcType=REAL}, #{cash,jdbcType=REAL}, 
-      #{custNo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{cashTime,jdbcType=TIMESTAMP}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{custNo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{cashTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgCashHis" >
     update alg_cash_his
@@ -36,19 +37,46 @@
       cash = #{cash,jdbcType=REAL},
       cust_no = #{custNo,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
       cash_time = #{cashTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where tra_sn = #{traSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select tra_sn, usr_sn, cash_src, currency, credit_per_unit, cash, cust_no, status, 
-    cash_time, create_time
+    description, cash_time, create_time
     from alg_cash_his
     where tra_sn = #{traSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select tra_sn, usr_sn, cash_src, currency, credit_per_unit, cash, cust_no, status, 
-    cash_time, create_time
+    description, cash_time, create_time
     from alg_cash_his
+  </select>
+
+  <sql id="sql_sum">
+    select sum(cash) cash from alg_cash_his
+  </sql>
+  <sql id="sql_where">
+    <where>
+      1=1
+      <if test="status != null" >
+        and status=#{status,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+
+  <sql id="sql_group">
+    <where>
+      1=1
+      <if test="status != null" >
+        and status=#{status,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <select id="selectTotalCash" resultType="java.lang.String" parameterType="com.beyond.algo.model.AlgCashHis" >
+    <include refid="sql_sum"/>
+    <include refid="sql_where"/>
+    GROUP BY usr_sn= #{usrSn,jdbcType=VARCHAR}
   </select>
 </mapper>

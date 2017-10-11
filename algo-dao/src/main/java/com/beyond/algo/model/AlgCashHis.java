@@ -19,6 +19,8 @@ public class AlgCashHis {
 
     private String status;
 
+    private String description;
+
     private Date cashTime;
 
     private Date createTime;
@@ -85,6 +87,14 @@ public class AlgCashHis {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description == null ? null : description.trim();
     }
 
     public Date getCashTime() {

@@ -8,7 +8,7 @@ import lombok.Data;
  * @date ：14:58 2017/10/9
  */
 @Data
-public class User extends AlgUser {
+public class UserVo extends AlgUser {
     String confirmPassword;
     String newPassword;
 }

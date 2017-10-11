@@ -1,11 +1,14 @@
 package com.beyond.algo.controller;
 
+import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
+import com.beyond.algo.model.AlgAccount;
 import com.beyond.algo.model.AlgUser;
 
 import com.beyond.algo.infra.UserService;
 import com.beyond.algo.model.User;
+import com.beyond.algo.model.UserAccount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +114,31 @@ public class UserController {
             return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
     }
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户更新信息
+     * @param：User
+     * @Modify By :zhangchuanzhi
+     * @date ：9:14 2017/10/10
+     */
 
+    @RequestMapping(value="/accountInformation", method=RequestMethod.GET)
+    @ResponseBody
+    public Result accountInformation(String accSn) {
+
+          logger.info("账户主键:{}",accSn);
+        UserAccount algAccount = null;
+        try {
+            algAccount = userService.accountInformation(accSn);
+            if(Assert.isNotNULL(algAccount)){
+                return  Result.ok(algAccount);
+            }else{
+                return Result.failureResponse();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+        }
+    }
 
 }

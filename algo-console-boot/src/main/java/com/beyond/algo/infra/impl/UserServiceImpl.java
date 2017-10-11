@@ -7,13 +7,13 @@ package com.beyond.algo.infra.impl;
  */
 
 import com.beyond.algo.common.*;
+import com.beyond.algo.mapper.AlgAccountMapper;
+import com.beyond.algo.mapper.AlgCashHisMapper;
 import com.beyond.algo.mapper.AlgUserMapper;
-import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.model.*;
 
 import com.beyond.algo.infra.UserService;
 
-import com.beyond.algo.model.ProjectConfigEntity;
-import com.beyond.algo.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ProjectConfigEntity projectConfigEntity;
+
+    @Autowired
+    private AlgAccountMapper algAccountMapper;
+
+    @Autowired
+    private AlgCashHisMapper algCashHisMapper;
 /**
  * @author ：zhangchuanzhi
  * @Description:实现用户注册功能
@@ -148,6 +154,34 @@ public class UserServiceImpl implements UserService {
         user.setUpdateDate(new Date());
         algUserMapper.update(user);
         return  Result.successResponse();
+    }
+
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:实现用户修改密码
+     * @param：User
+     * @Modify By :zhangchuanzhi
+     * @date ：15:09 2017/10/09
+     */
+    @Override
+    public UserAccount accountInformation(String accSn) {
+        AlgAccount algAccount = algAccountMapper.selectByPrimaryKey(accSn);
+        logger.info("用户ID:{}",algAccount.getUsrSn());
+        UserAccount userAccount=new UserAccount();
+        if(Assert.isNotNULL(algAccount)){
+            AlgCashHis algCashHis=new AlgCashHis();
+            algCashHis.setUsrSn(algAccount.getUsrSn());
+            // 1代表已经体现
+            algCashHis.setStatus("1");
+            String cash= algCashHisMapper.selectTotalCash(algCashHis);
+            userAccount.setCashBal(algAccount.getCashBal());
+            userAccount.setEarnBal(algAccount.getEarnBal());
+            userAccount.setFreeBal(algAccount.getFreeBal());
+            userAccount.setUsrSn(algAccount.getUsrSn());
+            userAccount.setCash(cash);
+        }
+        return userAccount;
     }
     public AlgUser findByUsername(String username) throws UsernameNotFoundException{
         AlgUser user = algUserMapper.selectUsrname(username);
