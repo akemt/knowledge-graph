@@ -3,12 +3,11 @@ package com.beyond.algo.controller;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
-import com.beyond.algo.model.AlgAccount;
 import com.beyond.algo.model.AlgUser;
 
 import com.beyond.algo.infra.UserService;
-import com.beyond.algo.model.User;
-import com.beyond.algo.model.UserAccount;
+import com.beyond.algo.model.UserVo;
+import com.beyond.algo.model.UserAccountVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,10 +81,10 @@ public class UserController {
      */
    @RequestMapping(value="/changePassword", method=RequestMethod.POST)
     @ResponseBody
-    public Result changePassword(User user) {
-       logger.info("用户唯一值:{},用户密码:{},用户确认密码:{},用户新密码:{}", user.getUsrSn(), user.getPasswd(),user.getConfirmPassword(),user.getNewPassword());
+    public Result changePassword(UserVo userVo) {
+       logger.info("用户唯一值:{},用户密码:{},用户确认密码:{},用户新密码:{}", userVo.getUsrSn(), userVo.getPasswd(), userVo.getConfirmPassword(), userVo.getNewPassword());
         try {
-            Result result = userService.changePassword(user);
+            Result result = userService.changePassword(userVo);
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,7 +116,7 @@ public class UserController {
     /**
      * @author ：zhangchuanzhi
      * @Description:用户更新信息
-     * @param：User
+     * @param：accSn
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/10/10
      */
@@ -127,7 +126,7 @@ public class UserController {
     public Result accountInformation(String accSn) {
 
           logger.info("账户主键:{}",accSn);
-        UserAccount algAccount = null;
+        UserAccountVo algAccount = null;
         try {
             algAccount = userService.accountInformation(accSn);
             if(Assert.isNotNULL(algAccount)){
@@ -140,5 +139,32 @@ public class UserController {
             return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
     }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户充值记录
+     * @param：User
+     * @Modify By :zhangchuanzhi
+     * @date ：14:07 2017/10/11
+     */
+
+/*    @RequestMapping(value="/payRecord", method=RequestMethod.GET)
+    @ResponseBody
+    public Result payRecord(String accSn) {
+
+        logger.info("账户主键:{}",accSn);
+        UserAccountVo algAccount = null;
+        try {
+            algAccount = userService.accountInformation(accSn);
+            if(Assert.isNotNULL(algAccount)){
+                return  Result.ok(algAccount);
+            }else{
+                return Result.failureResponse();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+        }
+    }*/
 
 }

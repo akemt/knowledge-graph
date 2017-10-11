@@ -165,10 +165,37 @@ public class UserServiceImpl implements UserService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public UserAccount accountInformation(String accSn) {
+    public UserAccountVo accountInformation(String accSn) {
         AlgAccount algAccount = algAccountMapper.selectByPrimaryKey(accSn);
         logger.info("用户ID:{}",algAccount.getUsrSn());
-        UserAccount userAccount=new UserAccount();
+        UserAccountVo userAccountVo =new UserAccountVo();
+        if(Assert.isNotNULL(algAccount)){
+            AlgCashHis algCashHis=new AlgCashHis();
+            algCashHis.setUsrSn(algAccount.getUsrSn());
+            // 1代表已经体现
+            algCashHis.setStatus("1");
+            String cash= algCashHisMapper.selectTotalCash(algCashHis);
+            userAccountVo.setCashBal(algAccount.getCashBal());
+            userAccountVo.setEarnBal(algAccount.getEarnBal());
+            userAccountVo.setFreeBal(algAccount.getFreeBal());
+            userAccountVo.setUsrSn(algAccount.getUsrSn());
+            userAccountVo.setCash(cash);
+        }
+        return userAccountVo;
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户充值记录
+     * @param：User
+     * @Modify By :zhangchuanzhi
+     * @date ：15:09 2017/10/09
+     */
+/*    @Override
+    public AlgCashTrans payRecord(String usrSn) {
+        AlgAccount algAccount = algAccountMapper.selectByPrimaryKey(accSn);
+        logger.info("用户ID:{}",algAccount.getUsrSn());
+        UserAccountVo userAccount=new UserAccountVo();
         if(Assert.isNotNULL(algAccount)){
             AlgCashHis algCashHis=new AlgCashHis();
             algCashHis.setUsrSn(algAccount.getUsrSn());
@@ -182,6 +209,7 @@ public class UserServiceImpl implements UserService {
             userAccount.setCash(cash);
         }
         return userAccount;
+    }*/
     }
     public AlgUser findByUsername(String username) throws UsernameNotFoundException{
         AlgUser user = algUserMapper.selectUsrname(username);
