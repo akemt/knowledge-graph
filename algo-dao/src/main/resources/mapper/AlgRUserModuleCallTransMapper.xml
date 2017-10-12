@@ -13,6 +13,10 @@
     <result column="call_pay_amount" property="callPayAmount" jdbcType="REAL" />
     <result column="mod_call_cnt" property="modCallCnt" jdbcType="BIGINT" />
   </resultMap>
+  <resultMap id="queryForListMap" type="com.beyond.algo.vo.AlgRUserModuleCallTransVo"  extends="BaseResultMap">
+    <result column="mod_name" jdbcType="INTEGER" property="modName" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from alg_r_user_module_call_trans
     where umc_sn = #{umcSn,jdbcType=VARCHAR}
@@ -56,11 +60,12 @@
      billed_call_cnt, call_pay_amount, mod_call_cnt
      from alg_r_user_module_call_trans
   </sql>
-  <select id="selectAlgorithmRecord" resultMap="BaseResultMap" parameterType="java.lang.String"  >
-     select callTran.umc_sn, callTran.ver_sn, callTran.call_usr_sn, callTran.owner_usr_sn, callTran.start_time, callTran.end_time, callTran.duration,
+  <select id="selectAlgorithmRecord" resultMap="queryForListMap" parameterType="java.lang.String"  >
+     select callTran.umc_sn, callTran.ver_sn, callTran.call_usr_sn, callTran.owner_usr_sn, date_format(callTran.start_time,'%Y-%c-%d %h:%i:%s') create_time, callTran.end_time, callTran.duration,
      callTran.billed_call_cnt, callTran.call_pay_amount, callTran.mod_call_cnt,alg_module.mod_name
      from alg_r_user_module_call_trans callTran left join  alg_module_version version on callTran.ver_sn=version.ver_sn left join alg_module alg_module on version.mod_sn =alg_module.mod_sn
      where callTran.call_usr_sn =#{callUsrSn,jdbcType=VARCHAR}
+     order by callTran.start_time desc
   </select>
 
 </mapper>

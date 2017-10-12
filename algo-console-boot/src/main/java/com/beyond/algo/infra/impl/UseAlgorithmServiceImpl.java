@@ -18,6 +18,7 @@ import com.beyond.algo.mapper.AlgRUserModuleCallTransMapper;
 import com.beyond.algo.model.AlgCashTrans;
 import com.beyond.algo.model.AlgRUserModuleCallTrans;
 import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,12 +45,8 @@ public class UseAlgorithmServiceImpl implements UseAlgorithmService {
     public List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo){
         //分页处理
         PageHelper.startPage(algRUserModuleCallTransVo.getPage(), algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTrans> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo.getCallUsrSn());
-        if(Assert.isNotEmpty(lgRUserModuleCallTransList)){
-            for(int i=0;i<lgRUserModuleCallTransList.size();i++){
+        List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo.getCallUsrSn());
 
-            }
-        }
         return lgRUserModuleCallTransList;
     }
 }

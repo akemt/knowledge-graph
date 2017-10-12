@@ -1,6 +1,8 @@
 package com.beyond.algo.mapper;
 
 import com.beyond.algo.model.AlgRUserModuleCallTrans;
+import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
+
 import java.util.List;
 
 public interface AlgRUserModuleCallTransMapper {
@@ -14,5 +16,5 @@ public interface AlgRUserModuleCallTransMapper {
 
     int updateByPrimaryKey(AlgRUserModuleCallTrans record);
 
-    List<AlgRUserModuleCallTrans> selectAlgorithmRecord(String callUsrSn);
+    List<AlgRUserModuleCallTransVo> selectAlgorithmRecord(String callUsrSn);
 }

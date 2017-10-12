@@ -4,6 +4,7 @@ import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.infra.UseAlgorithmService;
 import com.beyond.algo.model.AlgCashTrans;
+import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class ContentController {
     public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
         logger.info("用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
         List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo);
+        System.out.println(algRUserModuleCallTransList.get(0).getCreateTime());
         if(Assert.isNotEmpty(algRUserModuleCallTransList)){
             return Result.ok(algRUserModuleCallTransList);
         }else{

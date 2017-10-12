@@ -1,5 +1,9 @@
 package com.beyond.algo.infra;
 
+import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
+
+import java.util.List;
+
 /**
  * @author ：zhangchuanzhi
  * @Description:用户使用算法情况
