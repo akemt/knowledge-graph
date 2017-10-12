@@ -10,5 +10,5 @@ import java.util.List;
  * @date ：12:56 2017/10/12
  */
 public interface UseAlgorithmService {
-  /* List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo);*/
+   List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo);
 }

@@ -24,16 +24,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/content")
 public class ContentController {
- /*   private final static Logger logger = LoggerFactory.getLogger(ContentController.class);
+    private final static Logger logger = LoggerFactory.getLogger(ContentController.class);
     @Autowired
     private UseAlgorithmService useAlgorithmService;
-    *//**
+    /**
      * @author ：zhangchuanzhi
      * @Description:用户使用情况
      * @param：AlgRUserModuleCallTransVo
      * @Modify By :zhangchuanzhi
      * @date ：14:07 2017/10/11
-     *//*
+     */
     @RequestMapping(value="/algorithmRecord", method= RequestMethod.POST)
     @ResponseBody
     public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
@@ -44,5 +44,5 @@ public class ContentController {
         }else{
             return Result.failure(algRUserModuleCallTransList);
         }
-    }*/
+    }
 }

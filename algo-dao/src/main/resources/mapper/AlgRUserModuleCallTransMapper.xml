@@ -57,8 +57,10 @@
      from alg_r_user_module_call_trans
   </sql>
   <select id="selectAlgorithmRecord" resultMap="BaseResultMap" parameterType="java.lang.String"  >
-     <include refid="alg_r_user_module_call_trans"/>
-     where call_usr_sn = #{callUsrSn,jdbcType=VARCHAR}
+     select callTran.umc_sn, callTran.ver_sn, callTran.call_usr_sn, callTran.owner_usr_sn, callTran.start_time, callTran.end_time, callTran.duration,
+     callTran.billed_call_cnt, callTran.call_pay_amount, callTran.mod_call_cnt,alg_module.mod_name
+     from alg_r_user_module_call_trans callTran left join  alg_module_version version on callTran.ver_sn=version.ver_sn left join alg_module alg_module on version.mod_sn =alg_module.mod_sn
+     where callTran.call_usr_sn =#{callUsrSn,jdbcType=VARCHAR}
   </select>
 
 </mapper>

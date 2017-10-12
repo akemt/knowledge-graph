@@ -31,16 +31,16 @@ import java.util.List;
 
 @Service
 public class UseAlgorithmServiceImpl implements UseAlgorithmService {
- /*   private final static Logger logger = LoggerFactory.getLogger(UseAlgorithmServiceImpl.class);
+    private final static Logger logger = LoggerFactory.getLogger(UseAlgorithmServiceImpl.class);
     @Autowired
     private AlgRUserModuleCallTransMapper algRUserModuleCallTransMapper;
-    *//**
+    /**
      * @author ：zhangchuanzhi
      * @Description:用户使用算法情况
      * @param：User
      * @Modify By :zhangchuanzhi
      * @date ：13:16 2017/10/12
-     *//*
+     */
     @Override
     public List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo){
         //分页处理
@@ -52,6 +52,6 @@ public class UseAlgorithmServiceImpl implements UseAlgorithmService {
             }
         }
         return lgRUserModuleCallTransList;
-    }*/
+    }
 }
 
