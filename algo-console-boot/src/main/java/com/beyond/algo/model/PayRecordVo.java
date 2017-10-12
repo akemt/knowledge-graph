@@ -12,6 +12,7 @@ public class PayRecordVo extends AlgCashTrans {
     // 积分
     private int integral;
 
+    private int total;
     public int getPage() {
         return page;
     }
@@ -34,5 +35,13 @@ public class PayRecordVo extends AlgCashTrans {
 
     public void setIntegral(int integral) {
         this.integral = integral;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 }
