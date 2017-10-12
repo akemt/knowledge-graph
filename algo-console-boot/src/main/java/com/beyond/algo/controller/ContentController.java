@@ -4,8 +4,7 @@ import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.infra.UseAlgorithmService;
 import com.beyond.algo.model.AlgCashTrans;
-import com.beyond.algo.model.AlgRUserModuleCallTransVo;
-import com.beyond.algo.model.PayRecordVo;
+import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,25 +23,26 @@ import java.util.List;
 @RestController
 @RequestMapping("/content")
 public class ContentController {
- /*   private final static Logger logger = LoggerFactory.getLogger(ContentController.class);
+    private final static Logger logger = LoggerFactory.getLogger(ContentController.class);
     @Autowired
     private UseAlgorithmService useAlgorithmService;
-    *//**
+    /**
      * @author ：zhangchuanzhi
      * @Description:用户使用情况
      * @param：AlgRUserModuleCallTransVo
      * @Modify By :zhangchuanzhi
      * @date ：14:07 2017/10/11
-     *//*
+     */
     @RequestMapping(value="/algorithmRecord", method= RequestMethod.POST)
     @ResponseBody
     public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
         logger.info("用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
         List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo);
+        System.out.println(algRUserModuleCallTransList.get(0).getCreateTime());
         if(Assert.isNotEmpty(algRUserModuleCallTransList)){
             return Result.ok(algRUserModuleCallTransList);
         }else{
             return Result.failure(algRUserModuleCallTransList);
         }
-    }*/
+    }
 }

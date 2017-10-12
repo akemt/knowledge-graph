@@ -1,4 +1,6 @@
-package com.beyond.algo.model;
+package com.beyond.algo.vo;
+
+import com.beyond.algo.model.AlgRUserModuleCallTrans;
 
 /**
  * @author ：zhangchuanzhi
@@ -9,7 +11,8 @@ public class AlgRUserModuleCallTransVo extends AlgRUserModuleCallTrans {
     private int page;
     private int rows;
     private int total;
-
+    private String modName;
+    private String createTime;
     public int getPage() {
         return page;
     }
@@ -34,4 +37,19 @@ public class AlgRUserModuleCallTransVo extends AlgRUserModuleCallTrans {
         this.total = total;
     }
 
+    public String getModName() {
+        return modName;
+    }
+
+    public void setModName(String modName) {
+        this.modName = modName;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
 }

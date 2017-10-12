@@ -15,7 +15,7 @@
     <result column="cash_time" jdbcType="TIMESTAMP" property="cashTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
-  <resultMap id="queryForListMap" type="com.beyond.algo.model.PayRecordVo"  extends="BaseResultMap">
+  <resultMap id="queryForListMap" type="com.beyond.algo.vo.PayRecordVo"  extends="BaseResultMap">
     <result column="integral" jdbcType="INTEGER" property="integral" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

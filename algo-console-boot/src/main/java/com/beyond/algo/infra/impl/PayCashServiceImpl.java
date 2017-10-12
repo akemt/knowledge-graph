@@ -10,6 +10,7 @@ import com.beyond.algo.infra.PayCashService;
 import com.beyond.algo.mapper.AlgCashTransMapper;
 
 import com.beyond.algo.model.*;
+import com.beyond.algo.vo.PayRecordVo;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

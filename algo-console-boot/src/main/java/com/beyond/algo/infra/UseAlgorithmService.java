@@ -1,6 +1,6 @@
 package com.beyond.algo.infra;
 
-import com.beyond.algo.model.AlgRUserModuleCallTransVo;
+import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import java.util.List;
  * @date ：12:56 2017/10/12
  */
 public interface UseAlgorithmService {
-  /* List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo);*/
+   List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo);
 }

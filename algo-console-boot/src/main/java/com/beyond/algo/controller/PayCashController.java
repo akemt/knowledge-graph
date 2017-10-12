@@ -4,8 +4,7 @@ import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.infra.PayCashService;
 import com.beyond.algo.model.AlgCashTrans;
-import com.beyond.algo.model.PayRecordVo;
-
+import com.beyond.algo.vo.PayRecordVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

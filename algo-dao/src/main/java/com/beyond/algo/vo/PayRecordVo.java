@@ -1,4 +1,6 @@
-package com.beyond.algo.model;
+package com.beyond.algo.vo;
+
+import com.beyond.algo.model.AlgCashTrans;
 
 /**
  * @author ：zhangchuanzhi
