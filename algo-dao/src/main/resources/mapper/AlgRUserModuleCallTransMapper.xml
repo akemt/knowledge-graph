@@ -51,4 +51,14 @@
     billed_call_cnt, call_pay_amount, mod_call_cnt
     from alg_r_user_module_call_trans
   </select>
+  <sql id="alg_r_user_module_call_trans">
+     select umc_sn, ver_sn, call_usr_sn, owner_usr_sn, start_time, end_time, duration,
+     billed_call_cnt, call_pay_amount, mod_call_cnt
+     from alg_r_user_module_call_trans
+  </sql>
+  <select id="selectAlgorithmRecord" resultMap="BaseResultMap" parameterType="java.lang.String"  >
+     <include refid="alg_r_user_module_call_trans"/>
+     where call_usr_sn = #{callUsrSn,jdbcType=VARCHAR}
+  </select>
+
 </mapper>
