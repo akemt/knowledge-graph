@@ -36,7 +36,7 @@ public class UserControllerTests {
 
 		String result = this.mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
 				.param("usrName","qihe")
-				.param("passwd","12345678")
+				.param("passwd","123456")
 				.param("email","test@qq.com"))
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
 		System.out.println(result);
