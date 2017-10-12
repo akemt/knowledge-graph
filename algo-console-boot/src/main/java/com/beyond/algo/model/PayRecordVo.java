@@ -7,18 +7,10 @@ package com.beyond.algo.model;
  */
 public class PayRecordVo extends AlgCashTrans {
 
-    private String usrSn;
     private int page;
     private int rows;
     // 积分
     private int integral;
-    public String getUsrSn() {
-        return usrSn;
-    }
-
-    public void setUsrSn(String usrSn) {
-        this.usrSn = usrSn;
-    }
 
     public int getPage() {
         return page;
