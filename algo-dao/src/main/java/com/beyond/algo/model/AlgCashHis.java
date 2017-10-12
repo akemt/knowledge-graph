@@ -7,6 +7,8 @@ public class AlgCashHis {
 
     private String usrSn;
 
+    private String orderId;
+
     private String cashSrc;
 
     private String currency;
@@ -39,6 +41,14 @@ public class AlgCashHis {
 
     public void setUsrSn(String usrSn) {
         this.usrSn = usrSn == null ? null : usrSn.trim();
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId == null ? null : orderId.trim();
     }
 
     public String getCashSrc() {

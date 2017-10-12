@@ -7,6 +7,8 @@ public class AlgCashTrans {
 
     private String usrSn;
 
+    private String orderId;
+
     private Date payTime;
 
     private String payNo;
@@ -39,6 +41,14 @@ public class AlgCashTrans {
 
     public void setUsrSn(String usrSn) {
         this.usrSn = usrSn == null ? null : usrSn.trim();
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId == null ? null : orderId.trim();
     }
 
     public Date getPayTime() {
