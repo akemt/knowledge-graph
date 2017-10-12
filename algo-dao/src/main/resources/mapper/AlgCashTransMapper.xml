@@ -53,4 +53,11 @@
     credit_per_unit, description, create_time
     from alg_cash_trans
   </select>
+
+  <select id="payRecord" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select tra_sn, usr_sn, pay_time, pay_no, status, pay_src, cash_pay_amount, currency,
+    credit_per_unit, description, create_time
+    from alg_cash_trans
+    where  usr_sn = #{usrSn,jdbcType=VARCHAR}
+  </select>
 </mapper>

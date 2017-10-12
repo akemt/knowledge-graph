@@ -13,4 +13,6 @@ public interface AlgCashTransMapper {
     List<AlgCashTrans> selectAll();
 
     int updateByPrimaryKey(AlgCashTrans record);
+
+    List<AlgCashTrans>  payRecord(String usrSn );
 }
