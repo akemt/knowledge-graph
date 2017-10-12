@@ -1,18 +1,17 @@
-package com.beyond.algo.model;
+package com.beyond.algo.vo;
+
+import com.beyond.algo.model.AlgRUserModuleCallTrans;
 
 /**
  * @author ：zhangchuanzhi
- * @Description:充值记录
- * @date ：10:43 2017/10/12
+ * @Description:用户调用查询
+ * @date ：13:04 2017/10/12
  */
-public class PayRecordVo extends AlgCashTrans {
-
+public class AlgRUserModuleCallTransVo extends AlgRUserModuleCallTrans {
     private int page;
     private int rows;
-    // 积分
-    private int integral;
-
     private int total;
+
     public int getPage() {
         return page;
     }
@@ -29,14 +28,6 @@ public class PayRecordVo extends AlgCashTrans {
         this.rows = rows;
     }
 
-    public int getIntegral() {
-        return integral;
-    }
-
-    public void setIntegral(int integral) {
-        this.integral = integral;
-    }
-
     public int getTotal() {
         return total;
     }
@@ -44,4 +35,5 @@ public class PayRecordVo extends AlgCashTrans {
     public void setTotal(int total) {
         this.total = total;
     }
+
 }

@@ -14,6 +14,8 @@ import com.beyond.algo.model.*;
 
 import com.beyond.algo.infra.UserService;
 
+import com.beyond.algo.vo.UserAccountVo;
+import com.beyond.algo.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
