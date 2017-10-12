@@ -9,7 +9,7 @@ import com.beyond.algo.model.AlgAuthCodeDomain;
  * @Description:接口定义
  * @version Created in：2017/9/28 0028 上午 10:59
  */
-public interface AuthCodeDomainServer {
+public interface AuthCodeDomainService {
     Result createAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain);
     Result deleteAuthCodeDomain(String addSn_id);
     Result updataAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain);

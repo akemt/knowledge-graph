@@ -2,7 +2,7 @@ package com.beyond.algo.infra.impl;
 
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.UUIDUtil;
-import com.beyond.algo.infra.AuthCodeDomainServer;
+import com.beyond.algo.infra.AuthCodeDomainService;
 import com.beyond.algo.mapper.AlgAuthCodeDomainMapper;
 import com.beyond.algo.model.AlgAuthCodeDomain;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.List;
  * @version Created in：2017/9/29 0029 下午 4:54
  */
 @Service
-public class AuthCodeDomainServerImpl implements AuthCodeDomainServer {
+public class AuthCodeDomainServiceImpl implements AuthCodeDomainService {
 
     @Autowired
     private AlgAuthCodeDomainMapper algAuthCodeDomainMapper;

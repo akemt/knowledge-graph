@@ -1,7 +1,7 @@
 package com.beyond.algo.controller;
 
 import com.beyond.algo.common.Result;
-import com.beyond.algo.infra.AuthCodeDomainServer;
+import com.beyond.algo.infra.AuthCodeDomainService;
 import com.beyond.algo.model.AlgAuthCodeDomain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,37 +22,37 @@ public class AuthCodeDomainController {
     private final static Logger logger = LoggerFactory.getLogger(AuthCodeDomainController.class);
 
     @Autowired
-    private AuthCodeDomainServer authCodeDomainServer;
+    private AuthCodeDomainService authCodeDomainService;
 
     @RequestMapping("/list")
     public Result list(){
-        Result result = authCodeDomainServer.selectAll();
+        Result result = authCodeDomainService.selectAll();
         return result;
     }
     @RequestMapping("/create")
     public Result create(AlgAuthCodeDomain algAuthCodeDomain){
         logger.info("Url:{}",algAuthCodeDomain.getAddUrl());
-        Result result = authCodeDomainServer.createAuthCodeDomain(algAuthCodeDomain);
+        Result result = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomain);
         return result;
     }
 
     @RequestMapping(value = "/delete/{addSn_id}" , method = RequestMethod.GET)
     public Result delete(@PathVariable("addSn_id") String addSn_id){
         logger.info("主键:{}",addSn_id);
-        Result result = authCodeDomainServer.deleteAuthCodeDomain(addSn_id);
+        Result result = authCodeDomainService.deleteAuthCodeDomain(addSn_id);
         return result;
     }
 
     @RequestMapping("/update")
     public Result update(AlgAuthCodeDomain algAuthCodeDomain){
         logger.info("Url:{}",algAuthCodeDomain.getAddSn());
-        Result result = authCodeDomainServer.updataAuthCodeDomain(algAuthCodeDomain);
+        Result result = authCodeDomainService.updataAuthCodeDomain(algAuthCodeDomain);
         return result;
     }
     @RequestMapping(value= "/select/{addSn_id}" , method = RequestMethod.GET)
     public Result select( @PathVariable("addSn_id") String addSn_id){
         logger.info("主键:{}",addSn_id);
-        Result result = authCodeDomainServer.selectAuthCodeDomain(addSn_id);
+        Result result = authCodeDomainService.selectAuthCodeDomain(addSn_id);
         return result;
     }
 
