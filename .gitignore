@@ -4,6 +4,7 @@
 
 # IntelliJ project files
 .idea
+algoplat-web.iml
 *.iml
 /*/.iml
 *.ipr
