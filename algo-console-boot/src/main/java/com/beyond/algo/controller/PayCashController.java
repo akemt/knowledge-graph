@@ -2,12 +2,10 @@ package com.beyond.algo.controller;
 
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
-import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.infra.PayCashService;
-import com.beyond.algo.infra.UserService;
 import com.beyond.algo.model.AlgCashTrans;
 import com.beyond.algo.model.PayRecordVo;
-import com.beyond.algo.model.UserAccountVo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,7 @@ public class PayCashController {
     /**
      * @author ：zhangchuanzhi
      * @Description:用户充值记录
-     * @param：User
+     * @param：PayRecordVo
      * @Modify By :zhangchuanzhi
      * @date ：14:07 2017/10/11
      */
@@ -47,6 +45,5 @@ public class PayCashController {
         }else{
             return Result.failure(algCashTransList);
         }
-
     }
 }
