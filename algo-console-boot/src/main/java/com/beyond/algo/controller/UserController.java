@@ -140,31 +140,5 @@ public class UserController {
         }
     }
 
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:用户充值记录
-     * @param：User
-     * @Modify By :zhangchuanzhi
-     * @date ：14:07 2017/10/11
-     */
-
-/*    @RequestMapping(value="/payRecord", method=RequestMethod.GET)
-    @ResponseBody
-    public Result payRecord(String accSn) {
-
-        logger.info("账户主键:{}",accSn);
-        UserAccountVo algAccount = null;
-        try {
-            algAccount = userService.accountInformation(accSn);
-            if(Assert.isNotNULL(algAccount)){
-                return  Result.ok(algAccount);
-            }else{
-                return Result.failureResponse();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
-        }
-    }*/
 
 }
