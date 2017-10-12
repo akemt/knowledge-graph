@@ -1,7 +1,7 @@
 package com.beyond.algo.infra;
 
-import com.beyond.algo.common.Result;
 import com.beyond.algo.model.*;
+import com.beyond.algo.vo.PayRecordVo;
 
 import java.util.List;
 

@@ -17,7 +17,6 @@ import com.beyond.algo.mapper.AlgCashHisMapper;
 import com.beyond.algo.mapper.AlgRUserModuleCallTransMapper;
 import com.beyond.algo.model.AlgCashTrans;
 import com.beyond.algo.model.AlgRUserModuleCallTrans;
-import com.beyond.algo.model.AlgRUserModuleCallTransVo;
 import com.beyond.algo.model.AlgUser;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;

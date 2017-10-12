@@ -2,8 +2,8 @@ package com.beyond.algo.infra;
 
 import com.beyond.algo.common.Result;
 import com.beyond.algo.model.AlgUser;
-import com.beyond.algo.model.UserVo;
-import com.beyond.algo.model.UserAccountVo;
+import com.beyond.algo.vo.UserAccountVo;
+import com.beyond.algo.vo.UserVo;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
