@@ -1,10 +1,7 @@
 package com.beyond.algo.infra;
 
 import com.beyond.algo.common.Result;
-import com.beyond.algo.model.AlgCashTrans;
-import com.beyond.algo.model.AlgUser;
-import com.beyond.algo.model.UserAccountVo;
-import com.beyond.algo.model.UserVo;
+import com.beyond.algo.model.*;
 
 import java.util.List;
 
@@ -15,5 +12,5 @@ import java.util.List;
  * @date ：13:32 2017/9/25
  */
 public interface PayCashService {
-      List<AlgCashTrans> payRecord(String usrSn);
+      List<AlgCashTrans> payRecord(PayRecordVo payRecordVo);
 }

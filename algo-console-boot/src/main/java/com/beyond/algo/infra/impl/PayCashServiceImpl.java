@@ -34,12 +34,10 @@ public class PayCashServiceImpl implements PayCashService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public List<AlgCashTrans> payRecord(String usrSn) {
+    public List<AlgCashTrans> payRecord(PayRecordVo payRecordVo) {
        //分页处理
-        int page=0;
-        int rows=2;
-        PageHelper.startPage(page, rows);
-        List<AlgCashTrans> algCashTransList=algCashTransMapper.payRecord(usrSn);
+        PageHelper.startPage(payRecordVo.getPage(), payRecordVo.getRows());
+        List<AlgCashTrans> algCashTransList=algCashTransMapper.payRecord(payRecordVo.getUsrSn());
         return algCashTransList;
     }
 }

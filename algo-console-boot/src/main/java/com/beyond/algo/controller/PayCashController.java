@@ -6,6 +6,7 @@ import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.infra.PayCashService;
 import com.beyond.algo.infra.UserService;
 import com.beyond.algo.model.AlgCashTrans;
+import com.beyond.algo.model.PayRecordVo;
 import com.beyond.algo.model.UserAccountVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +37,16 @@ public class PayCashController {
      * @Modify By :zhangchuanzhi
      * @date ：14:07 2017/10/11
      */
-    @RequestMapping(value="/payRecord", method= RequestMethod.GET)
+    @RequestMapping(value="/payRecord", method= RequestMethod.POST)
     @ResponseBody
-    public Result payRecord(String accSn) {
+    public Result payRecord(PayRecordVo payRecordVo) {
+        logger.info("用户id:{},Page:{},Row:{}",payRecordVo.getUsrSn(),payRecordVo.getPage(),payRecordVo.getRows());
+        List<AlgCashTrans> algCashTransList= payCashService.payRecord(payRecordVo);
+        if(Assert.isNotEmpty(algCashTransList)){
+            return Result.ok(algCashTransList);
+        }else{
+            return Result.failure(algCashTransList);
+        }
 
-        logger.info("账户主键:{}",accSn);
-        List<AlgCashTrans> algCashTransList= payCashService.payRecord(accSn);
-        return Result.ok(algCashTransList);
     }
 }

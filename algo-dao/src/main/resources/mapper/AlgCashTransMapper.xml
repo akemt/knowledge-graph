@@ -15,6 +15,10 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  <resultMap id="queryForListMap" type="com.beyond.algo.model.PayRecordVo"  extends="BaseResultMap">
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+  </resultMap>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from alg_cash_trans
     where tra_sn = #{traSn,jdbcType=VARCHAR}
@@ -53,14 +57,18 @@
     where tra_sn = #{traSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select tra_sn, usr_sn, order_id, pay_time, pay_no, status, pay_src, cash_pay_amount, 
-    currency, credit_per_unit, description, create_time
-    from alg_cash_trans
+
   </select>
-  <select id="payRecord" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select tra_sn, usr_sn, pay_time, pay_no, status, pay_src, cash_pay_amount, currency,
-    credit_per_unit, description, create_time
+  <sql id="alg_cash_trans">
+    select tra_sn, usr_sn, order_id, pay_time, pay_no, status, pay_src, cash_pay_amount,
+      currency, credit_per_unit, description, create_time
     from alg_cash_trans
-    where  usr_sn = #{usrSn,jdbcType=VARCHAR}
+  </sql>
+  <select id="payRecord" resultMap="queryForListMap" parameterType="java.lang.String" >
+    select tra_sn, usr_sn, order_id, pay_time, pay_no, status, pay_src, cash_pay_amount,
+    currency, credit_per_unit,credit_per_unit*cash_pay_amount integral,credit_per_unit, description, create_time
+    from alg_cash_trans
+    where usr_sn = #{usr_sn,jdbcType=VARCHAR}
+    order by create_time desc
   </select>
 </mapper>
