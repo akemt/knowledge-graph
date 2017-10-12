@@ -3,6 +3,8 @@ package com.beyond.algo.controller;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.infra.AuthCodeDomainServer;
 import com.beyond.algo.model.AlgAuthCodeDomain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/authcodedomain")
 public class AuthCodeDomainController {
+    private final static Logger logger = LoggerFactory.getLogger(AuthCodeDomainController.class);
 
     @Autowired
     private AuthCodeDomainServer authCodeDomainServer;
@@ -28,23 +31,27 @@ public class AuthCodeDomainController {
     }
     @RequestMapping("/create")
     public Result create(AlgAuthCodeDomain algAuthCodeDomain){
+        logger.info("Url:{}",algAuthCodeDomain.getAddUrl());
         Result result = authCodeDomainServer.createAuthCodeDomain(algAuthCodeDomain);
         return result;
     }
 
     @RequestMapping(value = "/delete/{addSn_id}" , method = RequestMethod.GET)
     public Result delete(@PathVariable("addSn_id") String addSn_id){
+        logger.info("主键:{}",addSn_id);
         Result result = authCodeDomainServer.deleteAuthCodeDomain(addSn_id);
         return result;
     }
 
     @RequestMapping("/update")
     public Result update(AlgAuthCodeDomain algAuthCodeDomain){
+        logger.info("Url:{}",algAuthCodeDomain.getAddSn());
         Result result = authCodeDomainServer.updataAuthCodeDomain(algAuthCodeDomain);
         return result;
     }
     @RequestMapping(value= "/select/{addSn_id}" , method = RequestMethod.GET)
     public Result select( @PathVariable("addSn_id") String addSn_id){
+        logger.info("主键:{}",addSn_id);
         Result result = authCodeDomainServer.selectAuthCodeDomain(addSn_id);
         return result;
     }
