@@ -52,4 +52,18 @@ public class UserControllerTests {
 		System.out.println(result);
 	}
 
+	@Test
+	public void updateUserInformation() throws Exception{
+
+		String result = this.mockMvc.perform(post("/user/updateUserInformation").contentType(MediaType.APPLICATION_JSON)
+				.param("usrSn","b468d46913c845e780cabf1b9fa0f0fb")
+				.param("usrName","传智")
+				.param("email","zhangchuanzhi@126.com")
+				.param("needNotify","1")
+				.param("telephone","13252998247")
+				.param("usrUrl","https://www.23245.com"))
+				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+		System.out.println(result);
+	}
+
 }
