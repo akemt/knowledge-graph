@@ -6,11 +6,13 @@ import com.beyond.algo.infra.AuthCodeService;
 import com.beyond.algo.mapper.AlgAuthCodeMapper;
 import com.beyond.algo.model.AlgAuthCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * @author XianjieZhang E-mail:xj_zh@foxmail.com
  * @version Created in：2017/10/12 0012 下午 9:57
  */
+@Service
 public class AuthCodeServiceImpl implements AuthCodeService {
 
     @Autowired
