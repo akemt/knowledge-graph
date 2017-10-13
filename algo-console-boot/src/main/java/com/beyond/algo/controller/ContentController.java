@@ -37,11 +37,17 @@ public class ContentController {
     @ResponseBody
     public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
         logger.info("调用用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo);
-        if(Assert.isNotEmpty(algRUserModuleCallTransList)){
-            return Result.ok(algRUserModuleCallTransList);
-        }else{
-            return Result.failure(algRUserModuleCallTransList);
+        try {
+            List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo);
+            if(Assert.isNotEmpty(algRUserModuleCallTransList)){
+                return Result.ok(algRUserModuleCallTransList);
+            }else{
+                return Result.failure(algRUserModuleCallTransList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 待完善异常处理
+            return Result.failureResponse();
         }
     }
     /**
@@ -55,11 +61,17 @@ public class ContentController {
     @ResponseBody
     public Result earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
         logger.info("算法创建者id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getOwnerUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo);
-        if(Assert.isNotEmpty(algRUserModuleCallTransList)){
-            return Result.ok(algRUserModuleCallTransList);
-        }else{
-            return Result.failure(algRUserModuleCallTransList);
+        try {
+            List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo);
+            if(Assert.isNotEmpty(algRUserModuleCallTransList)){
+                return Result.ok(algRUserModuleCallTransList);
+            }else{
+                return Result.failure(algRUserModuleCallTransList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 待完善异常处理
+            return Result.failureResponse();
         }
     }
 }
