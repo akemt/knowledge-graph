@@ -27,7 +27,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
-    public Result delectAuthCode(String acdSn_id) {
+    public Result deleteAuthCode(String acdSn_id) {
         algAuthCodeMapper.deleteByPrimaryKey(acdSn_id);
         return Result.successResponse();
     }

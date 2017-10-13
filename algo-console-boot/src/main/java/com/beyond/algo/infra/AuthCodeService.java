@@ -10,7 +10,7 @@ import com.sun.org.apache.regexp.internal.RE;
  */
 public interface AuthCodeService {
     Result createAuthCode(AlgAuthCode algAuthCode);
-    Result delectAuthCode(String acdSn_id);
+    Result deleteAuthCode(String acdSn_id);
     Result updateAuthCode(AlgAuthCode algAuthCode);
     Result selectAuthCode(String acdSn_id);
     Result selectAll();

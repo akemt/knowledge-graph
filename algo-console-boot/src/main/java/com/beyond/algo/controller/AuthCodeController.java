@@ -38,9 +38,9 @@ public class AuthCodeController {
     }
 
     @RequestMapping(value = "/delect/{acdSn_id}",method = RequestMethod.GET)
-    public Result delect(@PathVariable("acdSn_id") String acdSn_id){
+    public Result delete(@PathVariable("acdSn_id") String acdSn_id){
         logger.info("主键:{}",acdSn_id);
-        Result result = authCodeService.delectAuthCode(acdSn_id);
+        Result result = authCodeService.deleteAuthCode(acdSn_id);
         return result;
     }
     @RequestMapping("/update")
