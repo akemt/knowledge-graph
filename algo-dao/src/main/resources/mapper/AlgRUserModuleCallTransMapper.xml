@@ -60,12 +60,21 @@
      billed_call_cnt, call_pay_amount, mod_call_cnt
      from alg_r_user_module_call_trans
   </sql>
-  <select id="selectAlgorithmRecord" resultMap="queryForListMap" parameterType="java.lang.String"  >
-     select callTran.umc_sn, callTran.ver_sn, callTran.call_usr_sn, callTran.owner_usr_sn, date_format(callTran.start_time,'%Y-%c-%d %h:%i:%s') create_time, callTran.end_time, callTran.duration,
+  <sql id="query_record">
+      select callTran.umc_sn, callTran.ver_sn, callTran.call_usr_sn, callTran.owner_usr_sn, date_format(callTran.start_time,'%Y-%c-%d %h:%i:%s') create_time, callTran.end_time, callTran.duration,
      callTran.billed_call_cnt, callTran.call_pay_amount, callTran.mod_call_cnt,alg_module.mod_name
      from alg_r_user_module_call_trans callTran left join  alg_module_version version on callTran.ver_sn=version.ver_sn left join alg_module alg_module on version.mod_sn =alg_module.mod_sn
-     where callTran.call_usr_sn =#{callUsrSn,jdbcType=VARCHAR}
-     order by callTran.start_time desc
+  </sql>
+<select id="selectAlgorithmRecord" resultMap="queryForListMap" parameterType="com.beyond.algo.vo.AlgRUserModuleCallTransVo"  >
+    <include refid="query_record"/>
+     where 1=1
+    <if test="callUsrSn != null and callUsrSn!=''" >
+    and callTran.call_usr_sn=#{callUsrSn,jdbcType=VARCHAR}
+    </if>
+  <if test="ownerUsrSn != null and ownerUsrSn!=''">
+      and callTran.owner_usr_sn=#{ownerUsrSn,jdbcType=VARCHAR}
+   </if>
+  order by callTran.start_time desc
   </select>
 
 </mapper>

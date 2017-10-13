@@ -34,13 +34,25 @@ public class ContentControllerTest {
     public void contextLoads() {
 
     }
+
     @Test
     public void algorithmRecord() throws Exception{
-
+        // 用户使用情况
         String result = this.mockMvc.perform(post("/content/algorithmRecord").contentType(MediaType.APPLICATION_JSON)
                 .param("callUsrSn","aac44b648b10429cbaf85a6ae0113a65")
                 .param("page","0")
-                .param("rows","4"))
+                .param("rows","2"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+    @Test
+    public void algorithmEarnRecord() throws Exception{
+       // 用户收益情况
+        String result = this.mockMvc.perform(post("/content/algorithmEarnRecord").contentType(MediaType.APPLICATION_JSON)
+                .param("ownerUsrSn","aac44b648b10429cbaf85asse0113aa5")
+                .param("page","0")
+                .param("rows","5"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }

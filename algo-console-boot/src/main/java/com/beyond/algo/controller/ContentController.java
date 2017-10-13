@@ -36,9 +36,26 @@ public class ContentController {
     @RequestMapping(value="/algorithmRecord", method= RequestMethod.POST)
     @ResponseBody
     public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
-        logger.info("用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
+        logger.info("调用用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
         List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo);
-        System.out.println(algRUserModuleCallTransList.get(0).getCreateTime());
+        if(Assert.isNotEmpty(algRUserModuleCallTransList)){
+            return Result.ok(algRUserModuleCallTransList);
+        }else{
+            return Result.failure(algRUserModuleCallTransList);
+        }
+    }
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户收益情况
+     * @param：AlgRUserModuleCallTransVo
+     * @Modify By :zhangchuanzhi
+     * @date ：17:07 2017/10/12
+     */
+    @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.POST)
+    @ResponseBody
+    public Result earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
+        logger.info("算法创建者id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getOwnerUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
+        List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo);
         if(Assert.isNotEmpty(algRUserModuleCallTransList)){
             return Result.ok(algRUserModuleCallTransList);
         }else{
