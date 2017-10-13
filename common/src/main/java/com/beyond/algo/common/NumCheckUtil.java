@@ -16,6 +16,9 @@ public class NumCheckUtil {
      * @date ：9:44 2017/10/10
      */
     public static boolean checkTel(String tel) {
+        if( Assert.isEmpty(tel)){
+            return true;
+        }
         Pattern regex = Pattern.compile("^1[345789]\\d{9}$");
         Matcher matcher = regex.matcher(tel);
         boolean flag=  matcher.matches();
@@ -28,6 +31,9 @@ public class NumCheckUtil {
      * @date ：9:44 2017/10/10
      */
     public static boolean checkEmail(String email) {
+        if( Assert.isEmpty(email)){
+            return true;
+        }
         String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
         Pattern regex = Pattern.compile(check);
         Matcher matcher = regex.matcher(email);
@@ -41,6 +47,9 @@ public class NumCheckUtil {
      * @date ：9:44 2017/10/10
      */
     public static boolean checkWebsite(String path) {
+        if( Assert.isEmpty(path)){
+            return true;
+        }
         String regEx = "^(http|https|ftp)\\://([a-zA-Z0-9\\.\\-]+(\\:[a-zA-"
                 + "Z0-9\\.&%\\$\\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{"
                 + "2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}"
@@ -60,6 +69,9 @@ public class NumCheckUtil {
      * @date ：9:44 2017/10/10
      */
     public static boolean isChineseStr(String str){
+        if( Assert.isEmpty(str)){
+            return true;
+        }
         Pattern pattern = Pattern.compile("[\u4e00-\u9fa5]");
         char c[] = str.toCharArray();
         for(int i=0;i<c.length;i++){
