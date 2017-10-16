@@ -20,7 +20,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 
     @Override
     public Result createAuthCode(AlgAuthCode algAuthCode) {
-        String uuid = UUIDUtil.creatUUID();
+        String uuid = UUIDUtil.createUUID();
         algAuthCode.setAcdId(uuid);
         algAuthCodeMapper.insert(algAuthCode);
         return Result.successResponse();

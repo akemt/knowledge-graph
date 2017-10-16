@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
  */
     @Override
     public Result createUser(AlgUser user){
-        String uuid= UUIDUtil.creatUUID();
+        String uuid= UUIDUtil.createUUID();
         user.setUsrSn(uuid);
         user.setUpdateDate(new Date());
         user.setCreateDate(new Date());
