@@ -115,7 +115,7 @@ public class UserController {
     }
     /**
      * @author ：zhangchuanzhi
-     * @Description:用户更新信息
+     * @Description:用户账户信息
      * @param：accSn
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/10/10
