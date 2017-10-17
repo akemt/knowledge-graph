@@ -11,6 +11,7 @@ import com.beyond.algo.mapper.AlgCashTransMapper;
 
 import com.beyond.algo.model.*;
 import com.beyond.algo.vo.PayRecordVo;
+import com.beyond.algo.vo.PayVo;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,5 +42,22 @@ public class PayCashServiceImpl implements PayCashService {
         List<AlgCashTrans> algCashTransList=algCashTransMapper.payRecord(payRecordVo.getUsrSn());
         return algCashTransList;
     }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 购买积分
+     * @param：PayVo
+     * @Modify By :zhangchuanzhi
+     * @date ：15:43 2017/10/16
+     */
+    @Override
+     // 购买积分
+    public void buyIntegral(PayVo payVo){
+      // 调用充值接口未完成
+
+
+    }
+
+
 }
 
