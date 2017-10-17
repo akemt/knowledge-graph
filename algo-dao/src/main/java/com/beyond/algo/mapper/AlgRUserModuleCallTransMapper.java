@@ -16,5 +16,5 @@ public interface AlgRUserModuleCallTransMapper {
 
     int updateByPrimaryKey(AlgRUserModuleCallTrans record);
 
-    List<AlgRUserModuleCallTransVo> selectAlgorithmRecord(String callUsrSn);
+    List<AlgRUserModuleCallTransVo> selectAlgorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo);
 }

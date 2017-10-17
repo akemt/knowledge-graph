@@ -24,7 +24,7 @@ public class AuthCodeDomainServiceImpl implements AuthCodeDomainService {
 
     @Override
     public Result createAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain) {
-        String uuid = UUIDUtil.creatUUID();
+        String uuid = UUIDUtil.createUUID();
         algAuthCodeDomain.setAddSn(uuid);
         algAuthCodeDomainMapper.insert(algAuthCodeDomain);
         return Result.successResponse();

@@ -13,6 +13,7 @@
     <result column="ver_compiled" property="verCompiled" jdbcType="VARCHAR" />
     <result column="verIs_dirty" property="verisDirty" jdbcType="VARCHAR" />
     <result column="ver_url" property="verUrl" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="ver_dependency" property="verDependency" jdbcType="LONGVARCHAR" />
     <result column="ver_description" property="verDescription" jdbcType="LONGVARCHAR" />
   </resultMap>
@@ -24,13 +25,13 @@
     insert into alg_module_version (ver_sn, mod_sn, ver_code_l1, 
       ver_code_l2, ver_code_l3, ver_loyalty_fee, 
       ver_run_url, ver_run_port, ver_compiled, 
-      verIs_dirty, ver_url, ver_dependency, 
-      ver_description)
+      verIs_dirty, ver_url, create_date, 
+      ver_dependency, ver_description)
     values (#{verSn,jdbcType=VARCHAR}, #{modSn,jdbcType=VARCHAR}, #{verCodeL1,jdbcType=INTEGER}, 
       #{verCodeL2,jdbcType=INTEGER}, #{verCodeL3,jdbcType=INTEGER}, #{verLoyaltyFee,jdbcType=REAL}, 
       #{verRunUrl,jdbcType=VARCHAR}, #{verRunPort,jdbcType=VARCHAR}, #{verCompiled,jdbcType=VARCHAR}, 
-      #{verisDirty,jdbcType=VARCHAR}, #{verUrl,jdbcType=VARCHAR}, #{verDependency,jdbcType=LONGVARCHAR}, 
-      #{verDescription,jdbcType=LONGVARCHAR})
+      #{verisDirty,jdbcType=VARCHAR}, #{verUrl,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{verDependency,jdbcType=LONGVARCHAR}, #{verDescription,jdbcType=LONGVARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgModuleVersion" >
     update alg_module_version
@@ -44,19 +45,20 @@
       ver_compiled = #{verCompiled,jdbcType=VARCHAR},
       verIs_dirty = #{verisDirty,jdbcType=VARCHAR},
       ver_url = #{verUrl,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
       ver_dependency = #{verDependency,jdbcType=LONGVARCHAR},
       ver_description = #{verDescription,jdbcType=LONGVARCHAR}
     where ver_sn = #{verSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select ver_sn, mod_sn, ver_code_l1, ver_code_l2, ver_code_l3, ver_loyalty_fee, ver_run_url, 
-    ver_run_port, ver_compiled, verIs_dirty, ver_url, ver_dependency, ver_description
+    ver_run_port, ver_compiled, verIs_dirty, ver_url, create_date, ver_dependency, ver_description
     from alg_module_version
     where ver_sn = #{verSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select ver_sn, mod_sn, ver_code_l1, ver_code_l2, ver_code_l3, ver_loyalty_fee, ver_run_url, 
-    ver_run_port, ver_compiled, verIs_dirty, ver_url, ver_dependency, ver_description
+    ver_run_port, ver_compiled, verIs_dirty, ver_url, create_date, ver_dependency, ver_description
     from alg_module_version
   </select>
 </mapper>

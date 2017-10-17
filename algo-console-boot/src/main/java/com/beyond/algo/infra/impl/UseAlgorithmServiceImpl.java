@@ -8,16 +8,9 @@ package com.beyond.algo.infra.impl;
 
 
 
-import com.beyond.algo.common.AESUtil;
-import com.beyond.algo.common.Assert;
-import com.beyond.algo.common.Result;
-import com.beyond.algo.common.UUIDUtil;
+
 import com.beyond.algo.infra.UseAlgorithmService;
-import com.beyond.algo.mapper.AlgCashHisMapper;
 import com.beyond.algo.mapper.AlgRUserModuleCallTransMapper;
-import com.beyond.algo.model.AlgCashTrans;
-import com.beyond.algo.model.AlgRUserModuleCallTrans;
-import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
@@ -25,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+
 import java.util.List;
 
 
@@ -45,8 +38,23 @@ public class UseAlgorithmServiceImpl implements UseAlgorithmService {
     public List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo){
         //分页处理
         PageHelper.startPage(algRUserModuleCallTransVo.getPage(), algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo.getCallUsrSn());
+        List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
 
+        return lgRUserModuleCallTransList;
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户收益情况
+     * @param：User
+     * @Modify By :zhangchuanzhi
+     * @date ：17:34 2017/10/12
+     */
+   @Override
+    public List<AlgRUserModuleCallTransVo> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo){
+        //分页处理
+        PageHelper.startPage(algRUserModuleCallTransVo.getPage(), algRUserModuleCallTransVo.getRows());
+        List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
         return lgRUserModuleCallTransList;
     }
 }

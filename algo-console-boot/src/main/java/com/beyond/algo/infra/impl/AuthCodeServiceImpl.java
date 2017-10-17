@@ -8,6 +8,8 @@ import com.beyond.algo.model.AlgAuthCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author XianjieZhang E-mail:xj_zh@foxmail.com
  * @version Created in：2017/10/12 0012 下午 9:57
@@ -20,14 +22,14 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 
     @Override
     public Result createAuthCode(AlgAuthCode algAuthCode) {
-        String uuid = UUIDUtil.creatUUID();
+        String uuid = UUIDUtil.createUUID();
         algAuthCode.setAcdId(uuid);
         algAuthCodeMapper.insert(algAuthCode);
         return Result.successResponse();
     }
 
     @Override
-    public Result delectAuthCode(String acdSn_id) {
+    public Result deleteAuthCode(String acdSn_id) {
         algAuthCodeMapper.deleteByPrimaryKey(acdSn_id);
         return Result.successResponse();
     }
@@ -40,13 +42,17 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 
     @Override
     public Result selectAuthCode(String acdSn_id) {
-        algAuthCodeMapper.selectByPrimaryKey(acdSn_id);
-        return Result.successResponse();
+        AlgAuthCode algAuthCode = algAuthCodeMapper.selectByPrimaryKey(acdSn_id);
+        Result result = new Result();
+        result.setData(algAuthCode);
+        return result;
     }
 
     @Override
     public Result selectAll() {
-        algAuthCodeMapper.selectAll();
-        return null;
+        List<AlgAuthCode> allAlgAuth = algAuthCodeMapper.selectAll();
+        Result result = new Result();
+        result.setData(allAlgAuth);
+        return result;
     }
 }
