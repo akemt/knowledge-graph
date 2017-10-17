@@ -45,31 +45,29 @@ public class AuthCodeDomainControllerTest {
     @Test
     public void delete() throws Exception {
         //通过主键删除
-        String result = this.mockMvc.perform(get("/authcodedomain/delete/{acdSn_id}","2ce2f1ad87d942f0b20b10d3b7db6be1").contentType(MediaType.APPLICATION_JSON))
+        String result = this.mockMvc.perform(get("/authcodedomain/delete/{addSn_id}","2ce2f1ad87d942f0b20b10d3b7db6be1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
 
     @Test
     public void update() throws Exception {
-        String result = this.mockMvc.perform(post("/authcode/update").contentType(MediaType.APPLICATION_JSON)
-                .param("acdSn","8303420b322d43b1bc6bdd63d2103fa3")  //从数据库里面取出id
-                .param("usrSn","8303430b322d43b1bc6bdd63d2103fa3")
-                .param("acdName","thisid")
-                .param("acdId","thisid00")
-                .param("callFromClient","1"))
+        String result = this.mockMvc.perform(post("/authcodedomain/update").contentType(MediaType.APPLICATION_JSON)
+                .param("addSn","d0a311840c2542bbac9bb625368f9463")
+                .param("acdSn","123345567677")
+                .param("addUrl","www.sina.com"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
     @Test
     public void select() throws Exception {
-        String result = this.mockMvc.perform(get("/authcode/select/{acdSn_id}","8303420b322d43b1bc6bdd63d2103fa3").contentType(MediaType.APPLICATION_JSON))
+        String result = this.mockMvc.perform(get("/authcodedomain/select/{addSn_id}","d0a311840c2542bbac9bb625368f9463").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
     @Test
     public void list() throws Exception {
-        String result = this.mockMvc.perform(post("/authcode/list").contentType(MediaType.APPLICATION_JSON))
+        String result = this.mockMvc.perform(post("/authcodedomain/list").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
