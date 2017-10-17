@@ -2,6 +2,7 @@ package com.beyond.algo.infra;
 
 import com.beyond.algo.model.*;
 import com.beyond.algo.vo.PayRecordVo;
+import com.beyond.algo.vo.PayVo;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ import java.util.List;
  */
 public interface PayCashService {
       List<AlgCashTrans> payRecord(PayRecordVo payRecordVo);
+      void buyIntegral(PayVo payVo);
 }

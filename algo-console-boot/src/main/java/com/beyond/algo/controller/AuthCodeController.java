@@ -1,7 +1,6 @@
 package com.beyond.algo.controller;
 
 import com.beyond.algo.common.Result;
-import com.beyond.algo.infra.AuthCodeDomainService;
 import com.beyond.algo.infra.AuthCodeService;
 import com.beyond.algo.model.AlgAuthCode;
 import org.slf4j.Logger;
@@ -37,7 +36,7 @@ public class AuthCodeController {
         return result;
     }
 
-    @RequestMapping(value = "/delect/{acdSn_id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{acdSn_id}",method = RequestMethod.GET)
     public Result delete(@PathVariable("acdSn_id") String acdSn_id){
         logger.info("主键:{}",acdSn_id);
         Result result = authCodeService.deleteAuthCode(acdSn_id);
@@ -49,8 +48,8 @@ public class AuthCodeController {
         Result result = authCodeService.updateAuthCode(algAuthCode);
         return result;
     }
-    @RequestMapping(value = "/selsct/{acdSn_id}",method = RequestMethod.GET)
-    public Result select(String acdSn_id){
+    @RequestMapping(value = "/select/{acdSn_id}",method = RequestMethod.GET)
+    public Result select(@PathVariable("acdSn_id") String acdSn_id){
         logger.info("主键:{}",acdSn_id);
         Result result = authCodeService.selectAuthCode(acdSn_id);
         return result;

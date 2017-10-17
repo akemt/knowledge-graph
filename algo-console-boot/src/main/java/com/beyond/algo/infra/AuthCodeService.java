@@ -2,7 +2,6 @@ package com.beyond.algo.infra;
 
 import com.beyond.algo.common.Result;
 import com.beyond.algo.model.AlgAuthCode;
-import com.sun.org.apache.regexp.internal.RE;
 
 /**
  * @author XianjieZhang E-mail:xj_zh@foxmail.com
