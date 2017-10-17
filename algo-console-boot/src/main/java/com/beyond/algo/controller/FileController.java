@@ -49,15 +49,16 @@ public class FileController {
     }
 
     /**
-     * 读取内容保存文件当中
+     * 创建新的文本、初始化读取的文本编辑内容保存
      * author:lindewei
-     * @param ：String 读取的内容
+     * @param ：String 文本内容，和文件命名
      */
     @RequestMapping(value="/writeFile", method= RequestMethod.POST)
     public @ResponseBody
-    Result writeFile(String con) {
+    Result writeFile(String con,String filePath) {
         try {
-            writeFileService.writeFileString(con);//写入文件中，并且保存到路径下。
+            //TODO 创建文件时候，前端会将当前拼接好的路径传过来（路径+用户命名）。
+            writeFileService.writeFileString(con,filePath);//写入文件中，并且保存到路径下。
         } catch (Exception e) {
             e.printStackTrace();
             return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());

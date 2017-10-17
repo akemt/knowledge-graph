@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class WriteFileServiceImpl implements WriteFileService{
     @Override
-    public void writeFileString(String content) {
+    public void writeFileString(String content,String path) {
         // 构建指定文件
-        File file = new File("E:" + File.separator + "JGitServiceTest.java");
+        File file = new File(path);
         OutputStream out = null;
         try {
             // 根据文件创建文件的输出流
