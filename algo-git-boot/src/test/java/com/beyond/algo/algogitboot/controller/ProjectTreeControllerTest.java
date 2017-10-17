@@ -1,5 +1,6 @@
 package com.beyond.algo.algogitboot.controller;
 
+import com.beyond.algo.controller.ProjectTreeController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,27 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.beyond.algo.controller.FileController;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
  * @author ：Lindewei
- * @Description:文件读写保存
+ * @Description:目录Tree的展示、返回、文本展示
  * @date ：10:26 2017/10/13
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FileControllerTest {
+public class ProjectTreeControllerTest {
     @Autowired
     protected WebApplicationContext wac;
     private MockMvc mockMvc;
 
     @Autowired
-    private FileController fileController;
+    private ProjectTreeController projectTreeController;
 
     @Before
     public void setup() throws Exception {
@@ -38,27 +39,23 @@ public class FileControllerTest {
 
     }
 
-    //文件读测试
+    //展示同级目录所有文件和文件夹，或者展示文本。
     @Test
-    public void testReadFile() throws Exception{
+    public void showFile() throws Exception{
 
-        String result = this.mockMvc.perform(post("/file/readFile").contentType(MediaType.APPLICATION_JSON)
-                .param("path","D:/JGitServiceTest.java"))
+        String result = this.mockMvc.perform(post("/tree/showFile").contentType(MediaType.APPLICATION_JSON)
+                .param("path","F:/001/0010002/sadas.txt"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
 
-    //创建新的文本、初始化读取的文本编辑内容保存测试
+    //tree目录返回
     @Test
-    public void testWriteFile() throws Exception{
+    public void backFile() throws Exception{
 
-        String result = this.mockMvc.perform(post("/file/writeFile").contentType(MediaType.APPLICATION_JSON)
-                .param("con","D:/JGitServiceTest.javaadsdsadjkajdkajd打断对方考虑52545454545对方")
-                .param("filePath","F:/001/0010002/创建新文1221件.txt"))
+        String result = this.mockMvc.perform(post("/tree/backFile").contentType(MediaType.APPLICATION_JSON)
+                .param("path","F:/001/0010002"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
-
-
-
 }

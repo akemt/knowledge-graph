@@ -1,29 +1,28 @@
 package com.beyond.algo.algogitboot.impl;
 
+import com.beyond.algo.common.FileDir;
 import com.beyond.algo.algogitboot.AlgoGitBootApplication;
-import com.beyond.algo.infra.ReadFileService;
-import com.beyond.algo.infra.WriteFileService;
+import com.beyond.algo.infra.ShowProjectFileService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.io.File;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AlgoGitBootApplication.class)
-public class WriteFileTest {
-
+public class ShowProjectFileServiceTest {
     @Autowired
-    private WriteFileService writeFileService;
+    private ShowProjectFileService showProjectFileService;
 
     /**
-     * 内容写入文件
-     * @param :写入文件内容
+     * 展示同级目录所有文件和文件夹.
+     * @param :path 文件路径
+     * @return :返回目录下的所有文件和文件
      */
     @Test
-    public void writeFile() throws Exception {
-        writeFileService.writeFileString("public void commitAndPushDelAllFiles() throws Exception大连的的 ","F:/001/0010002/创建新文件.txt");
+    public void ShowProjectFile() throws Exception {
+        List<FileDir> aaa = showProjectFileService.ShowProjectFile("F:/001/0010001/");
     }
 }
