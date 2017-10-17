@@ -2,13 +2,10 @@ package com.beyond.algo.controller;
 
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
-import com.beyond.algo.common.Result;
-import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.infra.BuildAntProjectService;
 
 import com.beyond.algo.infra.GitLibService;
 import com.beyond.algo.infra.JGitService;
-import com.beyond.algo.model.FileDir;
 import com.beyond.algo.model.GitUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * @author ：zhangchuanzhi

@@ -1,4 +1,4 @@
-package com.beyond.algo.algogitboot.controller;
+package com.beyond.algo.algoconsoleboot.controller;
 
 import org.junit.Before;
 import org.junit.Test;

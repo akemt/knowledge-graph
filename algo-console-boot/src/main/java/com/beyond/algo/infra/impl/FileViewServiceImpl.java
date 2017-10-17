@@ -1,12 +1,7 @@
 package com.beyond.algo.infra.impl;
 
-import com.beyond.algo.common.FileUtil;
 import com.beyond.algo.infra.FileViewService;
-import com.beyond.algo.model.FileDir;
 import org.springframework.stereotype.Service;
-
-import java.io.File;
-import java.util.List;
 
 /**
  * @author ：zhangchuanzhi

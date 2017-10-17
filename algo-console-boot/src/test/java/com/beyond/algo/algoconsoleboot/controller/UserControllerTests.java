@@ -1,7 +1,5 @@
-package com.beyond.algo.algoconsoleboot;
+package com.beyond.algo.algoconsoleboot.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.beyond.algo.model.AlgUser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +16,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AlgoConsoleBootApplicationTests {
+public class UserControllerTests {
 
 	@Autowired
 	protected WebApplicationContext wac;
@@ -33,17 +31,37 @@ public class AlgoConsoleBootApplicationTests {
 
 	}
 	@Test
-	public void testOAuth2() throws Exception{
-		/*AlgUser user = new AlgUser();
-		user.setUsrName("qihe");
-		user.setPasswd("123456");
-		user.setUsrCode("asdf");
-		String baseInfo = JSON.toJSONString(user);*/
+	public void registerUser() throws Exception{
+
+
 		String result = this.mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
-				/*.content(baseInfo.getBytes()))*/
 				.param("usrName","qihe")
-				.param("passwd","12345678")
-				.param("email","test@test.com"))
+				.param("passwd","123456")
+				.param("email","test@qq.com"))
+				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+		System.out.println(result);
+	}
+
+	@Test
+	public void testOAuth2() throws Exception{
+
+		String result = this.mockMvc.perform(post("/user/login").contentType(MediaType.APPLICATION_JSON)
+				.param("usrName","qihe")
+				.param("passwd","12345678"))
+				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+		System.out.println(result);
+	}
+
+	@Test
+	public void updateUserInformation() throws Exception{
+
+		String result = this.mockMvc.perform(post("/user/updateUserInformation").contentType(MediaType.APPLICATION_JSON)
+				.param("usrSn","b468d46913c845e780cabf1b9fa0f0fb")
+				.param("usrName","传智")
+				.param("email","zhangchuanzhi@126.com")
+				.param("needNotify","1")
+				.param("telephone","13252998247")
+				.param("usrUrl","https://www.23245.com"))
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
 		System.out.println(result);
 	}
