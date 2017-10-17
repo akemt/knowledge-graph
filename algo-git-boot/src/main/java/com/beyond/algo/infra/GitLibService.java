@@ -8,4 +8,5 @@ public interface GitLibService {
 
     boolean createGitLibProject(GitUser gitUser) throws Exception;
 
+    boolean createGitLib(String orgCode, String orgName, String createUserName, String password) throws Exception;
 }

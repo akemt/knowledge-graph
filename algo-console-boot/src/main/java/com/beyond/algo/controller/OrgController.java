@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpSession;
 
 @Slf4j
 @RestController
@@ -22,16 +22,25 @@ public class OrgController {
     private OrgService orgService;
 
     /**
-     *创建组织
+     * 创建组织
+     *
      * @param org 组织
      * @return 创建后组织对象
      */
-    @RequestMapping(value="/create", method=RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public Result<Object> createOrg(@Valid AlgUser org){
-        log.info("创建组织：组织账户名:{0},组织全名:{1},用户ID:{2}", org.getUsrCode(), org.getUsrName(), org.getOwnerId());
+    public Result<Object> createOrg(AlgUser org, HttpSession session) {
+        log.info("创建组织：组织账户名:{},组织全名:{},用户ID:{}", org.getUsrCode(), org.getUsrName(), org.getOwnerId());
         try {
-            org = orgService.createOrg(org);
+            //TODO:单点登录可能调整用户名密码获取方式
+            String userCode = (String) session.getAttribute("userCode");
+            String password = (String) session.getAttribute("userPwd");
+
+            //TODO: 测试代码，注入用户信息
+            userCode = "qihe";
+            password = "123456";
+
+            org = orgService.createOrg(org, userCode, password);
             return null;
         } catch (Exception e) {
             log.error("创建组织失败", e);

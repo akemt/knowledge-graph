@@ -1,6 +1,5 @@
 package com.beyond.algo.infra.impl;
 
-import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.UUIDUtil;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.infra.OrgService;
@@ -23,31 +22,20 @@ public class OrgServiceImpl implements OrgService {
     private AlgUserMapper algUserMapper;
     @Autowired(required = false)
     private AlgRUserOrgInviteMapper algRUserOrgInviteMapper;
+//    @Autowired(required = false)
+//    private GitLibService gitLibService;
 
     @Override
     @Transactional
-    public AlgUser createOrg(AlgUser org) throws AlgException {
-
-        // 非空判断
-        if (Assert.isEmpty(org.getUsrCode())) {
-            throw new AlgException("组织账户名为空");
-        }
-        if (Assert.isEmpty(org.getUsrName())) {
-            throw new AlgException("组织全名为空");
-        }
-        if (Assert.isEmpty(org.getEmail())) {
-            throw new AlgException("组织电邮为空");
-        }
-        if (Assert.isEmpty(org.getOwnerId())) {
-            throw new AlgException("创建者ID为空");
-        }
+    public AlgUser createOrg(AlgUser org, String createUserCode, String password) throws AlgException {
 
         // 用户表中插入组织记录
+        Date now = new Date();
         org.setUsrSn(UUIDUtil.createUUID());
         org.setIsOrg("1");
         org.setNeedNotify("0");
-        org.setCreateDate(new Date());
-        org.setUpdateDate(new Date());
+        org.setCreateDate(now);
+        org.setUpdateDate(now);
         algUserMapper.insert(org);
 
         // 在关系表中添加关联记录

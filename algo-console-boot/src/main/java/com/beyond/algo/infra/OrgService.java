@@ -11,5 +11,5 @@ public interface OrgService {
      * @param org 组织信息
      * @return 是否成功
      */
-    AlgUser createOrg(AlgUser org) throws AlgException;
+    AlgUser createOrg(AlgUser org, String createUserCode, String password) throws AlgException;
 }
