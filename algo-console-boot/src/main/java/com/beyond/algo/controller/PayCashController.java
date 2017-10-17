@@ -45,4 +45,20 @@ public class PayCashController {
             return Result.failure(algCashTransList);
         }
     }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 购买积分
+     * @param：PayVo
+     * @Modify By :zhangchuanzhi
+     * @date ：15:43 2017/10/16
+     */
+/*    @RequestMapping(value="/buyIntegral", method= RequestMethod.POST)
+    @ResponseBody
+    public Result payRecord(PayVo payVo) {
+        logger.info("用户充值费用:{},兑换利率:{}",payVo.getMoney(),payVo.getRate());
+        // 购买积分
+        void  payCashService.buyIntegral(payVo);
+
+    }*/
 }
