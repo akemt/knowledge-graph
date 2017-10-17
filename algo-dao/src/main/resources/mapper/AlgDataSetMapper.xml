@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.AlgDataSetMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgDataSet" >
+    <id column="data_set_sn" property="dataSetSn" jdbcType="VARCHAR" />
+    <result column="usr_sn" property="usrSn" jdbcType="VARCHAR" />
+    <result column="data_set_name" property="dataSetName" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_data_set
+    where data_set_sn = #{dataSetSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.AlgDataSet" >
+    insert into alg_data_set (data_set_sn, usr_sn, data_set_name
+      )
+    values (#{dataSetSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{dataSetName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgDataSet" >
+    update alg_data_set
+    set usr_sn = #{usrSn,jdbcType=VARCHAR},
+      data_set_name = #{dataSetName,jdbcType=VARCHAR}
+    where data_set_sn = #{dataSetSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select data_set_sn, usr_sn, data_set_name
+    from alg_data_set
+    where data_set_sn = #{dataSetSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select data_set_sn, usr_sn, data_set_name
+    from alg_data_set
+  </select>
+</mapper>
