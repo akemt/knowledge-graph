@@ -1,5 +1,7 @@
 package com.beyond.algo.model;
 
+import java.util.Date;
+
 public class AlgModuleVersion {
     private String verSn;
 
@@ -22,6 +24,8 @@ public class AlgModuleVersion {
     private String verisDirty;
 
     private String verUrl;
+
+    private Date createDate;
 
     private String verDependency;
 
@@ -113,6 +117,14 @@ public class AlgModuleVersion {
 
     public void setVerUrl(String verUrl) {
         this.verUrl = verUrl == null ? null : verUrl.trim();
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 
     public String getVerDependency() {
