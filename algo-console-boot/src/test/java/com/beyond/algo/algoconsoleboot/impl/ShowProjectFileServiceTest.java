@@ -1,7 +1,7 @@
 package com.beyond.algo.algoconsoleboot.impl;
 
+import com.beyond.algo.algoconsoleboot.AlgoConsoleBootApplication;
 import com.beyond.algo.common.FileDir;
-import com.beyond.algo.algogitboot.AlgoGitBootApplication;
 import com.beyond.algo.infra.ShowProjectFileService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = AlgoGitBootApplication.class)
+@SpringBootTest(classes = AlgoConsoleBootApplication.class)
 public class ShowProjectFileServiceTest {
     @Autowired
     private ShowProjectFileService showProjectFileService;
