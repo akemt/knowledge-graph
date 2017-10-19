@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 这个controller如果最后没什么用就删了
  * @author XianjieZhang E-mail:xj_zh@foxmail.com
  * @Description:授权码限制域名操作(增删改查)
  * @version Created in：2017/9/28 0028 上午 10:29

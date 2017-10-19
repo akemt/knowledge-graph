@@ -29,8 +29,8 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
-    public Result deleteAuthCode(String acdSn_id) {
-        algAuthCodeMapper.deleteByPrimaryKey(acdSn_id);
+    public Result deleteAuthCode(String acdSn) {
+        algAuthCodeMapper.deleteByPrimaryKey(acdSn);
         return Result.successResponse();
     }
 
@@ -41,8 +41,8 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
-    public Result selectAuthCode(String acdSn_id) {
-        AlgAuthCode algAuthCode = algAuthCodeMapper.selectByPrimaryKey(acdSn_id);
+    public Result selectAuthCode(String acdSn) {
+        AlgAuthCode algAuthCode = algAuthCodeMapper.selectByPrimaryKey(acdSn);
         Result result = new Result();
         result.setData(algAuthCode);
         return result;
