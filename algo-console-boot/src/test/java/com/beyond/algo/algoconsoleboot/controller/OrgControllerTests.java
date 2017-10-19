@@ -1,5 +1,6 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OrgControllerTests {
@@ -36,14 +38,15 @@ public class OrgControllerTests {
 
 	@Test
 	@Transactional
-	public void testCreateOrg() throws Exception {
+	public void createOrgTest() throws Exception {
 		String result = this.mockMvc.perform(post("/org/create").contentType(MediaType.APPLICATION_JSON)
-				.param("usrCode", "qihe")
-				.param("usrName", "qihe")
+				.param("usrCode", "testOrg0")
+				.param("usrName", "测试组织0")
 				.param("email", "test@qq.com")
-				.param("ownerId", "62a6a211ecfc480bbc9c67d65a44b535"))
+				.param("ownerId", "62a6a211ecfc480bbc9c67d65a44b535")
+				.session(session))
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-		System.out.println(result);
+		log.info(result);
 	}
 
 }

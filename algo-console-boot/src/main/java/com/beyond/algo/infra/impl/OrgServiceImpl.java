@@ -2,6 +2,7 @@ package com.beyond.algo.infra.impl;
 
 import com.beyond.algo.common.UUIDUtil;
 import com.beyond.algo.exception.AlgException;
+import com.beyond.algo.infra.GitLibService;
 import com.beyond.algo.infra.OrgService;
 import com.beyond.algo.mapper.AlgRUserOrgInviteMapper;
 import com.beyond.algo.mapper.AlgUserMapper;
@@ -22,12 +23,16 @@ public class OrgServiceImpl implements OrgService {
     private AlgUserMapper algUserMapper;
     @Autowired(required = false)
     private AlgRUserOrgInviteMapper algRUserOrgInviteMapper;
-//    @Autowired(required = false)
-//    private GitLibService gitLibService;
+    @Autowired(required = false)
+    private GitLibService gitLibService;
 
     @Override
     @Transactional
     public AlgUser createOrg(AlgUser org, String createUserCode, String password) throws AlgException {
+
+        if (algUserMapper.countOrgByCode(org.getUsrCode()) > 0) {
+            throw new AlgException("git创建组织失败，组织编码已存在:" + org.getUsrCode());
+        }
 
         // 用户表中插入组织记录
         Date now = new Date();
@@ -48,6 +53,12 @@ public class OrgServiceImpl implements OrgService {
         algRUserOrgInvite.setIsOldUser("0");
         algRUserOrgInviteMapper.insert(algRUserOrgInvite);
 
+        // 在git中创建组织
+        try {
+            gitLibService.createGitLibGroup(org.getUsrCode(), org.getUsrName(), createUserCode, password);
+        } catch (Exception e) {
+            throw new AlgException("git创建组织失败，创建者code：" + createUserCode + "，组织code：" + org.getUsrCode() + "。", e);
+        }
         return org;
     }
 

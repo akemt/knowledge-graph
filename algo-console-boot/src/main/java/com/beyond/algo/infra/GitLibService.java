@@ -1,12 +1,15 @@
 package com.beyond.algo.infra;
 
 import com.beyond.algo.model.GitUser;
+import org.gitlab.api.models.GitlabGroup;
+import org.gitlab.api.models.GitlabProject;
+import org.gitlab.api.models.GitlabUser;
 
 public interface GitLibService {
 
-    boolean addGitLibUser(GitUser gitUser) throws Exception;
+    GitlabUser addGitLibUser(GitUser gitUser) throws Exception;
 
-    boolean createGitLibProject(GitUser gitUser) throws Exception;
+    GitlabProject createGitLibProject(GitUser gitUser) throws Exception;
 
-    boolean createGitLib(String orgCode, String orgName, String createUserName, String password) throws Exception;
+    GitlabGroup createGitLibGroup(String orgCode, String orgName, String createUserName, String password) throws Exception;
 }

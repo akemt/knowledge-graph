@@ -7,6 +7,9 @@ import com.beyond.algo.infra.BuildAntProjectService;
 import com.beyond.algo.infra.GitLibService;
 import com.beyond.algo.infra.JGitService;
 import com.beyond.algo.model.GitUser;
+import lombok.extern.slf4j.Slf4j;
+import org.gitlab.api.models.GitlabProject;
+import org.gitlab.api.models.GitlabUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,7 @@ import java.io.File;
  * @Description:gitlib操作
  * @date ：8:51 2017/9/28
  */
+@Slf4j
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("/git")
@@ -33,9 +37,7 @@ public class GitLibController {
     private JGitService jGitService;
     @Autowired
     private BuildAntProjectService buildAntProjectService;
-   /* @Autowired
-    private FileViewService fileViewService;*/
-    private final static Logger logger = LoggerFactory.getLogger(GitLibController.class);
+
     /**
      * @author ：zhangchuanzhi
      * @Description:实现gitlib上创建用户
@@ -43,21 +45,20 @@ public class GitLibController {
      * @Modify By :zhangchuanzhi
      * @date ：9:00 2017/9/28
      */
-    @RequestMapping(value="/addGitLibUser", method= RequestMethod.POST)
+    @RequestMapping(value = "/addGitLibUser", method = RequestMethod.POST)
     public @ResponseBody
-     Result addGitLibUser(GitUser gitUser)  {
-        logger.info("用户名：{}用户全称：{} 用户密码：{} 用户邮箱：{}",gitUser.getUsername(),gitUser.getFullName(),gitUser.getPassword(),gitUser.getEmail());
-        boolean  result = false;
+    Result addGitLibUser(GitUser gitUser) {
+        log.info("用户名：{}用户全称：{} 用户密码：{} 用户邮箱：{}", gitUser.getUsername(), gitUser.getFullName(), gitUser.getPassword(), gitUser.getEmail());
         try {
-            result = gitLibService.addGitLibUser(gitUser);
+            GitlabUser gitlabUser = gitLibService.addGitLibUser(gitUser);
+            if (gitlabUser != null) {
+                return Result.successResponse();
+            }
+            return Result.failureResponse();
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
-        if(result){
-            return Result.successResponse();
-        }
-        return Result.failureResponse();
     }
 
     /**
@@ -67,23 +68,22 @@ public class GitLibController {
      * @Modify By :zhangchuanzhi
      * @date ：9:31 2017/9/28
      */
-
-    @RequestMapping(value="/createProject", method=RequestMethod.POST)
-    public @ResponseBody Result createGitLibProject(GitUser gitUser)  {
-        logger.info("用户名：{} 用户密码：{} 项目名称：{}",gitUser.getUsername(),gitUser.getPassword(),gitUser.getProjectName());
-        boolean result= false;
+    @RequestMapping(value = "/createProject", method = RequestMethod.POST)
+    public @ResponseBody
+    Result createGitLibProject(GitUser gitUser) {
+        log.info("用户名：{} 用户密码：{} 项目名称：{}", gitUser.getUsername(), gitUser.getPassword(), gitUser.getProjectName());
         try {
-            result = gitLibService.createGitLibProject(gitUser);
+            GitlabProject gitlabProject = gitLibService.createGitLibProject(gitUser);
+            if (gitlabProject != null) {
+                return Result.successResponse();
+            }
+            return Result.failureResponse();
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
-        if(result){
-            return Result.successResponse();
-        }
-        return Result.failureResponse();
-
     }
+
     /**
      * @author ：zhangchuanzhi
      * @Description:从git首次克隆项目
@@ -91,50 +91,52 @@ public class GitLibController {
      * @Modify By :zhangchuanzhi
      * @date ：9:43 2017/9/28
      */
-    @RequestMapping(value="/cloneProject", method=RequestMethod.POST)
-    public @ResponseBody Result gitCloneProject(GitUser gitUser)  {
-        logger.info("gitCloneProject方法用户名：{} 用户密码{} 项目名称：{}",gitUser.getUsername(),gitUser.getPassword(),gitUser.getProjectName());
+    @RequestMapping(value = "/cloneProject", method = RequestMethod.POST)
+    public @ResponseBody
+    Result gitCloneProject(GitUser gitUser) {
+        log.info("gitCloneProject方法用户名：{} 用户密码{} 项目名称：{}", gitUser.getUsername(), gitUser.getPassword(), gitUser.getProjectName());
         try {
             jGitService.gitCloneProject(gitUser);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
         return Result.successResponse();
 
     }
 
     /**
-     * @author ：zhangchuanzhi
-     * @Description:初始化时提交本地所有代码到远端仓库
      * @param :GitUser
      * @return
+     * @author ：zhangchuanzhi
+     * @Description:初始化时提交本地所有代码到远端仓库
      */
-    @RequestMapping(value="/commit", method=RequestMethod.POST)
+    @RequestMapping(value = "/commit", method = RequestMethod.POST)
     public @ResponseBody
     Result initCommitAndPushAllFiles(GitUser gitUser) {
-            boolean result= jGitService.initCommitAndPushAllFiles(gitUser);
-            if(result){
-                return Result.successResponse();
-            }
-            return Result.failureResponse();
+        boolean result = jGitService.initCommitAndPushAllFiles(gitUser);
+        if (result) {
+            return Result.successResponse();
+        }
+        return Result.failureResponse();
     }
+
     /**
-     * @Description:删除本地文件同时同步服务器
-     * author:zhangchuanzhi
      * @param :gitUser
      * @return
+     * @Description:删除本地文件同时同步服务器 author:zhangchuanzhi
      */
-    @RequestMapping(value="/del", method=RequestMethod.POST)
-    public @ResponseBody Result commitAndPushDelAllFiles(GitUser gitUser) {
+    @RequestMapping(value = "/del", method = RequestMethod.POST)
+    public @ResponseBody
+    Result commitAndPushDelAllFiles(GitUser gitUser) {
         try {
-            boolean result= jGitService.commitAndPushDelAllFiles(gitUser);
-            if(result){
+            boolean result = jGitService.commitAndPushDelAllFiles(gitUser);
+            if (result) {
                 return Result.successResponse();
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
         return Result.failureResponse();
     }
@@ -142,17 +144,19 @@ public class GitLibController {
     /**
      * 查看文件状态
      * author:zhangchuanzhi
+     *
      * @param :gitUser
      * @return
      */
-    @RequestMapping(value="/showStatus", method=RequestMethod.POST)
-    public @ResponseBody Result gitShowStatus(String path) {
+    @RequestMapping(value = "/showStatus", method = RequestMethod.POST)
+    public @ResponseBody
+    Result gitShowStatus(String path) {
         try {
-            File repoDir =new File(path);
+            File repoDir = new File(path);
             jGitService.gitShowStatus(repoDir);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
         return Result.successResponse();
     }
@@ -164,13 +168,14 @@ public class GitLibController {
      * @Modify By :zhangchuanzhi
      * @date ：13:12 2017/9/28
      */
-    @RequestMapping(value="/buildProject", method=RequestMethod.POST)
-    public @ResponseBody Result buildAndUpLoadProject(GitUser gitUser){
+    @RequestMapping(value = "/buildProject", method = RequestMethod.POST)
+    public @ResponseBody
+    Result buildAndUpLoadProject(GitUser gitUser) {
         try {
             buildAntProjectService.buildAndUpLoadProject(gitUser);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
         return Result.successResponse();
     }
@@ -190,7 +195,7 @@ public class GitLibController {
             return  Result.ok(FileDirTree);
 
         } catch (Exception e) {
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
     }*/
 }
