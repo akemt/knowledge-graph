@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -65,5 +66,12 @@ public class UserControllerTests {
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
 		System.out.println(result);
 	}
+	@Test
+	public void accountInformation() throws Exception{
 
+		String result = this.mockMvc.perform(get("/user/accountInformation").contentType(MediaType.APPLICATION_JSON)
+				.param("accSn","aac44b648b10429cbaf85a6ae0f61165"))
+				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+		System.out.println(result);
+	}
 }

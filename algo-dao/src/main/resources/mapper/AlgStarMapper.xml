@@ -7,6 +7,12 @@
     <result column="usr_sn" property="usrSn" jdbcType="VARCHAR" />
     <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <resultMap id="queryForListMap" type="com.beyond.algo.vo.CollectArticlesVo" >
+    <result column="mod_name" jdbcType="VARCHAR" property="modName" />
+    <result column="papertext" jdbcType="VARCHAR" property="papertext" />
+    <result column="lan_name" jdbcType="VARCHAR" property="lanName" />
+    <result column="create_time" jdbcType="VARCHAR" property="collectDate" />
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from alg_star
     where star_sn = #{starSn,jdbcType=VARCHAR}
@@ -32,5 +38,16 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select star_sn, mod_sn, usr_sn, creat_time
     from alg_star
+  </select>
+
+  <select id="selectArticles" resultMap="queryForListMap"  parameterType="com.beyond.algo.vo.CollectArticlesVo" >
+     select algModule.mod_name,algArticleList.papertext,algProgramLang.lan_name, date_format(algModuleVersion.create_date,'%Y-%c-%d %h:%i:%s')create_time from
+     alg_star algStar
+            left join  alg_module algModule on algStar.mod_sn=algModule.mod_sn
+            left join alg_article_list algArticleList on algModule.atl_sn = algArticleList.id
+            left join alg_program_lang algProgramLang on algModule.lan_sn=algProgramLang.lan_sn
+            left join alg_module_version algModuleVersion on algModule.mod_sn=algModuleVersion.mod_sn
+     where algStar.usr_sn= #{usrSn,jdbcType=VARCHAR}
+     order by create_time desc
   </select>
 </mapper>

@@ -34,23 +34,52 @@ public class AuthCodeControllerTest {
     public void contextLoads() {
     }
     @Test
+    public void listauthcode() throws Exception {
+        String result = this.mockMvc.perform(post("/authcode/listauthcode").contentType(MediaType.APPLICATION_JSON)
+                .param("usrSn","0aeabf55b32e4c0484670656f274e951"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+    @Test
+    public void listauthcodedomain() throws Exception {
+        String result = this.mockMvc.perform(post("/authcode/listauthcodedomain").contentType(MediaType.APPLICATION_JSON)
+                .param("acdSn","b95de94a97464e7e91258fee2c65b1f2"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+        //结果：[{"addSn":"023427a40baa483c82fd25bfbb56ec96","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge2.com"},{"addSn":"7b72969e280f49c0b2600e138735d1fe","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge3.com"},{"addSn":"e6c657cf2e2a48809367182106d8df55","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge1.com"}]
+    }
+    @Test
     public void create() throws Exception {
-        String acdSn = UUIDUtil.createUUID();
         String usrSn = UUIDUtil.createUUID();
         String result = this.mockMvc.perform(post("/authcode/create").contentType(MediaType.APPLICATION_JSON)
-                .param("acdSn",acdSn)
-                .param("usrSn",usrSn)
+                //AuthCode数据
+                .param("usrSn","0aeabf55b32e4c0484670656f274e951")
                 .param("acdName","thisisacdname")
                 .param("acdId","thisisacdid001")
-                .param("callFromClient","1"))
+                .param("callFromClient","1")
+
+                //AuthCodeDomain的Url
+                .param("addUrl","www.baidulaingge1.com")
+                .param("addUrl","www.baidulaingge2.com")
+                .param("addUrl","www.baidulaingge3.com"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
 
+
     @Test
-    public void delete() throws Exception {
-        //通过主键删除
-        String result = this.mockMvc.perform(get("/authcode/delete/{acdSn_id}","aac44b648b10429cbaf85a6ae0113a45").contentType(MediaType.APPLICATION_JSON))
+    public void deleteauthcode() throws Exception {
+        //通过acdSn主键删除
+        //同时删除内外两个表内容
+        String result = this.mockMvc.perform(get("/authcode/deleteauthcode/{acdSn}","05bac0d5f7924429849cd4c56559878c").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+    @Test
+    public void deleteauthcodedomain() throws Exception {
+        //通过acdSn主键删除
+        //同时删除两个表内容
+        String result = this.mockMvc.perform(get("/authcode/deleteauthcodedomain/{addSn}","2b62bcb40c844c41999a45d53e2171a6").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
@@ -72,11 +101,4 @@ public class AuthCodeControllerTest {
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
-    @Test
-    public void list() throws Exception {
-        String result = this.mockMvc.perform(post("/authcode/list").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-        System.out.println(result);
-    }
-
 }

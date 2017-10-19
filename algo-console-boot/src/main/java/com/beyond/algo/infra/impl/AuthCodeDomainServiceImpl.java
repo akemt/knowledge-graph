@@ -38,6 +38,12 @@ public class AuthCodeDomainServiceImpl implements AuthCodeDomainService {
     }
 
     @Override
+    public Result deleteByAcdSn(String acdSn) {
+        algAuthCodeDomainMapper.deleteByAcdSn(acdSn);
+        return Result.successResponse();
+    }
+
+    @Override
     public Result updataAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain) {
 
         algAuthCodeDomainMapper.updateByPrimaryKey(algAuthCodeDomain);
@@ -49,6 +55,12 @@ public class AuthCodeDomainServiceImpl implements AuthCodeDomainService {
         AlgAuthCodeDomain authResult = algAuthCodeDomainMapper.selectByPrimaryKey(addSn_id);
         Result result=new Result();
         result.setData(authResult);
+        return result;
+    }
+
+    @Override
+    public List<AlgAuthCodeDomain> listAcdSnUrl(String acdSn) {
+        List<AlgAuthCodeDomain> result = algAuthCodeDomainMapper.listAcdSnUrl(acdSn);
         return result;
     }
 
