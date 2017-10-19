@@ -82,16 +82,16 @@ public class ContentController {
     /**
      * @author ：zhangchuanzhi
      * @Description:用户收藏文献
-     * @param：AlgRUserModuleCallTransVo
+     * @param：CollectArticlesVo
      * @Modify By :zhangchuanzhi
      * @date ：17:07 2017/10/19
      */
-    @RequestMapping(value="/collectArticles", method= RequestMethod.GET)
+    @RequestMapping(value="/collectArticles", method= RequestMethod.POST)
     @ResponseBody
-    public Result collectArticles(String usrSn) {
-        log.info("用户id:{}",usrSn);
+    public Result collectArticles(CollectArticlesVo collectArticlesVo) {
+        log.info("用户id:{},Page:{},Row:{}",collectArticlesVo.getUsrSn(),collectArticlesVo.getPage(),collectArticlesVo.getRows());
         try {
-            List<CollectArticlesVo> collectArticles= algorithmCollectAndRankService.collectArticles(usrSn);
+            List<CollectArticlesVo> collectArticles= algorithmCollectAndRankService.collectArticles(collectArticlesVo);
             if(Assert.isNotEmpty(collectArticles)){
                 return Result.ok(collectArticles);
             }else{
