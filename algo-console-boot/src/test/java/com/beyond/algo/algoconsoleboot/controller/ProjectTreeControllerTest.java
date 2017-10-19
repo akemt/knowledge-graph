@@ -1,6 +1,5 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
-import com.beyond.algo.controller.ProjectTreeController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

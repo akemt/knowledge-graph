@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@ComponentScan(basePackages={"com.beyond.algo.controller","com.beyond.algo.infra","com.beyond.algo.model"})
+@ComponentScan(basePackages={"com.beyond.algo.model"})
 @MapperScan(basePackages = "com.beyond.algo.mapper")
 public class AlgoConsoleBootApplication {
 

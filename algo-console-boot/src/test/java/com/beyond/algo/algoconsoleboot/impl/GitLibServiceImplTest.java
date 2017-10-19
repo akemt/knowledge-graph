@@ -1,8 +1,8 @@
 package com.beyond.algo.algoconsoleboot.impl;
 
 import com.beyond.algo.algoconsoleboot.AlgoConsoleBootApplication;
-import com.beyond.algo.infra.GitLibService;
-import com.beyond.algo.model.GitUser;
+import com.beyond.algo.algoconsoleboot.infra.GitLibService;
+import com.beyond.algo.algoconsoleboot.model.GitUser;
 import org.gitlab.api.models.GitlabGroup;
 import org.junit.Test;
 import org.junit.runner.RunWith;

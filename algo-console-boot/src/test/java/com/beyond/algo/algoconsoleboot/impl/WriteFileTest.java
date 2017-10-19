@@ -1,7 +1,7 @@
 package com.beyond.algo.algoconsoleboot.impl;
 
 import com.beyond.algo.algoconsoleboot.AlgoConsoleBootApplication;
-import com.beyond.algo.infra.WriteFileService;
+import com.beyond.algo.algoconsoleboot.infra.WriteFileService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
