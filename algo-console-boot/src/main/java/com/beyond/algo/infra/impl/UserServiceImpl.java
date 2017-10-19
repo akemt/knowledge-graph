@@ -19,7 +19,6 @@ import com.beyond.algo.vo.UserVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 
@@ -184,11 +183,6 @@ public class UserServiceImpl implements UserService {
             userAccountVo.setCash(cash);
         }
         return userAccountVo;
-    }
-
-    public AlgUser findByUsername(String username) throws UsernameNotFoundException{
-        AlgUser user = algUserMapper.selectUsrname(username);
-        return user;
     }
 
 }
