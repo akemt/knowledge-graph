@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -53,6 +54,14 @@ public class ContentControllerTest {
                 .param("ownerUsrSn","aac44b648b10429cbaf85asse0113aa5")
                 .param("needNotify","1")
                 .param("rows","5"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+    @Test
+    public void collectArticles() throws Exception{
+        String result = this.mockMvc.perform(get("/content/collectArticles").contentType(MediaType.APPLICATION_JSON)
+                .param("usrSn","aac44b648b10429cbaf85a6ae0113a65"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
