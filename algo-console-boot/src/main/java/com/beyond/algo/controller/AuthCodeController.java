@@ -30,13 +30,13 @@ public class AuthCodeController {
     @Autowired
     private AuthCodeDomainService authCodeDomainService;
 
-    @RequestMapping(value = "/listauthcode" ,method = RequestMethod.POST)
-    public List<AlgAuthCode> listauthcode(String usrSn){
+    @RequestMapping(value = "/listauthcode/{usrSn}" ,method = RequestMethod.GET)
+    public List<AlgAuthCode> listauthcode(@PathVariable("usrSn") String usrSn){
         List<AlgAuthCode> result= authCodeService.listUserAuthCode(usrSn);
         return result;
     }
-    @RequestMapping(value= "/listauthcodedomain",method = RequestMethod.POST)
-    public List<AlgAuthCodeDomain> listauthcodedomain(String acdSn){
+    @RequestMapping(value="/listauthcodedomain/{acdSn}",method = RequestMethod.GET)
+    public List<AlgAuthCodeDomain> listauthcodedomain(@PathVariable("acdSn") String acdSn){
         List<AlgAuthCodeDomain> result = authCodeDomainService.listAcdSnUrl(acdSn);
         return result;
     }
@@ -45,9 +45,7 @@ public class AuthCodeController {
     public Result create(AlgAuthCode algAuthCode,String[] addUrl){
         logger.info("名字:{},",algAuthCode.getAcdName());
         String acdSn = UUIDUtil.createUUID();
-
         algAuthCode.setAcdSn(acdSn);
-
         if(addUrl != null){
             for (String anAddUrl : addUrl) {
                 AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
@@ -67,13 +65,18 @@ public class AuthCodeController {
     }
 
 
-    @RequestMapping(value = "/delete/{acdSn_id}",method = RequestMethod.GET)
-    public Result delete(@PathVariable("acdSn_id") String acdSn_id){
-        logger.info("主键:{}",acdSn_id);
-
-        Result result = authCodeService.deleteAuthCode(acdSn_id);
+    @RequestMapping(value = "/deleteauthcode/{acdSn}",method = RequestMethod.GET)
+    public Result deleteauthcode(@PathVariable("acdSn") String acdSn){
+        logger.info("主键:{}",acdSn);
+        Result result = authCodeService.deleteAuthCode(acdSn);
+        List<AlgAuthCodeDomain> resultAuthDomain = authCodeDomainService.listAcdSnUrl(acdSn);
+        if (resultAuthDomain != null)
+        {
+            authCodeDomainService.deleteByAcdSn(acdSn);
+        }
         return result;
     }
+
     @RequestMapping("/update")
     public Result update(AlgAuthCode algAuthCode){
         logger.info("名字:{}",algAuthCode.getAcdName());

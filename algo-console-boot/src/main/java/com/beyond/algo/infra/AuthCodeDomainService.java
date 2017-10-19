@@ -14,6 +14,7 @@ import java.util.List;
 public interface AuthCodeDomainService {
     Result createAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain);
     Result deleteAuthCodeDomain(String addSn_id);
+    Result deleteByAcdSn(String acdSn);
     Result updataAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain);
     Result selectAuthCodeDomain(String addSn_id);
     List<AlgAuthCodeDomain> listAcdSnUrl(String acdSn);
