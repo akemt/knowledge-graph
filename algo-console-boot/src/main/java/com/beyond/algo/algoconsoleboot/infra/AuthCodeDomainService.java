@@ -13,10 +13,10 @@ import java.util.List;
  */
 public interface AuthCodeDomainService {
     Result createAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain);
-    Result deleteAuthCodeDomain(String addSn_id);
+    Result deleteAuthCodeDomain(String addSn);
     Result deleteByAcdSn(String acdSn);
     Result updataAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain);
-    Result selectAuthCodeDomain(String addSn_id);
+    Result selectAuthCodeDomain(String addSn);
     List<AlgAuthCodeDomain> listAcdSnUrl(String acdSn);
     Result selectAll();
 }

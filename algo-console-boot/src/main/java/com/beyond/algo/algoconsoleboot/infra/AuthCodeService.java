@@ -11,9 +11,9 @@ import java.util.List;
  */
 public interface AuthCodeService {
     Result createAuthCode(AlgAuthCode algAuthCode);
-    Result deleteAuthCode(String acdSn_id);
+    Result deleteAuthCode(String acdSn);
     Result updateAuthCode(AlgAuthCode algAuthCode);
-    Result selectAuthCode(String acdSn_id);
+    Result selectAuthCode(String acdSn);
     List<AlgAuthCode> listUserAuthCode(String usrSn);
     Result selectAll();
 }

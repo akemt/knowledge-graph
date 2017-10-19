@@ -31,9 +31,9 @@ public class AuthCodeDomainServiceImpl implements AuthCodeDomainService {
     }
 
     @Override
-    public Result deleteAuthCodeDomain(String addSn_id) {
+    public Result deleteAuthCodeDomain(String addSn) {
 
-        algAuthCodeDomainMapper.deleteByPrimaryKey(addSn_id);
+        algAuthCodeDomainMapper.deleteByPrimaryKey(addSn);
         return Result.successResponse();
     }
 
@@ -51,8 +51,8 @@ public class AuthCodeDomainServiceImpl implements AuthCodeDomainService {
     }
 
     @Override
-    public Result selectAuthCodeDomain(String addSn_id) {
-        AlgAuthCodeDomain authResult = algAuthCodeDomainMapper.selectByPrimaryKey(addSn_id);
+    public Result selectAuthCodeDomain(String addSn) {
+        AlgAuthCodeDomain authResult = algAuthCodeDomainMapper.selectByPrimaryKey(addSn);
         Result result=new Result();
         result.setData(authResult);
         return result;
