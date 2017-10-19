@@ -10,7 +10,6 @@ import com.beyond.algo.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,7 +55,6 @@ public class UserController {
      * @Modify By :zhangchuanzhi
      * @date ：8:49 2017/9/27
      */
-    @PreAuthorize("hasRole('admin')")
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
     public Result userLogin(AlgUser user) {
