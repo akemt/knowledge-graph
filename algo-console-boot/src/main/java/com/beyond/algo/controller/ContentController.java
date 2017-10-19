@@ -84,7 +84,7 @@ public class ContentController {
      * @Description:用户收藏文献
      * @param：CollectArticlesVo
      * @Modify By :zhangchuanzhi
-     * @date ：17:07 2017/10/19
+     * @date ：10:07 2017/10/19
      */
     @RequestMapping(value="/collectArticles", method= RequestMethod.POST)
     @ResponseBody
@@ -96,6 +96,31 @@ public class ContentController {
                 return Result.ok(collectArticles);
             }else{
                 return Result.failure(collectArticles);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 待完善异常处理
+            return Result.failureResponse();
+        }
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户推荐算法
+     * @param：CollectArticlesVo
+     * @Modify By :zhangchuanzhi
+     * @date ：14:22 2017/10/19
+     */
+    @RequestMapping(value="/algorithmRank", method= RequestMethod.POST)
+    @ResponseBody
+    public Result algorithmRank( ) {
+     //   log.info("用户id:{},Page:{},Row:{}",collectArticlesVo.getUsrSn(),collectArticlesVo.getPage(),collectArticlesVo.getRows());
+        try {
+            List bcv= algorithmCollectAndRankService.getRankList();
+            if(Assert.isNotEmpty(bcv)){
+                return Result.ok(bcv);
+            }else{
+                return Result.failure(bcv);
             }
         } catch (Exception e) {
             e.printStackTrace();

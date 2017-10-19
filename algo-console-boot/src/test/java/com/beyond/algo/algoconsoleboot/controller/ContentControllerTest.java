@@ -67,4 +67,11 @@ public class ContentControllerTest {
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
+
+    @Test
+    public void algorithmRank() throws Exception{
+        String result = this.mockMvc.perform(post("/content/algorithmRank").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 }
