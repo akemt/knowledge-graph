@@ -3,6 +3,7 @@ package com.beyond.algo.controller;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.infra.ShowProjectFileService;
+import com.beyond.algo.model.GitConfigModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,8 @@ public class ProjectTreeController {
     private ShowProjectFileService showProjectFileService;
     @Autowired
     private ReadFileService readFileService;
+    @Autowired
+    private GitConfigModel gitConfigModel;
 
     /**
      * 展示同级目录所有文件和文件夹，或者展示文本。
@@ -35,14 +38,17 @@ public class ProjectTreeController {
      * @param ：path 同级目录路径
      * @return ：返回文件内容，或者展示文本。
      */
-    @RequestMapping(value="/showFile", method= RequestMethod.POST)
+    @RequestMapping(value="/showFile", method= RequestMethod.GET)
     public @ResponseBody
     Result showFile(String path) {
+        List<FileDir> showProjectFileList = null;
         try {
             //如果点击的是文本
+            //TODO 获取用户英文名称和项目名称
+            path = gitConfigModel.getLocalBasePath()+"/"+"test1/"+"TestProject/"+path ;
             File file = new File(path);
             if(file.isDirectory()){
-                List<FileDir> showProjectFileList = new ArrayList<>();
+                showProjectFileList= new ArrayList<>();
                 //返回同级目录所有文件和文件夹.
                 showProjectFileList = showProjectFileService.ShowProjectFile(path);
             }else{
@@ -53,7 +59,7 @@ public class ProjectTreeController {
             e.printStackTrace();
             return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
-        return Result.successResponse();
+        return Result.ok(showProjectFileList);
     }
 
     /**
