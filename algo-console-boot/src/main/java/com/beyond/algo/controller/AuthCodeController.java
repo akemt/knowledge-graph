@@ -33,12 +33,12 @@ public class AuthCodeController {
     @RequestMapping(value = "/listauthcode" ,method = RequestMethod.POST)
     public List<AlgAuthCode> listauthcode(String usrSn){
         List<AlgAuthCode> result= authCodeService.listUserAuthCode(usrSn);
-        //Result result = authCodeService.selectAll();
         return result;
     }
-    @RequestMapping("/listauthcodedomain")
-    public Result listauthcodedomain(){
-        return null;
+    @RequestMapping(value= "/listauthcodedomain",method = RequestMethod.POST)
+    public List<AlgAuthCodeDomain> listauthcodedomain(String acdSn){
+        List<AlgAuthCodeDomain> result = authCodeDomainService.listAcdSnUrl(acdSn);
+        return result;
     }
 
     @RequestMapping( value = "/create" , method=RequestMethod.POST)

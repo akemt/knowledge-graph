@@ -82,8 +82,14 @@ public class AuthCodeControllerTest {
                 .param("usrSn","0aeabf55b32e4c0484670656f274e951"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
-        //结果：[{"acdSn":"563f74d3271140d7b69ebdb806e55557","usrSn":"0aeabf55b32e4c0484670656f274e951","acdName":"thisisacdname","acdId":"db03554ee9f84d85a616126cad235edc","callFromClient":"1","callFromBrowser":null,"restrictUrl":null,"dataUseType":null},{"acdSn":"b95de94a97464e7e91258fee2c65b1f2","usrSn":"0aeabf55b32e4c0484670656f274e951","acdName":"thisisacdname","acdId":"3edb57876bcd4558b8d1915e9d243544","callFromClient":"1","callFromBrowser":null,"restrictUrl":null,"dataUseType":null},{"acdSn":"bcb0f9c316634405b66ff8a3eeb400c3","usrSn":"0aeabf55b32e4c0484670656f274e951","acdName":"thisisacdname","acdId":"5f63f826e0324f128d7af00697199c8c","callFromClient":"1","callFromBrowser":null,"restrictUrl":null,"dataUseType":null}]
-
+    }
+    @Test
+    public void listauthcodedomain() throws Exception {
+        String result = this.mockMvc.perform(post("/authcode/listauthcodedomain").contentType(MediaType.APPLICATION_JSON)
+                .param("acdSn","b95de94a97464e7e91258fee2c65b1f2"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+        //结果：[{"addSn":"023427a40baa483c82fd25bfbb56ec96","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge2.com"},{"addSn":"7b72969e280f49c0b2600e138735d1fe","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge3.com"},{"addSn":"e6c657cf2e2a48809367182106d8df55","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge1.com"}]
     }
 
 }

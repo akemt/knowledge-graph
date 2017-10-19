@@ -27,6 +27,11 @@
     from alg_auth_code_domain
     where add_sn = #{addSn,jdbcType=VARCHAR}
   </select>
+  <select id="listAcdSnUrl" resultMap="BaseResultMap">
+    select add_sn, acd_sn, add_url
+    from alg_auth_code_domain
+    where acd_sn = #{acdSn,jdbcType=VARCHAR}
+  </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select add_sn, acd_sn, add_url
     from alg_auth_code_domain

@@ -53,6 +53,12 @@ public class AuthCodeDomainServiceImpl implements AuthCodeDomainService {
     }
 
     @Override
+    public List<AlgAuthCodeDomain> listAcdSnUrl(String acdSn) {
+        List<AlgAuthCodeDomain> result = algAuthCodeDomainMapper.listAcdSnUrl(acdSn);
+        return result;
+    }
+
+    @Override
     public Result selectAll(){
         Result result=new Result();
         List<AlgAuthCodeDomain> allUser = algAuthCodeDomainMapper.selectAll();
