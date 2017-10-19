@@ -29,7 +29,7 @@ public class OrgController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public Result<Object> createOrg(AlgUser org, HttpSession session) {
+    public Result<AlgUser> createOrg(AlgUser org, HttpSession session) {
         log.info("创建组织：组织账户名:{},组织全名:{},用户ID:{}", org.getUsrCode(), org.getUsrName(), org.getOwnerId());
         try {
             //TODO:单点登录可能调整用户名密码获取方式
@@ -38,10 +38,10 @@ public class OrgController {
 
             //TODO: 测试代码，注入用户信息
             userCode = "qihe";
-            password = "123456";
+            password = "12345678";
 
             org = orgService.createOrg(org, userCode, password);
-            return null;
+            return Result.ok(org);
         } catch (Exception e) {
             log.error("创建组织失败", e);
             return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
