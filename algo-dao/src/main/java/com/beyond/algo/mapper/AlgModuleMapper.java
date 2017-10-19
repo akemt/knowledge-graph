@@ -13,4 +13,6 @@ public interface AlgModuleMapper {
     List<AlgModule> selectAll();
 
     int updateByPrimaryKey(AlgModule record);
+
+    List<AlgModule> getRankList(List rankList);
 }

@@ -57,4 +57,17 @@
     need_web, need_call_other, env_type
     from alg_module
   </select>
+  <sql id="alg_module_tbl">
+    select mod_sn, usr_sn, lan_sn, cat_sn, lic_sn, atl_sn, mod_name, mod_id, is_open_src,
+    need_web, need_call_other, env_type
+    from alg_module
+  </sql>
+  <select id="getRankList" resultMap="BaseResultMap">
+    <include refid="alg_module_tbl"/>
+    where mod_id in
+    <foreach collection="list" item="item" index="index"
+             open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
 </mapper>

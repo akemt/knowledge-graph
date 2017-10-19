@@ -39,4 +39,9 @@
     select inv_sn, org_sn, usr_sn, user_email, is_pend, is_old_user
     from alg_r_user_org_invite
   </select>
+
+  <delete id="deleteByOrgCode" parameterType="java.lang.String" >
+    delete from alg_r_user_org_invite
+    where org_sn = #{orgSn,jdbcType=VARCHAR}
+  </delete>
 </mapper>

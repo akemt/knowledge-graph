@@ -1,5 +1,7 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +14,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OrgControllerTests {
@@ -35,15 +39,25 @@ public class OrgControllerTests {
 	}
 
 	@Test
-	@Transactional
-	public void testCreateOrg() throws Exception {
+	public void createOrgTest() throws Exception {
 		String result = this.mockMvc.perform(post("/org/create").contentType(MediaType.APPLICATION_JSON)
-				.param("usrCode", "qihe")
-				.param("usrName", "qihe")
+				.param("usrCode", "testOrg0")
+				.param("usrName", "测试组织0")
 				.param("email", "test@qq.com")
-				.param("ownerId", "62a6a211ecfc480bbc9c67d65a44b535"))
+				.param("ownerId", "37bf2269ee4845da8e86861bbde2438a")
+				.session(session))
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-		System.out.println(result);
+		log.info(result);
+		assertTrue("200".equals(JSONObject.parseObject(result).getString("code")));
+	}
+
+	@Test
+	@Transactional
+	public void deleteOrgTest() throws Exception {
+		String result = this.mockMvc.perform(post("/org/del").contentType(MediaType.APPLICATION_JSON)
+				.param("orgSn", ""))
+				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+		log.info(result);
 	}
 
 }

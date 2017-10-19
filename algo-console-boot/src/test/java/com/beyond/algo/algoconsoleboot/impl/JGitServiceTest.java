@@ -3,9 +3,9 @@ package com.beyond.algo.algoconsoleboot.impl;
 
 import com.beyond.algo.algoconsoleboot.AlgoConsoleBootApplication;
 import com.beyond.algo.common.FileUtil;
-import com.beyond.algo.infra.BuildAntProjectService;
-import com.beyond.algo.infra.JGitService;
-import com.beyond.algo.model.GitUser;
+import com.beyond.algo.algoconsoleboot.infra.BuildAntProjectService;
+import com.beyond.algo.algoconsoleboot.infra.JGitService;
+import com.beyond.algo.algoconsoleboot.model.GitUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

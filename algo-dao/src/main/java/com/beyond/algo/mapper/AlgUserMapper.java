@@ -17,4 +17,7 @@ public interface AlgUserMapper {
     AlgUser selectUsrname(String usrsn);
 
     int update(AlgUser record);
+
+    // 根据组织编码获取组织个数（用于新建组织时判断组织编码唯一性）
+    int countOrgByCode(String orgCode);
 }

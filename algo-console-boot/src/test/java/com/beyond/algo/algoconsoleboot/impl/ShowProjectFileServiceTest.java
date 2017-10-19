@@ -2,7 +2,7 @@ package com.beyond.algo.algoconsoleboot.impl;
 
 import com.beyond.algo.algoconsoleboot.AlgoConsoleBootApplication;
 import com.beyond.algo.common.FileDir;
-import com.beyond.algo.infra.ShowProjectFileService;
+import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

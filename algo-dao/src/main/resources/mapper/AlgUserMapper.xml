@@ -102,4 +102,10 @@
         </trim>
         where usr_sn = #{usrSn,jdbcType=VARCHAR}
     </update>
+
+    <select id="countOrgByCode" resultType="java.lang.Integer" parameterType="java.lang.String" >
+        select count(*)
+        from alg_user
+        where usr_code = #{orgCode,jdbcType=VARCHAR} and is_org = '1'
+    </select>
 </mapper>
