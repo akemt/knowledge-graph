@@ -38,7 +38,7 @@ public class AuthCodeControllerTest {
         String usrSn = UUIDUtil.createUUID();
         String result = this.mockMvc.perform(post("/authcode/create").contentType(MediaType.APPLICATION_JSON)
                 //AuthCode数据
-                .param("usrSn",usrSn)
+                .param("usrSn","0aeabf55b32e4c0484670656f274e951")
                 .param("acdName","thisisacdname")
                 .param("acdId","thisisacdid001")
                 .param("callFromClient","1")
@@ -77,10 +77,19 @@ public class AuthCodeControllerTest {
         System.out.println(result);
     }
     @Test
-    public void list() throws Exception {
-        String result = this.mockMvc.perform(post("/authcode/list").contentType(MediaType.APPLICATION_JSON))
+    public void listauthcode() throws Exception {
+        String result = this.mockMvc.perform(post("/authcode/listauthcode").contentType(MediaType.APPLICATION_JSON)
+                .param("usrSn","0aeabf55b32e4c0484670656f274e951"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
+    }
+    @Test
+    public void listauthcodedomain() throws Exception {
+        String result = this.mockMvc.perform(post("/authcode/listauthcodedomain").contentType(MediaType.APPLICATION_JSON)
+                .param("acdSn","b95de94a97464e7e91258fee2c65b1f2"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+        //结果：[{"addSn":"023427a40baa483c82fd25bfbb56ec96","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge2.com"},{"addSn":"7b72969e280f49c0b2600e138735d1fe","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge3.com"},{"addSn":"e6c657cf2e2a48809367182106d8df55","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge1.com"}]
     }
 
 }

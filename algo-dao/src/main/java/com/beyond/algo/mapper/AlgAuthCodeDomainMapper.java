@@ -12,5 +12,7 @@ public interface AlgAuthCodeDomainMapper {
 
     List<AlgAuthCodeDomain> selectAll();
 
+    List<AlgAuthCodeDomain> listAcdSnUrl(String acdSn);
+
     int updateByPrimaryKey(AlgAuthCodeDomain record);
 }

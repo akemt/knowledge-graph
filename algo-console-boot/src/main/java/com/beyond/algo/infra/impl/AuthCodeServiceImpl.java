@@ -49,6 +49,12 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
+    public List<AlgAuthCode> listUserAuthCode(String usrSn) {
+        List<AlgAuthCode> userAllAuthCode = algAuthCodeMapper.selectByUsrSnKey(usrSn);
+        return userAllAuthCode;
+    }
+
+    @Override
     public Result selectAll() {
         List<AlgAuthCode> allAlgAuth = algAuthCodeMapper.selectAll();
         Result result = new Result();

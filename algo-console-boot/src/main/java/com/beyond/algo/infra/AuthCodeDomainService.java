@@ -4,6 +4,8 @@ package com.beyond.algo.infra;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.model.AlgAuthCodeDomain;
 
+import java.util.List;
+
 /**
  * @author XianjieZhang E-mail:xj_zh@foxmail.com
  * @Description:接口定义
@@ -14,5 +16,6 @@ public interface AuthCodeDomainService {
     Result deleteAuthCodeDomain(String addSn_id);
     Result updataAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain);
     Result selectAuthCodeDomain(String addSn_id);
+    List<AlgAuthCodeDomain> listAcdSnUrl(String acdSn);
     Result selectAll();
 }

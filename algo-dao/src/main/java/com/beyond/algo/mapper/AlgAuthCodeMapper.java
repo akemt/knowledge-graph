@@ -12,5 +12,7 @@ public interface AlgAuthCodeMapper {
 
     List<AlgAuthCode> selectAll();
 
+    List<AlgAuthCode> selectByUsrSnKey(String usrSn);
+
     int updateByPrimaryKey(AlgAuthCode record);
 }
