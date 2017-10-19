@@ -39,6 +39,7 @@ public class OrgControllerTests {
 	}
 
 	@Test
+	@Transactional
 	public void createOrgTest() throws Exception {
 		String result = this.mockMvc.perform(post("/org/create").contentType(MediaType.APPLICATION_JSON)
 				.param("usrCode", "testOrg0")
@@ -55,7 +56,7 @@ public class OrgControllerTests {
 	@Transactional
 	public void deleteOrgTest() throws Exception {
 		String result = this.mockMvc.perform(post("/org/del").contentType(MediaType.APPLICATION_JSON)
-				.param("orgSn", ""))
+				.param("orgSn", "f0a18cf334f34671b0468c6b7ba72beb"))
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
 		log.info(result);
 	}
