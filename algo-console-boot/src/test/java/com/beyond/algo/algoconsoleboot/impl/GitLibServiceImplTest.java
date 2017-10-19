@@ -41,4 +41,9 @@ public class GitLibServiceImplTest {
         assertTrue(gitlabGroup != null);
     }
 
+    @Test
+    public void deleteGitLibGroupTest() throws Exception {
+        gitLibService.deleteGitLibGroup("testOrg1");
+    }
+
 }

@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AlgoConsoleBootApplication.class)
@@ -23,9 +24,14 @@ public class OrgServiceImplTest {
         org.setUsrCode("testOrg2");
         org.setUsrName("测试组织2");
         org.setEmail("test@qq.com");
-        org.setOwnerId("62a6a211ecfc480bbc9c67d65a44b535");
+        org.setOwnerId("37bf2269ee4845da8e86861bbde2438a");
 
         orgService.createOrg(org, "qihe", "12345678");
+    }
+
+    @Test
+    public void deleteOrgTest() throws Exception {
+        orgService.deleteOrg("8e70e57b5e104f1b9d4d4dc0b141d83b");
     }
 
 }

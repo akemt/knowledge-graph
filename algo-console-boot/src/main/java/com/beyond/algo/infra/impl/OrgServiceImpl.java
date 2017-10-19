@@ -53,13 +53,30 @@ public class OrgServiceImpl implements OrgService {
         algRUserOrgInvite.setIsOldUser("0");
         algRUserOrgInviteMapper.insert(algRUserOrgInvite);
 
-        // 在git中创建组织
+        // 在gitlab中创建组织
         try {
             gitLibService.createGitLibGroup(org.getUsrCode(), org.getUsrName(), createUserCode, password);
         } catch (Exception e) {
-            throw new AlgException("git创建组织失败，创建者code：" + createUserCode + "，组织code：" + org.getUsrCode() + "。", e);
+            throw new AlgException("gitlab创建组织失败，创建者code：" + createUserCode + "，组织code：" + org.getUsrCode() + "。", e);
         }
         return org;
     }
 
+    @Override
+    @Transactional
+    public void deleteOrg(String orgSn) throws AlgException {
+
+        AlgUser org = algUserMapper.selectByPrimaryKey(orgSn);
+
+        // 先删除组织用户关系表，再删除用户表中的组织数据
+        algRUserOrgInviteMapper.deleteByOrgCode(orgSn);
+        algUserMapper.deleteByPrimaryKey(orgSn);
+
+        // 在gitlab中删除组织
+        try {
+            gitLibService.deleteGitLibGroup(org.getUsrCode());
+        } catch (Exception e) {
+            throw new AlgException("gitlab删除组织失败，组织串号：" + orgSn + "。", e);
+        }
+    }
 }

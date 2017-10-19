@@ -47,4 +47,22 @@ public class OrgController {
             return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
     }
+
+    /**
+     * 删除组织
+     *
+     * @param orgSn 组织串号
+     * @return 是否成功
+     */
+    @RequestMapping(value = "/del", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<Boolean> deleteOrg(String orgSn) {
+        try {
+            orgService.deleteOrg(orgSn);
+            return Result.ok(true);
+        } catch (Exception e) {
+            log.error("删除组织失败", e);
+            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
+        }
+    }
 }
