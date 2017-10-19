@@ -76,6 +76,11 @@ public class AuthCodeController {
         }
         return result;
     }
+    @RequestMapping(value = "/deleteauthcodedomain/{addSn}",method = RequestMethod.GET)
+    public Result deleteauthcodedomain(@PathVariable("addSn") String addSn){
+        Result result = authCodeDomainService.deleteAuthCodeDomain(addSn);
+        return  result;
+    }
 
     @RequestMapping("/update")
     public Result update(AlgAuthCode algAuthCode){

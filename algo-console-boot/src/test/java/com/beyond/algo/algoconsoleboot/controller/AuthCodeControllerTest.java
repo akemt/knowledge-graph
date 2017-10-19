@@ -70,8 +70,16 @@ public class AuthCodeControllerTest {
     @Test
     public void deleteauthcode() throws Exception {
         //通过acdSn主键删除
-        //同时删除两个表内容
+        //同时删除内外两个表内容
         String result = this.mockMvc.perform(get("/authcode/deleteauthcode/{acdSn}","05bac0d5f7924429849cd4c56559878c").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+    @Test
+    public void deleteauthcodedomain() throws Exception {
+        //通过acdSn主键删除
+        //同时删除两个表内容
+        String result = this.mockMvc.perform(get("/authcode/deleteauthcodedomain/{addSn}","2b62bcb40c844c41999a45d53e2171a6").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
