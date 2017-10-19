@@ -16,5 +16,5 @@ public interface AlgStarMapper {
 
     int updateByPrimaryKey(AlgStar record);
 
-    List<CollectArticlesVo> selectArticles(String usrSn);
+    List<CollectArticlesVo> selectArticles(CollectArticlesVo collectArticlesVo);
 }
