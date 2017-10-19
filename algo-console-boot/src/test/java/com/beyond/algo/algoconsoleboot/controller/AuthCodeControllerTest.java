@@ -35,14 +35,18 @@ public class AuthCodeControllerTest {
     }
     @Test
     public void create() throws Exception {
-        String acdSn = UUIDUtil.createUUID();
         String usrSn = UUIDUtil.createUUID();
         String result = this.mockMvc.perform(post("/authcode/create").contentType(MediaType.APPLICATION_JSON)
-                .param("acdSn",acdSn)
+                //AuthCode数据
                 .param("usrSn",usrSn)
                 .param("acdName","thisisacdname")
                 .param("acdId","thisisacdid001")
-                .param("callFromClient","1"))
+                .param("callFromClient","1")
+
+                //AuthCodeDomain的Url
+                .param("addUrl","www.baidulaingge1.com")
+                .param("addUrl","www.baidulaingge2.com")
+                .param("addUrl","www.baidulaingge3.com"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }

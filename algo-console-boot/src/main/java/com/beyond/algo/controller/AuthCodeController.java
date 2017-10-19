@@ -1,8 +1,11 @@
 package com.beyond.algo.controller;
 
 import com.beyond.algo.common.Result;
+import com.beyond.algo.common.UUIDUtil;
+import com.beyond.algo.infra.AuthCodeDomainService;
 import com.beyond.algo.infra.AuthCodeService;
 import com.beyond.algo.model.AlgAuthCode;
+import com.beyond.algo.model.AlgAuthCodeDomain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,23 +25,50 @@ public class AuthCodeController {
 
     @Autowired
     private AuthCodeService authCodeService;
+    @Autowired
+    private AuthCodeDomainService authCodeDomainService;
 
-    @RequestMapping("/list")
-    public Result list(){
+    @RequestMapping("/listauthcode")
+    public Result listauthcode(){
+
         Result result = authCodeService.selectAll();
         return result;
     }
+    @RequestMapping("/listauthcodedomain")
+    public Result listauthcodedomain(){
+        return null;
+    }
 
-    @RequestMapping("/create")
-    public Result create(AlgAuthCode algAuthCode){
+    @RequestMapping( value = "/create" , method=RequestMethod.POST)
+    public Result create(AlgAuthCode algAuthCode,String[] addUrl){
         logger.info("名字:{},",algAuthCode.getAcdName());
-        Result result = authCodeService.createAuthCode(algAuthCode);
+        String acdSn = UUIDUtil.createUUID();
+
+        algAuthCode.setAcdSn(acdSn);
+
+        if(addUrl != null){
+            for (String anAddUrl : addUrl) {
+                AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
+                // assert algAuthCodeDomain != null;
+                String addSn = UUIDUtil.createUUID();
+                algAuthCodeDomain.setAddSn(addSn);
+                algAuthCodeDomain.setAcdSn(acdSn);
+                algAuthCodeDomain.setAddUrl(anAddUrl);
+                Result resultDomain = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomain);
+                if(resultDomain.getMsg() != "成功"){
+                    return Result.failureResponse();
+                }
+            }
+        }
+        Result result=authCodeService.createAuthCode(algAuthCode);
         return result;
     }
+
 
     @RequestMapping(value = "/delete/{acdSn_id}",method = RequestMethod.GET)
     public Result delete(@PathVariable("acdSn_id") String acdSn_id){
         logger.info("主键:{}",acdSn_id);
+
         Result result = authCodeService.deleteAuthCode(acdSn_id);
         return result;
     }
