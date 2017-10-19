@@ -1,6 +1,8 @@
 package com.beyond.algo.mapper;
 
 import com.beyond.algo.model.AlgStar;
+import com.beyond.algo.vo.CollectArticlesVo;
+
 import java.util.List;
 
 public interface AlgStarMapper {
@@ -13,4 +15,6 @@ public interface AlgStarMapper {
     List<AlgStar> selectAll();
 
     int updateByPrimaryKey(AlgStar record);
+
+    List<CollectArticlesVo> selectArticles(String usrSn);
 }
