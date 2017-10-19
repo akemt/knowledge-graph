@@ -41,8 +41,14 @@
     where acd_sn = #{acdSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select acd_sn, usr_sn, acd_name, acd_id, call_from_client, call_from_browser, restrict_url, 
+    select acd_sn, usr_sn, acd_name, acd_id, call_from_client, call_from_browser, restrict_url,
     data_use_type
     from alg_auth_code
+  </select>
+  <select id="selectByUsrSnKey" resultMap="BaseResultMap">
+    select acd_sn, usr_sn, acd_name, acd_id, call_from_client, call_from_browser, restrict_url,
+    data_use_type
+    from alg_auth_code
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </select>
 </mapper>

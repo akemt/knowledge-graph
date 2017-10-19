@@ -38,7 +38,7 @@ public class AuthCodeControllerTest {
         String usrSn = UUIDUtil.createUUID();
         String result = this.mockMvc.perform(post("/authcode/create").contentType(MediaType.APPLICATION_JSON)
                 //AuthCode数据
-                .param("usrSn",usrSn)
+                .param("usrSn","0aeabf55b32e4c0484670656f274e951")
                 .param("acdName","thisisacdname")
                 .param("acdId","thisisacdid001")
                 .param("callFromClient","1")
@@ -77,10 +77,13 @@ public class AuthCodeControllerTest {
         System.out.println(result);
     }
     @Test
-    public void list() throws Exception {
-        String result = this.mockMvc.perform(post("/authcode/list").contentType(MediaType.APPLICATION_JSON))
+    public void listauthcode() throws Exception {
+        String result = this.mockMvc.perform(post("/authcode/listauthcode").contentType(MediaType.APPLICATION_JSON)
+                .param("usrSn","0aeabf55b32e4c0484670656f274e951"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
+        //结果：[{"acdSn":"563f74d3271140d7b69ebdb806e55557","usrSn":"0aeabf55b32e4c0484670656f274e951","acdName":"thisisacdname","acdId":"db03554ee9f84d85a616126cad235edc","callFromClient":"1","callFromBrowser":null,"restrictUrl":null,"dataUseType":null},{"acdSn":"b95de94a97464e7e91258fee2c65b1f2","usrSn":"0aeabf55b32e4c0484670656f274e951","acdName":"thisisacdname","acdId":"3edb57876bcd4558b8d1915e9d243544","callFromClient":"1","callFromBrowser":null,"restrictUrl":null,"dataUseType":null},{"acdSn":"bcb0f9c316634405b66ff8a3eeb400c3","usrSn":"0aeabf55b32e4c0484670656f274e951","acdName":"thisisacdname","acdId":"5f63f826e0324f128d7af00697199c8c","callFromClient":"1","callFromBrowser":null,"restrictUrl":null,"dataUseType":null}]
+
     }
 
 }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author XianjieZhang E-mail:xj_zh@foxmail.com
  * @version Created in：2017/10/12 0012 下午 9:58
@@ -28,10 +30,10 @@ public class AuthCodeController {
     @Autowired
     private AuthCodeDomainService authCodeDomainService;
 
-    @RequestMapping("/listauthcode")
-    public Result listauthcode(){
-
-        Result result = authCodeService.selectAll();
+    @RequestMapping(value = "/listauthcode" ,method = RequestMethod.POST)
+    public List<AlgAuthCode> listauthcode(String usrSn){
+        List<AlgAuthCode> result= authCodeService.listUserAuthCode(usrSn);
+        //Result result = authCodeService.selectAll();
         return result;
     }
     @RequestMapping("/listauthcodedomain")
