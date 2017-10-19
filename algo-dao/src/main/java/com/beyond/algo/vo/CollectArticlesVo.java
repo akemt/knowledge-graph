@@ -17,4 +17,10 @@ public class CollectArticlesVo {
     private String lanName;
     // 作者收藏时间
     private String collectDate;
+    private String usrSn;
+    private int page;
+
+    private int rows;
+
+    private int total;
 }

@@ -60,8 +60,10 @@ public class ContentControllerTest {
 
     @Test
     public void collectArticles() throws Exception{
-        String result = this.mockMvc.perform(get("/content/collectArticles").contentType(MediaType.APPLICATION_JSON)
-                .param("usrSn","aac44b648b10429cbaf85a6ae0113a65"))
+        String result = this.mockMvc.perform(post("/content/collectArticles").contentType(MediaType.APPLICATION_JSON)
+                .param("usrSn","aac44b648b10429cbaf85a6ae0113a65")
+                .param("page","0")
+                .param("rows","1"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }

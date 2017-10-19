@@ -40,7 +40,7 @@
     from alg_star
   </select>
 
-  <select id="selectArticles" resultMap="queryForListMap"  parameterType="java.lang.String" >
+  <select id="selectArticles" resultMap="queryForListMap"  parameterType="com.beyond.algo.vo.CollectArticlesVo" >
      select algModule.mod_name,algArticleList.papertext,algProgramLang.lan_name, date_format(algModuleVersion.create_date,'%Y-%c-%d %h:%i:%s')create_time from
      alg_star algStar
             left join  alg_module algModule on algStar.mod_sn=algModule.mod_sn
@@ -48,5 +48,6 @@
             left join alg_program_lang algProgramLang on algModule.lan_sn=algProgramLang.lan_sn
             left join alg_module_version algModuleVersion on algModule.mod_sn=algModuleVersion.mod_sn
      where algStar.usr_sn= #{usrSn,jdbcType=VARCHAR}
+     order by create_time desc
   </select>
 </mapper>

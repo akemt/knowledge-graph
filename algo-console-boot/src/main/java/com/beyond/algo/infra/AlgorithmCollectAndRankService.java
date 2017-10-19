@@ -10,5 +10,5 @@ import java.util.List;
  * @date ：11:25 2017/10/17
  */
 public interface AlgorithmCollectAndRankService {
-    List<CollectArticlesVo> collectArticles(String usrSn);
+    List<CollectArticlesVo> collectArticles(CollectArticlesVo collectArticlesVo);
 }
