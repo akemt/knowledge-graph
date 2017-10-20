@@ -1,8 +1,10 @@
 package com.beyond.algo.algoconsoleboot.infra.impl;
 
 import com.beyond.algo.algoconsoleboot.infra.AlgorithmCollectAndRankService;
+import com.beyond.algo.mapper.AlgArticleListMapper;
 import com.beyond.algo.mapper.AlgModuleMapper;
 import com.beyond.algo.mapper.AlgStarMapper;
+import com.beyond.algo.vo.AlgArticleListVo;
 import com.beyond.algo.vo.CollectArticlesVo;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class AlgorithmCollectAndRankServiceImpl  implements AlgorithmCollectAndR
     @Autowired
     private AlgModuleMapper algModuleMapper;
 
+    @Autowired
+    private AlgArticleListMapper algArticleListMapper;
+
     @Override
     public List<CollectArticlesVo> collectArticles(CollectArticlesVo collectArticlesVo){
         //分页处理
@@ -43,4 +48,10 @@ public class AlgorithmCollectAndRankServiceImpl  implements AlgorithmCollectAndR
         List bcd=  algModuleMapper.getRankList(abc);
         return bcd;
     }
+    @Override
+    public List<AlgArticleListVo>searchArticles(AlgArticleListVo algArticleListVo){
+        List<AlgArticleListVo>  algArticleListVoList=algArticleListMapper.searchArticles(algArticleListVo);
+        return algArticleListVoList;
+    }
+
 }
