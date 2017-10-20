@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AlgoConsoleBootApplication.class)
@@ -17,6 +18,7 @@ public class OrgServiceImplTest {
     private OrgService orgService;
 
     @Test
+    @Transactional
     public void createOrgTest() throws Exception {
 
         AlgUser org = new AlgUser();
@@ -29,6 +31,7 @@ public class OrgServiceImplTest {
     }
 
     @Test
+    @Transactional
     public void deleteOrgTest() throws Exception {
         orgService.deleteOrg("8e70e57b5e104f1b9d4d4dc0b141d83b");
     }

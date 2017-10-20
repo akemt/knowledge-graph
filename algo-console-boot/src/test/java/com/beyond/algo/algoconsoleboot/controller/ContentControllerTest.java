@@ -74,4 +74,12 @@ public class ContentControllerTest {
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
+
+    @Test
+    public void searchArticles() throws Exception{
+        String result = this.mockMvc.perform(post("/content/searchArticles").contentType(MediaType.APPLICATION_JSON)
+                .param("id","1"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 }
