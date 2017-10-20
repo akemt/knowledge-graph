@@ -47,7 +47,7 @@ public class AuthCodeController {
         String acdSn = UUIDUtil.createUUID();
         algAuthCode.setAcdSn(acdSn);
         //授权码生成，后期看看用别的方法生成串号
-        String acdId = "授权码";
+        String acdId = "Beyond" + UUIDUtil.getRandomString(15) + "1";
         algAuthCode.setAcdId(acdId);
         authCodeService.createAuthCode(algAuthCode);
 
