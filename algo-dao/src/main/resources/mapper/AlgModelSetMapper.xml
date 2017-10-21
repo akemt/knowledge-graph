@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.mapper.AlgModelSetMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgModelSet" >
-    <id column="model_set_sn" property="modelSetSn" jdbcType="VARCHAR" />
-    <result column="usr_sn" property="usrSn" jdbcType="VARCHAR" />
-    <result column="model_set_name" property="modelSetName" jdbcType="VARCHAR" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+<mapper namespace="com.beyond.algo.mapper.AlgModelSetMapper">
+    <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgModelSet">
+        <id column="model_set_sn" property="modelSetSn" jdbcType="VARCHAR"/>
+        <result column="usr_sn" property="usrSn" jdbcType="VARCHAR"/>
+        <result column="model_set_name" property="modelSetName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from alg_model_set
     where model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.AlgModelSet" >
+    <insert id="insert" parameterType="com.beyond.algo.model.AlgModelSet">
     insert into alg_model_set (model_set_sn, usr_sn, model_set_name
       )
     values (#{modelSetSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{modelSetName,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgModelSet" >
+    <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgModelSet">
     update alg_model_set
     set usr_sn = #{usrSn,jdbcType=VARCHAR},
       model_set_name = #{modelSetName,jdbcType=VARCHAR}
     where model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
     select model_set_sn, usr_sn, model_set_name
     from alg_model_set
     where model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String">
     select model_set_sn, usr_sn, model_set_name
     from alg_model_set
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </select>
 </mapper>

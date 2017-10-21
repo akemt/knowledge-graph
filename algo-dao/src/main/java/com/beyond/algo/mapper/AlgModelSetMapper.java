@@ -10,7 +10,7 @@ public interface AlgModelSetMapper {
 
     AlgModelSet selectByPrimaryKey(String modelSetSn);
 
-    List<AlgModelSet> selectAll();
+    List<AlgModelSet> selectAll(String usrSn);
 
     int updateByPrimaryKey(AlgModelSet record);
 }

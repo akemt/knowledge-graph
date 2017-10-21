@@ -19,6 +19,10 @@
     delete from alg_model
     where model_sn = #{modelSn,jdbcType=VARCHAR}
   </delete>
+  <delete id="deleteByModelSetSn" parameterType="java.lang.String" >
+    delete from alg_model
+    where model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
+  </delete>
   <insert id="insert" parameterType="com.beyond.algo.model.AlgModel" >
     insert into alg_model (model_sn, dat_sn, usr_sn, 
       model_set_sn, ver_sn, create_time, 
@@ -52,9 +56,10 @@
     from alg_model
     where model_sn = #{modelSn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select model_sn, dat_sn, usr_sn, model_set_sn, ver_sn, create_time, model_address, 
     model_name, model_en_name, model_size, is_open_src, comment
     from alg_model
+    where model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
   </select>
 </mapper>
