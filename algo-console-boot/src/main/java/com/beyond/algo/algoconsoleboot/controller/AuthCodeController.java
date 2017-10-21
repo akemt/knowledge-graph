@@ -32,18 +32,18 @@ public class AuthCodeController {
     private AuthCodeDomainService authCodeDomainService;
 
     @RequestMapping(value = "/listauthcode/{usrSn}" ,method = RequestMethod.GET)
-    public List<AlgAuthCode> listauthcode(@PathVariable("usrSn") String usrSn){
+    public List<AlgAuthCode> listAuthCode(@PathVariable("usrSn") String usrSn){
         List<AlgAuthCode> result= authCodeService.listUserAuthCode(usrSn);
         return result;
     }
     @RequestMapping(value="/listauthcodedomain/{acdSn}",method = RequestMethod.GET)
-    public List<AlgAuthCodeDomain> listauthcodedomain(@PathVariable("acdSn") String acdSn){
+    public List<AlgAuthCodeDomain> listAuthCodeDomain(@PathVariable("acdSn") String acdSn){
         List<AlgAuthCodeDomain> result = authCodeDomainService.listAcdSnUrl(acdSn);
         return result;
     }
 
     @RequestMapping(value="/generatekey",method=RequestMethod.POST)
-    public Result generatekey(AlgAuthCode algAuthCode,String[] addUrl){
+    public Result generateKey(AlgAuthCode algAuthCode,String[] addUrl){
         /*//主键插入
         String acdSn = UUIDUtil.createUUID();
         algAuthCode.setAcdSn(acdSn);
@@ -77,22 +77,11 @@ public class AuthCodeController {
         return Result.successResponse();
     }
     @RequestMapping(value = "/deleteauthcode/{acdSn}",method = RequestMethod.GET)
-    public Result deleteauthcode(@PathVariable("acdSn") String acdSn){
+    public Result deleteAuthCode(@PathVariable("acdSn") String acdSn){
         logger.info("主键:{}",acdSn);
         //删除authCode表中内容
-        Result resultDelteCode = authCodeService.deleteAuthCode(acdSn);
-        if(!Objects.equals(resultDelteCode.getMsg(), "成功")){
-            return Result.failureResponse();
-        }
-        List<AlgAuthCodeDomain> resultAuthDomain = authCodeDomainService.listAcdSnUrl(acdSn);
-        if (resultAuthDomain != null)
-        {   //删除authCodeDomain表中内容
-            Result result = authCodeDomainService.deleteByAcdSn(acdSn);
-            if(!Objects.equals(result.getMsg(), "成功")){
-                return Result.failureResponse();
-            }
-        }
-        return Result.successResponse();
+        Result result = authCodeService.deleteAuthCode(acdSn);
+        return result;
     }
     @RequestMapping(value = "/update",method= RequestMethod.POST)
     public Result update(AlgAuthCode algAuthCode,String[] addUrl){

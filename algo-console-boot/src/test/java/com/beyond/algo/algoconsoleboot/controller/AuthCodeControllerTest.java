@@ -34,14 +34,14 @@ public class AuthCodeControllerTest {
     public void contextLoads() {
     }
     @Test
-    public void listauthcode() throws Exception {
+    public void listAuthCode() throws Exception {
         String result = this.mockMvc.perform(post("/authcode/listauthcode").contentType(MediaType.APPLICATION_JSON)
                 .param("usrSn","0aeabf55b32e4c0484670656f274e951"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
     @Test
-    public void listauthcodedomain() throws Exception {
+    public void listAuthCodeDomain() throws Exception {
         String result = this.mockMvc.perform(post("/authcode/listauthcodedomain").contentType(MediaType.APPLICATION_JSON)
                 .param("acdSn","b95de94a97464e7e91258fee2c65b1f2"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
@@ -49,7 +49,7 @@ public class AuthCodeControllerTest {
         //结果：[{"addSn":"023427a40baa483c82fd25bfbb56ec96","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge2.com"},{"addSn":"7b72969e280f49c0b2600e138735d1fe","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge3.com"},{"addSn":"e6c657cf2e2a48809367182106d8df55","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge1.com"}]
     }
     @Test
-    public void generatekey() throws Exception {
+    public void generateKey() throws Exception {
         String result = this.mockMvc.perform(post("/authcode/generatekey").contentType(MediaType.APPLICATION_JSON)
                 .param("usrSn","8303430b322d43b1bc6bdd63d2103fa3")
                 .param("acdName","0000000000000000")
@@ -61,10 +61,10 @@ public class AuthCodeControllerTest {
         System.out.println(result);
     }
     @Test
-    public void deleteauthcode() throws Exception {
+    public void deleteAuthCode() throws Exception {
         //通过acdSn主键删除
         //同时删除内外两个表内容
-        String result = this.mockMvc.perform(get("/authcode/deleteauthcode/{acdSn}","8cdf6ad058844541a50ba8e23fd6d181").contentType(MediaType.APPLICATION_JSON))
+        String result = this.mockMvc.perform(get("/authcode/deleteauthcode/{acdSn}","9f7419728a0c47e687bd3eed6601936e").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }

@@ -63,8 +63,16 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
+    @Transactional
     public Result deleteAuthCode(String acdSn) {
         algAuthCodeMapper.deleteByPrimaryKey(acdSn);
+        //List<AlgAuthCodeDomain> resultAuthDomain = authCodeDomainService.listAcdSnUrl(acdSn);
+        List<AlgAuthCodeDomain> resultAuthDomain = algAuthCodeDomainMapper.listAcdSnUrl(acdSn);
+        if (resultAuthDomain != null)
+        {   //删除authCodeDomain表中内容
+            //Result result = authCodeDomainService.deleteByAcdSn(acdSn);
+            algAuthCodeDomainMapper.deleteByAcdSn(acdSn);
+        }
         return Result.successResponse();
     }
 
