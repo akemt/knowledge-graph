@@ -4,6 +4,7 @@ import com.beyond.algo.algoconsoleboot.infra.AlgorithmCollectAndRankService;
 import com.beyond.algo.algoconsoleboot.infra.UseAlgorithmService;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
+import com.beyond.algo.vo.AlgArticleListVo;
 import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
 import com.beyond.algo.vo.CollectArticlesVo;
 import lombok.extern.slf4j.Slf4j;
@@ -121,6 +122,31 @@ public class ContentController {
                 return Result.ok(bcv);
             }else{
                 return Result.failure(bcv);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 待完善异常处理
+            return Result.failureResponse();
+        }
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:文献查询
+     * @param：CollectArticlesVo
+     * @Modify By :zhangchuanzhi
+     * @date ：14:22 2017/10/19
+     */
+    @RequestMapping(value="/searchArticles", method= RequestMethod.POST)
+    @ResponseBody
+    public Result searchArticles(AlgArticleListVo algArticleListVo ) {
+           log.info("用户id:{}",algArticleListVo.getId());
+        try {
+            List<AlgArticleListVo> articlesList= algorithmCollectAndRankService.searchArticles(algArticleListVo);
+            if(Assert.isNotEmpty(articlesList)){
+                return Result.ok(articlesList);
+            }else{
+                return Result.failure(articlesList);
             }
         } catch (Exception e) {
             e.printStackTrace();

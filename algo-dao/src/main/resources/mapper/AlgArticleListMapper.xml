@@ -15,6 +15,9 @@
     <result column="keywords" property="keywords" jdbcType="LONGVARCHAR" />
     <result column="bibtex" property="bibtex" jdbcType="LONGVARCHAR" />
   </resultMap>
+  <resultMap id="queryForListMap" type="com.beyond.algo.vo.AlgArticleListVo"  extends="BaseResultMap">
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from alg_article_list
     where id = #{id,jdbcType=INTEGER}
@@ -57,5 +60,11 @@
     select id, sid, doi, title, date, journalName, articleType, citation, papertext, 
     summary, keywords, bibtex
     from alg_article_list
+  </select>
+  <select id="searchArticles" resultMap="queryForListMap" parameterType="com.beyond.algo.vo.AlgArticleListVo">
+    select algArticleList.summary ,algArticleList.date, algArticleList.title,algAuthorList.fullname
+    from alg_article_list algArticleList
+    LEFT JOIN (SELECT group_concat(fullname) fullname,sid from alg_author_list GROUP BY sid) algAuthorList ON algArticleList.sid=algAuthorList.sid
+    WHERE algArticleList.id=#{id,jdbcType=INTEGER}
   </select>
 </mapper>

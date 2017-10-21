@@ -17,4 +17,11 @@ public interface UserService {
     Result updateUserInformation(AlgUser user);
     UserAccountVo accountInformation(String accSn);
 
+    /**
+     * 根据usr_code查找用户
+     * @param usrCode
+     * @return
+     */
+    AlgUser findByUsrCode(String usrCode) ;
+
 }

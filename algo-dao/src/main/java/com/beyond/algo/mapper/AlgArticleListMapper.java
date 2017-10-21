@@ -1,6 +1,8 @@
 package com.beyond.algo.mapper;
 
 import com.beyond.algo.model.AlgArticleList;
+import com.beyond.algo.vo.AlgArticleListVo;
+
 import java.util.List;
 
 public interface AlgArticleListMapper {
@@ -13,4 +15,6 @@ public interface AlgArticleListMapper {
     List<AlgArticleList> selectAll();
 
     int updateByPrimaryKey(AlgArticleList record);
+
+    List<AlgArticleListVo>searchArticles(AlgArticleListVo algArticleListVo);
 }

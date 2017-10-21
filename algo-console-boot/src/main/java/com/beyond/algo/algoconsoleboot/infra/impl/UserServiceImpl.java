@@ -186,5 +186,10 @@ public class UserServiceImpl implements UserService {
         return userAccountVo;
     }
 
+    @Override
+    public AlgUser findByUsrCode(String usrCode){
+
+        return algUserMapper.selectUsrCode(usrCode);
+    }
 }
 
