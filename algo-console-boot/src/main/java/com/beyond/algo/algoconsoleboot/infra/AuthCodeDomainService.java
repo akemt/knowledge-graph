@@ -12,11 +12,5 @@ import java.util.List;
  * @version Created in：2017/9/28 0028 上午 10:59
  */
 public interface AuthCodeDomainService {
-    Result createAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain);
-    Result deleteAuthCodeDomain(String addSn);
-    Result deleteByAcdSn(String acdSn);
-    Result updataAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain);
-    Result selectAuthCodeDomain(String addSn);
     List<AlgAuthCodeDomain> listAcdSnUrl(String acdSn);
-    Result selectAll();
 }

@@ -3,7 +3,6 @@ package com.beyond.algo.algoconsoleboot.controller;
 import com.beyond.algo.algoconsoleboot.infra.AuthCodeDomainService;
 import com.beyond.algo.algoconsoleboot.infra.AuthCodeService;
 import com.beyond.algo.common.Result;
-import com.beyond.algo.common.UUIDUtil;
 import com.beyond.algo.model.AlgAuthCode;
 import com.beyond.algo.model.AlgAuthCodeDomain;
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author XianjieZhang E-mail:xj_zh@foxmail.com
@@ -44,36 +42,7 @@ public class AuthCodeController {
 
     @RequestMapping(value="/generatekey",method=RequestMethod.POST)
     public Result generateKey(AlgAuthCode algAuthCode,String[] addUrl){
-        /*//主键插入
-        String acdSn = UUIDUtil.createUUID();
-        algAuthCode.setAcdSn(acdSn);
-        //授权码生成，后期看看用别的方法生成串号
-        String acdId = "Beyond" + UUIDUtil.getRandomString(15) + "1";
-        algAuthCode.setAcdId(acdId);*/
-        authCodeService.createAuthCode(algAuthCode,addUrl);
-
-        /*//插入默认的Url “algo://*”
-        AlgAuthCodeDomain algAuthCodeDomainDefault  = new AlgAuthCodeDomain();
-        String addSnDefault = UUIDUtil.createUUID();
-        algAuthCodeDomainDefault.setAddSn(addSnDefault);
-        algAuthCodeDomainDefault.setAcdSn(algAuthCode.getAcdSn());
-        algAuthCodeDomainDefault.setAddUrl("algo://*");
-        Result resultDomainDefault = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomainDefault);
-*/
-        /*//插入传入自定义的Url
-        if(addUrl != null){
-            for (String anAddUrl : addUrl) {
-                AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
-                String addSn = UUIDUtil.createUUID();
-                algAuthCodeDomain.setAddSn(addSn);
-                algAuthCodeDomain.setAcdSn(algAuthCode.getAcdSn());
-                algAuthCodeDomain.setAddUrl(anAddUrl);
-                Result resultDomain = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomain);
-                if(resultDomain.getMsg() != "成功"){
-                    return Result.failureResponse();
-                }
-            }
-        }*/
+        authCodeService.generateKey(algAuthCode,addUrl);
         return Result.successResponse();
     }
     @RequestMapping(value = "/deleteauthcode/{acdSn}",method = RequestMethod.GET)
@@ -87,90 +56,7 @@ public class AuthCodeController {
     public Result update(AlgAuthCode algAuthCode,String[] addUrl){
         logger.info("名字:{}",algAuthCode.getAcdName());
         //更新authcode表
-        Result resultAuthCode = authCodeService.updateAuthCode(algAuthCode);
-        if(resultAuthCode.getMsg()!="成功"){
-            return Result.failureResponse();
-        }
-        //更新authcodeDomain表之前先将表中这个key下Url全部删除
-        authCodeDomainService.deleteByAcdSn(algAuthCode.getAcdSn());
-        //重新插入前端传过来的Url
-        //插入默认的Url “algo://*”
-        AlgAuthCodeDomain algAuthCodeDomainDefault  = new AlgAuthCodeDomain();
-        String addSnDefault = UUIDUtil.createUUID();
-        algAuthCodeDomainDefault.setAddSn(addSnDefault);
-        algAuthCodeDomainDefault.setAcdSn(algAuthCode.getAcdSn());
-        algAuthCodeDomainDefault.setAddUrl("algo://*");
-        Result resultDomainDefault = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomainDefault);
-        if(resultDomainDefault.getMsg() != "成功"){
-            return Result.failureResponse();
-        }
-        //插入传入自定义的Url
-        if(addUrl != null){
-            for (String anAddUrl : addUrl) {
-                AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
-                String addSn = UUIDUtil.createUUID();
-                algAuthCodeDomain.setAddSn(addSn);
-                algAuthCodeDomain.setAcdSn(algAuthCode.getAcdSn());
-                algAuthCodeDomain.setAddUrl(anAddUrl);
-                Result resultDomain = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomain);
-                if(resultDomain.getMsg() != "成功"){
-                    return Result.failureResponse();
-                }
-            }
-        }
+        Result resultAuthCode = authCodeService.updateAuthCode(algAuthCode,addUrl);
         return Result.successResponse();
     }
-
-/*    @RequestMapping(value = "/createauthcodedomain",method = RequestMethod.POST)
-    public Result createauthcodedomain(AlgAuthCode algAuthCode,String addUrl){
-        String addSn = UUIDUtil.createUUID();
-        AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
-        algAuthCodeDomain.setAcdSn(addSn);
-        algAuthCodeDomain.setAddUrl(addUrl);
-        algAuthCodeDomain.setAcdSn(algAuthCode.getAcdSn());
-        Result result = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomain);
-        return result;
-    }*/
-
-    /*@RequestMapping( value = "/create" , method=RequestMethod.POST)
-    public Result create(AlgAuthCode algAuthCode){
-        logger.info("名字:{},",algAuthCode.getAcdName());
-        String acdSn = UUIDUtil.createUUID();
-        algAuthCode.setAcdSn(acdSn);
-        AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
-        algAuthCodeDomain.setAddUrl("algo://*");
-        String addSn = UUIDUtil.createUUID();
-        algAuthCodeDomain.setAddSn(addSn);
-        algAuthCodeDomain.setAcdSn(acdSn);
-        Result resultDomain = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomain);
-        if(resultDomain.getMsg() != "成功"){
-            return Result.failureResponse();
-        }
-*//*        if(addUrl != null){
-            for (String anAddUrl : addUrl) {
-                AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
-                String addSn = UUIDUtil.createUUID();
-                algAuthCodeDomain.setAddSn(addSn);
-                algAuthCodeDomain.setAcdSn(acdSn);
-                algAuthCodeDomain.setAddUrl(anAddUrl);
-                Result resultDomain = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomain);
-                if(resultDomain.getMsg() != "成功"){
-                    return Result.failureResponse();
-                }
-            }
-        }*//*
-        Result result=authCodeService.createAuthCode(algAuthCode);
-        return result;
-    }
-*/
-
-
-    /*@RequestMapping(value = "/deleteauthcodedomain/{addSn}",method = RequestMethod.GET)
-    public Result deleteauthcodedomain(@PathVariable("addSn") String addSn){
-        Result result = authCodeDomainService.deleteAuthCodeDomain(addSn);
-        return  result;
-    }*/
-
-
-
 }

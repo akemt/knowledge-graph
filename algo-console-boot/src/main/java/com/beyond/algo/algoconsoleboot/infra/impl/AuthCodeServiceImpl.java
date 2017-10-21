@@ -27,7 +27,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 
     @Override
     @Transactional
-    public Result createAuthCode(AlgAuthCode algAuthCode,String[] addUrl) {
+    public Result generateKey(AlgAuthCode algAuthCode,String[] addUrl) {
         //主键插入
         String acdSn = UUIDUtil.createUUID();
         algAuthCode.setAcdSn(acdSn);
@@ -77,30 +77,44 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
-    public Result updateAuthCode(AlgAuthCode algAuthCode) {
+    @Transactional
+    public Result updateAuthCode(AlgAuthCode algAuthCode,String[] addUrl) {
+        //首先更新AuthCode表
         algAuthCodeMapper.updateByPrimaryKey(algAuthCode);
+
+        //更新authcodeDomain表之前先将表中这个key下Url全部删除
+        //authCodeDomainService.deleteByAcdSn(algAuthCode.getAcdSn());
+        algAuthCodeDomainMapper.deleteByAcdSn(algAuthCode.getAcdSn());
+        //重新插入前端传过来的Url
+        //插入默认的Url “algo://*”
+        AlgAuthCodeDomain algAuthCodeDomainDefault  = new AlgAuthCodeDomain();
+        String addSnDefault = UUIDUtil.createUUID();
+        algAuthCodeDomainDefault.setAddSn(addSnDefault);
+        algAuthCodeDomainDefault.setAcdSn(algAuthCode.getAcdSn());
+        algAuthCodeDomainDefault.setAddUrl("algo://*");
+        //Result resultDomainDefault = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomainDefault);
+        algAuthCodeDomainMapper.insert(algAuthCodeDomainDefault);
+        /*if(resultDomainDefault.getMsg() != "成功"){
+            return Result.failureResponse();
+        }*/
+        //插入传入自定义的Url
+        if(addUrl != null){
+            for (String anAddUrl : addUrl) {
+                AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
+                String addSn = UUIDUtil.createUUID();
+                algAuthCodeDomain.setAddSn(addSn);
+                algAuthCodeDomain.setAcdSn(algAuthCode.getAcdSn());
+                algAuthCodeDomain.setAddUrl(anAddUrl);
+                //Result resultDomain = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomain);
+                algAuthCodeDomainMapper.insert(algAuthCodeDomain);
+            }
+        }
         return Result.successResponse();
     }
-
-    @Override
-    public Result selectAuthCode(String acdSn) {
-        AlgAuthCode algAuthCode = algAuthCodeMapper.selectByPrimaryKey(acdSn);
-        Result result = new Result();
-        result.setData(algAuthCode);
-        return result;
-    }
-
     @Override
     public List<AlgAuthCode> listUserAuthCode(String usrSn) {
         List<AlgAuthCode> userAllAuthCode = algAuthCodeMapper.selectByUsrSnKey(usrSn);
         return userAllAuthCode;
     }
 
-    @Override
-    public Result selectAll() {
-        List<AlgAuthCode> allAlgAuth = algAuthCodeMapper.selectAll();
-        Result result = new Result();
-        result.setData(allAlgAuth);
-        return result;
-    }
 }
