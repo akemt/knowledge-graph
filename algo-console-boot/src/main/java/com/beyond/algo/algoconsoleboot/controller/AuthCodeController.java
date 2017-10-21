@@ -44,24 +44,23 @@ public class AuthCodeController {
 
     @RequestMapping(value="/generatekey",method=RequestMethod.POST)
     public Result generatekey(AlgAuthCode algAuthCode,String[] addUrl){
+        /*//主键插入
         String acdSn = UUIDUtil.createUUID();
         algAuthCode.setAcdSn(acdSn);
         //授权码生成，后期看看用别的方法生成串号
         String acdId = "Beyond" + UUIDUtil.getRandomString(15) + "1";
-        algAuthCode.setAcdId(acdId);
-        authCodeService.createAuthCode(algAuthCode);
+        algAuthCode.setAcdId(acdId);*/
+        authCodeService.createAuthCode(algAuthCode,addUrl);
 
-        //插入默认的Url “algo://*”
+        /*//插入默认的Url “algo://*”
         AlgAuthCodeDomain algAuthCodeDomainDefault  = new AlgAuthCodeDomain();
         String addSnDefault = UUIDUtil.createUUID();
         algAuthCodeDomainDefault.setAddSn(addSnDefault);
         algAuthCodeDomainDefault.setAcdSn(algAuthCode.getAcdSn());
         algAuthCodeDomainDefault.setAddUrl("algo://*");
         Result resultDomainDefault = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomainDefault);
-        if(resultDomainDefault.getMsg() != "成功"){
-            return Result.failureResponse();
-        }
-        //插入传入自定义的Url
+*/
+        /*//插入传入自定义的Url
         if(addUrl != null){
             for (String anAddUrl : addUrl) {
                 AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
@@ -74,7 +73,7 @@ public class AuthCodeController {
                     return Result.failureResponse();
                 }
             }
-        }
+        }*/
         return Result.successResponse();
     }
     @RequestMapping(value = "/deleteauthcode/{acdSn}",method = RequestMethod.GET)

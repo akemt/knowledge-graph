@@ -52,7 +52,7 @@ public class AuthCodeControllerTest {
     public void generatekey() throws Exception {
         String result = this.mockMvc.perform(post("/authcode/generatekey").contentType(MediaType.APPLICATION_JSON)
                 .param("usrSn","8303430b322d43b1bc6bdd63d2103fa3")
-                .param("acdName","thisid")
+                .param("acdName","0000000000000000")
                 .param("callFromClient","1")
                 .param("addUrl","www.baidulaingge1.com")
                 .param("addUrl","www.baidulaingge2.com")
