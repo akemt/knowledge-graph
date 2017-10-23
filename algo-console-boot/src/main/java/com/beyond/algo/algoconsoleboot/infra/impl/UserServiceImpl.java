@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         user.setUpdateDate(new Date());
         user.setCreateDate(new Date());
         logger.info("密码："+projectConfigEntity.getKeyAES());
-        String passWord= AESUtil.encrypt(user.getPasswd(),projectConfigEntity.getKeyAES());
+        String passWord= AESUtil.encryptString(user.getPasswd(),projectConfigEntity.getKeyAES());
         user.setPasswd(passWord);
         algUserMapper.insert(user);
         return Result.successResponse();
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
                  }
              }
          }
-         String newPassWord=AESUtil.encrypt(user.getNewPassword(),projectConfigEntity.getKeyAES());
+         String newPassWord=AESUtil.encryptString(user.getNewPassword(),projectConfigEntity.getKeyAES());
          user.setPasswd(newPassWord);
          user.setUpdateDate(new Date());
          algUserMapper.update(user);
