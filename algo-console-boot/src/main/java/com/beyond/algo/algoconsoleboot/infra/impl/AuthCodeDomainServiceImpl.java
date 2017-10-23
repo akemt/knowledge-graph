@@ -21,54 +21,9 @@ public class AuthCodeDomainServiceImpl implements AuthCodeDomainService {
     private AlgAuthCodeDomainMapper algAuthCodeDomainMapper;
 
 
-
-    @Override
-    public Result createAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain) {
-        String uuid = UUIDUtil.createUUID();
-        algAuthCodeDomain.setAddSn(uuid);
-        algAuthCodeDomainMapper.insert(algAuthCodeDomain);
-        return Result.successResponse();
-    }
-
-    @Override
-    public Result deleteAuthCodeDomain(String addSn) {
-
-        algAuthCodeDomainMapper.deleteByPrimaryKey(addSn);
-        return Result.successResponse();
-    }
-
-    @Override
-    public Result deleteByAcdSn(String acdSn) {
-        algAuthCodeDomainMapper.deleteByAcdSn(acdSn);
-        return Result.successResponse();
-    }
-
-    @Override
-    public Result updataAuthCodeDomain(AlgAuthCodeDomain algAuthCodeDomain) {
-
-        algAuthCodeDomainMapper.updateByPrimaryKey(algAuthCodeDomain);
-        return Result.successResponse();
-    }
-
-    @Override
-    public Result selectAuthCodeDomain(String addSn) {
-        AlgAuthCodeDomain authResult = algAuthCodeDomainMapper.selectByPrimaryKey(addSn);
-        Result result=new Result();
-        result.setData(authResult);
-        return result;
-    }
-
     @Override
     public List<AlgAuthCodeDomain> listAcdSnUrl(String acdSn) {
         List<AlgAuthCodeDomain> result = algAuthCodeDomainMapper.listAcdSnUrl(acdSn);
-        return result;
-    }
-
-    @Override
-    public Result selectAll(){
-        Result result=new Result();
-        List<AlgAuthCodeDomain> allUser = algAuthCodeDomainMapper.selectAll();
-        result.setData(allUser);
         return result;
     }
 }

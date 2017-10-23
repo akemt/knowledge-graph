@@ -15,4 +15,6 @@ public interface AlgModuleMapper {
     int updateByPrimaryKey(AlgModule record);
 
     List<AlgModule> getRankList(List rankList);
+
+    List<AlgModule> listAlgByUsage(String catName, String usage);
 }
