@@ -10,7 +10,8 @@ public interface AlgDataSetMapper {
 
     AlgDataSet selectByPrimaryKey(String dataSetSn);
 
-    List<AlgDataSet> selectAll();
+    List<AlgDataSet> selectAll(String usrSn);
 
     int updateByPrimaryKey(AlgDataSet record);
+
 }

@@ -27,8 +27,9 @@
     from alg_data_set
     where data_set_sn = #{dataSetSn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select data_set_sn, usr_sn, data_set_name
     from alg_data_set
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </select>
 </mapper>
