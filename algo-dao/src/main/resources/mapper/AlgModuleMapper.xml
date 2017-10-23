@@ -76,7 +76,7 @@
         from (select alg_module.mod_sn, alg_module.usr_sn, alg_module.lan_sn, alg_module.cat_sn, alg_module.lic_sn, alg_module.atl_sn, alg_module.mod_name, alg_module.mod_id, alg_module.is_open_src,
         alg_module.need_web, alg_module.need_call_other, alg_module.env_type, alg_module_usage.star_cnt, alg_module_usage.follow_cnt,alg_module_usage.call_cnt,alg_module_usage.credit_cnt
         from alg_module join alg_module_usage on alg_module.mod_sn = alg_module_usage.mod_sn) as tmp
-        where tmp.cat_sn = (select alg_algo_category.cat_sn from alg_algo_category where alg_algo_category.cat_name = #{arg0})
+        where tmp.cat_sn = any(select alg_algo_category.cat_sn from alg_algo_category where alg_algo_category.cat_name = #{arg0})
         order by tmp.star_cnt DESC
         limit 0,20
     </select>

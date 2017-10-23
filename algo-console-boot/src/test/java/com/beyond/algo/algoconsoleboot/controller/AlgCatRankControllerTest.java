@@ -33,11 +33,18 @@ public class AlgCatRankControllerTest {
     @Test
     public void contextLoads() {
     }
-    @Test
+    /*@Test
     public void listAlg() throws Exception {
-        String result = this.mockMvc.perform(get("/algcatrank/{catname}/{usage}","deeplearning","cat").contentType(MediaType.APPLICATION_JSON))
+        String result = this.mockMvc.perform(get("/algcatrank/{catname}/{usage}","deeplearning","star_cnt").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
-        //结果：[{"acdSn":"3249d819260548a6b93981dad55a452f","usrSn":"8303430b322d43b1bc6bdd63d2103fa3","acdName":"0000000000000000","acdId":"BeyondrJelJ3rWrDj5rfG1","callFromClient":"1","callFromBrowser":null,"restrictUrl":null,"dataUseType":null},{"acdSn":"9ea7ae09d32b4a2e85c5945e4f51dde4","usrSn":"8303430b322d43b1bc6bdd63d2103fa3","acdName":"thisnewid","acdId":"ce8205470b5b4c6583e0c2115f808355","callFromClient":"1","callFromBrowser":null,"restrictUrl":null,"dataUseType":null}]
+        //结果：[{"modSn":"1","usrSn":"aac44b648b10429cbaf85a6ae0113a65","lanSn":"2","catSn":"123","licSn":"333","atlSn":null,"modName":"张传智1","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null},{"modSn":"2","usrSn":"fasdfdsafsadfsadfsdfds","lanSn":"33","catSn":"121","licSn":"333","atlSn":null,"modName":"张现杰","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null}]
+    }*/
+    @Test
+    public void listAlg() throws Exception {
+        String result = this.mockMvc.perform(get("/algcatrank/{catname}/{usage}","deeplearning","follow_cnt").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+        //结果 ：
     }
 }
