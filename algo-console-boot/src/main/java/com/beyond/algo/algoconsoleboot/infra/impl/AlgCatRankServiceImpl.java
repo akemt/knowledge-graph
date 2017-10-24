@@ -25,7 +25,7 @@ public class AlgCatRankServiceImpl implements AlgCatRankService {
     public List<AlgModule> listAlg(String catName, String usage) {
         //初步设定用数据库进行排序查询
         //List<AlgModuleUsage> resultUsage = algModuleUsageMapper.listAlgByUsage(usage);
-        List<AlgModule> resultAlgModule = algModuleMapper.listAlgByUsage(catName,usage);
+        List<AlgModule> resultAlgModule = null;//algModuleMapper.listAlgByUsage(catName,usage);
         return resultAlgModule;
     }
 }

@@ -31,34 +31,4 @@
     select cat_sn, cat_name, mod_sn
     from alg_algo_category
   </select>
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgAlgoCategory">
-    <id column="cat_sn" jdbcType="VARCHAR" property="catSn" />
-    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
-    <result column="mod_sn" jdbcType="VARCHAR" property="modSn" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from alg_algo_category
-    where cat_sn = #{catSn,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.AlgAlgoCategory">
-    insert into alg_algo_category (cat_sn, cat_name, mod_sn
-    )
-    values (#{catSn,jdbcType=VARCHAR}, #{catName,jdbcType=VARCHAR}, #{modSn,jdbcType=VARCHAR}
-    )
-  </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgAlgoCategory">
-    update alg_algo_category
-    set cat_name = #{catName,jdbcType=VARCHAR},
-    mod_sn = #{modSn,jdbcType=VARCHAR}
-    where cat_sn = #{catSn,jdbcType=VARCHAR}
-  </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select cat_sn, cat_name, mod_sn
-    from alg_algo_category
-    where cat_sn = #{catSn,jdbcType=VARCHAR}
-  </select>
-  <select id="selectAll" resultMap="BaseResultMap">
-    select cat_sn, cat_name, mod_sn
-    from alg_algo_category
-  </select>
 </mapper>

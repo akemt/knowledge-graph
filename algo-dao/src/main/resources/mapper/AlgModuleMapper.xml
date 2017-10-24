@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.beyond.algo.mapper.AlgModuleMapper" >
-  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgModule" >
-    <id column="mod_sn" property="modSn" jdbcType="VARCHAR" />
-    <result column="usr_sn" property="usrSn" jdbcType="VARCHAR" />
-    <result column="lan_sn" property="lanSn" jdbcType="VARCHAR" />
-    <result column="cat_sn" property="catSn" jdbcType="VARCHAR" />
-    <result column="lic_sn" property="licSn" jdbcType="VARCHAR" />
-    <result column="atl_sn" property="atlSn" jdbcType="VARCHAR" />
-    <result column="mod_name" property="modName" jdbcType="VARCHAR" />
-    <result column="mod_id" property="modId" jdbcType="VARCHAR" />
-    <result column="is_open_src" property="isOpenSrc" jdbcType="VARCHAR" />
-    <result column="need_web" property="needWeb" jdbcType="VARCHAR" />
-    <result column="need_call_other" property="needCallOther" jdbcType="VARCHAR" />
-    <result column="env_type" property="envType" jdbcType="VARCHAR" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+<mapper namespace="com.beyond.algo.mapper.AlgModuleMapper">
+    <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgModule">
+        <id column="mod_sn" property="modSn" jdbcType="VARCHAR"/>
+        <result column="usr_sn" property="usrSn" jdbcType="VARCHAR"/>
+        <result column="lan_sn" property="lanSn" jdbcType="VARCHAR"/>
+        <result column="cat_sn" property="catSn" jdbcType="VARCHAR"/>
+        <result column="lic_sn" property="licSn" jdbcType="VARCHAR"/>
+        <result column="atl_sn" property="atlSn" jdbcType="VARCHAR"/>
+        <result column="mod_name" property="modName" jdbcType="VARCHAR"/>
+        <result column="mod_id" property="modId" jdbcType="VARCHAR"/>
+        <result column="is_open_src" property="isOpenSrc" jdbcType="VARCHAR"/>
+        <result column="need_web" property="needWeb" jdbcType="VARCHAR"/>
+        <result column="need_call_other" property="needCallOther" jdbcType="VARCHAR"/>
+        <result column="env_type" property="envType" jdbcType="VARCHAR"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from alg_module
     where mod_sn = #{modSn,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.beyond.algo.model.AlgModule" >
+    <insert id="insert" parameterType="com.beyond.algo.model.AlgModule">
     insert into alg_module (mod_sn, usr_sn, lan_sn, 
       cat_sn, lic_sn, atl_sn, 
       mod_name, mod_id, is_open_src, 
@@ -31,7 +31,7 @@
       #{needWeb,jdbcType=VARCHAR}, #{needCallOther,jdbcType=VARCHAR}, #{envType,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgModule" >
+    <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgModule">
     update alg_module
     set usr_sn = #{usrSn,jdbcType=VARCHAR},
       lan_sn = #{lanSn,jdbcType=VARCHAR},
@@ -46,31 +46,31 @@
       env_type = #{envType,jdbcType=VARCHAR}
     where mod_sn = #{modSn,jdbcType=VARCHAR}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
     select mod_sn, usr_sn, lan_sn, cat_sn, lic_sn, atl_sn, mod_name, mod_id, is_open_src, 
     need_web, need_call_other, env_type
     from alg_module
     where mod_sn = #{modSn,jdbcType=VARCHAR}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
     select mod_sn, usr_sn, lan_sn, cat_sn, lic_sn, atl_sn, mod_name, mod_id, is_open_src, 
     need_web, need_call_other, env_type
     from alg_module
   </select>
-  <sql id="alg_module_tbl">
+    <sql id="alg_module_tbl">
     select mod_sn, usr_sn, lan_sn, cat_sn, lic_sn, atl_sn, mod_name, mod_id, is_open_src,
     need_web, need_call_other, env_type
     from alg_module
   </sql>
-  <select id="getRankList" resultMap="BaseResultMap">
-    <include refid="alg_module_tbl"/>
-    where mod_id in
-    <foreach collection="list" item="item" index="index"
-             open="(" separator="," close=")">
-      #{item}
-    </foreach>
-  </select>
-    <select id="listAlgByUsage" resultMap="BaseResultMap"  >
+    <select id="getRankList" resultMap="BaseResultMap">
+        <include refid="alg_module_tbl"/>
+        where mod_id in
+        <foreach collection="list" item="item" index="index"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="listAlgByUsage" resultMap="BaseResultMap">
         select tmp.mod_sn, tmp.usr_sn, tmp.lan_sn, tmp.cat_sn, tmp.lic_sn, tmp.atl_sn, tmp.mod_name, tmp.mod_id, tmp.is_open_src,
         tmp.need_web, tmp.need_call_other, tmp.env_type, tmp.star_cnt, tmp.follow_cnt,tmp.call_cnt,tmp.credit_cnt
         from (select alg_module.mod_sn, alg_module.usr_sn, alg_module.lan_sn, alg_module.cat_sn, alg_module.lic_sn, alg_module.atl_sn, alg_module.mod_name, alg_module.mod_id, alg_module.is_open_src,
@@ -81,4 +81,17 @@
         limit 0,20
     </select>
 
+    <select id="selectByUsrSnAndModId" resultMap="BaseResultMap">
+        select * from alg_module
+        <include refid="Base_Where_Clause"/>
+    </select>
+
+    <sql id="Base_Where_Clause">
+        <where>
+            <trim prefixOverrides="and">
+                <if test="usrSn != null and usrSn !=''">and usr_sn = #{usrSn,jdbcType=VARCHAR}</if>
+                <if test="modId != null and modId !=''">and mod_id = #{modId,jdbcType=VARCHAR}</if>
+            </trim>
+        </where>
+    </sql>
 </mapper>

@@ -1,10 +1,12 @@
 package com.beyond.algo.algoconsoleboot.infra.impl;
 
-import com.beyond.algo.algoconsoleboot.infra.ProjectService;
+import com.beyond.algo.algoconsoleboot.infra.ModuleService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
 import com.beyond.algo.common.FileUtil;
 import com.beyond.algo.algoconsoleboot.util.FreemarkerUtil;
+import com.beyond.algo.mapper.AlgModuleMapper;
+import com.beyond.algo.model.AlgModule;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -16,12 +18,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class ProjectServiceImpl implements ProjectService {
+public class ModuleServiceImpl implements ModuleService {
 
     @Autowired
     private GitConfigModel gitConfigModel;
     @Autowired
     private ProjectConfigModel projectConfigModel;
+    @Autowired
+    private AlgModuleMapper algModuleMapper;
 
     @Override
     public void initProject(String username, String projectName) throws Exception {
@@ -67,5 +71,9 @@ public class ProjectServiceImpl implements ProjectService {
         String mainClassPath = packetPath + File.separator + projectName;
         FileUtil.createDir(mainClassPath);
         FreemarkerUtil.createFile(templatePath, "Main.java.ftl", mainClassPath, projectName + ".java", paramMap);
+    }
+
+    public AlgModule findByUsrSnAndModId(String usrSn,String modId) throws Exception{
+        return algModuleMapper.selectByUsrSnAndModId(usrSn,modId);
     }
 }

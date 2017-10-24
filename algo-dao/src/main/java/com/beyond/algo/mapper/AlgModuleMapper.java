@@ -1,6 +1,8 @@
 package com.beyond.algo.mapper;
 
 import com.beyond.algo.model.AlgModule;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface AlgModuleMapper {
@@ -16,13 +18,15 @@ public interface AlgModuleMapper {
 
     List<AlgModule> getRankList(List rankList);
 
-    //List<AlgModule> listAlgByUsage(String catName, String usage);
+    List<AlgModule> listAlgByUsage(String catName, String usage);
 
-    List<AlgModule> listAlgByUsageStar(String catName);
+    /*List<AlgModule> listAlgByUsageStar(String catName);
 
     List<AlgModule> listAlgByUsageFollow(String catName);
 
     List<AlgModule> listAlgByUsageCall(String catName);
 
-    List<AlgModule> listAlgByUsageCredit(String catName);
+    List<AlgModule> listAlgByUsageCredit(String catName);*/
+
+    AlgModule selectByUsrSnAndModId(@Param("usrSn") String usrSn, @Param("modId")String modId);
 }
