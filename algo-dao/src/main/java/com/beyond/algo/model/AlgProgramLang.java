@@ -5,6 +5,8 @@ public class AlgProgramLang {
 
     private String lanName;
 
+    private String lanSuffix;
+
     public String getLanSn() {
         return lanSn;
     }
@@ -19,5 +21,13 @@ public class AlgProgramLang {
 
     public void setLanName(String lanName) {
         this.lanName = lanName == null ? null : lanName.trim();
+    }
+
+    public String getLanSuffix() {
+        return lanSuffix;
+    }
+
+    public void setLanSuffix(String lanSuffix) {
+        this.lanSuffix = lanSuffix == null ? null : lanSuffix.trim();
     }
 }

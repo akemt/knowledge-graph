@@ -6,7 +6,9 @@ import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
 import com.beyond.algo.common.FileUtil;
 import com.beyond.algo.algoconsoleboot.util.FreemarkerUtil;
 import com.beyond.algo.mapper.AlgModuleMapper;
+import com.beyond.algo.mapper.AlgProgramLangMapper;
 import com.beyond.algo.model.AlgModule;
+import com.beyond.algo.model.AlgProgramLang;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import static com.beyond.algo.common.StringConstant.*;
 
 @Service
 public class ModuleServiceImpl implements ModuleService {
@@ -26,6 +30,8 @@ public class ModuleServiceImpl implements ModuleService {
     private ProjectConfigModel projectConfigModel;
     @Autowired
     private AlgModuleMapper algModuleMapper;
+    @Autowired
+    private AlgProgramLangMapper algProgramLangMapper;
 
     @Override
     public void initProject(String username, String projectName) throws Exception {
@@ -71,6 +77,28 @@ public class ModuleServiceImpl implements ModuleService {
         String mainClassPath = packetPath + File.separator + projectName;
         FileUtil.createDir(mainClassPath);
         FreemarkerUtil.createFile(templatePath, "Main.java.ftl", mainClassPath, projectName + ".java", paramMap);
+    }
+
+    //返回文件的后缀名
+    @Override
+    public String getModuleMainFilePath(String usrCode,String modId,String lanSn) throws Exception {
+        AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
+        //TODO 项目名称初始化Tree
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(gitConfigModel.getLocalBasePath());
+        stringBuilder.append(File.separator);
+        stringBuilder.append(usrCode);
+        stringBuilder.append(File.separator);
+        stringBuilder.append(modId);
+        stringBuilder.append(File.separator);
+        stringBuilder.append(src);
+        stringBuilder.append(File.separator);
+        stringBuilder.append(projectConfigModel.getPackageName());
+        stringBuilder.append(File.separator);
+        stringBuilder.append(modId);
+        stringBuilder.append(File.separator);
+
+        return stringBuilder.toString();
     }
 
     public AlgModule findByUsrSnAndModId(String usrSn,String modId) throws Exception{

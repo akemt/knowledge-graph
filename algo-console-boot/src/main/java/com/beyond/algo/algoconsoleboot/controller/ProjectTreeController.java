@@ -5,17 +5,18 @@ import com.beyond.algo.algoconsoleboot.infra.ModuleService;
 import com.beyond.algo.algoconsoleboot.infra.ReadFileService;
 import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
-import com.beyond.algo.common.FileDir;
-import com.beyond.algo.common.Result;
-import com.beyond.algo.common.ResultEnum;
+import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
+import com.beyond.algo.common.*;
 import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.AlgModuleEditVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：lindewei
@@ -32,28 +33,36 @@ public class ProjectTreeController extends BaseController {
     @Autowired
     private GitConfigModel gitConfigModel;
     @Autowired
+    private ProjectConfigModel projectConfigModel;
+    @Autowired
     private ModuleService moduleService;
 
     @GetMapping("/{modId}")
-    public Result initTree(@PathVariable("modId") String modId) {
+    public Result initTree(@PathVariable("modId") String modId,String path) {
 
-        AlgModule algModule =null;
+        AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
         try {
             AlgUser algUser = getUserInfo();
-            algModule = moduleService.findByUsrSnAndModId(algUser.getUsrSn(),modId);
-            //TODO 项目名称初始化Tree
 
-            //TODO test_java.java 初始化代码
-
+            AlgModule algModule = moduleService.findByUsrSnAndModId(algUser.getUsrSn(),modId);
+            //项目名称初始化Tree
+            if (Assert.isEmpty(path)){
+                path = moduleService.getModuleMainFilePath(algUser.getUsrCode(),modId,algModule.getLanSn());
+            }else{
+                path = showProjectFileService.getSplitPath(algUser.getUsrCode(),modId)+"/"+path;
+            }
+            //返回同级目录所有文件和文件夹.
+            FileNodes fileNodes = showProjectFileService.ShowProjectFile(path,algUser.getUsrCode(),modId);
+            algModuleEditVo.setModId(algModule.getModId());
+            algModuleEditVo.setModName(algModule.getModName());
+            algModuleEditVo.setLatestCommit("b975b7748b90f259240156c6e39129f058ebb141");
+            algModuleEditVo.setLatestVersion("0.0.3");
+            algModuleEditVo.setFileNodes(fileNodes);
+            return Result.ok(algModuleEditVo);
         }catch (Exception e){
-
+            e.printStackTrace();
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
-
-
-        //TODO 返回项目基础路径
-
-
-        return Result.ok(algModule);
     }
 
     /**
@@ -74,7 +83,7 @@ public class ProjectTreeController extends BaseController {
             if (file.isDirectory()) {
                 showProjectFileList = new ArrayList<>();
                 //返回同级目录所有文件和文件夹.
-                showProjectFileList = showProjectFileService.ShowProjectFile(path);
+                //showProjectFileList = showProjectFileService.ShowProjectFile(path);
             } else {
                 //说明是文本，直接取出path，进行文本的初始化展示。
                 readFileService.readFileString(file);
@@ -101,7 +110,7 @@ public class ProjectTreeController extends BaseController {
             if (file.isDirectory()) {
                 List<FileDir> showProjectFileList = new ArrayList<>();
                 //返回同级目录所有文件和文件夹.
-                showProjectFileList = showProjectFileService.ShowProjectFile(path);
+                //showProjectFileList = showProjectFileService.ShowProjectFile(path);
             }
         } catch (Exception e) {
             e.printStackTrace();

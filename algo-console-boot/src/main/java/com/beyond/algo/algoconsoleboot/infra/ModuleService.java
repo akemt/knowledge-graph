@@ -10,4 +10,6 @@ public interface ModuleService {
     void initProject(String username, String projectName) throws Exception;
 
     AlgModule findByUsrSnAndModId(String usrSn,String modId) throws Exception;
+
+    String getModuleMainFilePath(String usrCode,String modId,String lanSn) throws Exception;
 }
