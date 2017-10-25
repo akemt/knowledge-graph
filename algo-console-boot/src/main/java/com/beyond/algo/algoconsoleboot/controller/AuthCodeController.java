@@ -85,7 +85,7 @@ public class AuthCodeController {
         try {
             //更新authcode表
             Result resultAuthCode = authCodeService.updateAuthCode(algAuthCode,addUrl);
-            return Result.successResponse();
+            return resultAuthCode;
         } catch (Exception e) {
             log.error("更新authCode表失败");
             e.printStackTrace();

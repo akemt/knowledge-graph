@@ -1,6 +1,7 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
 import com.beyond.algo.algoconsoleboot.infra.AlgCatRankService;
+import com.beyond.algo.common.Result;
 import com.beyond.algo.model.AlgModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,15 @@ public class AlgCatRankController {
     private AlgCatRankService algCatRankService;
 
     @RequestMapping(value = "/listAlg",method = RequestMethod.GET)
-    public  List<AlgModule> listAlg(String catName,String usage,String modName,short numPage,short numRows){
-        //log.info()
-        List<AlgModule> result = algCatRankService.listAlg(catName,usage,modName,numPage,numRows);
-        return result;
+    public  Result listAlg(String catName,String usage,String modName,short numPage,short numRows){
+        try {
+            //log.info()
+            List<AlgModule> result = algCatRankService.listAlg(catName, usage, modName, numPage, numRows);
+            return Result.ok(result);
+        } catch (Exception e) {
+            log.error("返回算法排序列表出错");
+            e.printStackTrace();
+            return Result.failureResponse();
+        }
     }
 }
