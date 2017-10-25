@@ -42,11 +42,11 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
         currentPath = file.getPath();
 
         FileNodes fileNodes = new FileNodes();
-        fileNodes.setCurrentPath(currentPath.substring(splitPath.length(),currentPath.length()-1));
+        fileNodes.setCurrentPath(currentPath.substring(splitPath.length(),currentPath.length()));
         if(file.getParent().equals(new File(splitPath).getPath())){
             fileNodes.setPatentPath("/");
         }else{
-            fileNodes.setPatentPath(file.getParent().substring(splitPath.length(),file.getParent().length()-1));
+            fileNodes.setPatentPath(file.getParent().substring(splitPath.length(),file.getParent().length()));
         }
 
         List<FileNode> nodeList = new LinkedList<FileNode>();
