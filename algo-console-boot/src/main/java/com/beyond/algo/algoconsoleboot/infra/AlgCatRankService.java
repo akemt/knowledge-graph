@@ -9,5 +9,5 @@ import java.util.List;
  * @version Created in：2017/10/22 0022 下午 1:11
  */
 public interface AlgCatRankService {
-    List<AlgModule> listAlg(String catName, String usage,String modName);
+    List<AlgModule> listAlg(String catName, String usage,String modName,short numPage,short numRows);
 }

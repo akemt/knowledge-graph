@@ -23,9 +23,9 @@ public class AlgCatRankController {
     private AlgCatRankService algCatRankService;
 
     @RequestMapping(value = "/listAlg",method = RequestMethod.GET)
-    public  List<AlgModule> listAlg(String catName,String usage,String modName){
+    public  List<AlgModule> listAlg(String catName,String usage,String modName,short numPage,short numRows){
         //log.info()
-        List<AlgModule> result = algCatRankService.listAlg(catName,usage,modName);
+        List<AlgModule> result = algCatRankService.listAlg(catName,usage,modName,numPage,numRows);
         return result;
     }
 }
