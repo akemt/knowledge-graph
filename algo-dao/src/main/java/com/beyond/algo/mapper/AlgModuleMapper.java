@@ -18,7 +18,7 @@ public interface AlgModuleMapper {
 
     List<AlgModule> getRankList(List rankList);
 
-    List<AlgModule> listAlgByUsage(String catName, String usage);
+    List<AlgModule> listAlgByUsage( String catName, String usage , String modName);
 
     /*List<AlgModule> listAlgByUsageStar(String catName);
 

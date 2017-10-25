@@ -1,6 +1,6 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
-import com.beyond.algo.common.UUIDUtil;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -24,8 +23,6 @@ public class AlgCatRankControllerTest {
     protected WebApplicationContext wac;
     private MockMvc mockMvc;
 
-
-
     @Before
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(this.wac).alwaysExpect(status().isOk()).build();
@@ -33,18 +30,14 @@ public class AlgCatRankControllerTest {
     @Test
     public void contextLoads() {
     }
-    /*@Test
-    public void listAlg() throws Exception {
-        String result = this.mockMvc.perform(get("/algcatrank/{catname}/{usage}","deeplearning","star_cnt").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-        System.out.println(result);
-        //结果：[{"modSn":"1","usrSn":"aac44b648b10429cbaf85a6ae0113a65","lanSn":"2","catSn":"123","licSn":"333","atlSn":null,"modName":"张传智1","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null},{"modSn":"2","usrSn":"fasdfdsafsadfsadfsdfds","lanSn":"33","catSn":"121","licSn":"333","atlSn":null,"modName":"张现杰","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null}]
-    }*/
     @Test
-    public void listAlg() throws Exception {
-        String result = this.mockMvc.perform(get("/algcatrank/{catname}/{usage}","deeplearning","follow_cnt").contentType(MediaType.APPLICATION_JSON))
+    public void generateKey() throws Exception {
+        String result = this.mockMvc.perform(get("/algCatRank/listAlg").contentType(MediaType.APPLICATION_JSON)
+                .param("catName","deep")
+                .param("usage","creditSn")
+                .param("searchName","人脸"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
-        //结果 ：
+        //结果：[{"modSn":null,"usrSn":"aac44b648b10429cbaf85a6ae0113a65","lanSn":"3","catSn":"suanfafenlei447ba557b99472cbb701","licSn":"111111111111","atlSn":null,"modName":"人脸识别01","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null},{"modSn":null,"usrSn":"37bf2269ee4845da8e86861bbde2438a","lanSn":"1","catSn":"suanfafenlei447ba557b99472cbb701","licSn":"111111111111","atlSn":null,"modName":"人脸识别02","modId":"TestJava","isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null},{"modSn":null,"usrSn":"aac44b648b10429cbaf85a6ae0113a65","lanSn":"2","catSn":"suanfafenlei447ba557b99472cbb701","licSn":"111111111111","atlSn":null,"modName":"人脸识别03","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null},{"modSn":null,"usrSn":"aac44b648b10429cbaf85a6ae0113a65","lanSn":"3","catSn":"suanfafenlei447ba557b99472cbb701","licSn":"111111111111","atlSn":null,"modName":"人脸识别04","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null}]
     }
 }
