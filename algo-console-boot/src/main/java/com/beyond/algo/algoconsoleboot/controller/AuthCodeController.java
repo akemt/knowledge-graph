@@ -58,12 +58,12 @@ public class AuthCodeController {
     @RequestMapping(value="/generateKey",method=RequestMethod.POST)
     public Result generateKey(AlgAuthCode algAuthCode,String[] addUrl){
         try {
-            authCodeService.generateKey(algAuthCode,addUrl);
-            return Result.successResponse();
+            Result result = authCodeService.generateKey(algAuthCode, addUrl);
+            return result;
         } catch (Exception e) {
             log.error("生成KEY失败");
             e.printStackTrace();
-            return Result.failureResponse();
+            return new Result<>(ResultEnum.FAILURE.code,e.getMessage());
         }
     }
     @RequestMapping(value = "/deleteAuthCode/{acdSn}",method = RequestMethod.GET)
@@ -76,7 +76,7 @@ public class AuthCodeController {
         } catch (Exception e) {
             log.error("删除authCode表失败");
             e.printStackTrace();
-            return Result.failureResponse();
+            return new Result<>(ResultEnum.FAILURE.code,e.getMessage());
         }
     }
     @RequestMapping(value = "/update",method= RequestMethod.POST)
@@ -89,7 +89,7 @@ public class AuthCodeController {
         } catch (Exception e) {
             log.error("更新authCode表失败");
             e.printStackTrace();
-            return Result.failureResponse();
+            return new Result<>(ResultEnum.FAILURE.code,e.getMessage());
         }
     }
 }

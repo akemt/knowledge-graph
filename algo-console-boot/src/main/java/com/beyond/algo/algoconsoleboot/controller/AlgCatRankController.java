@@ -2,6 +2,7 @@ package com.beyond.algo.algoconsoleboot.controller;
 
 import com.beyond.algo.algoconsoleboot.infra.AlgCatRankService;
 import com.beyond.algo.common.Result;
+import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.model.AlgModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class AlgCatRankController {
         } catch (Exception e) {
             log.error("返回算法排序列表出错");
             e.printStackTrace();
-            return Result.failureResponse();
+            return new Result<>(ResultEnum.FAILURE.code,e.getMessage());
         }
     }
 }
