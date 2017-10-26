@@ -30,6 +30,7 @@ public class ModuleController extends BaseController {
     @GetMapping("/{modId}")
     public Result initTree(@PathVariable("modId") String modId,String path) {
         try {
+            log.info("get module file tree: {} ",modId);
             AlgUser algUser = getUserInfo();
             AlgModuleEditVo algModuleEditVo = moduleService.AlgModule(algUser.getUsrCode(),algUser.getUsrSn(),modId,path);
             return Result.ok(algModuleEditVo);
