@@ -25,6 +25,7 @@ public class ReadFileTest {
     @Test
     public void readFile() throws Exception {
         File file = new File("D:/JGitServiceTest.java");
-        System.out.println(readFileService.readFileString(file));
+        //System.out.println(readFileService.readFileString(file));
+        System.out.println("");
     }
 }

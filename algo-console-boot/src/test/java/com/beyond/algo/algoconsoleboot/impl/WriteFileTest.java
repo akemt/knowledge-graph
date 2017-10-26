@@ -21,6 +21,6 @@ public class WriteFileTest {
      */
     @Test
     public void writeFile() throws Exception {
-        writeFileService.writeFileString("public void commitAndPushDelAllFiles() throws Exception大连的的 ","F:/001/0010002/创建新文件.txt");
+        //writeFileService.writeFileString("public void commitAndPushDelAllFiles() throws Exception大连的的 ","F:/001/0010002/创建新文件.txt");
     }
 }

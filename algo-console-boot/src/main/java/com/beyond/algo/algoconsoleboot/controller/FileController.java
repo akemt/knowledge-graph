@@ -37,17 +37,10 @@ public class FileController extends BaseController {
 
     // 读取文本
     @RequestMapping(value = "{modId}/read", method = RequestMethod.GET)
-    public Result read(@PathVariable("modId") String modId, String path,String fileName) {
-        AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
+    public Result read(@PathVariable("modId") String modId, String currentPath,String fileName) {
         try {
             AlgUser algUser = getUserInfo();
-            AlgModule algModule = moduleService.findByUsrSnAndModId(algUser.getUsrSn(),modId);
-
-            //String readPath = showProjectFileService.getSplitPath(algUser.getUsrCode(),modId) + "/"+path +"/"+ fileName;//正式
-            String readPath = showProjectFileService.getSplitPath(algUser.getUsrCode(),modId) + "//"+"src//beyondalgo//TestJava" +"//"+ "TestJava.java";//测试
-            File file = new File(readPath);
-            String readFile = readFileService.readFileString(file);
-            algFileReadWriteVo.setReadFile(readFile);
+            AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(algUser.getUsrCode(), modId, currentPath, fileName);
             return Result.ok(algFileReadWriteVo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,14 +51,11 @@ public class FileController extends BaseController {
     // 写入保存（包括新建）
     @RequestMapping(value="{modId}/write", method= RequestMethod.POST)
     public @ResponseBody
-    Result write(@PathVariable("modId") String modId, String path,String fileName,String fileContent) {
+    Result write(@PathVariable("modId") String modId, String currentPath,String fileName,String fileContent) {
         AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
         try {
             AlgUser algUser = getUserInfo();
-            AlgModule algModule = moduleService.findByUsrSnAndModId(algUser.getUsrSn(),modId);
-            //String writePath = showProjectFileService.getSplitPath(algUser.getUsrCode(),modId) + "/"+path +"/"+ fileName;//正式
-            String writePath = showProjectFileService.getSplitPath(algUser.getUsrCode(),modId) + "//"+"src//beyondalgo//TestJava" +"//"+ "TestJava.java";//测试
-            writeFileService.writeFileString(fileContent,writePath);//写入文件中，并且保存到路径下。
+            writeFileService.writeFile(algUser.getUsrCode(), modId, currentPath, fileName,fileContent);;//写入文件中，并且保存到路径下。
         } catch (Exception e) {
             e.printStackTrace();
             return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
