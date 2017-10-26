@@ -1,10 +1,12 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
 import com.beyond.algo.algoconsoleboot.infra.AlgorithmCollectAndRankService;
+import com.beyond.algo.algoconsoleboot.infra.AlgorithmDetailService;
 import com.beyond.algo.algoconsoleboot.infra.UseAlgorithmService;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.vo.AlgArticleListVo;
+import com.beyond.algo.vo.AlgModuleVo;
 import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
 import com.beyond.algo.vo.CollectArticlesVo;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,8 @@ public class ContentController {
     private UseAlgorithmService useAlgorithmService;
     @Autowired
     private AlgorithmCollectAndRankService algorithmCollectAndRankService;
+    @Autowired
+    private AlgorithmDetailService algorithmDetailService;
     /**
      * @author ：zhangchuanzhi
      * @Description:用户使用情况
@@ -147,6 +151,31 @@ public class ContentController {
                 return Result.ok(articlesList);
             }else{
                 return Result.failure(articlesList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // 待完善异常处理
+            return Result.failureResponse();
+        }
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:获得算法详情
+     * @param：CollectArticlesVo
+     * @Modify By :zhangchuanzhi
+     * @date ：14:22 2017/10/19
+     */
+    @RequestMapping(value="/getAlgorithmDetail", method= RequestMethod.GET)
+    @ResponseBody
+    public Result getAlgorithmDetail(String modSn ) {
+        log.info("算法模块id:{}",modSn);
+        try {
+            AlgModuleVo algModuleVo = algorithmDetailService.getAlgorithmDetail(modSn);
+            if(Assert.isNotNULL(algModuleVo)){
+                return Result.ok(algModuleVo);
+            }else{
+                return Result.failure(algModuleVo);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -82,4 +82,11 @@ public class ContentControllerTest {
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
+    @Test
+    public void getAlgorithmDetail() throws Exception{
+        String result = this.mockMvc.perform(get("/content/getAlgorithmDetail").contentType(MediaType.APPLICATION_JSON)
+                .param("modSn","2"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 }

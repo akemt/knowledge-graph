@@ -181,6 +181,7 @@ public class UserServiceImpl implements UserService {
             userAccountVo.setEarnBal(algAccount.getEarnBal());
             userAccountVo.setFreeBal(algAccount.getFreeBal());
             userAccountVo.setUsrSn(algAccount.getUsrSn());
+            userAccountVo.setAccSn(algAccount.getAccSn());
             userAccountVo.setCash(cash);
         }
         return userAccountVo;
