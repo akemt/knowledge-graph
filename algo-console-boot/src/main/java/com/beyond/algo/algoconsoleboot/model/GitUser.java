@@ -23,4 +23,9 @@ public class GitUser {
     // 文件路径
     private String filePath;
 
+    private String  modId;
+    private String  currentPath;
+    private String  fileName;
+    private String  usrCode;
+
 }

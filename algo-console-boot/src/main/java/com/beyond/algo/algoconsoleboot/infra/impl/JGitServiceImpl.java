@@ -1,6 +1,7 @@
 package com.beyond.algo.algoconsoleboot.infra.impl;
 
 import com.beyond.algo.algoconsoleboot.infra.JGitService;
+import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.GitUser;
 import com.beyond.algo.common.FileUtil;
@@ -22,6 +23,9 @@ public class JGitServiceImpl implements JGitService {
 
     @Autowired
     private GitConfigModel gitConfigModel;
+
+    @Autowired
+    private ShowProjectFileService showProjectFileService;
 
     @Override
     public void gitCloneProject(GitUser gitUser) throws GitAPIException {
@@ -101,20 +105,23 @@ public class JGitServiceImpl implements JGitService {
      * @return
      */
     public boolean commitAndPushDelAllFiles(GitUser gitUser)  throws Exception{
-            logger.info("commitAndPushDelAllFiles方法传入本地仓库路径：{}用户名：{} 用户密码：{} 文件路径：{}",gitUser.getPath(),gitUser.getUsername(),gitUser.getPassword(),gitUser.getFilePath());
-            FileUtil.delFile(gitUser.getFilePath());
-            FileRepository localRepo = new FileRepository( gitUser.getPath());
-            Git git = new Git(localRepo);
-            AddCommand addCommand = git.add().setUpdate(true).addFilepattern(".");
-            addCommand.call();
-            CommitCommand commitCommand = git.commit();
-            commitCommand.setMessage("init project");
-            commitCommand.setAllowEmpty(true);
-            commitCommand.call();
-            PushCommand pushCommand = git.push();
-            pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsername(), gitUser.getPassword()));
-            pushCommand.call();
-            return true;
+        logger.info("注册用户：{} 模块ID：{} 文件路径：{} 文件名{}",gitUser.getUsrCode(),gitUser.getModId(),gitUser.getCurrentPath(),gitUser.getFileName());
+        String delPath = showProjectFileService.getSplitPath(gitUser.getUsrCode(),gitUser.getModId()) + File.separator +gitUser.getCurrentPath() +File.separator+ gitUser.getFileName();//正式
+        //本地删除
+        FileUtil.delFile(delPath);
+        //git服务器同步删除
+        /**FileRepository localRepo = new FileRepository( gitUser.getPath());
+         Git git = new Git(localRepo);
+         AddCommand addCommand = git.add().setUpdate(true).addFilepattern(".");
+         addCommand.call();
+         CommitCommand commitCommand = git.commit();
+         commitCommand.setMessage("init project");
+         commitCommand.setAllowEmpty(true);
+         commitCommand.call();
+         PushCommand pushCommand = git.push();
+         pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsername(), gitUser.getPassword()));
+         pushCommand.call();*/
+        return true;
 
 
     }
