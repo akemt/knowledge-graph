@@ -2,10 +2,6 @@ package com.beyond.algo.algoconsoleboot.controller;
 
 import com.beyond.algo.algoconsoleboot.base.BaseController;
 import com.beyond.algo.algoconsoleboot.infra.ModuleService;
-import com.beyond.algo.algoconsoleboot.infra.ReadFileService;
-import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
-import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
-import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.model.AlgUser;
@@ -26,14 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/module")
 @Slf4j
 public class ModuleController extends BaseController {
-    @Autowired
-    private ShowProjectFileService showProjectFileService;
-    @Autowired
-    private ReadFileService readFileService;
-    @Autowired
-    private GitConfigModel gitConfigModel;
-    @Autowired
-    private ProjectConfigModel projectConfigModel;
+
     @Autowired
     private ModuleService moduleService;
 
