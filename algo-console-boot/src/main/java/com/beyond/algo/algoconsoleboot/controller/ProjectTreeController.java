@@ -65,6 +65,29 @@ public class ProjectTreeController extends BaseController {
         }
     }
 
+    //返回上一级的目录
+    @GetMapping("/{modId}/bcak")
+    public Result bcak(@PathVariable("modId") String modId,String path) {
+
+        AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
+        try {
+            AlgUser algUser = getUserInfo();
+            AlgModule algModule = moduleService.findByUsrSnAndModId(algUser.getUsrSn(),modId);
+            path = showProjectFileService.getSplitPath(algUser.getUsrCode(),modId)+"/"+path;
+            //返回同级目录所有文件和文件夹.
+            FileNodes fileNodes = showProjectFileService.ShowProjectFile(path,algUser.getUsrCode(),modId);
+            algModuleEditVo.setModId(algModule.getModId());
+            algModuleEditVo.setModName(algModule.getModName());
+            algModuleEditVo.setLatestCommit("b975b7748b90f259240156c6e39129f058ebb141");
+            algModuleEditVo.setLatestVersion("0.0.3");
+            algModuleEditVo.setFileNodes(fileNodes);
+            return Result.ok(algModuleEditVo);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+        }
+    }
+
     /**
      * 展示同级目录所有文件和文件夹，或者展示文本。
      * author:lindewei
