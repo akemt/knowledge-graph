@@ -1,5 +1,7 @@
 package com.beyond.algo.algoconsoleboot.infra;
 
+import com.beyond.algo.vo.AlgFileReadWriteVo;
+
 import java.io.File;
 
 public interface ReadFileService {
@@ -7,5 +9,5 @@ public interface ReadFileService {
     /**
      * 返回文件内容.
      */
-    String readFileString(File file);
+    AlgFileReadWriteVo readFile(String usrCode, String modId, String path, String fileName) throws Exception;
 }

@@ -18,7 +18,7 @@ public class ModuleServiceImplTest {
 
     @Test
     public void initProject() throws Exception {
-        moduleService.initProject("test1", "TestProject2");
+        moduleService.initProject("qihe", "TestJava2");
     }
 
     @Test

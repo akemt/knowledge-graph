@@ -1,15 +1,19 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
+import com.beyond.algo.algoconsoleboot.base.BaseController;
+import com.beyond.algo.algoconsoleboot.infra.ModuleService;
 import com.beyond.algo.algoconsoleboot.infra.ReadFileService;
+import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.algoconsoleboot.infra.WriteFileService;
+import com.beyond.algo.model.AlgModule;
+import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.AlgFileReadWriteVo;
+import com.beyond.algo.vo.AlgModuleEditVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 
@@ -21,49 +25,41 @@ import java.io.File;
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("/file")
-public class FileController {
+public class FileController extends BaseController {
     @Autowired
     private ReadFileService readFileService;
-
     @Autowired
     private WriteFileService writeFileService;
+    @Autowired
+    private ShowProjectFileService showProjectFileService;
+    @Autowired
+    private ModuleService moduleService;
 
-    /**
-     * 文件读取
-     * author:lindewei
-     * @param ：path 想要读取的文件的路径
-     * @return ：返回文件内容
-     */
-    @RequestMapping(value="/readFile", method= RequestMethod.POST)
-    public @ResponseBody
-    Result readFile(String path) {
+    // 读取文本
+    @RequestMapping(value = "{modId}/read", method = RequestMethod.GET)
+    public Result read(@PathVariable("modId") String modId, String currentPath,String fileName) {
         try {
-            //File file = new File("D:/JGitServiceTest.java");
-            File file = new File(path);
-            readFileService.readFileString(file);//返回值是一个String
+            AlgUser algUser = getUserInfo();
+            AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(algUser.getUsrCode(), modId, currentPath, fileName);
+            return Result.ok(algFileReadWriteVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+        }
+    }
+
+    // 写入保存（包括新建）
+    @RequestMapping(value="{modId}/write", method= RequestMethod.POST)
+    public @ResponseBody
+    Result write(@PathVariable("modId") String modId, String currentPath,String fileName,String fileContent) {
+        AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
+        try {
+            AlgUser algUser = getUserInfo();
+            writeFileService.writeFile(algUser.getUsrCode(), modId, currentPath, fileName,fileContent);;//写入文件中，并且保存到路径下。
         } catch (Exception e) {
             e.printStackTrace();
             return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
         return Result.successResponse();
     }
-
-    /**
-     * 创建新的文本、初始化读取的文本编辑内容保存
-     * author:lindewei
-     * @param ：String 文本内容，和文件命名
-     */
-    @RequestMapping(value="/writeFile", method= RequestMethod.POST)
-    public @ResponseBody
-    Result writeFile(String con,String filePath) {
-        try {
-            //TODO 创建文件时候，前端会将当前拼接好的路径传过来（路径+用户命名）。
-            writeFileService.writeFileString(con,filePath);//写入文件中，并且保存到路径下。
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
-        }
-        return Result.successResponse();
-    }
-
 }

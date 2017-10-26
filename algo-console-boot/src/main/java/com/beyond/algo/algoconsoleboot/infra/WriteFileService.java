@@ -5,5 +5,5 @@ public interface WriteFileService {
     /**
      * 内容写入文件.
      */
-    void writeFileString(String content,String path);
+    void writeFile(String usrCode, String modId, String path, String fileName,String fileContent) throws Exception;
 }

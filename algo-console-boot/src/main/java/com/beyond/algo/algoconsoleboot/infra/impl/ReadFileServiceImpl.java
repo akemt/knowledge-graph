@@ -1,6 +1,9 @@
 package com.beyond.algo.algoconsoleboot.infra.impl;
 
 import com.beyond.algo.algoconsoleboot.infra.ReadFileService;
+import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
+import com.beyond.algo.vo.AlgFileReadWriteVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.BufferedReader;
@@ -8,8 +11,15 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 @Service
 public class ReadFileServiceImpl implements ReadFileService {
+    @Autowired
+    private ShowProjectFileService showProjectFileService;
+
     @Override
-    public String readFileString(File file) {
+    public AlgFileReadWriteVo readFile(String usrCode, String modId, String path, String fileName) throws Exception{
+        AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
+        String readPath = showProjectFileService.getSplitPath(usrCode,modId) + "/"+path +"/"+ fileName;//正式
+        //String readPath = showProjectFileService.getSplitPath(usrCode,modId) + "//"+"src//beyondalgo//TestJava" +"//"+ "TestJava.java";//测试
+        File file = new File(readPath);
         StringBuilder result = new StringBuilder();
         try{
             BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));//构造一个BufferedReader类来读取文件
@@ -21,6 +31,7 @@ public class ReadFileServiceImpl implements ReadFileService {
         }catch(Exception e){
             e.printStackTrace();
         }
-        return result.toString();
+        algFileReadWriteVo.setReadFile(result.toString());
+        return algFileReadWriteVo;
     }
 }
