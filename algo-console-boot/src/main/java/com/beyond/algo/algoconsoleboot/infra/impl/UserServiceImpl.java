@@ -49,16 +49,21 @@ public class UserServiceImpl implements UserService {
  * @date ：13:16 2017/9/25
  */
     @Override
-    public Result createUser(AlgUser user){
-        String uuid= UUIDUtil.createUUID();
-        user.setUsrSn(uuid);
-        user.setUpdateDate(new Date());
-        user.setCreateDate(new Date());
-        logger.info("密码："+projectConfigEntity.getKeyAES());
-        String passWord= AESUtil.encryptString(user.getPasswd(),projectConfigEntity.getKeyAES());
-        user.setPasswd(passWord);
-        algUserMapper.insert(user);
-        return Result.successResponse();
+    public void createUser(AlgUser user)throws Exception{
+        AlgUser algUser =findByUsrCode(user.getUsrCode());
+        if(Assert.isNotNULL(algUser)){
+            throw new Exception("用户已注册！");
+        }else{
+            String uuid= UUIDUtil.createUUID();
+            user.setUsrSn(uuid);
+            user.setUpdateDate(new Date());
+            user.setCreateDate(new Date());
+            logger.info("密码："+projectConfigEntity.getKeyAES());
+            String passWord= AESUtil.encryptString(user.getPasswd(),projectConfigEntity.getKeyAES());
+            user.setPasswd(passWord);
+            algUserMapper.insert(user);
+
+        }
     }
     /**
      * @author ：zhangchuanzhi
@@ -90,11 +95,10 @@ public class UserServiceImpl implements UserService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public Result changePassword(UserVo user) {
+    public void changePassword(UserVo user) throws Exception {
         // 判断两次输入密码是否一致
          if(!user.getConfirmPassword().equals(user.getNewPassword())){
-             String message="两次输入新密码一致";
-             return Result.failure(message);
+             throw new Exception("两次输入新密码一致！");
          }else{
              // 当两次输入密码一致时候判断输入新密码和原始密码是否一致
              AlgUser  algUser =algUserMapper.selectByPrimaryKey(user.getUsrSn());
@@ -102,16 +106,16 @@ public class UserServiceImpl implements UserService {
              // 判断输入原始密码是否是数据库密码
              if(user.getPasswd().equals(passwordEncryp)){
                  if(user.getNewPassword().equals(passwordEncryp)){
-                     String message="原始密码和新密码一致";
-                     return Result.failure(message);
+                     throw new Exception("原始密码和新密码一致！");
                  }
+             }else{
+                 throw new Exception("原始密码不正确！");
              }
          }
          String newPassWord=AESUtil.encryptString(user.getNewPassword(),projectConfigEntity.getKeyAES());
          user.setPasswd(newPassWord);
          user.setUpdateDate(new Date());
          algUserMapper.update(user);
-         return  Result.successResponse();
     }
 
     /**
@@ -122,30 +126,26 @@ public class UserServiceImpl implements UserService {
      * @date ：9:15 2017/10/10
      */
     @Override
-    public Result updateUserInformation(AlgUser user){
+    public void updateUserInformation(AlgUser user) throws Exception{
         // 判断邮箱是否合法
         boolean emailFlag =NumCheckUtil.checkEmail(user.getEmail());
         if(!emailFlag){
-            String message="邮箱不合法";
-            return Result.failure(message);
+            throw new Exception("邮箱不合法");
         }
         // 判断电话
         boolean telFlag =NumCheckUtil.checkTel(user.getTelephone());
         if(!telFlag){
-            String message="电话不合法";
-            return Result.failure(message);
+            throw new Exception("电话不合法");
         }
         // 判断个人主页
         boolean webFlag =NumCheckUtil.checkWebsite(user.getUsrUrl());
         if(!webFlag){
-            String message="个人主页不合法";
-            return Result.failure(message);
+            throw new Exception("个人主页不合法");
         }
         // 判断名字是否全是中文
         boolean nameFlag =NumCheckUtil.isChineseStr(user.getUsrName());
         if(!nameFlag){
-            String message="必须全是中文";
-            return Result.failure(message);
+            throw new Exception("必须全是中文");
         }
         // 1：代码邮件 0：短信
         if("1".equals(user.getNeedNotify())){
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
         }
         user.setUpdateDate(new Date());
         algUserMapper.update(user);
-        return  Result.successResponse();
+
     }
 
 

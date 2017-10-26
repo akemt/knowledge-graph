@@ -37,11 +37,11 @@ public class UserController {
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    Result<Object> register(AlgUser user) {
+    Result register(AlgUser user) {
         log.info("用户编码:{},用户密码:{},用户邮箱:{}", user.getUsrCode(), user.getPasswd(), user.getEmail());
         try {
-            Result result = userService.createUser(user);
-            return result;
+            userService.createUser(user);
+            return Result.successResponse();
         } catch (Exception e) {
             log.info("注册失败", e);
             return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
@@ -82,8 +82,8 @@ public class UserController {
     public Result changePassword(UserVo userVo) {
         log.info("用户唯一值:{},用户密码:{},用户确认密码:{},用户新密码:{}", userVo.getUsrSn(), userVo.getPasswd(), userVo.getConfirmPassword(), userVo.getNewPassword());
         try {
-            Result result = userService.changePassword(userVo);
-            return result;
+            userService.changePassword(userVo);
+            return Result.successResponse();
         } catch (Exception e) {
             e.printStackTrace();
             return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
@@ -102,8 +102,8 @@ public class UserController {
     public Result updateUserInformation(AlgUser user) {
         log.info("用户全名:{},用户编码:{},用户邮箱:{},用户电话:{},用户主页{},用户是短信还是邮箱发送{},用户唯一主键", user.getUsrName(), user.getUsrCode(), user.getEmail(), user.getTelephone(), user.getUsrUrl(), user.getNeedNotify(), user.getUsrSn());
         try {
-            Result result = userService.updateUserInformation(user);
-            return result;
+            userService.updateUserInformation(user);
+            return Result.successResponse();
         } catch (Exception e) {
             e.printStackTrace();
             return new Result<>(ResultEnum.FAILURE.code, e.getMessage());

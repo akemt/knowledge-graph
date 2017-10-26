@@ -36,8 +36,9 @@ public class UserControllerTests {
 
 
 		String result = this.mockMvc.perform(post("/user/register").contentType(MediaType.APPLICATION_JSON)
-				.param("usrName","xiaoxx")
-				.param("passwd","123456")
+				.param("usrCode","zhang11")
+				.param("passwd","123")
+				.param("usrName","智")
 				.param("email","test@qq.com"))
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
 		System.out.println(result);
@@ -57,8 +58,8 @@ public class UserControllerTests {
 	public void updateUserInformation() throws Exception{
 
 		String result = this.mockMvc.perform(post("/user/updateUserInformation").contentType(MediaType.APPLICATION_JSON)
-				.param("usrSn","05e9ebaad2974a0898e154ed84d7f2c5")
-				.param("usrName","张传智")
+				.param("usrSn","c0a19c1576174b3f97924e75f05f9596")
+				.param("usrName","张传智智智")
 				.param("usrCode","zhangchuanzhiTest")
 				.param("email","zhangchuanzhiTest@126.com")
 				.param("needNotify","0")
@@ -79,10 +80,10 @@ public class UserControllerTests {
 	@Test
 	public void changePassword() throws Exception{
 		String result = this.mockMvc.perform(post("/user/changePassword").contentType(MediaType.APPLICATION_JSON)
-				.param("usrSn","37bf2269ee4845da8e86861bbde2438a")
-				.param("passwd","123")
-				.param("newPassword","12345678")
-				.param("confirmPassword","12345678")
+				.param("usrSn","c0a19c1576174b3f97924e75f05f9596")
+				.param("passwd","12345678")
+				.param("newPassword","123")
+				.param("confirmPassword","123")
 				)
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
 		System.out.println(result);

@@ -11,10 +11,10 @@ import com.beyond.algo.vo.UserVo;
  * @date ：13:32 2017/9/25
  */
 public interface UserService {
-    Result createUser(AlgUser user);
+    void createUser(AlgUser user) throws Exception;
     Result userLogin(AlgUser user) throws Exception;
-    Result changePassword(UserVo userVo);
-    Result updateUserInformation(AlgUser user);
+    void changePassword(UserVo userVo) throws Exception;
+    void updateUserInformation(AlgUser user) throws Exception;
     UserAccountVo accountInformation(String accSn);
 
     /**

@@ -22,4 +22,6 @@ public interface AlgUserMapper {
     int countOrgByCode(String orgCode);
 
     AlgUser selectUsrCode(String usrCode);
+
+
 }
