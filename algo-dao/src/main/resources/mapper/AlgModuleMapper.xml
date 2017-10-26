@@ -70,22 +70,43 @@
             #{item}
         </foreach>
     </select>
+    <sql id="listAlgByUsageColumn">
+        mo.mod_id as mod_id,
+        mo.usr_sn as usr_sn,
+        mo.lan_sn as lan_sn,
+        mo.cat_sn as cat_sn,
+        mo.lic_sn as lic_sn,
+        mo.atl_sn as atl_sn,
+        mo.mod_name as mod_name,
+        mo.mod_id as mod_id,
+        mo.is_open_src as is_open_src,
+        mo.need_web as need_web,
+        mo.need_call_other as need_call_other,
+        mo.env_type as env_type
+    </sql>
     <select id="listAlgByUsage" resultMap="BaseResultMap">
-        select tmp.mod_sn, tmp.usr_sn, tmp.lan_sn, tmp.cat_sn, tmp.lic_sn, tmp.atl_sn, tmp.mod_name, tmp.mod_id, tmp.is_open_src,
-        tmp.need_web, tmp.need_call_other, tmp.env_type, tmp.star_cnt, tmp.follow_cnt,tmp.call_cnt,tmp.credit_cnt
-        from (select alg_module.mod_sn, alg_module.usr_sn, alg_module.lan_sn, alg_module.cat_sn, alg_module.lic_sn, alg_module.atl_sn, alg_module.mod_name, alg_module.mod_id, alg_module.is_open_src,
-        alg_module.need_web, alg_module.need_call_other, alg_module.env_type, alg_module_usage.star_cnt, alg_module_usage.follow_cnt,alg_module_usage.call_cnt,alg_module_usage.credit_cnt
-        from alg_module join alg_module_usage on alg_module.mod_sn = alg_module_usage.mod_sn) as tmp
-        where tmp.cat_sn = any(select alg_algo_category.cat_sn from alg_algo_category where alg_algo_category.cat_name = #{arg0})
-        order by tmp.star_cnt DESC
-        limit 0,20
+
+        select
+        <include refid="listAlgByUsageColumn"/>
+        from alg_module mo
+        left join alg_algo_category ac on ac.mod_sn = mo.mod_sn
+        left join alg_module_usage usa on usa.mod_sn = mo.mod_sn
+        <where>
+            <trim prefixOverrides="and">
+                <if test="arg0 != null and arg0 !=''">and ac.cat_name = #{arg0,jdbcType=VARCHAR}</if>
+                <if test="arg2 != null and arg2 !=''">and mo.mod_name like concat('%',#{arg2,jdbcType=VARCHAR},'%')</if>
+            </trim>
+        </where>
+        <if test="arg1 == 'starCnt'"> order by usa.star_cnt DESC </if>
+        <if test="arg1 == 'followCnt'"> order by usa.follow_cnt DESC </if>
+        <if test="arg1 == 'callCnt'"> order by usa.call_cnt DESC </if>
+        <if test="arg1 == 'creditCnt'"> order by usa.credit_cnt DESC </if>
     </select>
 
     <select id="selectByUsrSnAndModId" resultMap="BaseResultMap">
         select * from alg_module
         <include refid="Base_Where_Clause"/>
     </select>
-
     <sql id="Base_Where_Clause">
         <where>
             <trim prefixOverrides="and">

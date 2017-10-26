@@ -7,6 +7,7 @@ import com.beyond.algo.common.FileDir;
 import com.beyond.algo.common.FileNode;
 import com.beyond.algo.common.FileNodes;
 import com.beyond.algo.common.StringConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
 import static com.beyond.algo.common.StringConstant.src;
 
 @Service
+@Slf4j
 public class ShowProjectFileServiceImpl implements ShowProjectFileService{
     @Autowired
     private GitConfigModel gitConfigModel;
