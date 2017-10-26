@@ -35,8 +35,6 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Override
     public void initProject(String username, String projectName) throws Exception {
-        String ss = "Java";
-
         AlgModule algModule = findByUsrSnAndModId(username,projectName);
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         //适配器模式 调用创建算法项目适配器
