@@ -10,6 +10,7 @@ import com.beyond.algo.common.*;
 import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgModuleEditVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/tree")
+@Slf4j
 public class ProjectTreeController extends BaseController {
     @Autowired
     private ShowProjectFileService showProjectFileService;
@@ -43,16 +45,20 @@ public class ProjectTreeController extends BaseController {
         AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
         try {
             AlgUser algUser = getUserInfo();
-
+            log.info("current user:{} ",algUser.getUsrCode());
             AlgModule algModule = moduleService.findByUsrSnAndModId(algUser.getUsrSn(),modId);
+            log.info("current project id:{} ,name :{} ",algModule.getModId(),algModule.getModName());
             //项目名称初始化Tree
             if (Assert.isEmpty(path)){
                 path = moduleService.getModuleMainFilePath(algUser.getUsrCode(),modId,algModule.getLanSn());
             }else{
                 path = showProjectFileService.getSplitPath(algUser.getUsrCode(),modId)+"/"+path;
             }
+
+            log.info("current path {} ",path);
             //返回同级目录所有文件和文件夹.
             FileNodes fileNodes = showProjectFileService.ShowProjectFile(path,algUser.getUsrCode(),modId);
+            log.info("current fileNodes {} ",fileNodes.toString());
             algModuleEditVo.setModId(algModule.getModId());
             algModuleEditVo.setModName(algModule.getModName());
             algModuleEditVo.setLatestCommit("b975b7748b90f259240156c6e39129f058ebb141");
