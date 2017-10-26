@@ -21,13 +21,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ProjectTreeControllerTest {
+public class ModuleControllerTest {
     @Autowired
     protected WebApplicationContext wac;
     private MockMvc mockMvc;
 
     @Autowired
-    private ProjectTreeController projectTreeController;
+    private ModuleController moduleController;
 
     @Before
     public void setup() throws Exception {

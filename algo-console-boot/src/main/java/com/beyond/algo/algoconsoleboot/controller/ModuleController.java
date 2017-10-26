@@ -27,7 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/tree")
 @Slf4j
-public class ProjectTreeController extends BaseController {
+public class ModuleController extends BaseController {
     @Autowired
     private ShowProjectFileService showProjectFileService;
     @Autowired
