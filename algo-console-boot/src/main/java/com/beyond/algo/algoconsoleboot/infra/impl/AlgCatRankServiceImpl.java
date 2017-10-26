@@ -4,7 +4,7 @@ import com.beyond.algo.algoconsoleboot.infra.AlgCatRankService;
 import com.beyond.algo.mapper.AlgModuleMapper;
 import com.beyond.algo.mapper.AlgModuleUsageMapper;
 import com.beyond.algo.model.AlgModule;
-import com.beyond.algo.model.AlgModuleUsage;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +22,10 @@ public class AlgCatRankServiceImpl implements AlgCatRankService {
     AlgModuleUsageMapper algModuleUsageMapper;
 
     @Override
-    public List<AlgModule> listAlg(String catName, String usage) {
+    public List<AlgModule> listAlg(String catName, String usage ,String modName,short numPage,short numRows) {
         //初步设定用数据库进行排序查询
-        //List<AlgModuleUsage> resultUsage = algModuleUsageMapper.listAlgByUsage(usage);
-        List<AlgModule> resultAlgModule = null;//algModuleMapper.listAlgByUsage(catName,usage);
+        PageHelper.startPage(numPage,numRows);
+        List<AlgModule> resultAlgModule = algModuleMapper.listAlgByUsage(catName,usage,modName);
         return resultAlgModule;
     }
 }

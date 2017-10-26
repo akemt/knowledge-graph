@@ -35,21 +35,21 @@ public class AuthCodeControllerTest {
     }
     @Test
     public void listAuthCode() throws Exception {
-        String result = this.mockMvc.perform(get("/authcode/listauthcode/{usrSn}","8303430b322d43b1bc6bdd63d2103fa3").contentType(MediaType.APPLICATION_JSON))
+        String result = this.mockMvc.perform(get("/authCode/listAuthCode/{usrSn}","8303430b322d43b1bc6bdd63d2103fa3").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
         //结果：[{"acdSn":"3249d819260548a6b93981dad55a452f","usrSn":"8303430b322d43b1bc6bdd63d2103fa3","acdName":"0000000000000000","acdId":"BeyondrJelJ3rWrDj5rfG1","callFromClient":"1","callFromBrowser":null,"restrictUrl":null,"dataUseType":null},{"acdSn":"9ea7ae09d32b4a2e85c5945e4f51dde4","usrSn":"8303430b322d43b1bc6bdd63d2103fa3","acdName":"thisnewid","acdId":"ce8205470b5b4c6583e0c2115f808355","callFromClient":"1","callFromBrowser":null,"restrictUrl":null,"dataUseType":null}]
     }
     @Test
     public void listAuthCodeDomain() throws Exception {
-        String result = this.mockMvc.perform(get("/authcode/listauthcodedomain/{acdSn}","3249d819260548a6b93981dad55a452f").contentType(MediaType.APPLICATION_JSON))
+        String result = this.mockMvc.perform(get("/authCode/listAuthCodeDomain/{acdSn}","7516d699937e447ba557b99472cbb798").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
         //结果：[{"addSn":"023427a40baa483c82fd25bfbb56ec96","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge2.com"},{"addSn":"7b72969e280f49c0b2600e138735d1fe","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge3.com"},{"addSn":"e6c657cf2e2a48809367182106d8df55","acdSn":"b95de94a97464e7e91258fee2c65b1f2","addUrl":"www.baidulaingge1.com"}]
     }
     @Test
     public void generateKey() throws Exception {
-        String result = this.mockMvc.perform(post("/authcode/generatekey").contentType(MediaType.APPLICATION_JSON)
+        String result = this.mockMvc.perform(post("/authCode/generateKey").contentType(MediaType.APPLICATION_JSON)
                 .param("usrSn","8303430b322d43b1bc6bdd63d2103fa3")
                 .param("acdName","0000000000000000")
                 .param("callFromClient","1")
@@ -63,14 +63,14 @@ public class AuthCodeControllerTest {
     public void deleteAuthCode() throws Exception {
         //通过acdSn主键删除
         //同时删除内外两个表内容
-        String result = this.mockMvc.perform(get("/authcode/deleteauthcode/{acdSn}","3249d819260548a6b93981dad55a452f").contentType(MediaType.APPLICATION_JSON))
+        String result = this.mockMvc.perform(get("/authCode/deleteAuthCode/{acdSn}","ba1cf831978740f19b019504a2e3a0fb").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
     @Test
     public void update() throws Exception {
-        String result = this.mockMvc.perform(post("/authcode/update").contentType(MediaType.APPLICATION_JSON)
-                .param("acdSn","b5bd99d474d845cab4e5310965632167")
+        String result = this.mockMvc.perform(post("/authCode/update").contentType(MediaType.APPLICATION_JSON)
+                .param("acdSn","7516d699937e447ba557b99472cbb798")
                 .param("usrSn","8303430b322d43b1bc6bdd63d2103fa3")
                 .param("acdName","thisnewid")
                 .param("acdId","ce8205470b5b4c6583e0c2115f808355")
