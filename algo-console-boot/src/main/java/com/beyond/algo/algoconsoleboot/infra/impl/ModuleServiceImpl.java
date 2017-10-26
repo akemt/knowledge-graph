@@ -6,27 +6,18 @@ import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
 import com.beyond.algo.common.Assert;
-import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.FileNodes;
-import com.beyond.algo.common.FileUtil;
-import com.beyond.algo.algoconsoleboot.util.FreemarkerUtil;
 import com.beyond.algo.mapper.AlgModuleMapper;
 import com.beyond.algo.mapper.AlgProgramLangMapper;
 import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.model.AlgProgramLang;
-import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgModuleEditVo;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import static com.beyond.algo.common.StringConstant.*;
+
+import static com.beyond.algo.common.StringConstant.src;
 
 @Service
 public class ModuleServiceImpl implements ModuleService {
@@ -39,6 +30,8 @@ public class ModuleServiceImpl implements ModuleService {
     private AlgModuleMapper algModuleMapper;
     @Autowired
     private AlgProgramLangMapper algProgramLangMapper;
+    @Autowired
+    private ShowProjectFileService showProjectFileService;
 
     @Override
     public void initProject(String username, String projectName) throws Exception {
