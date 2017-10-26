@@ -1,8 +1,5 @@
 package beyondalgo.${projectName};
 
-import com.beyondalgo.*;
-import com.beyondalgo.algo.*;
-import com.beyondalgo.data.*;
 import com.google.gson.*;
 import java.util.*;
 
