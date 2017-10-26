@@ -12,6 +12,7 @@ import com.beyond.algo.mapper.AlgProgramLangMapper;
 import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.model.AlgProgramLang;
 import com.beyond.algo.vo.AlgModuleEditVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.io.File;
 import static com.beyond.algo.common.StringConstant.src;
 
 @Service
+@Slf4j
 public class ModuleServiceImpl implements ModuleService {
 
     @Autowired
@@ -72,9 +74,9 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public AlgModuleEditVo AlgModule(String usrCode,String usrSn,String modId,String path) throws Exception{
         AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
-        //log.info("current user:{} ",algUser.getUsrCode());
+        log.info("current user:{} ",usrCode);
         AlgModule algModule = this.findByUsrSnAndModId(usrSn,modId);
-        //log.info("current project id:{} ,name :{} ",algModule.getModId(),algModule.getModName());
+        log.info("current project id:{} ,name :{} ",algModule.getModId(),algModule.getModName());
         //项目名称初始化Tree
         if (Assert.isEmpty(path)){
             path = this.getModuleMainFilePath(usrCode,modId,algModule.getLanSn());
@@ -84,7 +86,7 @@ public class ModuleServiceImpl implements ModuleService {
         //log.info("current path {} ",path);
         //返回同级目录所有文件和文件夹.
         FileNodes fileNodes = showProjectFileService.ShowProjectFile(path,usrCode,modId);
-        //log.info("current fileNodes {} ",fileNodes.toString());
+        log.info("current fileNodes {} ",fileNodes.toString());
         algModuleEditVo.setModId(algModule.getModId());
         algModuleEditVo.setModName(algModule.getModName());
         algModuleEditVo.setLatestCommit("b975b7748b90f259240156c6e39129f058ebb141");
