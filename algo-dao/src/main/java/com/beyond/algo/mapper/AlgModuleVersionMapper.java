@@ -13,4 +13,6 @@ public interface AlgModuleVersionMapper {
     List<AlgModuleVersion> selectAll();
 
     int updateByPrimaryKey(AlgModuleVersion record);
+
+    AlgModuleVersion selectLatestAll(String mod_sn);
 }
