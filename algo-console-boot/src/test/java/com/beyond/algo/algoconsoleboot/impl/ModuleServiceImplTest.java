@@ -3,6 +3,7 @@ package com.beyond.algo.algoconsoleboot.impl;
 import com.beyond.algo.algoconsoleboot.AlgoConsoleBootApplication;
 import com.beyond.algo.algoconsoleboot.infra.ModuleService;
 import com.beyond.algo.model.AlgModule;
+import com.beyond.algo.model.AlgUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,10 @@ public class ModuleServiceImplTest {
 
     @Test
     public void initProject() throws Exception {
-        moduleService.initProject("qihe", "TestJava2");
+        AlgUser algUser = new AlgUser();
+        algUser.setUsrCode("qihe");
+        algUser.setUsrSn("37bf2269ee4845da8e86861bbde2438a");
+        moduleService.initProject(algUser, "TestJava2");
     }
 
     @Test

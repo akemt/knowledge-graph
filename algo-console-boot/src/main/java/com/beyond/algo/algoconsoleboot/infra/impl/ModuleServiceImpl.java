@@ -13,6 +13,7 @@ import com.beyond.algo.mapper.AlgProgramLangMapper;
 import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.model.AlgModuleVersion;
 import com.beyond.algo.model.AlgProgramLang;
+import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgModuleEditVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,12 @@ public class ModuleServiceImpl implements ModuleService {
     private ShowProjectFileService showProjectFileService;
 
     @Override
-    public void initProject(String username, String projectName) throws Exception {
-        AlgModule algModule = findByUsrSnAndModId(username,projectName);
+    public void initProject(AlgUser algUser, String projectName) throws Exception {
+        AlgModule algModule = findByUsrSnAndModId(algUser.getUsrSn(),projectName);
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         //适配器模式 调用创建算法项目适配器
         CreateModuleAdapter createModuleAdapter = (CreateModuleAdapter)Class.forName("com.beyond.algo.algoconsoleboot.ModuleAdapter.Create"+ algProgramLang.getLanName() +"Module").newInstance();
-        createModuleAdapter.createModule(username,projectName,gitConfigModel,projectConfigModel);
+        createModuleAdapter.createModule(algUser.getUsrCode(),projectName,gitConfigModel,projectConfigModel);
 
     }
 

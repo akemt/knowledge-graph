@@ -2,6 +2,7 @@ package com.beyond.algo.algoconsoleboot.infra;
 
 import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.model.AlgModuleVersion;
+import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgModuleEditVo;
 
 public interface ModuleService {
@@ -9,7 +10,7 @@ public interface ModuleService {
     /**
      * 初始化算法工程.
      */
-    void initProject(String username, String projectName) throws Exception;
+    void initProject(AlgUser algUser, String projectName) throws Exception;
 
     AlgModule findByUsrSnAndModId(String usrSn,String modId) throws Exception;
 
