@@ -14,5 +14,5 @@ public interface ModuleService {
 
     String getModuleMainFilePath(String usrCode,String modId,String lanSn) throws Exception;
 
-    AlgModuleEditVo AlgModule(String usrCode,String usrSn,String modId,String path) throws Exception;
+    AlgModuleEditVo algModule(String usrCode,String usrSn,String modId,String path) throws Exception;
 }
