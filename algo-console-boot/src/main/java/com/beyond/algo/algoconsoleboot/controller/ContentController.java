@@ -12,6 +12,7 @@ import com.beyond.algo.vo.CollectArticlesVo;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -65,7 +66,8 @@ public class ContentController {
      * @Modify By :zhangchuanzhi
      * @date ：17:07 2017/10/12
      */
-    @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.POST)
+    @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+
     @ResponseBody
     public Result earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
         log.info("算法创建者id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getOwnerUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());

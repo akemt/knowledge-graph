@@ -38,12 +38,13 @@ public class PayCashController {
     @ResponseBody
     public Result payRecord(PayRecordVo payRecordVo) {
         logger.info("用户id:{},Page:{},Row:{}",payRecordVo.getUsrSn(),payRecordVo.getPage(),payRecordVo.getRows());
-        List<AlgCashTrans> algCashTransList= payCashService.payRecord(payRecordVo);
-        if(Assert.isNotEmpty(algCashTransList)){
+        try {
+            List<AlgCashTrans> algCashTransList= payCashService.payRecord(payRecordVo);
             return Result.ok(algCashTransList);
-        }else{
-            return Result.failure(algCashTransList);
+        } catch (Exception e) {
+            return Result.failureResponse();
         }
+
     }
 
     /**
