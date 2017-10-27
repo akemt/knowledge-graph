@@ -34,7 +34,7 @@ public class ModuleController extends BaseController {
         try {
             log.info("get module file tree: {} ",modId);
             AlgUser algUser = getUserInfo();
-            AlgModuleEditVo algModuleEditVo = moduleService.AlgModule(algUser.getUsrCode(),algUser.getUsrSn(),modId,path);
+            AlgModuleEditVo algModuleEditVo = moduleService.algModule(algUser.getUsrCode(),algUser.getUsrSn(),modId,path);
             return Result.ok(algModuleEditVo);
         }catch (Exception e){
             e.printStackTrace();

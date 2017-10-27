@@ -72,7 +72,7 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public AlgModuleEditVo AlgModule(String usrCode,String usrSn,String modId,String path) throws Exception{
+    public AlgModuleEditVo algModule(String usrCode,String usrSn,String modId,String path) throws Exception{
         AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
         log.info("current user:{} ",usrCode);
         AlgModule algModule = this.findByUsrSnAndModId(usrSn,modId);
