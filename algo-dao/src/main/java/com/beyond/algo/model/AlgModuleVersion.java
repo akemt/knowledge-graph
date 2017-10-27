@@ -13,6 +13,8 @@ public class AlgModuleVersion {
 
     private Integer verCodeL3;
 
+    private String latestCommit;
+
     private Float verLoyaltyFee;
 
     private String verRunUrl;
@@ -141,5 +143,13 @@ public class AlgModuleVersion {
 
     public void setVerDescription(String verDescription) {
         this.verDescription = verDescription == null ? null : verDescription.trim();
+    }
+
+    public String getLatestCommit() {
+        return latestCommit;
+    }
+
+    public void setLatestCommit(String latestCommit) {
+        this.latestCommit = latestCommit;
     }
 }

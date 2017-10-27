@@ -7,6 +7,7 @@
     <result column="ver_code_l1" property="verCodeL1" jdbcType="INTEGER" />
     <result column="ver_code_l2" property="verCodeL2" jdbcType="INTEGER" />
     <result column="ver_code_l3" property="verCodeL3" jdbcType="INTEGER" />
+    <result column="latest_commit" property="latestCommit" jdbcType="VARCHAR" />
     <result column="ver_loyalty_fee" property="verLoyaltyFee" jdbcType="REAL" />
     <result column="ver_run_url" property="verRunUrl" jdbcType="VARCHAR" />
     <result column="ver_run_port" property="verRunPort" jdbcType="VARCHAR" />
@@ -23,12 +24,12 @@
   </delete>
   <insert id="insert" parameterType="com.beyond.algo.model.AlgModuleVersion" >
     insert into alg_module_version (ver_sn, mod_sn, ver_code_l1, 
-      ver_code_l2, ver_code_l3, ver_loyalty_fee, 
+      ver_code_l2, ver_code_l3, latest_commit, ver_loyalty_fee,
       ver_run_url, ver_run_port, ver_compiled, 
       verIs_dirty, ver_url, create_date, 
       ver_dependency, ver_description)
     values (#{verSn,jdbcType=VARCHAR}, #{modSn,jdbcType=VARCHAR}, #{verCodeL1,jdbcType=INTEGER}, 
-      #{verCodeL2,jdbcType=INTEGER}, #{verCodeL3,jdbcType=INTEGER}, #{verLoyaltyFee,jdbcType=REAL}, 
+      #{verCodeL2,jdbcType=INTEGER}, #{verCodeL3,jdbcType=INTEGER},  #{latestCommit,jdbcType=VARCHAR}, #{verLoyaltyFee,jdbcType=REAL},
       #{verRunUrl,jdbcType=VARCHAR}, #{verRunPort,jdbcType=VARCHAR}, #{verCompiled,jdbcType=VARCHAR}, 
       #{verisDirty,jdbcType=VARCHAR}, #{verUrl,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
       #{verDependency,jdbcType=LONGVARCHAR}, #{verDescription,jdbcType=LONGVARCHAR})
@@ -39,6 +40,7 @@
       ver_code_l1 = #{verCodeL1,jdbcType=INTEGER},
       ver_code_l2 = #{verCodeL2,jdbcType=INTEGER},
       ver_code_l3 = #{verCodeL3,jdbcType=INTEGER},
+      latest_commit = #{latestCommit,jdbcType=INTEGER},
       ver_loyalty_fee = #{verLoyaltyFee,jdbcType=REAL},
       ver_run_url = #{verRunUrl,jdbcType=VARCHAR},
       ver_run_port = #{verRunPort,jdbcType=VARCHAR},
@@ -51,13 +53,13 @@
     where ver_sn = #{verSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select ver_sn, mod_sn, ver_code_l1, ver_code_l2, ver_code_l3, ver_loyalty_fee, ver_run_url, 
+    select ver_sn, mod_sn, ver_code_l1, ver_code_l2, ver_code_l3,latest_commit, ver_loyalty_fee, ver_run_url,
     ver_run_port, ver_compiled, verIs_dirty, ver_url, create_date, ver_dependency, ver_description
     from alg_module_version
     where ver_sn = #{verSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select ver_sn, mod_sn, ver_code_l1, ver_code_l2, ver_code_l3, ver_loyalty_fee, ver_run_url, 
+    select ver_sn, mod_sn, ver_code_l1, ver_code_l2, ver_code_l3, latest_commit, ver_loyalty_fee, ver_run_url,
     ver_run_port, ver_compiled, verIs_dirty, ver_url, create_date, ver_dependency, ver_description
     from alg_module_version
   </select>

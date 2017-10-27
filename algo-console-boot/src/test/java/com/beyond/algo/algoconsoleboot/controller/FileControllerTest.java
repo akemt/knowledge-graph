@@ -41,23 +41,34 @@ public class FileControllerTest {
     @Test
     public void testReadFile() throws Exception{
 
-        String result = this.mockMvc.perform(post("/file/readFile").contentType(MediaType.APPLICATION_JSON)
-                .param("path","D:/JGitServiceTest.java"))
-                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-        System.out.println(result);
+        /**String result = this.mockMvc.perform(post("/file/TestJava/read").contentType(MediaType.APPLICATION_JSON)
+                .param("currentPath","src/beyondalgo/TestJava")
+                .param("fileName","asasasas.txt"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();*/
+        //System.out.println(result);
     }
 
     //创建新的文本、初始化读取的文本编辑内容保存测试
     @Test
     public void testWriteFile() throws Exception{
 
-        String result = this.mockMvc.perform(post("/file/writeFile").contentType(MediaType.APPLICATION_JSON)
-                .param("con","D:/JGitServiceTest.javaadsdsadjkajdkajd打断对方考虑52545454545对方")
-                .param("filePath","F:/001/0010002/创建新文1221件.txt"))
+        String result = this.mockMvc.perform(post("/file/TestJava/write").contentType(MediaType.APPLICATION_JSON)
+                .param("currentPath","src/beyondalgo/TestJava")
+                .param("fileName","asasasas.txt")
+                .param("fileContent","D:/JGitServiceTest.javaadsdsadjkajdkajd打断对方考虑52545454545对方"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
 
+    //创建新的文本、初始化读取的文本编辑内容保存测试
+    @Test
+    public void delFile() throws Exception{
 
-
+        String result = this.mockMvc.perform(post("/module/del").contentType(MediaType.APPLICATION_JSON)
+                .param("currentPath","src/beyondalgo/TestJava")
+                .param("fileName","asasasas.java")
+                .param("modId","TestJava"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 }
