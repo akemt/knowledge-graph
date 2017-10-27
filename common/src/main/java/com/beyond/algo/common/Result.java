@@ -17,15 +17,15 @@ import java.io.Serializable;
         private T data;
 
         public static Result<ResultEnum> successResponse() {
-            return new Result<ResultEnum>(ResultEnum.SUCCESS);
+            return new Result<ResultEnum>(ResultEnum.SUCCESS.code,ResultEnum.SUCCESS.msg);
         }
 
         public static Result<ResultEnum> failureResponse() {
-            return new Result<ResultEnum>(ResultEnum.FAILURE);
+            return new Result<ResultEnum>(ResultEnum.FAILURE.code,ResultEnum.FAILURE.msg);
         }
 
         public static Result<ResultEnum> unknowResponse() {
-            return new Result<ResultEnum>(ResultEnum.UNKNOWN_ERROR);
+            return new Result<ResultEnum>(ResultEnum.UNKNOWN_ERROR.code,ResultEnum.UNKNOWN_ERROR.msg);
         }
 
         public Result() {
@@ -58,10 +58,6 @@ import java.io.Serializable;
             this.code = code;
             this.msg = msg;
             this.detail = detail;
-        }
-
-        public static <T> Result<T> illegalArg(T data) {
-            return new Result<T>(data, ResultEnum.FAILURE.code, ResultEnum.PARAM_ERROR.msg);
         }
 
         public static <T> Result<T> ok(T data) {
