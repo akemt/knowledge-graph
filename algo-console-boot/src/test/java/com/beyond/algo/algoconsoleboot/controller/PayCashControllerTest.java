@@ -41,9 +41,9 @@ public class PayCashControllerTest {
 
 
         String result = this.mockMvc.perform(post("/pay/payRecord").contentType(MediaType.APPLICATION_JSON)
-                .param("usrSn","b468d46913c845e780cabf1b9fa0f0fb")
+                .param("usrSn","aac44b648b10429cbaf85a6ae0f63a65")
                 .param("page","0")
-                .param("rows","4"))
+                .param("rows","2"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
