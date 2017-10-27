@@ -84,6 +84,7 @@ public class ModuleServiceImpl implements ModuleService {
         log.info("current project id:{} ,name :{} ",algModule.getModId(),algModule.getModName());
         AlgModuleVersion algModuleVersion = getLastVersion(algModule.getModSn());
         log.info("current modSn:{} ",algModule.getModSn());
+        AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         //项目名称初始化Tree
         if (Assert.isEmpty(path)){
             path = this.getModuleMainFilePath(usrCode,modId,algModule.getLanSn());
@@ -97,6 +98,7 @@ public class ModuleServiceImpl implements ModuleService {
         algModuleEditVo.setModId(algModule.getModId());
         algModuleEditVo.setModName(algModule.getModName());
         algModuleEditVo.setLatestCommit(algModuleVersion.getLatestCommit());
+        algModuleEditVo.setProgramLang(algProgramLang.getLanName());
         algModuleEditVo.setLatestVersion(algModuleVersion.getVerCodeL1()+"."+algModuleVersion.getVerCodeL2()+"."+algModuleVersion.getVerCodeL3());
         algModuleEditVo.setFileNodes(fileNodes);
         return algModuleEditVo;

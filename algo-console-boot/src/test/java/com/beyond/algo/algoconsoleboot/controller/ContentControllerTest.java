@@ -52,7 +52,7 @@ public class ContentControllerTest {
        // 用户收益情况
         String result = this.mockMvc.perform(post("/content/algorithmEarnRecord").contentType(MediaType.APPLICATION_JSON)
                 .param("ownerUsrSn","aac44b648b10429cbaf85asse0113aa5")
-                .param("needNotify","1")
+                .param("page","0")
                 .param("rows","5"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);

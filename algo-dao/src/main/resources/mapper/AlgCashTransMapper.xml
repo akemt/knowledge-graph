@@ -17,6 +17,8 @@
   </resultMap>
   <resultMap id="queryForListMap" type="com.beyond.algo.vo.PayRecordVo"  extends="BaseResultMap">
     <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="pay_date" jdbcType="VARCHAR" property="payDate" />
+    <result column="create_date" jdbcType="VARCHAR" property="createDate" />
   </resultMap>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -65,10 +67,10 @@
     from alg_cash_trans
   </sql>
   <select id="payRecord" resultMap="queryForListMap" parameterType="java.lang.String" >
-    select tra_sn, usr_sn, order_id, pay_time, pay_no, status, pay_src, cash_pay_amount,
-    currency, credit_per_unit,credit_per_unit*cash_pay_amount integral,credit_per_unit, description, create_time
+    select tra_sn, usr_sn, order_id, date_format(alg_cash_trans.pay_time,'%Y-%c-%d %h:%i:%s') pay_date, pay_no, status, pay_src, cash_pay_amount,
+    currency,credit_per_unit*cash_pay_amount integral,credit_per_unit, description, date_format(alg_cash_trans.create_time,'%Y-%c-%d %h:%i:%s') create_date
     from alg_cash_trans
-    where usr_sn = #{usr_sn,jdbcType=VARCHAR}
-    order by create_time desc
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
+    order by alg_cash_trans.create_time desc
   </select>
 </mapper>

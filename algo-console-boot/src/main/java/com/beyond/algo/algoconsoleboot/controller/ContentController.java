@@ -12,6 +12,7 @@ import com.beyond.algo.vo.CollectArticlesVo;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,8 +42,7 @@ public class ContentController {
      * @Modify By :zhangchuanzhi
      * @date ：14:07 2017/10/11
      */
-    @RequestMapping(value="/algorithmRecord", method= RequestMethod.POST)
-    @ResponseBody
+    @RequestMapping(value="/algorithmRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
         log.info("调用用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
         try {
@@ -65,8 +65,7 @@ public class ContentController {
      * @Modify By :zhangchuanzhi
      * @date ：17:07 2017/10/12
      */
-    @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.POST)
-    @ResponseBody
+    @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
         log.info("算法创建者id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getOwnerUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
         try {
@@ -91,8 +90,7 @@ public class ContentController {
      * @Modify By :zhangchuanzhi
      * @date ：10:07 2017/10/19
      */
-    @RequestMapping(value="/collectArticles", method= RequestMethod.POST)
-    @ResponseBody
+    @RequestMapping(value="/collectArticles", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result collectArticles(CollectArticlesVo collectArticlesVo) {
         log.info("用户id:{},Page:{},Row:{}",collectArticlesVo.getUsrSn(),collectArticlesVo.getPage(),collectArticlesVo.getRows());
         try {

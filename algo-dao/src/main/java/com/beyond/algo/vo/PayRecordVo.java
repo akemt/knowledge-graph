@@ -18,4 +18,8 @@ public class PayRecordVo extends AlgCashTrans {
 
     private int total;
 
+    private String createDate;
+
+    private String payDate;
+
 }

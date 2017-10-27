@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -36,8 +35,7 @@ public class UserController {
      * @date ：13:16 2017/9/25
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result register(AlgUser user) {
+    public Result register(AlgUser user) {
         log.info("用户编码:{},用户密码:{},用户邮箱:{}", user.getUsrCode(), user.getPasswd(), user.getEmail());
         try {
             userService.createUser(user);
@@ -56,7 +54,6 @@ public class UserController {
      * @date ：8:49 2017/9/27
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
     public Result userLogin(AlgUser user) {
         log.info("用户编码:{},用户密码:{}", user.getUsrCode(), user.getPasswd());
         try {
@@ -77,8 +74,7 @@ public class UserController {
      * @Modify By :zhangchuanzhi
      * @date ：8:49 2017/9/27
      */
-    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
-    @ResponseBody
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result changePassword(UserVo userVo) {
         log.info("用户唯一值:{},用户密码:{},用户确认密码:{},用户新密码:{}", userVo.getUsrSn(), userVo.getPasswd(), userVo.getConfirmPassword(), userVo.getNewPassword());
         try {
@@ -97,8 +93,7 @@ public class UserController {
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/10/10
      */
-    @RequestMapping(value = "/updateUserInformation", method = RequestMethod.POST)
-    @ResponseBody
+    @RequestMapping(value = "/updateUserInformation", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result updateUserInformation(AlgUser user) {
         log.info("用户全名:{},用户编码:{},用户邮箱:{},用户电话:{},用户主页{},用户是短信还是邮箱发送{},用户唯一主键", user.getUsrName(), user.getUsrCode(), user.getEmail(), user.getTelephone(), user.getUsrUrl(), user.getNeedNotify(), user.getUsrSn());
         try {
@@ -117,8 +112,7 @@ public class UserController {
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/10/10
      */
-    @RequestMapping(value = "/accountInformation", method = RequestMethod.GET)
-    @ResponseBody
+    @RequestMapping(value = "/accountInformation", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result accountInformation(String accSn) {
 
         log.info("账户主键:{}", accSn);
