@@ -10,6 +10,8 @@ import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgModuleEditVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -29,7 +31,7 @@ public class ModuleController extends BaseController {
     private JGitService jGitService;
 
     //初始化、和返回上一级的目录
-    @GetMapping("/{modId}")
+    @GetMapping(value = "/{modId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result initTree(@PathVariable("modId") String modId,String path) {
         try {
             log.info("get module file tree: {} ",modId);
@@ -47,10 +49,10 @@ public class ModuleController extends BaseController {
      * @return
      * @Description:删除本地文件同时同步服务器 author:zhangchuanzhi
      */
-    @RequestMapping(value = "/del", method = RequestMethod.POST)
-    public @ResponseBody
-    Result commitAndPushDelAllFiles(GitUser gitUser) {
+    @RequestMapping(value = "/{modId}/del", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result commitAndPushDelAllFiles(GitUser gitUser,@PathVariable("modId") String modId) {
         try {
+            gitUser.setModId(modId);
             AlgUser algUser = getUserInfo();
             gitUser.setUsrCode(algUser.getUsrCode());
             boolean result = jGitService.commitAndPushDelAllFiles(gitUser);
