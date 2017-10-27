@@ -13,6 +13,7 @@ import com.beyond.algo.vo.AlgFileReadWriteVo;
 import com.beyond.algo.vo.AlgModuleEditVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -36,7 +37,7 @@ public class FileController extends BaseController {
     private ModuleService moduleService;
 
     // 读取文本
-    @RequestMapping(value = "{modId}/read", method = RequestMethod.GET)
+    @RequestMapping(value = "{modId}/read", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result read(@PathVariable("modId") String modId, String currentPath,String fileName) {
         try {
             AlgUser algUser = getUserInfo();
@@ -49,9 +50,8 @@ public class FileController extends BaseController {
     }
 
     // 写入保存（包括新建）
-    @RequestMapping(value="{modId}/write", method= RequestMethod.POST)
-    public @ResponseBody
-    Result write(@PathVariable("modId") String modId, String currentPath,String fileName,String fileContent) {
+    @RequestMapping(value="{modId}/write", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result write(@PathVariable("modId") String modId, String currentPath,String fileName,String fileContent) {
         AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
         try {
             AlgUser algUser = getUserInfo();
