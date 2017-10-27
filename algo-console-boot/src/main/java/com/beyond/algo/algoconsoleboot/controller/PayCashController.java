@@ -8,6 +8,7 @@ import com.beyond.algo.vo.PayRecordVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,8 +35,7 @@ public class PayCashController {
      * @Modify By :zhangchuanzhi
      * @date ：14:07 2017/10/11
      */
-    @RequestMapping(value="/payRecord", method= RequestMethod.POST)
-    @ResponseBody
+    @RequestMapping(value="/payRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result payRecord(PayRecordVo payRecordVo) {
         logger.info("用户id:{},Page:{},Row:{}",payRecordVo.getUsrSn(),payRecordVo.getPage(),payRecordVo.getRows());
         try {
