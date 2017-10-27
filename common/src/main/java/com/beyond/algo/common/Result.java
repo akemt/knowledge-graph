@@ -24,6 +24,10 @@ import java.io.Serializable;
             return new Result<ResultEnum>(ResultEnum.FAILURE);
         }
 
+        public static Result<ResultEnum> unknowResponse() {
+            return new Result<ResultEnum>(ResultEnum.UNKNOWN_ERROR);
+        }
+
         public Result() {
             this.code = ResultEnum.SUCCESS.code;
             this.msg = ResultEnum.SUCCESS.msg;
