@@ -1,6 +1,7 @@
 package com.beyond.algo.algoconsoleboot.infra;
 
 import com.beyond.algo.model.AlgModule;
+import com.beyond.algo.model.AlgModuleVersion;
 import com.beyond.algo.vo.AlgModuleEditVo;
 
 public interface ModuleService {
@@ -15,4 +16,6 @@ public interface ModuleService {
     String getModuleMainFilePath(String usrCode,String modId,String lanSn) throws Exception;
 
     AlgModuleEditVo algModule(String usrCode,String usrSn,String modId,String path) throws Exception;
+
+    AlgModuleVersion getLastVersion(String mod_sn) throws Exception;
 }

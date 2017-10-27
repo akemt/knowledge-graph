@@ -63,4 +63,10 @@
     ver_run_port, ver_compiled, verIs_dirty, ver_url, create_date, ver_dependency, ver_description
     from alg_module_version
   </select>
+  <select id="selectLatestAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select * from alg_module_version where mod_sn = #{mod_sn,jdbcType=VARCHAR}
+    and ver_code_l1 = (select max(ver_code_l1) from alg_module_version where mod_sn = #{mod_sn,jdbcType=VARCHAR} GROUP BY mod_sn)
+    and ver_code_l2 = (select max(ver_code_l2) from alg_module_version where mod_sn = #{mod_sn,jdbcType=VARCHAR} GROUP BY mod_sn)
+    and ver_code_l3 = (select max(ver_code_l3) from alg_module_version where mod_sn = #{mod_sn,jdbcType=VARCHAR} GROUP BY mod_sn)
+  </select>
 </mapper>

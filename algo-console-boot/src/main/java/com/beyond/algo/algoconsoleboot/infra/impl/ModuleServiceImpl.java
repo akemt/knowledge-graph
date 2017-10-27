@@ -8,8 +8,10 @@ import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.FileNodes;
 import com.beyond.algo.mapper.AlgModuleMapper;
+import com.beyond.algo.mapper.AlgModuleVersionMapper;
 import com.beyond.algo.mapper.AlgProgramLangMapper;
 import com.beyond.algo.model.AlgModule;
+import com.beyond.algo.model.AlgModuleVersion;
 import com.beyond.algo.model.AlgProgramLang;
 import com.beyond.algo.vo.AlgModuleEditVo;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,8 @@ public class ModuleServiceImpl implements ModuleService {
     private ProjectConfigModel projectConfigModel;
     @Autowired
     private AlgModuleMapper algModuleMapper;
+    @Autowired
+    private AlgModuleVersionMapper algModuleVersionMapper;
     @Autowired
     private AlgProgramLangMapper algProgramLangMapper;
     @Autowired
@@ -77,6 +81,8 @@ public class ModuleServiceImpl implements ModuleService {
         log.info("current user:{} ",usrCode);
         AlgModule algModule = this.findByUsrSnAndModId(usrSn,modId);
         log.info("current project id:{} ,name :{} ",algModule.getModId(),algModule.getModName());
+        AlgModuleVersion algModuleVersion = getLastVersion(algModule.getModSn());
+        log.info("current modSn:{} ",algModule.getModSn());
         //项目名称初始化Tree
         if (Assert.isEmpty(path)){
             path = this.getModuleMainFilePath(usrCode,modId,algModule.getLanSn());
@@ -89,9 +95,14 @@ public class ModuleServiceImpl implements ModuleService {
         log.info("current fileNodes {} ",fileNodes.toString());
         algModuleEditVo.setModId(algModule.getModId());
         algModuleEditVo.setModName(algModule.getModName());
-        algModuleEditVo.setLatestCommit("b975b7748b90f259240156c6e39129f058ebb141");
-        algModuleEditVo.setLatestVersion("0.0.3");
+        algModuleEditVo.setLatestCommit(algModuleVersion.getLatestCommit());
+        algModuleEditVo.setLatestVersion(algModuleVersion.getVerCodeL1()+"."+algModuleVersion.getVerCodeL2()+"."+algModuleVersion.getVerCodeL3());
         algModuleEditVo.setFileNodes(fileNodes);
         return algModuleEditVo;
+    }
+    //获取最后的版本
+    @Override
+    public AlgModuleVersion getLastVersion(String mod_sn) throws Exception{
+        return algModuleVersionMapper.selectLatestAll(mod_sn);
     }
 }
