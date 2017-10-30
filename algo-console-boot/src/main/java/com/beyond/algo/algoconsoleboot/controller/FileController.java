@@ -50,7 +50,7 @@ public class FileController extends BaseController {
     }
 
     // 写入保存（包括新建）
-    @RequestMapping(value="{modId}/write", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value="{modId}/write", method= RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result write(@PathVariable("modId") String modId, String currentPath,String fileName,String fileContent) {
         AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
         try {

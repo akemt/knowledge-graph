@@ -49,7 +49,7 @@ public class ModuleController extends BaseController {
      * @return
      * @Description:删除本地文件同时同步服务器 author:zhangchuanzhi
      */
-    @RequestMapping(value = "/{modId}/del", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/{modId}/del", method = RequestMethod.DELETE,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result commitAndPushDelAllFiles(GitUser gitUser,@PathVariable("modId") String modId) {
         try {
             gitUser.setModId(modId);
