@@ -2,6 +2,7 @@ package com.beyond.algo.algoconsoleboot.infra.impl;
 
 import com.beyond.algo.algoconsoleboot.infra.ReadFileService;
 import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.vo.AlgFileReadWriteVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,14 @@ public class ReadFileServiceImpl implements ReadFileService {
     private ShowProjectFileService showProjectFileService;
 
     @Override
-    public AlgFileReadWriteVo readFile(String usrCode, String modId, String path, String fileName) throws Exception{
+    public AlgFileReadWriteVo readFile(String usrCode, String modId, String path, String fileName) throws AlgException {
         AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
-        String readPath = showProjectFileService.getSplitPath(usrCode,modId) + "/"+path +"/"+ fileName;//正式
-        //String readPath = showProjectFileService.getSplitPath(usrCode,modId) + "//"+"src//beyondalgo//TestJava" +"//"+ "TestJava.java";//测试
+        String readPath = null;
+        try {
+            readPath = showProjectFileService.getSplitPath(usrCode,modId) + "/"+path +"/"+ fileName;
+        } catch (Exception e) {
+            throw new AlgException("readPath取得失败，用户code：" + usrCode + "，模块id：" + modId + "。", e);
+        }
         File file = new File(readPath);
         StringBuilder result = new StringBuilder();
         try{

@@ -7,6 +7,7 @@ import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.FileNodes;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgModuleMapper;
 import com.beyond.algo.mapper.AlgModuleVersionMapper;
 import com.beyond.algo.mapper.AlgProgramLangMapper;
@@ -52,7 +53,7 @@ public class ModuleServiceImpl implements ModuleService {
 
     //返回文件的后缀名
     @Override
-    public String getModuleMainFilePath(String usrCode,String modId,String lanSn) throws Exception {
+    public String getModuleMainFilePath(String usrCode,String modId,String lanSn) throws AlgException {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
         //TODO 项目名称初始化Tree
         StringBuilder stringBuilder = new StringBuilder();
@@ -72,12 +73,12 @@ public class ModuleServiceImpl implements ModuleService {
         return stringBuilder.toString();
     }
 
-    public AlgModule findByUsrSnAndModId(String usrSn,String modId) throws Exception{
+    public AlgModule findByUsrSnAndModId(String usrSn,String modId) throws AlgException{
         return algModuleMapper.selectByUsrSnAndModId(usrSn,modId);
     }
 
     @Override
-    public AlgModuleEditVo algModule(String usrCode,String usrSn,String modId,String path) throws Exception{
+    public AlgModuleEditVo algModule(String usrCode,String usrSn,String modId,String path) throws AlgException{
         AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
         log.info("current user:{} ",usrCode);
         AlgModule algModule = this.findByUsrSnAndModId(usrSn,modId);
@@ -85,27 +86,31 @@ public class ModuleServiceImpl implements ModuleService {
         AlgModuleVersion algModuleVersion = getLastVersion(algModule.getModSn());
         log.info("current modSn:{} ",algModule.getModSn());
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
-        //项目名称初始化Tree
-        if (Assert.isEmpty(path)){
-            path = this.getModuleMainFilePath(usrCode,modId,algModule.getLanSn());
-        }else{
-            path = showProjectFileService.getSplitPath(usrCode,modId)+"/"+path;
+        try {
+            //项目名称初始化Tree
+            if (Assert.isEmpty(path)){
+                path = this.getModuleMainFilePath(usrCode,modId,algModule.getLanSn());
+            }else{
+                path = showProjectFileService.getSplitPath(usrCode,modId)+"/"+path;
+            }
+            //log.info("current path {} ",path);
+            //返回同级目录所有文件和文件夹.
+            FileNodes fileNodes = showProjectFileService.ShowProjectFile(path,usrCode,modId);
+            log.info("current fileNodes {} ",fileNodes.toString());
+            algModuleEditVo.setModId(algModule.getModId());
+            algModuleEditVo.setModName(algModule.getModName());
+            algModuleEditVo.setLatestCommit(algModuleVersion.getLatestCommit());
+            algModuleEditVo.setProgramLang(algProgramLang.getLanName());
+            algModuleEditVo.setLatestVersion(algModuleVersion.getVerCodeL1()+"."+algModuleVersion.getVerCodeL2()+"."+algModuleVersion.getVerCodeL3());
+            algModuleEditVo.setFileNodes(fileNodes);
+        } catch (Exception e) {
+            throw new AlgException("fileNodes取得失败，路径path：" +  path +"，用户usrCode：" + usrCode +"，模块ID："+ modId + "。", e);
         }
-        //log.info("current path {} ",path);
-        //返回同级目录所有文件和文件夹.
-        FileNodes fileNodes = showProjectFileService.ShowProjectFile(path,usrCode,modId);
-        log.info("current fileNodes {} ",fileNodes.toString());
-        algModuleEditVo.setModId(algModule.getModId());
-        algModuleEditVo.setModName(algModule.getModName());
-        algModuleEditVo.setLatestCommit(algModuleVersion.getLatestCommit());
-        algModuleEditVo.setProgramLang(algProgramLang.getLanName());
-        algModuleEditVo.setLatestVersion(algModuleVersion.getVerCodeL1()+"."+algModuleVersion.getVerCodeL2()+"."+algModuleVersion.getVerCodeL3());
-        algModuleEditVo.setFileNodes(fileNodes);
         return algModuleEditVo;
     }
     //获取最后的版本
     @Override
-    public AlgModuleVersion getLastVersion(String mod_sn) throws Exception{
+    public AlgModuleVersion getLastVersion(String mod_sn) throws AlgException{
         return algModuleVersionMapper.selectLatestAll(mod_sn);
     }
 }
