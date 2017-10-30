@@ -1,5 +1,6 @@
 package com.beyond.algo.algoconsoleboot.infra;
 
+import com.beyond.algo.algoconsoleboot.model.GitUser;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgUser;
 
@@ -10,5 +11,5 @@ import com.beyond.algo.model.AlgUser;
  */
 public interface AntApiService {
 
-    boolean moduleAntBuild(AlgUser algUser,String modId) throws AlgException;
+    boolean moduleAntBuild(GitUser gitUser) throws AlgException;
 }

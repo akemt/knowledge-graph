@@ -8,6 +8,7 @@ import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
  * @Description:
  * @Date: create in
  */
-public interface Adapter {
+public interface ModuleAdapter {
     void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel) throws Exception;
+
 }

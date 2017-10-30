@@ -2,8 +2,10 @@ package com.beyond.algo.algoconsoleboot.infra.impl;
 
 import com.beyond.algo.algoconsoleboot.infra.AntApiService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
+import com.beyond.algo.algoconsoleboot.model.GitUser;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgUser;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DefaultLogger;
 import org.apache.tools.ant.Project;
@@ -23,36 +25,37 @@ import java.io.File;
  * @Date: create in 2017/10/28 19:49
  */
 @Service
+@Slf4j
 public class AntApiServiceImpl implements AntApiService {
     @Autowired
     private GitConfigModel gitConfigModel;
 
 
-    public boolean moduleAntBuild(AlgUser algUser, String modId) throws AlgException {
+    public boolean moduleAntBuild(GitUser gitUser) throws AlgException {
+        String path=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+"build.xml";
+        log.info("项目编译路径"+path);
+        File buildFile = new File(path);
+        Project project = new Project();
+        DefaultLogger consoleLogger = new DefaultLogger();
+            consoleLogger.setErrorPrintStream(System.err);
+            consoleLogger.setOutputPrintStream(System.out);
+            consoleLogger.setMessageOutputLevel(Project.MSG_INFO);
+            project.addBuildListener(consoleLogger);
 
-    File buildFile = new File("E:\\repo\\qihe\\TestJava2\\build.xml");
-    Project project = new Project();
+            try {
+            project.fireBuildStarted();  //项目开始构建
+            project.init();
+            ProjectHelper helper = ProjectHelper.getProjectHelper();
+            helper.parse(project, buildFile);
+            project.executeTarget(project.getDefaultTarget());
+            project.fireBuildFinished(null);  //构建结束
 
-    DefaultLogger consoleLogger = new DefaultLogger();
-        consoleLogger.setErrorPrintStream(System.err);
-        consoleLogger.setOutputPrintStream(System.out);
-        consoleLogger.setMessageOutputLevel(Project.MSG_INFO);
-        project.addBuildListener(consoleLogger);
-
-        try {
-        project.fireBuildStarted();  //项目开始构建
-        project.init();
-        ProjectHelper helper = ProjectHelper.getProjectHelper();
-        helper.parse(project, buildFile);
-        project.executeTarget(project.getDefaultTarget());
-        project.fireBuildFinished(null);  //构建结束
-
-        moduleAntZip("E:\\repo\\qihe\\TestJava2\\");
-    } catch (BuildException e) {
-        project.fireBuildFinished(e);  //构建抛出异常
-        return false;
-    }
-        return true;
+     //       moduleAntZip("E:\\repo\\qihe\\TestJava2\\");
+        } catch (BuildException e) {
+            project.fireBuildFinished(e);  //构建抛出异常
+            return false;
+        }
+            return true;
 }
 
     public boolean moduleAntZip(String path)  throws  AlgException{

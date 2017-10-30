@@ -22,7 +22,7 @@ public class AntApiServiceImplTest {
         algUser.setUsrSn("37bf2269ee4845da8e86861bbde2438a");
         algUser.setUsrCode("qihe");
         algUser.setUsrName("祁贺");
-        antApiService.moduleAntBuild(algUser,"TestJava2");
+    //    antApiService.moduleAntBuild(algUser,"TestJava2");
     }
 
 }

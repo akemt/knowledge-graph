@@ -2,6 +2,7 @@ package com.beyond.algo.algoconsoleboot.base;
 
 import com.beyond.algo.algoconsoleboot.infra.UserService;
 import com.beyond.algo.common.Assert;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,10 +13,11 @@ public class BaseController {
 
     @Autowired
     private UserService userService;
-    public AlgUser getUserInfo() throws Exception{
+    public AlgUser getUserInfo() throws AlgException {
         SecurityContext ctx = SecurityContextHolder.getContext();
         if(Assert.isEmpty(ctx)) {
-            throw new Exception("用户未登录！");
+            String[] checkMessage = {"用户未登录",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000002",checkMessage);
         }
         Authentication auth = ctx.getAuthentication();
         return userService.findByUsrCode(auth.getName());

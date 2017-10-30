@@ -57,4 +57,13 @@ public class ModuleControllerTest {
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
+
+    //tree目录返回
+    @Test
+    public void buildAndUpLoadProject() throws Exception{
+
+        String result = this.mockMvc.perform(post("/module/TestProject2/buildProject").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 }

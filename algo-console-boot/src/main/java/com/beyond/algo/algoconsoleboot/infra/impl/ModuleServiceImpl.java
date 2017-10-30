@@ -1,6 +1,6 @@
 package com.beyond.algo.algoconsoleboot.infra.impl;
 
-import com.beyond.algo.algoconsoleboot.adapter.infra.Adapter;
+import com.beyond.algo.algoconsoleboot.adapter.infra.ModuleAdapter;
 import com.beyond.algo.algoconsoleboot.infra.ModuleService;
 import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
@@ -37,18 +37,18 @@ public class ModuleServiceImpl implements ModuleService {
     private AlgModuleVersionMapper algModuleVersionMapper;
     @Autowired
     private AlgProgramLangMapper algProgramLangMapper;
-    @Autowired
-    private ShowProjectFileService showProjectFileService;
-
     @Override
     public void initProject(AlgUser algUser, String projectName) throws Exception {
         AlgModule algModule = findByUsrSnAndModId(algUser.getUsrSn(),projectName);
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         //适配器模式 调用创建算法项目适配器
-        Adapter createModuleAdapter = (Adapter)Class.forName("com.beyond.algo.algoconsoleboot.ModuleAdapter.Create"+ algProgramLang.getLanName() +"Module").newInstance();
+        ModuleAdapter createModuleAdapter = (ModuleAdapter)Class.forName("com.beyond.algo.algoconsoleboot.adapter."+ algProgramLang.getLanName() +"ModuleAdapter").newInstance();
         createModuleAdapter.createModule(algUser.getUsrCode(),projectName,gitConfigModel,projectConfigModel);
 
     }
+
+    @Autowired
+    private ShowProjectFileService showProjectFileService;
 
     //返回文件的后缀名
     @Override
