@@ -7,6 +7,7 @@ import com.beyond.algo.common.FileDir;
 import com.beyond.algo.common.FileNode;
 import com.beyond.algo.common.FileNodes;
 import com.beyond.algo.common.StringConstant;
+import com.beyond.algo.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
     @Autowired
     private ProjectConfigModel projectConfigModel;
 
-    public String getSplitPath(String usrCode,String modId) throws Exception {
+    public String getSplitPath(String usrCode,String modId) throws AlgException {
         //TODO 项目名称初始化Tree
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(gitConfigModel.getLocalBasePath());
@@ -38,7 +39,7 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
         return stringBuilder.toString();
     }
     @Override
-    public FileNodes ShowProjectFile(String currentPath,String usrCode,String modId) throws Exception{
+    public FileNodes ShowProjectFile(String currentPath,String usrCode,String modId) throws AlgException{
         String splitPath = getSplitPath(usrCode,modId);
         File file = new File(currentPath);
         currentPath = file.getPath();
