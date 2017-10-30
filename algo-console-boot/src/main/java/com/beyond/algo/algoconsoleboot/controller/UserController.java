@@ -4,6 +4,7 @@ import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.algoconsoleboot.infra.UserService;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.UserAccountVo;
 import com.beyond.algo.vo.UserVo;
@@ -35,15 +36,10 @@ public class UserController {
      * @date ：13:16 2017/9/25
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result register(AlgUser user) {
+    public Result register(AlgUser user) throws AlgException {
         log.info("用户编码:{},用户密码:{},用户邮箱:{}", user.getUsrCode(), user.getPasswd(), user.getEmail());
-        try {
-            userService.createUser(user);
-            return Result.successResponse();
-        } catch (Exception e) {
-            log.info("注册失败", e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        userService.createUser(user);
+        return Result.successResponse();
     }
 
     /**
@@ -54,17 +50,11 @@ public class UserController {
      * @date ：8:49 2017/9/27
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result userLogin(AlgUser user) {
+    public Result userLogin(AlgUser user)throws AlgException {
         log.info("用户编码:{},用户密码:{}", user.getUsrCode(), user.getPasswd());
-        try {
+        Result result = userService.userLogin(user);
+        return result;
 
-            Result result = userService.userLogin(user);
-
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
     }
 
     /**
@@ -75,15 +65,10 @@ public class UserController {
      * @date ：8:49 2017/9/27
      */
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result changePassword(UserVo userVo) {
+    public Result changePassword(UserVo userVo) throws AlgException{
         log.info("用户唯一值:{},用户密码:{},用户确认密码:{},用户新密码:{}", userVo.getUsrSn(), userVo.getPasswd(), userVo.getConfirmPassword(), userVo.getNewPassword());
-        try {
-            userService.changePassword(userVo);
-            return Result.successResponse();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        userService.changePassword(userVo);
+        return Result.successResponse();
     }
 
     /**
@@ -94,15 +79,11 @@ public class UserController {
      * @date ：9:14 2017/10/10
      */
     @RequestMapping(value = "/updateUserInformation", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result updateUserInformation(AlgUser user) {
+    public Result updateUserInformation(AlgUser user)throws AlgException {
         log.info("用户全名:{},用户编码:{},用户邮箱:{},用户电话:{},用户主页{},用户是短信还是邮箱发送{},用户唯一主键", user.getUsrName(), user.getUsrCode(), user.getEmail(), user.getTelephone(), user.getUsrUrl(), user.getNeedNotify(), user.getUsrSn());
-        try {
-            userService.updateUserInformation(user);
-            return Result.successResponse();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        userService.updateUserInformation(user);
+        return Result.successResponse();
+
     }
 
     /**
@@ -113,20 +94,10 @@ public class UserController {
      * @date ：9:14 2017/10/10
      */
     @RequestMapping(value = "/accountInformation", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result accountInformation(String accSn) {
-
+    public Result accountInformation(String accSn) throws AlgException{
         log.info("账户主键:{}", accSn);
         UserAccountVo algAccount = null;
-        try {
-            algAccount = userService.accountInformation(accSn);
-            if (Assert.isNotNULL(algAccount)) {
-                return Result.ok(algAccount);
-            } else {
-                return Result.failureResponse();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        algAccount = userService.accountInformation(accSn);
+        return Result.ok(algAccount);
     }
 }

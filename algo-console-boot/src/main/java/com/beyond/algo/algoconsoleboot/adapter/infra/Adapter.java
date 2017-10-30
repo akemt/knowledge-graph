@@ -1,4 +1,4 @@
-package com.beyond.algo.algoconsoleboot.ModuleAdapter.infra;
+package com.beyond.algo.algoconsoleboot.adapter.infra;
 
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
@@ -8,6 +8,6 @@ import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
  * @Description:
  * @Date: create in
  */
-public interface CreateModuleAdapter {
+public interface Adapter {
     void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel) throws Exception;
 }

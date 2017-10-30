@@ -1,6 +1,7 @@
 package com.beyond.algo.algoconsoleboot.infra.impl;
 
 import com.beyond.algo.algoconsoleboot.infra.AlgorithmDetailService;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgModuleMapper;
 import com.beyond.algo.vo.AlgModuleVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
     @Autowired
     private AlgModuleMapper algModuleMapper;
     @Override
-    public AlgModuleVo getAlgorithmDetail(String modSn) {
+    public AlgModuleVo getAlgorithmDetail(String modSn)throws AlgException {
         AlgModuleVo algModuleVo=algModuleMapper.getAlgorithmDetail(modSn);
         return algModuleVo;
     }

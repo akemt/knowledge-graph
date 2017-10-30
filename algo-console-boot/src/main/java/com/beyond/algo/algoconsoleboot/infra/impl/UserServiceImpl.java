@@ -8,6 +8,8 @@ package com.beyond.algo.algoconsoleboot.infra.impl;
 
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigEntity;
 import com.beyond.algo.common.*;
+import com.beyond.algo.constant.Constant;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgAccountMapper;
 import com.beyond.algo.mapper.AlgCashHisMapper;
 import com.beyond.algo.mapper.AlgUserMapper;
@@ -49,10 +51,10 @@ public class UserServiceImpl implements UserService {
  * @date ：13:16 2017/9/25
  */
     @Override
-    public void createUser(AlgUser user)throws Exception{
+    public void createUser(AlgUser user)throws AlgException {
         AlgUser algUser =findByUsrCode(user.getUsrCode());
         if(Assert.isNotNULL(algUser)){
-            throw new Exception("用户已注册！");
+            throw new AlgException("用户已注册！");
         }else{
             String uuid= UUIDUtil.createUUID();
             user.setUsrSn(uuid);
@@ -73,7 +75,7 @@ public class UserServiceImpl implements UserService {
      * @date ：15:26 2017/9/28
      */
     @Override
-    public Result userLogin(AlgUser user) throws Exception{
+    public Result userLogin(AlgUser user) throws AlgException{
         String password=user.getPasswd();
         user = algUserMapper.selectUsrname(user.getUsrName());
       // 如果没有这个用户
@@ -95,10 +97,10 @@ public class UserServiceImpl implements UserService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public void changePassword(UserVo user) throws Exception {
+    public void changePassword(UserVo user) throws AlgException {
         // 判断两次输入密码是否一致
          if(!user.getConfirmPassword().equals(user.getNewPassword())){
-             throw new Exception("两次输入新密码一致！");
+             throw new AlgException("两次输入新密码一致！");
          }else{
              // 当两次输入密码一致时候判断输入新密码和原始密码是否一致
              AlgUser  algUser =algUserMapper.selectByPrimaryKey(user.getUsrSn());
@@ -106,10 +108,10 @@ public class UserServiceImpl implements UserService {
              // 判断输入原始密码是否是数据库密码
              if(user.getPasswd().equals(passwordEncryp)){
                  if(user.getNewPassword().equals(passwordEncryp)){
-                     throw new Exception("原始密码和新密码一致！");
+                     throw new AlgException("原始密码和新密码一致！");
                  }
              }else{
-                 throw new Exception("原始密码不正确！");
+                 throw new AlgException("原始密码不正确！");
              }
          }
          String newPassWord=AESUtil.encryptString(user.getNewPassword(),projectConfigEntity.getKeyAES());
@@ -126,26 +128,30 @@ public class UserServiceImpl implements UserService {
      * @date ：9:15 2017/10/10
      */
     @Override
-    public void updateUserInformation(AlgUser user) throws Exception{
+    public void updateUserInformation(AlgUser user) throws AlgException{
         // 判断邮箱是否合法
         boolean emailFlag =NumCheckUtil.checkEmail(user.getEmail());
         if(!emailFlag){
-            throw new Exception("邮箱不合法");
+            String[] checkMessage = {"邮箱",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001",checkMessage);
         }
         // 判断电话
         boolean telFlag =NumCheckUtil.checkTel(user.getTelephone());
         if(!telFlag){
-            throw new Exception("电话不合法");
+            String[] checkMessage = {"电话",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001",checkMessage);
         }
         // 判断个人主页
         boolean webFlag =NumCheckUtil.checkWebsite(user.getUsrUrl());
         if(!webFlag){
-            throw new Exception("个人主页不合法");
+            String[] checkMessage = {"个人主页",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001",checkMessage);
         }
         // 判断名字是否全是中文
         boolean nameFlag =NumCheckUtil.isChineseStr(user.getUsrName());
         if(!nameFlag){
-            throw new Exception("必须全是中文");
+            String[] checkMessage = {"输入名字","必须全是中文"};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001",checkMessage);
         }
         // 1：代码邮件 0：短信
         if("1".equals(user.getNeedNotify())){
@@ -167,7 +173,7 @@ public class UserServiceImpl implements UserService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public UserAccountVo accountInformation(String accSn) {
+    public UserAccountVo accountInformation(String accSn) throws AlgException{
         AlgAccount algAccount = algAccountMapper.selectByPrimaryKey(accSn);
         logger.info("用户ID:{}",algAccount.getUsrSn());
         UserAccountVo userAccountVo =new UserAccountVo();

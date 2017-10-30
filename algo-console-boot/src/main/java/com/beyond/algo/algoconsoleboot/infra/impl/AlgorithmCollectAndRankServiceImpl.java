@@ -1,6 +1,7 @@
 package com.beyond.algo.algoconsoleboot.infra.impl;
 
 import com.beyond.algo.algoconsoleboot.infra.AlgorithmCollectAndRankService;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgArticleListMapper;
 import com.beyond.algo.mapper.AlgModuleMapper;
 import com.beyond.algo.mapper.AlgStarMapper;
@@ -30,14 +31,14 @@ public class AlgorithmCollectAndRankServiceImpl  implements AlgorithmCollectAndR
     private AlgArticleListMapper algArticleListMapper;
 
     @Override
-    public List<CollectArticlesVo> collectArticles(CollectArticlesVo collectArticlesVo){
+    public List<CollectArticlesVo> collectArticles(CollectArticlesVo collectArticlesVo)throws AlgException {
         //分页处理
         PageHelper.startPage(collectArticlesVo.getPage(), collectArticlesVo.getRows());
         List<CollectArticlesVo>collectArticlesVoList=algStarMapper.selectArticles(collectArticlesVo);
         return collectArticlesVoList;
     }
     @Override
-    public List getRankList(){
+    public List getRankList()throws AlgException{
         List<String> abc=new ArrayList<String>();
         abc.add("1");
         abc.add("2");
@@ -49,7 +50,7 @@ public class AlgorithmCollectAndRankServiceImpl  implements AlgorithmCollectAndR
         return bcd;
     }
     @Override
-    public List<AlgArticleListVo>searchArticles(AlgArticleListVo algArticleListVo){
+    public List<AlgArticleListVo>searchArticles(AlgArticleListVo algArticleListVo)throws AlgException{
         List<AlgArticleListVo>  algArticleListVoList=algArticleListMapper.searchArticles(algArticleListVo);
         return algArticleListVoList;
     }

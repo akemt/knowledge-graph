@@ -7,6 +7,7 @@ package com.beyond.algo.algoconsoleboot.infra.impl;
  */
 
 import com.beyond.algo.algoconsoleboot.infra.PayCashService;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgCashTransMapper;
 
 import com.beyond.algo.model.*;
@@ -35,7 +36,7 @@ public class PayCashServiceImpl implements PayCashService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public List<AlgCashTrans> payRecord(PayRecordVo payRecordVo) {
+    public List<AlgCashTrans> payRecord(PayRecordVo payRecordVo)throws AlgException {
        //分页处理
         PageHelper.startPage(payRecordVo.getPage(), payRecordVo.getRows());
         List<AlgCashTrans> algCashTransList=algCashTransMapper.payRecord(payRecordVo.getUsrSn());
@@ -51,7 +52,7 @@ public class PayCashServiceImpl implements PayCashService {
      */
     @Override
      // 购买积分
-    public void buyIntegral(PayVo payVo){
+    public void buyIntegral(PayVo payVo)throws AlgException {
       // 调用充值接口未完成
 
 

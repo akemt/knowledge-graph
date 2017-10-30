@@ -3,6 +3,7 @@ package com.beyond.algo.algoconsoleboot.controller;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.algoconsoleboot.infra.PayCashService;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgCashTrans;
 import com.beyond.algo.vo.PayRecordVo;
 import org.slf4j.Logger;
@@ -36,15 +37,10 @@ public class PayCashController {
      * @date ：14:07 2017/10/11
      */
     @RequestMapping(value="/payRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result payRecord(PayRecordVo payRecordVo) {
+    public Result payRecord(PayRecordVo payRecordVo) throws AlgException {
         logger.info("用户id:{},Page:{},Row:{}",payRecordVo.getUsrSn(),payRecordVo.getPage(),payRecordVo.getRows());
-        try {
-            List<AlgCashTrans> algCashTransList= payCashService.payRecord(payRecordVo);
-            return Result.ok(algCashTransList);
-        } catch (Exception e) {
-            return Result.failureResponse();
-        }
-
+        List<AlgCashTrans> algCashTransList= payCashService.payRecord(payRecordVo);
+        return Result.ok(algCashTransList);
     }
 
     /**

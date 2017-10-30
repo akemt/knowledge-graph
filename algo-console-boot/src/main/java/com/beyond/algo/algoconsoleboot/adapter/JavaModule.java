@@ -1,6 +1,6 @@
-package com.beyond.algo.algoconsoleboot.ModuleAdapter;
+package com.beyond.algo.algoconsoleboot.adapter;
 
-import com.beyond.algo.algoconsoleboot.ModuleAdapter.infra.CreateModuleAdapter;
+import com.beyond.algo.algoconsoleboot.adapter.infra.Adapter;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
 import com.beyond.algo.algoconsoleboot.util.FreemarkerUtil;
@@ -18,7 +18,7 @@ import java.util.Map;
  * @Description:
  * @Date: create in
  */
-public class CreateJavaModule implements CreateModuleAdapter{
+public class JavaModule implements Adapter {
 
     @Override
     public void createModule(String username, String projectName,GitConfigModel gitConfigModel,ProjectConfigModel projectConfigModel) throws Exception {

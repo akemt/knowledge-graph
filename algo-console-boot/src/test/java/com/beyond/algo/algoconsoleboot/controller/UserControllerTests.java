@@ -57,13 +57,13 @@ public class UserControllerTests {
 	@Test
 	public void updateUserInformation() throws Exception{
 
-		String result = this.mockMvc.perform(post("/user/updateUserInformation").contentType(MediaType.APPLICATION_JSON)
+		String result = this.mockMvc.perform(post("/updateUserInformation").contentType(MediaType.APPLICATION_JSON)
 				.param("usrSn","c0a19c1576174b3f97924e75f05f9596")
-				.param("usrName","张传智智智")
+				.param("usrName","张传智智")
 				.param("usrCode","zhangchuanzhiTest")
 				.param("email","zhangchuanzhiTest@126.com")
 				.param("needNotify","0")
-				.param("telephone","13252998247")
+				.param("telephone","13252912247")
 				.param("usrUrl","https://www.11145.com"))
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
 		System.out.println(result);

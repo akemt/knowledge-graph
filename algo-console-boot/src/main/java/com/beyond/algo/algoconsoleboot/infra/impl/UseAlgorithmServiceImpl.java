@@ -10,6 +10,7 @@ package com.beyond.algo.algoconsoleboot.infra.impl;
 
 
 import com.beyond.algo.algoconsoleboot.infra.UseAlgorithmService;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgRUserModuleCallTransMapper;
 import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
 import com.github.pagehelper.PageHelper;
@@ -35,7 +36,7 @@ public class UseAlgorithmServiceImpl implements UseAlgorithmService {
      * @date ：13:16 2017/10/12
      */
     @Override
-    public List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo){
+    public List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo)throws AlgException{
         //分页处理
         PageHelper.startPage(algRUserModuleCallTransVo.getPage(), algRUserModuleCallTransVo.getRows());
         List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
@@ -51,7 +52,7 @@ public class UseAlgorithmServiceImpl implements UseAlgorithmService {
      * @date ：17:34 2017/10/12
      */
    @Override
-    public List<AlgRUserModuleCallTransVo> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo){
+    public List<AlgRUserModuleCallTransVo> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo)throws AlgException {
         //分页处理
         PageHelper.startPage(algRUserModuleCallTransVo.getPage(), algRUserModuleCallTransVo.getRows());
         List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);

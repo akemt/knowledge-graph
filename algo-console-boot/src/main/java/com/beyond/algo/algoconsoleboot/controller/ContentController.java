@@ -5,6 +5,7 @@ import com.beyond.algo.algoconsoleboot.infra.AlgorithmDetailService;
 import com.beyond.algo.algoconsoleboot.infra.UseAlgorithmService;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.vo.AlgArticleListVo;
 import com.beyond.algo.vo.AlgModuleVo;
 import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
@@ -43,20 +44,10 @@ public class ContentController {
      * @date ：14:07 2017/10/11
      */
     @RequestMapping(value="/algorithmRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
+    public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) throws AlgException{
         log.info("调用用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
-        try {
-            List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo);
-            if(Assert.isNotEmpty(algRUserModuleCallTransList)){
-                return Result.ok(algRUserModuleCallTransList);
-            }else{
-                return Result.failure(algRUserModuleCallTransList);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 待完善异常处理
-            return Result.failureResponse();
-        }
+        List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo);
+        return Result.ok(algRUserModuleCallTransList);
     }
     /**
      * @author ：zhangchuanzhi
@@ -66,20 +57,11 @@ public class ContentController {
      * @date ：17:07 2017/10/12
      */
     @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) {
+    public Result earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) throws AlgException{
         log.info("算法创建者id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getOwnerUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
-        try {
-            List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo);
-            if(Assert.isNotEmpty(algRUserModuleCallTransList)){
-                return Result.ok(algRUserModuleCallTransList);
-            }else{
-                return Result.failure(algRUserModuleCallTransList);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 待完善异常处理
-            return Result.failureResponse();
-        }
+        List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo);
+        return Result.ok(algRUserModuleCallTransList);
+
     }
 
 
@@ -91,20 +73,11 @@ public class ContentController {
      * @date ：10:07 2017/10/19
      */
     @RequestMapping(value="/collectArticles", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result collectArticles(CollectArticlesVo collectArticlesVo) {
+    public Result collectArticles(CollectArticlesVo collectArticlesVo) throws AlgException{
         log.info("用户id:{},Page:{},Row:{}",collectArticlesVo.getUsrSn(),collectArticlesVo.getPage(),collectArticlesVo.getRows());
-        try {
-            List<CollectArticlesVo> collectArticles= algorithmCollectAndRankService.collectArticles(collectArticlesVo);
-            if(Assert.isNotEmpty(collectArticles)){
-                return Result.ok(collectArticles);
-            }else{
-                return Result.failure(collectArticles);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 待完善异常处理
-            return Result.failureResponse();
-        }
+        List<CollectArticlesVo> collectArticles= algorithmCollectAndRankService.collectArticles(collectArticlesVo);
+        return Result.ok(collectArticles);
+
     }
 
     /**
@@ -114,22 +87,11 @@ public class ContentController {
      * @Modify By :zhangchuanzhi
      * @date ：14:22 2017/10/19
      */
-    @RequestMapping(value="/algorithmRank", method= RequestMethod.POST)
-    @ResponseBody
-    public Result algorithmRank( ) {
+    @RequestMapping(value="/algorithmRank", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result algorithmRank( )throws AlgException {
      //   log.info("用户id:{},Page:{},Row:{}",collectArticlesVo.getUsrSn(),collectArticlesVo.getPage(),collectArticlesVo.getRows());
-        try {
             List bcv= algorithmCollectAndRankService.getRankList();
-            if(Assert.isNotEmpty(bcv)){
-                return Result.ok(bcv);
-            }else{
-                return Result.failure(bcv);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 待完善异常处理
-            return Result.failureResponse();
-        }
+            return Result.ok(bcv);
     }
 
     /**
@@ -139,22 +101,11 @@ public class ContentController {
      * @Modify By :zhangchuanzhi
      * @date ：14:22 2017/10/19
      */
-    @RequestMapping(value="/searchArticles", method= RequestMethod.POST)
-    @ResponseBody
-    public Result searchArticles(AlgArticleListVo algArticleListVo ) {
-           log.info("用户id:{}",algArticleListVo.getId());
-        try {
-            List<AlgArticleListVo> articlesList= algorithmCollectAndRankService.searchArticles(algArticleListVo);
-            if(Assert.isNotEmpty(articlesList)){
-                return Result.ok(articlesList);
-            }else{
-                return Result.failure(articlesList);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 待完善异常处理
-            return Result.failureResponse();
-        }
+    @RequestMapping(value="/searchArticles", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result searchArticles(AlgArticleListVo algArticleListVo ) throws AlgException{
+        log.info("用户id:{}",algArticleListVo.getId());
+        List<AlgArticleListVo> articlesList= algorithmCollectAndRankService.searchArticles(algArticleListVo);
+        return Result.ok(articlesList);
     }
 
     /**
@@ -164,21 +115,10 @@ public class ContentController {
      * @Modify By :zhangchuanzhi
      * @date ：14:22 2017/10/19
      */
-    @RequestMapping(value="/getAlgorithmDetail", method= RequestMethod.GET)
-    @ResponseBody
-    public Result getAlgorithmDetail(String modSn ) {
+    @RequestMapping(value="/getAlgorithmDetail", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result getAlgorithmDetail(String modSn ) throws AlgException {
         log.info("算法模块id:{}",modSn);
-        try {
-            AlgModuleVo algModuleVo = algorithmDetailService.getAlgorithmDetail(modSn);
-            if(Assert.isNotNULL(algModuleVo)){
-                return Result.ok(algModuleVo);
-            }else{
-                return Result.failure(algModuleVo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            // 待完善异常处理
-            return Result.failureResponse();
-        }
+        AlgModuleVo algModuleVo = algorithmDetailService.getAlgorithmDetail(modSn);
+        return Result.ok(algModuleVo);
     }
 }
