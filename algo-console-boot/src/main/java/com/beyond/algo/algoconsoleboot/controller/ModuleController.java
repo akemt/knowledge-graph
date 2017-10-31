@@ -86,8 +86,9 @@ public class ModuleController extends BaseController {
         gitUser.setModId(modId);
         AlgUser algUser = getUserInfo();
      //   gitUser.setUsrCode(algUser.getUsrCode());
-          gitUser.setUsrCode(algUser.getUsrCode());
-          gitUser.setPassword(  AESUtil.decrypt(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
+        gitUser.setUsrCode(algUser.getUsrCode());
+        gitUser.setPassword(  AESUtil.decrypt(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
+        log.info("用户名字:{},用户密码:{} ",gitUser.getUsrCode(),gitUser.getUsrCode());
         boolean result = antApiService.moduleAntBuild(gitUser);
         if (result) {
             return Result.successResponse();
