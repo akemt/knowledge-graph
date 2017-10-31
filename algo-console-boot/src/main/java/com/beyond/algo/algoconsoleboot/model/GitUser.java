@@ -27,5 +27,6 @@ public class GitUser {
     private String  currentPath;
     private String  fileName;
     private String  usrCode;
+    private String  usrSn;
 
 }

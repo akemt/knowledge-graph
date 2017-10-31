@@ -57,7 +57,7 @@ public class JGitServiceImpl implements JGitService {
             commitCommand.setAllowEmpty(true);
             commitCommand.call();
             PushCommand pushCommand = git.push();
-            pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsername(), gitUser.getPassword()));
+            pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword()));
             pushCommand.call();
             return true;
         } catch (Exception e) {

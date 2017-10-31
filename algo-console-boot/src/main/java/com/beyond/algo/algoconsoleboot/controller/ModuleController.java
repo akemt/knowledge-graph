@@ -5,6 +5,8 @@ import com.beyond.algo.algoconsoleboot.infra.AntApiService;
 import com.beyond.algo.algoconsoleboot.infra.JGitService;
 import com.beyond.algo.algoconsoleboot.infra.ModuleService;
 import com.beyond.algo.algoconsoleboot.model.GitUser;
+import com.beyond.algo.algoconsoleboot.model.ProjectConfigEntity;
+import com.beyond.algo.common.AESUtil;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.exception.AlgException;
@@ -33,6 +35,9 @@ public class ModuleController extends BaseController {
     private JGitService jGitService;
     @Autowired
     private AntApiService antApiService;
+
+    @Autowired
+    private ProjectConfigEntity projectConfigEntity;
 
     //初始化、和返回上一级的目录
     @GetMapping(value = "/{modId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -77,11 +82,12 @@ public class ModuleController extends BaseController {
      * author:zhangchuanzhi
      */
     @RequestMapping(value = "/{modId}/buildProject", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result buildAndUpLoadProject(GitUser gitUser,@PathVariable("modId") String modId) throws AlgException {
+    public Result buildAndUpLoadProject(GitUser gitUser,@PathVariable("modId") String modId) throws AlgException,Exception {
         gitUser.setModId(modId);
-     //   AlgUser algUser = getUserInfo();
+        AlgUser algUser = getUserInfo();
      //   gitUser.setUsrCode(algUser.getUsrCode());
-          gitUser.setUsrCode("test1");
+          gitUser.setUsrCode(algUser.getUsrCode());
+          gitUser.setPassword(  AESUtil.decrypt(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
         boolean result = antApiService.moduleAntBuild(gitUser);
         if (result) {
             return Result.successResponse();

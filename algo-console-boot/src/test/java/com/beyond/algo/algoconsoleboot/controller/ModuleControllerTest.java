@@ -62,7 +62,8 @@ public class ModuleControllerTest {
     @Test
     public void buildAndUpLoadProject() throws Exception{
 
-        String result = this.mockMvc.perform(post("/module/TestProject2/buildProject").contentType(MediaType.APPLICATION_JSON))
+        String result = this.mockMvc.perform(post("/module/TestJavaZhang/buildProject").contentType(MediaType.APPLICATION_JSON)
+                .param("password","12345678"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }

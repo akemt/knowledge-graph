@@ -16,4 +16,9 @@ public class Python3ModuleAdapter implements ModuleAdapter {
     public void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel) throws Exception {
         System.out.println("进入创建Python工程的页面");
     }
+    @Override
+    public boolean moduleAntBuild(String  path)throws Exception{
+        return true;
+
+    }
 }

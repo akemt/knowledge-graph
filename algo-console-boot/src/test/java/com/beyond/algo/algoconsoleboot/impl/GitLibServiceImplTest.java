@@ -4,6 +4,7 @@ import com.beyond.algo.algoconsoleboot.AlgoConsoleBootApplication;
 import com.beyond.algo.algoconsoleboot.infra.GitLibService;
 import com.beyond.algo.algoconsoleboot.model.GitUser;
 import org.gitlab.api.models.GitlabGroup;
+import org.gitlab.api.models.GitlabProject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +23,21 @@ public class GitLibServiceImplTest {
     @Test
     public void addGitUserAndPasswordTest() throws Exception {
         GitUser gitUser = new GitUser();
-        gitUser.setEmail("qihea163@163.com");
+        gitUser.setEmail("qihea1163@163.com");
         gitUser.setPassword("12345678");
-        gitUser.setUsername("qihe");
-        gitUser.setFullName("qihe");
-        gitUser.setProjectName("TestHello");
+        gitUser.setUsername("zhang");
+        gitUser.setFullName("zhang");
+        gitUser.setProjectName("TestJavaZhang");
         gitLibService.addGitLibUser(gitUser);
     }
 
     @Test
     public void createGitLibProjectTest() throws Exception {
-       //boolean result = gitLibService.createGitLibProject("TestProject2","test1","test1234");
+        GitUser gitUser=new GitUser();
+        gitUser.setProjectName("TestJavaZhang");
+        gitUser.setUsername("zhang");
+        gitUser.setPassword("12345678");
+        GitlabProject result = gitLibService.createGitLibProject(gitUser);
     }
 
     @Test
