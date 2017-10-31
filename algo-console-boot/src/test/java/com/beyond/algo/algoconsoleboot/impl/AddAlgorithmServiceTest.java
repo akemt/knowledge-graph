@@ -23,9 +23,7 @@ public class AddAlgorithmServiceTest {
     @Test
     public void AddAlgorithmService() throws Exception {
 
-        addAlgorithmService.addAlgorithm("aac44b648b10429cbaf85asse0113aa5","Java","dee","apache协议","1","1",
-               "1","1","1","1","1",
-              "1","1");
+        addAlgorithmService.addAlgorithm(null);
 
         System.out.println("");
     }
