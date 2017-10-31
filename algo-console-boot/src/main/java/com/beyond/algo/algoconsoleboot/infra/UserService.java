@@ -13,7 +13,7 @@ import com.beyond.algo.vo.UserVo;
  */
 public interface UserService {
     void createUser(AlgUser user) throws AlgException;
-    Result userLogin(AlgUser user) throws AlgException;
+    void userLogin(AlgUser user) throws AlgException;
     void changePassword(UserVo userVo) throws AlgException;
     void updateUserInformation(AlgUser user) throws AlgException;
     UserAccountVo accountInformation(String accSn)throws AlgException;

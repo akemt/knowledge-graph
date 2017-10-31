@@ -6,6 +6,7 @@ import com.beyond.algo.algoconsoleboot.infra.JGitService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.GitUser;
 import com.beyond.algo.common.AdapterUtil;
+import com.beyond.algo.common.Assert;
 import com.beyond.algo.constant.Constant;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgModuleMapper;
@@ -46,7 +47,15 @@ public class AntApiServiceImpl implements AntApiService {
 
     public boolean moduleAntBuild(GitUser gitUser) throws AlgException ,Exception {
         AlgModule algModule = findByUsrSnAndModId(gitUser.getUsrSn(),gitUser.getModId());
+        if(Assert.isNULL(algModule)){
+            String[] checkMessage = {"算法模块",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000006",checkMessage);
+        }
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
+        if(Assert.isNULL(algProgramLang)){
+            String[] checkMessage = {"语言模块",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000006",checkMessage);
+        }
         log.info("modId:{},usrSn:{}",gitUser.getModId(),gitUser.getUsrSn());
         //适配器模式 调用创建算法项目适配器
         ModuleAdapter javaModuleAdapter =(ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());

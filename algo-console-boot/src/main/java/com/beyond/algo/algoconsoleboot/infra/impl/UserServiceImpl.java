@@ -54,7 +54,8 @@ public class UserServiceImpl implements UserService {
     public void createUser(AlgUser user)throws AlgException {
         AlgUser algUser =findByUsrCode(user.getUsrCode());
         if(Assert.isNotNULL(algUser)){
-            throw new AlgException("用户已注册！");
+            String[] checkMessage = {"已注册",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000002",checkMessage);
         }else{
             String uuid= UUIDUtil.createUUID();
             user.setUsrSn(uuid);
@@ -75,19 +76,20 @@ public class UserServiceImpl implements UserService {
      * @date ：15:26 2017/9/28
      */
     @Override
-    public Result userLogin(AlgUser user) throws AlgException{
+    public void userLogin(AlgUser user) throws AlgException{
         String password=user.getPasswd();
         user = algUserMapper.selectUsrname(user.getUsrName());
       // 如果没有这个用户
         if(Assert.isNULL(user)){
-              return Result.failureResponse();
+            String[] checkMessage = {"不存在",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000002",checkMessage);
         }
       // 对比密码
         String passwordEncryp = AESUtil.decrypt(user.getPasswd(),projectConfigEntity.getKeyAES());
         if(!passwordEncryp.equals(password)){
-            return  Result.failureResponse();
+            String[] checkMessage = {"密码",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000003",checkMessage);
         }
-     return  Result.successResponse();
     }
     /**
      * @author ：zhangchuanzhi
@@ -100,7 +102,8 @@ public class UserServiceImpl implements UserService {
     public void changePassword(UserVo user) throws AlgException {
         // 判断两次输入密码是否一致
          if(!user.getConfirmPassword().equals(user.getNewPassword())){
-             throw new AlgException("两次输入新密码一致！");
+             String[] checkMessage = {"两次输入新密码一致",""};
+             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000005",checkMessage);
          }else{
              // 当两次输入密码一致时候判断输入新密码和原始密码是否一致
              AlgUser  algUser =algUserMapper.selectByPrimaryKey(user.getUsrSn());
@@ -108,10 +111,12 @@ public class UserServiceImpl implements UserService {
              // 判断输入原始密码是否是数据库密码
              if(user.getPasswd().equals(passwordEncryp)){
                  if(user.getNewPassword().equals(passwordEncryp)){
-                     throw new AlgException("原始密码和新密码一致！");
+                     String[] checkMessage = {"原始密码和新密码一致",""};
+                     throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000005",checkMessage);
                  }
              }else{
-                 throw new AlgException("原始密码不正确！");
+                 String[] checkMessage = {"原始密码",""};
+                 throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000003",checkMessage);
              }
          }
          String newPassWord=AESUtil.encryptString(user.getNewPassword(),projectConfigEntity.getKeyAES());

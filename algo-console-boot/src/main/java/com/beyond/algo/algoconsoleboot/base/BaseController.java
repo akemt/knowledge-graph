@@ -16,7 +16,7 @@ public class BaseController {
     public AlgUser getUserInfo() throws AlgException {
         SecurityContext ctx = SecurityContextHolder.getContext();
         if(Assert.isEmpty(ctx)) {
-            String[] checkMessage = {"用户未登录",""};
+            String[] checkMessage = {"未登录",""};
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000002",checkMessage);
         }
         Authentication auth = ctx.getAuthentication();

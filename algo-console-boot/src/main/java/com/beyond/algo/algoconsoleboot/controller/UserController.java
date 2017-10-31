@@ -52,8 +52,8 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result userLogin(AlgUser user)throws AlgException {
         log.info("用户编码:{},用户密码:{}", user.getUsrCode(), user.getPasswd());
-        Result result = userService.userLogin(user);
-        return result;
+        userService.userLogin(user);
+        return  Result.successResponse();
 
     }
 
