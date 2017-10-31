@@ -31,4 +31,9 @@
     select lan_sn, lan_name, lan_suffix
     from alg_program_lang
   </select>
+  <select id="selectLanSn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select lan_sn, lan_name, lan_suffix
+    from alg_program_lang
+    where lan_name = #{lanName,jdbcType=VARCHAR}
+  </select>
 </mapper>

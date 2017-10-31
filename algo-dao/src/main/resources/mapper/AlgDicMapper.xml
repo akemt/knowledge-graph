@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algo.mapper.AlgDicMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algo.model.AlgDic" >
+    <id column="dic_sn" property="dicSn" jdbcType="VARCHAR" />
+    <result column="dic_code" property="dicCode" jdbcType="VARCHAR" />
+    <result column="dic_key" property="dicKey" jdbcType="VARCHAR" />
+    <result column="dic_value" property="dicValue" jdbcType="VARCHAR" />
+    <result column="dic_sort" property="dicSort" jdbcType="INTEGER" />
+    <result column="dic_desc" property="dicDesc" jdbcType="VARCHAR" />
+    <result column="dic_parent_id" property="dicParentId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_dic
+    where dic_sn = #{dicSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algo.model.AlgDic" >
+    insert into alg_dic (dic_sn, dic_code, dic_key, 
+      dic_value, dic_sort, dic_desc, 
+      dic_parent_id)
+    values (#{dicSn,jdbcType=VARCHAR}, #{dicCode,jdbcType=VARCHAR}, #{dicKey,jdbcType=VARCHAR}, 
+      #{dicValue,jdbcType=VARCHAR}, #{dicSort,jdbcType=INTEGER}, #{dicDesc,jdbcType=VARCHAR}, 
+      #{dicParentId,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgDic" >
+    update alg_dic
+    set dic_code = #{dicCode,jdbcType=VARCHAR},
+      dic_key = #{dicKey,jdbcType=VARCHAR},
+      dic_value = #{dicValue,jdbcType=VARCHAR},
+      dic_sort = #{dicSort,jdbcType=INTEGER},
+      dic_desc = #{dicDesc,jdbcType=VARCHAR},
+      dic_parent_id = #{dicParentId,jdbcType=VARCHAR}
+    where dic_sn = #{dicSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id
+    from alg_dic
+    where dic_sn = #{dicSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id
+    from alg_dic
+  </select>
+</mapper>

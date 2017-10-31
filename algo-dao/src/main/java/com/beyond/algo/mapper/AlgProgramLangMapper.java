@@ -13,4 +13,6 @@ public interface AlgProgramLangMapper {
     List<AlgProgramLang> selectAll();
 
     int updateByPrimaryKey(AlgProgramLang record);
+
+    AlgProgramLang selectLanSn(String lanName);
 }

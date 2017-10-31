@@ -13,4 +13,6 @@ public interface AlgLicenseMapper {
     List<AlgLicense> selectAll();
 
     int updateByPrimaryKey(AlgLicense record);
+
+    AlgLicense selectLicSn(String licName);
 }

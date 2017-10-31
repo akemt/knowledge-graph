@@ -31,4 +31,9 @@
     select cat_sn, cat_name, mod_sn
     from alg_algo_category
   </select>
+  <select id="selectCatSn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select cat_sn, cat_name, mod_sn
+    from alg_algo_category
+    where cat_name = #{catName,jdbcType=VARCHAR}
+  </select>
 </mapper>

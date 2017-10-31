@@ -13,4 +13,6 @@ public interface AlgAlgoCategoryMapper {
     List<AlgAlgoCategory> selectAll();
 
     int updateByPrimaryKey(AlgAlgoCategory record);
+
+    AlgAlgoCategory selectCatSn(String catName);
 }
