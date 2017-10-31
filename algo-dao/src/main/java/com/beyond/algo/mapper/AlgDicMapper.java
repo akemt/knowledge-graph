@@ -11,6 +11,6 @@ public interface AlgDicMapper {
     AlgDic selectByPrimaryKey(String dicSn);
 
     List<AlgDic> selectAll();
-
+    List<AlgDic> getDictionarylist(String code);
     int updateByPrimaryKey(AlgDic record);
 }
