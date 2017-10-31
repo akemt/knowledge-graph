@@ -11,6 +11,10 @@ public interface AlgDicMapper {
     AlgDic selectByPrimaryKey(String dicSn);
 
     List<AlgDic> selectAll();
-    List<AlgDic> getDictionarylist(String code);
+
+    List<AlgDic> getDictionarylist(String dicCode,int dicSort);
+
     int updateByPrimaryKey(AlgDic record);
+
+    AlgDic selectKeyAll(String dicValue);
 }

@@ -12,4 +12,5 @@ public class AddAlgorithmVo extends AlgModule {
     String lanName;
     String catName;
     String licName;
+    String dicValue;
 }

@@ -8,5 +8,5 @@ import com.beyond.algo.vo.PayRecordVo;
 import java.util.List;
 
 public interface DictionaryService {
-    List<AlgDic> getDictionarylist(String code)throws AlgException;
+    List<AlgDic> getDictionarylist(String dicCode,int dicSort)throws AlgException;
 }

@@ -23,7 +23,7 @@ public class DictionaryServiceImplTest {
     @Test
     public void moduleAntBuildTest() throws Exception {
         String code="module_access_mode";
-        List<AlgDic> algDicList=dictionaryService.getDictionarylist(code);
+        //List<AlgDic> algDicList=dictionaryService.getDictionarylist(code);
     }
 
 }

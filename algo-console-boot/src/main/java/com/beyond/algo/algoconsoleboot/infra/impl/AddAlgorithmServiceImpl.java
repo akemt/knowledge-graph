@@ -4,14 +4,8 @@ import com.beyond.algo.algoconsoleboot.infra.AddAlgorithmService;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.UUIDUtil;
 import com.beyond.algo.exception.AlgException;
-import com.beyond.algo.mapper.AlgAlgoCategoryMapper;
-import com.beyond.algo.mapper.AlgLicenseMapper;
-import com.beyond.algo.mapper.AlgModuleMapper;
-import com.beyond.algo.mapper.AlgProgramLangMapper;
-import com.beyond.algo.model.AlgAlgoCategory;
-import com.beyond.algo.model.AlgLicense;
-import com.beyond.algo.model.AlgModule;
-import com.beyond.algo.model.AlgProgramLang;
+import com.beyond.algo.mapper.*;
+import com.beyond.algo.model.*;
 import com.beyond.algo.vo.AddAlgorithmVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +21,8 @@ public class AddAlgorithmServiceImpl implements AddAlgorithmService {
     private AlgAlgoCategoryMapper algAlgoCategoryMapper;
     @Autowired
     private AlgLicenseMapper algLicenseMapper;
+    @Autowired
+    private AlgDicMapper algDicMapper;
 
     @Override
     public Boolean addAlgorithm(AddAlgorithmVo addAlgorithmVo) throws AlgException{
@@ -75,7 +71,12 @@ public class AddAlgorithmServiceImpl implements AddAlgorithmService {
         //是否集群
         algModule.setIsColony(addAlgorithmVo.getIsColony());
         //集群方案ID
-        algModule.setColonyPlanId(addAlgorithmVo.getColonyPlanId());
+        AlgDic algDic = algDicMapper.selectKeyAll(addAlgorithmVo.getDicValue());
+        if( Assert.isEmpty(algDic)){
+            String[] checkMessage = {"集群值",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001",checkMessage);
+        }
+        algModule.setColonyPlanId(algDic.getDicKey());
         // 新增算法
         try {
             algModuleMapper.insert(algModule);

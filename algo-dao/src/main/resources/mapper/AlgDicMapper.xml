@@ -41,9 +41,15 @@
     select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id
     from alg_dic
   </select>
-  <select id="getDictionarylist" resultMap="BaseResultMap" >
+  <select id="getDictionarylist" resultMap="BaseResultMap"  parameterType="java.lang.String" >
     select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id
     from alg_dic
-    where dic_code = #{code,jdbcType=VARCHAR}
+    where dic_code = #{dicCode,jdbcType=VARCHAR}
+    AND dic_sort = #{dicSort,jdbcType=INTEGER}
+  </select>
+  <select id="selectKeyAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id
+    from alg_dic
+    where dic_value = #{dicValue,jdbcType=VARCHAR}
   </select>
 </mapper>
