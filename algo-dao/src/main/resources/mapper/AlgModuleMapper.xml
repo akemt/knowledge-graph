@@ -14,6 +14,9 @@
         <result column="need_web" property="needWeb" jdbcType="VARCHAR"/>
         <result column="need_call_other" property="needCallOther" jdbcType="VARCHAR"/>
         <result column="env_type" property="envType" jdbcType="VARCHAR"/>
+        <result column="is_train" property="isTrain" jdbcType="VARCHAR"/>
+        <result column="is_colony" property="isColony" jdbcType="VARCHAR"/>
+        <result column="colony_plan_id" property="colonyPlanId" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="queryForListMap" type="com.beyond.algo.vo.AlgModuleVo"  extends="BaseResultMap">
         <result column="lic_name" jdbcType="VARCHAR" property="licName" />
@@ -28,12 +31,13 @@
     insert into alg_module (mod_sn, usr_sn, lan_sn, 
       cat_sn, lic_sn, atl_sn, 
       mod_name, mod_id, is_open_src, 
-      need_web, need_call_other, env_type
+      need_web, need_call_other, env_type, is_train, is_colony, colony_plan_id
       )
     values (#{modSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{lanSn,jdbcType=VARCHAR}, 
       #{catSn,jdbcType=VARCHAR}, #{licSn,jdbcType=VARCHAR}, #{atlSn,jdbcType=VARCHAR}, 
       #{modName,jdbcType=VARCHAR}, #{modId,jdbcType=VARCHAR}, #{isOpenSrc,jdbcType=VARCHAR}, 
-      #{needWeb,jdbcType=VARCHAR}, #{needCallOther,jdbcType=VARCHAR}, #{envType,jdbcType=VARCHAR}
+      #{needWeb,jdbcType=VARCHAR}, #{needCallOther,jdbcType=VARCHAR}, #{envType,jdbcType=VARCHAR},
+      #{isTrain,jdbcType=VARCHAR}, #{isColony,jdbcType=VARCHAR}, #{colonyPlanId,jdbcType=VARCHAR}
       )
   </insert>
     <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgModule">
@@ -48,23 +52,26 @@
       is_open_src = #{isOpenSrc,jdbcType=VARCHAR},
       need_web = #{needWeb,jdbcType=VARCHAR},
       need_call_other = #{needCallOther,jdbcType=VARCHAR},
-      env_type = #{envType,jdbcType=VARCHAR}
+      env_type = #{envType,jdbcType=VARCHAR},
+      is_train = #{isTrain,jdbcType=VARCHAR},
+      is_colony = #{isColony,jdbcType=VARCHAR},
+      colony_plan_id = #{colonyPlanId,jdbcType=VARCHAR}
     where mod_sn = #{modSn,jdbcType=VARCHAR}
   </update>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
     select mod_sn, usr_sn, lan_sn, cat_sn, lic_sn, atl_sn, mod_name, mod_id, is_open_src, 
-    need_web, need_call_other, env_type
+    need_web, need_call_other, env_type, is_train, is_colony, colony_plan_id
     from alg_module
     where mod_sn = #{modSn,jdbcType=VARCHAR}
   </select>
     <select id="selectAll" resultMap="BaseResultMap">
     select mod_sn, usr_sn, lan_sn, cat_sn, lic_sn, atl_sn, mod_name, mod_id, is_open_src, 
-    need_web, need_call_other, env_type
+    need_web, need_call_other, env_type, is_train, is_colony, colony_plan_id
     from alg_module
   </select>
     <sql id="alg_module_tbl">
     select mod_sn, usr_sn, lan_sn, cat_sn, lic_sn, atl_sn, mod_name, mod_id, is_open_src,
-    need_web, need_call_other, env_type
+    need_web, need_call_other, env_type, is_train, is_colony, colony_plan_id
     from alg_module
   </sql>
     <select id="getRankList" resultMap="BaseResultMap">
@@ -87,7 +94,10 @@
         mo.is_open_src as is_open_src,
         mo.need_web as need_web,
         mo.need_call_other as need_call_other,
-        mo.env_type as env_type
+        mo.env_type as env_type,
+        mo.is_train as is_train,
+        mo.is_colony as is_colony,
+        mo.colony_plan_id as colony_plan_id
     </sql>
     <select id="listAlgByUsage" resultMap="BaseResultMap">
 

@@ -25,6 +25,12 @@ public class AlgModule {
 
     private String envType;
 
+    private String isTrain;
+
+    private String isColony;
+
+    private String colonyPlanId;
+
     public String getModSn() {
         return modSn;
     }
@@ -119,5 +125,26 @@ public class AlgModule {
 
     public void setEnvType(String envType) {
         this.envType = envType == null ? null : envType.trim();
+    }
+    public String getIsTrain() {
+        return isTrain;
+    }
+
+    public void setIsTrain(String isTrain) {
+        this.isTrain = isTrain == null ? null : isTrain.trim();
+    }
+    public String getIsColony() {
+        return isColony;
+    }
+
+    public void setIsColony(String isColony) {
+        this.isColony = isColony == null ? null : isColony.trim();
+    }
+    public String getColonyPlanId() {
+        return colonyPlanId;
+    }
+
+    public void setColonyPlanId(String colonyPlanId) {
+        this.colonyPlanId = colonyPlanId == null ? null : colonyPlanId.trim();
     }
 }
