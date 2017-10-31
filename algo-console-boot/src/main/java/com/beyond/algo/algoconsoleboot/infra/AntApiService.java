@@ -11,5 +11,5 @@ import com.beyond.algo.model.AlgUser;
  */
 public interface AntApiService {
 
-    boolean moduleAntBuild(GitUser gitUser) throws AlgException;
+    boolean moduleAntBuild(GitUser gitUser) throws AlgException,Exception;
 }

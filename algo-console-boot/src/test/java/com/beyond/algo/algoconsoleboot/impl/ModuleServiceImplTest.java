@@ -20,9 +20,9 @@ public class ModuleServiceImplTest {
     @Test
     public void initProject() throws Exception {
         AlgUser algUser = new AlgUser();
-        algUser.setUsrCode("qihe");
-        algUser.setUsrSn("37bf2269ee4845da8e86861bbde2438a");
-        moduleService.initProject(algUser, "TestJava2");
+        algUser.setUsrCode("zhang");
+        algUser.setUsrSn("9c371a86c6e5439097de4b20024479f3");
+        moduleService.initProject(algUser, "TestJavaZhang");
     }
 
     @Test

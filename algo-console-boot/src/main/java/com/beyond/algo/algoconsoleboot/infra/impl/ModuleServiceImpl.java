@@ -5,6 +5,7 @@ import com.beyond.algo.algoconsoleboot.infra.ModuleService;
 import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
+import com.beyond.algo.common.AdapterUtil;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.FileNodes;
 import com.beyond.algo.exception.AlgException;
@@ -43,7 +44,8 @@ public class ModuleServiceImpl implements ModuleService {
         AlgModule algModule = findByUsrSnAndModId(algUser.getUsrSn(),projectName);
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         //适配器模式 调用创建算法项目适配器
-        ModuleAdapter createModuleAdapter = (ModuleAdapter)Class.forName("com.beyond.algo.algoconsoleboot.adapter."+ algProgramLang.getLanName() +"ModuleAdapter").newInstance();
+     // ModuleAdapter createModuleAdapter = (ModuleAdapter)Class.forName("com.beyond.algo.algoconsoleboot.adapter."+ algProgramLang.getLanName() +"ModuleAdapter").newInstance();
+        ModuleAdapter createModuleAdapter = (ModuleAdapter)(ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
         createModuleAdapter.createModule(algUser.getUsrCode(),projectName,gitConfigModel,projectConfigModel);
 
     }

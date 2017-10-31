@@ -77,11 +77,11 @@ public class ModuleController extends BaseController {
      * author:zhangchuanzhi
      */
     @RequestMapping(value = "/{modId}/buildProject", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result buildAndUpLoadProject(GitUser gitUser,@PathVariable("modId") String modId) throws AlgException {
+    public Result buildAndUpLoadProject(GitUser gitUser,@PathVariable("modId") String modId) throws AlgException,Exception {
         gitUser.setModId(modId);
      //   AlgUser algUser = getUserInfo();
      //   gitUser.setUsrCode(algUser.getUsrCode());
-          gitUser.setUsrCode("test1");
+          gitUser.setUsrCode("zhang");
         boolean result = antApiService.moduleAntBuild(gitUser);
         if (result) {
             return Result.successResponse();
