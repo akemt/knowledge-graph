@@ -15,4 +15,6 @@ public interface AlgLicenseMapper {
     int updateByPrimaryKey(AlgLicense record);
 
     AlgLicense selectLicSn(String licName);
+
+    List<AlgLicense> selectLicName(String licSn);
 }

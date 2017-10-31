@@ -2,6 +2,7 @@ package com.beyond.algo.algoconsoleboot.infra.impl;
 
 import com.beyond.algo.algoconsoleboot.infra.AddAlgorithmService;
 import com.beyond.algo.common.Assert;
+import com.beyond.algo.common.UUIDUtil;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgAlgoCategoryMapper;
 import com.beyond.algo.mapper.AlgLicenseMapper;
@@ -12,11 +13,11 @@ import com.beyond.algo.model.AlgLicense;
 import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.model.AlgProgramLang;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AddAlgorithmServiceImpl implements AddAlgorithmService {
 
-    @Autowired
-    private AlgModule algModule;
     @Autowired
     private AlgModuleMapper algModuleMapper;
     @Autowired
@@ -26,9 +27,13 @@ public class AddAlgorithmServiceImpl implements AddAlgorithmService {
     @Autowired
     private AlgLicenseMapper algLicenseMapper;
 
+    @Override
     public Boolean addAlgorithm(String usrSn,String lanName,String catName,String licName,String modName,String ModId,
                                 String isOpenSrc,String needWeb,String needCallOther,String envType,String isTrain,
                                 String isColony,String colonyPlanId) throws AlgException{
+        AlgModule algModule = new AlgModule();
+        //模块串号
+        algModule.setModSn(UUIDUtil.createUUID());
         //用户串号
         algModule.setUsrSn(usrSn);
         //语言串号
