@@ -47,13 +47,12 @@ public class AntApiServiceImpl implements AntApiService {
     public boolean moduleAntBuild(GitUser gitUser) throws AlgException ,Exception {
         AlgModule algModule = findByUsrSnAndModId(gitUser.getUsrSn(),gitUser.getModId());
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
+        log.info("modId:{},usrSn:{}",gitUser.getModId(),gitUser.getUsrSn());
         //适配器模式 调用创建算法项目适配器
-      //  ModuleAdapter javaModuleAdapter = (ModuleAdapter)Class.forName("com.beyond.algo.algoconsoleboot.adapter."+ algProgramLang.getLanName() +"ModuleAdapter").newInstance();
         ModuleAdapter javaModuleAdapter =(ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
-     //   createModuleAdapter.createModule(algUser.getUsrCode(),projectName,gitConfigModel,projectConfigModel);
         String path=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+ Constant.map.get(algProgramLang.getLanName());
         gitUser.setPath(gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+".git");
-        log.info("项目编译路径:"+path);
+        log.info("项目编译路径:{},上传git路径:{}",path,gitUser.getPath());
         boolean gitResult=jGitService.initCommitAndPushAllFiles(gitUser);
         boolean buildResult= javaModuleAdapter.moduleAntBuild(path);
         if(buildResult){
