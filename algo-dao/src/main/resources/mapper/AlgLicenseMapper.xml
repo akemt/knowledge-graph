@@ -31,4 +31,9 @@
     select lic_sn, lic_name, lic_content
     from alg_license
   </select>
+  <select id="selectLicSn" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select lic_sn, lic_name, lic_content
+    from alg_license
+    where lic_name = #{licName,jdbcType=VARCHAR}
+  </select>
 </mapper>
