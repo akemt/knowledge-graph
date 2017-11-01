@@ -41,6 +41,8 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
     }
     @Override
     public FileNodes ShowProjectFile(String currentPath,String usrCode,String modId) throws AlgException{
+
+        log.info("ShowProjectFile currentPath :{}",currentPath);
         // 获取用户下项目根路径
         String splitPath = getSplitPath(usrCode,modId);
         //转换标注路径
@@ -48,6 +50,7 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
         currentPath = file.getPath();
 
         FileNodes fileNodes = new FileNodes();
+
         if(currentPath.equals(splitPath)){
             fileNodes.setCurrentPath(File.separator);
         }else{
@@ -59,7 +62,7 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
         }else{
             fileNodes.setPatentPath(file.getParent().substring(splitPath.length(),file.getParent().length()));
         }
-
+        log.info("ShowProjectFile currentPath and patentPath:{}",fileNodes.getCurrentPath(),fileNodes.getPatentPath());
         List<FileNode> nodeList = new LinkedList<FileNode>();
         //TODO file.list(FilenameFilter filter)
         String[] files = file.list();
