@@ -1,11 +1,13 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
+import com.beyond.algo.algoconsoleboot.base.BaseController;
 import com.beyond.algo.algoconsoleboot.infra.AlgorithmCollectAndRankService;
 import com.beyond.algo.algoconsoleboot.infra.AlgorithmDetailService;
 import com.beyond.algo.algoconsoleboot.infra.UseAlgorithmService;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.exception.AlgException;
+import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgArticleListVo;
 import com.beyond.algo.vo.AlgModuleVo;
 import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
@@ -29,7 +31,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/content")
-public class ContentController {
+public class ContentController extends BaseController {
     @Autowired
     private UseAlgorithmService useAlgorithmService;
     @Autowired
@@ -45,6 +47,8 @@ public class ContentController {
      */
     @RequestMapping(value="/algorithmRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) throws AlgException{
+        AlgUser algUser = getUserInfo();
+        algRUserModuleCallTransVo.setCallUsrSn(algUser.getUsrSn());
         log.info("调用用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
         List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo);
         return Result.ok(algRUserModuleCallTransList);
@@ -58,6 +62,8 @@ public class ContentController {
      */
     @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) throws AlgException{
+        AlgUser algUser = getUserInfo();
+        algRUserModuleCallTransVo.setOwnerUsrSn(algUser.getUsrSn());
         log.info("算法创建者id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getOwnerUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
         List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo);
         return Result.ok(algRUserModuleCallTransList);
@@ -74,6 +80,8 @@ public class ContentController {
      */
     @RequestMapping(value="/collectArticles", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result collectArticles(CollectArticlesVo collectArticlesVo) throws AlgException{
+        AlgUser algUser = getUserInfo();
+        collectArticlesVo.setUsrSn(algUser.getUsrSn());
         log.info("用户id:{},Page:{},Row:{}",collectArticlesVo.getUsrSn(),collectArticlesVo.getPage(),collectArticlesVo.getRows());
         List<CollectArticlesVo> collectArticles= algorithmCollectAndRankService.collectArticles(collectArticlesVo);
         return Result.ok(collectArticles);
