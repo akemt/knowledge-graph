@@ -57,7 +57,7 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
             fileNodes.setCurrentPath(currentPath.substring(splitPath.length(),currentPath.length()));
         }
 
-        if(fileNodes.getCurrentPath().equals(File.separator)){
+        if(file.getParent().equals(splitPath)){
             fileNodes.setPatentPath(File.separator);
         }else{
             fileNodes.setPatentPath(file.getParent().substring(splitPath.length(),file.getParent().length()));
