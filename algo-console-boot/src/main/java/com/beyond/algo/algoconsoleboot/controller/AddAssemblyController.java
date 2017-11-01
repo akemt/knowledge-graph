@@ -1,5 +1,6 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
+import com.beyond.algo.algoconsoleboot.base.BaseController;
 import com.beyond.algo.algoconsoleboot.infra.LicenseService;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
@@ -27,7 +28,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-public class AddAssemblyController {
+public class AddAssemblyController extends BaseController {
 
     @Autowired
     private LicenseService licenseService;
