@@ -3,7 +3,6 @@ package com.beyond.algo.algoconsoleboot.controller;
 import com.beyond.algo.algoconsoleboot.base.BaseController;
 import com.beyond.algo.algoconsoleboot.infra.OrgService;
 import com.beyond.algo.common.Result;
-import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgUser;
 import lombok.extern.slf4j.Slf4j;
