@@ -31,6 +31,8 @@ public class AlgModule {
 
     private String colonyPlanId;
 
+    private String modDesc;
+
     public String getModSn() {
         return modSn;
     }
@@ -146,5 +148,13 @@ public class AlgModule {
 
     public void setColonyPlanId(String colonyPlanId) {
         this.colonyPlanId = colonyPlanId == null ? null : colonyPlanId.trim();
+    }
+
+    public String getModDesc() {
+        return modDesc;
+    }
+
+    public void setModDesc(String modDesc) {
+        this.modDesc = modDesc == null ? null : modDesc.trim();
     }
 }

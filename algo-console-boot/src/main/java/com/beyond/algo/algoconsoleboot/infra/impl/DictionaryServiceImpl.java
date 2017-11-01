@@ -13,8 +13,8 @@ public class DictionaryServiceImpl implements DictionaryService {
     @Autowired
     private AlgDicMapper algDicMapper;
     @Override
-    public List<AlgDic> getDictionarylist(String dicCode,int dicSort) throws AlgException {
-        List<AlgDic> algDicList=algDicMapper.getDictionarylist(dicCode,dicSort);
+    public List<AlgDic> getDictionarylist(String dicCode) throws AlgException {
+        List<AlgDic> algDicList=algDicMapper.getDictionarylist(dicCode);
         return algDicList;
     }
 
