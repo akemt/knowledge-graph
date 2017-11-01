@@ -72,6 +72,8 @@ public class AddAlgorithmServiceImpl implements AddAlgorithmService {
         algModule.setIsColony(addAlgorithmVo.getIsColony());
         //集群方案ID
         AlgDic algDic = algDicMapper.selectKeyAll(addAlgorithmVo.getDicValue());
+        //描述
+        algModule.setModSn(addAlgorithmVo.getModSn());
         if( Assert.isEmpty(algDic)){
             String[] checkMessage = {"集群值",""};
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001",checkMessage);
