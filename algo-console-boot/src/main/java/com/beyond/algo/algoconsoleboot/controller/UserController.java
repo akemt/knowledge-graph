@@ -116,11 +116,10 @@ public class UserController  extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/11/01
      */
-    @RequestMapping(value = "/getUserInformation", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+/*    @RequestMapping(value = "/getUserInformation", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result getUserInformation() throws AlgException{
         AlgUser algUser = getUserInfo();
         log.info("用户名字:{}", algUser.getUsrCode());
-        AlgUser user = userService.getUserInformation(algUser.getUsrCode());
-        return Result.ok(user);
-    }
+        return Result.ok(algUser);
+    }*/
 }

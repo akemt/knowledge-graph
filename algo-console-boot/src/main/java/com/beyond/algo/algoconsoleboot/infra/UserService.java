@@ -17,7 +17,6 @@ public interface UserService {
     void changePassword(UserVo userVo) throws AlgException;
     void updateUserInformation(AlgUser user) throws AlgException;
     UserAccountVo accountInformation(String accSn)throws AlgException;
-    AlgUser getUserInformation(String usrCode)throws AlgException;
 
     /**
      * 根据usr_code查找用户

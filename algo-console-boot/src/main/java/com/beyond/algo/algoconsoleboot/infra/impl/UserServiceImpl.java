@@ -219,9 +219,5 @@ public class UserServiceImpl implements UserService {
         return algUserMapper.selectUsrCode(usrCode);
     }
 
-    @Override
-    public AlgUser getUserInformation(String usrCode){
-       return  findByUsrCode(usrCode);
-    }
 }
 
