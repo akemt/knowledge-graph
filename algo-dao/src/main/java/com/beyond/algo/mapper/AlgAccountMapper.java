@@ -13,4 +13,7 @@ public interface AlgAccountMapper {
     List<AlgAccount> selectAll();
 
     int updateByPrimaryKey(AlgAccount record);
+
+
+    AlgAccount selectAccount(String usrSn);
 }

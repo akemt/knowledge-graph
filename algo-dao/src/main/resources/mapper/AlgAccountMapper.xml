@@ -39,4 +39,10 @@
     select acc_sn, usr_sn, cash_bal, earn_bal, free_bal, free_set_time
     from alg_account
   </select>
+
+  <select id="selectAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select acc_sn, usr_sn, cash_bal, earn_bal, free_bal, free_set_time
+    from alg_account
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
+  </select>
 </mapper>
