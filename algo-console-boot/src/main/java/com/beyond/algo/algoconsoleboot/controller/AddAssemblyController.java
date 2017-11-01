@@ -91,7 +91,7 @@ public class AddAssemblyController {
      * @Description:集群
      * @param：dicSort 分类
      */
-    @RequestMapping(value = "/colony", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/initAddAssembly", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result init(String dicCode) {
         try {
             //集群
