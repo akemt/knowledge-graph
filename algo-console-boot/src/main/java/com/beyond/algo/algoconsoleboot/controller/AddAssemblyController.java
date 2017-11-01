@@ -76,7 +76,7 @@ public class AddAssemblyController {
     public Result colony(String dicCode,int dicSort) {
         try {
             //集群
-            List<AlgDic> algDic =algDicMapper.getDictionarylist(dicCode, dicSort);
+            List<AlgDic> algDic =algDicMapper.getDictionarylist(dicCode);
             return Result.ok(algDic);
         } catch (Exception e) {
             e.printStackTrace();
