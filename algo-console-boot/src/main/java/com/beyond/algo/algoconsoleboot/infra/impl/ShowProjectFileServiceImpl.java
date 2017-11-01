@@ -11,6 +11,7 @@ import com.beyond.algo.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.beyond.algo.common.Assert;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -47,7 +48,9 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
         FileNodes fileNodes = new FileNodes();
         fileNodes.setCurrentPath(currentPath.substring(splitPath.length(),currentPath.length()));
         if(file.getParent().equals(new File(splitPath).getPath())){
-            fileNodes.setPatentPath("/");
+            fileNodes.setPatentPath(File.separator);
+        }else if(Assert.isEmpty(fileNodes.getCurrentPath())){
+            fileNodes.setPatentPath(File.separator+"src");
         }else{
             fileNodes.setPatentPath(file.getParent().substring(splitPath.length(),file.getParent().length()));
         }

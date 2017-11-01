@@ -82,6 +82,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public AlgModuleEditVo algModule(String usrCode,String usrSn,String modId,String path) throws AlgException{
         AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
+
         log.info("current user:{} ",usrCode);
         AlgModule algModule = this.findByUsrSnAndModId(usrSn,modId);
         log.info("current project id:{} ,name :{} ",algModule.getModId(),algModule.getModName());
@@ -93,7 +94,12 @@ public class ModuleServiceImpl implements ModuleService {
             if (Assert.isEmpty(path)){
                 path = this.getModuleMainFilePath(usrCode,modId,algModule.getLanSn());
             }else{
-                path = showProjectFileService.getSplitPath(usrCode,modId)+"/"+path;
+                //path = showProjectFileService.getSplitPath(usrCode,modId)+"/"+path;
+                if(path.indexOf("/")==0){
+                    path = showProjectFileService.getSplitPath(usrCode,modId)+File.separator+path;
+                }else {
+                    path = showProjectFileService.getSplitPath(usrCode,modId)+path;
+                }
             }
             //log.info("current path {} ",path);
             //返回同级目录所有文件和文件夹.
