@@ -29,7 +29,6 @@ public class OrgServiceImpl implements OrgService {
     @Override
     @Transactional
     public AlgUser createOrg(AlgUser org, String createUserCode, String password) throws AlgException {
-
         if (algUserMapper.countOrgByCode(org.getUsrCode()) > 0) {
             throw new AlgException("git创建组织失败，组织编码已存在:" + org.getUsrCode());
         }
@@ -57,7 +56,8 @@ public class OrgServiceImpl implements OrgService {
         try {
             gitLibService.createGitLibGroup(org.getUsrCode(), org.getUsrName(), createUserCode, password);
         } catch (Exception e) {
-            throw new AlgException("gitlab创建组织失败，创建者code：" + createUserCode + "，组织code：" + org.getUsrCode() + "。", e);
+            log.error("gitlab创建组织失败。", e);
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000001", new String[]{org.getUsrCode(), createUserCode}, e);
         }
         return org;
     }
@@ -65,7 +65,6 @@ public class OrgServiceImpl implements OrgService {
     @Override
     @Transactional
     public void deleteOrg(String orgSn) throws AlgException {
-
         AlgUser org = algUserMapper.selectByPrimaryKey(orgSn);
 
         // 先删除组织用户关系表，再删除用户表中的组织数据
@@ -76,7 +75,8 @@ public class OrgServiceImpl implements OrgService {
         try {
             gitLibService.deleteGitLibGroup(org.getUsrCode());
         } catch (Exception e) {
-            throw new AlgException("gitlab删除组织失败，组织串号：" + orgSn + "。", e);
+            log.error("gitlab删除组织失败。", e);
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000002", new String[]{org.getUsrCode()}, e);
         }
     }
 }
