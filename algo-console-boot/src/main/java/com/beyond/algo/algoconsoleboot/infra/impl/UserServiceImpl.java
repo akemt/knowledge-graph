@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
              throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000005",checkMessage);
          }else{
              // 当两次输入密码一致时候判断输入新密码和原始密码是否一致
-             AlgUser  algUser =algUserMapper.selectByPrimaryKey(user.getUsrSn());
+             AlgUser  algUser =findByUsrCode(user.getUsrCode());
              String passwordEncryp = AESUtil.decrypt(algUser.getPasswd(),projectConfigEntity.getKeyAES());
              // 判断输入原始密码是否是数据库密码
              if(user.getPasswd().equals(passwordEncryp)){
@@ -193,8 +193,8 @@ public class UserServiceImpl implements UserService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public UserAccountVo accountInformation(String accSn) throws AlgException{
-        AlgAccount algAccount = algAccountMapper.selectByPrimaryKey(accSn);
+    public UserAccountVo accountInformation(String usrSn) throws AlgException{
+        AlgAccount algAccount = algAccountMapper.selectAccount(usrSn);
         logger.info("用户ID:{}",algAccount.getUsrSn());
         UserAccountVo userAccountVo =new UserAccountVo();
         if(Assert.isNotNULL(algAccount)){
@@ -217,6 +217,11 @@ public class UserServiceImpl implements UserService {
     public AlgUser findByUsrCode(String usrCode){
 
         return algUserMapper.selectUsrCode(usrCode);
+    }
+
+    @Override
+    public AlgUser getUserInformation(String usrCode){
+       return  findByUsrCode(usrCode);
     }
 }
 

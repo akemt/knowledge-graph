@@ -1,5 +1,6 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
+import com.beyond.algo.algoconsoleboot.base.BaseController;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-public class UserController {
+public class UserController  extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -66,7 +67,9 @@ public class UserController {
      */
     @RequestMapping(value = "/changePassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result changePassword(UserVo userVo) throws AlgException{
-        log.info("用户唯一值:{},用户密码:{},用户确认密码:{},用户新密码:{}", userVo.getUsrSn(), userVo.getPasswd(), userVo.getConfirmPassword(), userVo.getNewPassword());
+        AlgUser algUser = getUserInfo();
+        userVo.setUsrCode(algUser.getUsrCode());
+        log.info("用户姓名:{},用户密码:{},用户确认密码:{},用户新密码:{}", userVo.getUsrCode(), userVo.getPasswd(), userVo.getConfirmPassword(), userVo.getNewPassword());
         userService.changePassword(userVo);
         return Result.successResponse();
     }
@@ -78,8 +81,10 @@ public class UserController {
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/10/10
      */
-    @RequestMapping(value = "/updateUserInformation", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/updateUserInformation", method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result updateUserInformation(AlgUser user)throws AlgException {
+        AlgUser algUser = getUserInfo();
+        user.setUsrCode(algUser.getUsrCode());
         log.info("用户全名:{},用户编码:{},用户邮箱:{},用户电话:{},用户主页{},用户是短信还是邮箱发送{},用户唯一主键", user.getUsrName(), user.getUsrCode(), user.getEmail(), user.getTelephone(), user.getUsrUrl(), user.getNeedNotify(), user.getUsrSn());
         userService.updateUserInformation(user);
         return Result.successResponse();
@@ -94,10 +99,28 @@ public class UserController {
      * @date ：9:14 2017/10/10
      */
     @RequestMapping(value = "/accountInformation", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result accountInformation(String accSn) throws AlgException{
-        log.info("账户主键:{}", accSn);
+    public Result accountInformation() throws AlgException{
+        AlgUser algUser = getUserInfo();
+        log.info("用户名:{},用户串号：{}", algUser.getUsrCode(),algUser.getUsrSn());
+      //  AlgUser algUser =new AlgUser();
+      //  algUser.setUsrSn("9c371a86c6e5439097de4b20024479f3");
         UserAccountVo algAccount = null;
-        algAccount = userService.accountInformation(accSn);
+        algAccount = userService.accountInformation(algUser.getUsrSn());
         return Result.ok(algAccount);
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户个人信息查询
+     * @param：accSn
+     * @Modify By :zhangchuanzhi
+     * @date ：9:14 2017/11/01
+     */
+    @RequestMapping(value = "/getUserInformation", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result getUserInformation() throws AlgException{
+        AlgUser algUser = getUserInfo();
+        log.info("用户名字:{}", algUser.getUsrCode());
+        AlgUser user = userService.getUserInformation(algUser.getUsrCode());
+        return Result.ok(user);
     }
 }
