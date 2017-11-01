@@ -9,6 +9,7 @@
     <result column="dic_sort" property="dicSort" jdbcType="INTEGER" />
     <result column="dic_desc" property="dicDesc" jdbcType="VARCHAR" />
     <result column="dic_parent_id" property="dicParentId" jdbcType="VARCHAR" />
+    <result column="dic_relation" property="dicRelation" jdbcType="VARCHAR" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from alg_dic
@@ -17,10 +18,10 @@
   <insert id="insert" parameterType="com.beyond.algo.model.AlgDic" >
     insert into alg_dic (dic_sn, dic_code, dic_key, 
       dic_value, dic_sort, dic_desc, 
-      dic_parent_id)
+      dic_parent_id,dic_relation)
     values (#{dicSn,jdbcType=VARCHAR}, #{dicCode,jdbcType=VARCHAR}, #{dicKey,jdbcType=VARCHAR}, 
       #{dicValue,jdbcType=VARCHAR}, #{dicSort,jdbcType=INTEGER}, #{dicDesc,jdbcType=VARCHAR}, 
-      #{dicParentId,jdbcType=VARCHAR})
+      #{dicParentId,jdbcType=VARCHAR},#{dicRelation,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgDic" >
     update alg_dic
@@ -29,25 +30,26 @@
       dic_value = #{dicValue,jdbcType=VARCHAR},
       dic_sort = #{dicSort,jdbcType=INTEGER},
       dic_desc = #{dicDesc,jdbcType=VARCHAR},
-      dic_parent_id = #{dicParentId,jdbcType=VARCHAR}
+      dic_parent_id = #{dicParentId,jdbcType=VARCHAR},
+      dic_relation = #{dicRelation,jdbcType=VARCHAR}
     where dic_sn = #{dicSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id
+    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id, dic_relation
     from alg_dic
     where dic_sn = #{dicSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id
+    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id, dic_relation
     from alg_dic
   </select>
   <select id="getDictionarylist" resultMap="BaseResultMap"  parameterType="java.lang.String" >
-    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id
+    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id, dic_relation
     from alg_dic
     where dic_code = #{dicCode,jdbcType=VARCHAR}
   </select>
   <select id="selectKeyAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id
+    select dic_sn, dic_code, dic_key, dic_value, dic_sort, dic_desc, dic_parent_id, dic_relation
     from alg_dic
     where dic_value = #{dicValue,jdbcType=VARCHAR}
   </select>

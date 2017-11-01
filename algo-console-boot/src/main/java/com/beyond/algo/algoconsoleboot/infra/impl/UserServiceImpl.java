@@ -6,6 +6,8 @@ package com.beyond.algo.algoconsoleboot.infra.impl;
  * @date ：13:26 2017/9/25
  */
 
+import com.beyond.algo.algoconsoleboot.infra.GitLibService;
+import com.beyond.algo.algoconsoleboot.model.GitUser;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigEntity;
 import com.beyond.algo.common.*;
 import com.beyond.algo.constant.Constant;
@@ -43,6 +45,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private AlgCashHisMapper algCashHisMapper;
+
+    @Autowired
+    private GitLibService gitLibService;
 /**
  * @author ：zhangchuanzhi
  * @Description:实现用户注册功能
@@ -51,7 +56,11 @@ public class UserServiceImpl implements UserService {
  * @date ：13:16 2017/9/25
  */
     @Override
-    public void createUser(AlgUser user)throws AlgException {
+    public void createUser(AlgUser user)throws AlgException ,Exception{
+        if(Assert.isEmpty(user.getPasswd())||user.getPasswd().length()<8){
+            String[] checkMessage = {"密码",""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000007",checkMessage);
+        }
         AlgUser algUser =findByUsrCode(user.getUsrCode());
         if(Assert.isNotNULL(algUser)){
             String[] checkMessage = {"已注册",""};
@@ -62,9 +71,15 @@ public class UserServiceImpl implements UserService {
             user.setUpdateDate(new Date());
             user.setCreateDate(new Date());
             logger.info("密码："+projectConfigEntity.getKeyAES());
+            GitUser gitUser=new GitUser();
+            gitUser.setPassword(user.getPasswd());
+            gitUser.setFullName(user.getUsrCode());
+            gitUser.setUsername(user.getUsrCode());
+            gitUser.setEmail(user.getEmail());
             String passWord= AESUtil.encryptString(user.getPasswd(),projectConfigEntity.getKeyAES());
             user.setPasswd(passWord);
             algUserMapper.insert(user);
+            gitLibService.addGitLibUser(gitUser);
 
         }
     }

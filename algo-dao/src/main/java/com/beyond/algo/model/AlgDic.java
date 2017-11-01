@@ -15,6 +15,8 @@ public class AlgDic {
 
     private String dicParentId;
 
+    private String dicRelation;
+
     public String getDicSn() {
         return dicSn;
     }
@@ -69,5 +71,13 @@ public class AlgDic {
 
     public void setDicParentId(String dicParentId) {
         this.dicParentId = dicParentId == null ? null : dicParentId.trim();
+    }
+
+    public String getDicRelation() {
+        return dicRelation;
+    }
+
+    public void setDicRelation(String dicRelation) {
+        this.dicRelation = dicRelation == null ? null : dicRelation.trim();
     }
 }
