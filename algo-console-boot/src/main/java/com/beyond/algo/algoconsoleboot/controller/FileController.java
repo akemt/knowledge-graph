@@ -55,7 +55,7 @@ public class FileController extends BaseController {
         AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
         try {
             AlgUser algUser = getUserInfo();
-            writeFileService.writeFile(algUser.getUsrCode(), modId, currentPath, fileName,fileContent);;//写入文件中，并且保存到路径下。
+            writeFileService.writeFile(algUser.getUsrCode(), modId, currentPath, fileName,fileContent);//写入文件中，并且保存到路径下。
         } catch (Exception e) {
             e.printStackTrace();
             return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());

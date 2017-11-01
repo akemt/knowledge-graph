@@ -12,7 +12,7 @@ public interface AlgDicMapper {
 
     List<AlgDic> selectAll();
 
-    List<AlgDic> getDictionarylist(String dicCode,int dicSort);
+    List<AlgDic> getDictionarylist(String dicCode);
 
     int updateByPrimaryKey(AlgDic record);
 

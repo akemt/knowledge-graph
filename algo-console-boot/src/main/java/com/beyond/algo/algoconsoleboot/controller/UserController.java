@@ -36,7 +36,7 @@ public class UserController {
      * @date ：13:16 2017/9/25
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result register(AlgUser user) throws AlgException {
+    public Result register(AlgUser user) throws AlgException,Exception {
         log.info("用户编码:{},用户密码:{},用户邮箱:{}", user.getUsrCode(), user.getPasswd(), user.getEmail());
         userService.createUser(user);
         return Result.successResponse();
