@@ -93,13 +93,10 @@ public class ModuleServiceImpl implements ModuleService {
             //项目名称初始化Tree
             if (Assert.isEmpty(path)){
                 path = this.getModuleMainFilePath(usrCode,modId,algModule.getLanSn());
+            }else if(path.equals("/")){
+                path = showProjectFileService.getSplitPath(usrCode,modId);
             }else{
-                //path = showProjectFileService.getSplitPath(usrCode,modId)+"/"+path;
-                if(path.indexOf("/")==0){
-                    path = showProjectFileService.getSplitPath(usrCode,modId)+File.separator+path;
-                }else {
-                    path = showProjectFileService.getSplitPath(usrCode,modId)+path;
-                }
+                path = showProjectFileService.getSplitPath(usrCode,modId)+File.separator + path;
             }
             //log.info("current path {} ",path);
             //返回同级目录所有文件和文件夹.
