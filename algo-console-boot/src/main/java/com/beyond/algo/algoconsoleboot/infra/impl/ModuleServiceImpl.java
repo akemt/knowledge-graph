@@ -91,6 +91,7 @@ public class ModuleServiceImpl implements ModuleService {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         try {
             //项目名称初始化Tree
+            // path 为空的情况是，是项目主文件路径
             if (Assert.isEmpty(path)){
                 path = this.getModuleMainFilePath(usrCode,modId,algModule.getLanSn());
             }else if(path.equals("/")){

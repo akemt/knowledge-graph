@@ -17,6 +17,15 @@ public interface ModuleService {
 
     String getModuleMainFilePath(String usrCode,String modId,String lanSn) throws AlgException;
 
+    /**
+     *
+     * @param usrCode
+     * @param usrSn
+     * @param modId
+     * @param path
+     * @return
+     * @throws AlgException
+     */
     AlgModuleEditVo algModule(String usrCode,String usrSn,String modId,String path) throws AlgException;
 
     AlgModuleVersion getLastVersion(String mod_sn) throws AlgException;
