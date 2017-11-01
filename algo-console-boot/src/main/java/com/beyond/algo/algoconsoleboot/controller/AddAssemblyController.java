@@ -4,6 +4,7 @@ import com.beyond.algo.algoconsoleboot.infra.LicenseService;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.mapper.AlgDicMapper;
+import com.beyond.algo.mapper.AlgLicenseMapper;
 import com.beyond.algo.mapper.AlgProgramLangMapper;
 import com.beyond.algo.model.AlgDic;
 import com.beyond.algo.model.AlgLicense;
@@ -34,6 +35,8 @@ public class AddAssemblyController {
     private AlgProgramLangMapper algProgramLangMapper;
     @Autowired
     private AlgDicMapper algDicMapper;
+    @Autowired
+    private AlgLicenseMapper algLicenseMapper;
 
      /**
      * @author ：lindewei
@@ -94,8 +97,15 @@ public class AddAssemblyController {
     @RequestMapping(value = "/initAddAssembly", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result init(String dicCode) {
         try {
-            //集群
+            //初始化
             Map<String,List> map=new HashMap<String,List>();
+            //编程语言
+            List<AlgProgramLang> algProgramLang =algProgramLangMapper.selectAll();
+            map.put("algProgramLang",algProgramLang);
+            //协议
+            List<AlgLicense> license = algLicenseMapper.selectAll();
+            map.put("license",license);
+            //集群
             String moduleAccessMode="module_access_mode";
             List<AlgDic> AccessandCall =algDicMapper.getDictionarylist(moduleAccessMode);
             map.put("moduleAccessMode",AccessandCall);
