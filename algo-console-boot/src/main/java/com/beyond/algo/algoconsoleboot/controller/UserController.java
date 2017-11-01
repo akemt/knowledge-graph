@@ -65,7 +65,7 @@ public class UserController  extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：8:49 2017/9/27
      */
-    @RequestMapping(value = "/changePassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/changePassword", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result changePassword(UserVo userVo) throws AlgException{
         AlgUser algUser = getUserInfo();
         userVo.setUsrCode(algUser.getUsrCode());
