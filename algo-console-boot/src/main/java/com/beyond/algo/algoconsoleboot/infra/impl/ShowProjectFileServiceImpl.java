@@ -3,23 +3,15 @@ package com.beyond.algo.algoconsoleboot.infra.impl;
 import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
-import com.beyond.algo.common.FileDir;
 import com.beyond.algo.common.FileNode;
 import com.beyond.algo.common.FileNodes;
-import com.beyond.algo.common.StringConstant;
 import com.beyond.algo.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.beyond.algo.common.Assert;
-
 import java.io.File;
-import java.io.FilenameFilter;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.beyond.algo.common.StringConstant.src;
 
 @Service
 @Slf4j
@@ -67,7 +59,6 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
 
         log.info("ShowProjectFile currentPath and patentPath:{}",fileNodes.getCurrentPath(),fileNodes.getPatentPath());
         List<FileNode> nodeList = new LinkedList<FileNode>();
-        //TODO file.list(FilenameFilter filter)
         String[] files = file.list();
         for (String f : files){
             File temp = new File(currentPath+ File.separator+f);
@@ -79,36 +70,6 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
         fileNodes.setNodeList(nodeList);
        return fileNodes;
     }
-
-    /*public List<FileDir> ShowProjectFile(String path) {
-        //创建File对象
-        File file = new File(path);
-        String currentPath = path;
-        //同级下所有文件和文件夹
-        List<FileDir> fileList = new ArrayList<FileDir>();
-
-        //获取当前目录的上一级
-        if(countGs(path)>1){//到跟目录为止
-            currentPath = path.substring(0,path.lastIndexOf("/"));
-        }
-        //获取该目录下的所有文件
-        String[] files = file.list();
-        for (String f : files){
-            FileDir rootFileDir=new FileDir();
-            rootFileDir.setName(f);
-            //if(countGs(path)==1){
-            //    rootFileDir.setUrl(path + f);
-            //}else {
-            //   rootFileDir.setUrl(path + "/" + f);
-            //}
-            rootFileDir.setUrl(path + f);
-            rootFileDir.setCurrentPath(currentPath);
-            fileList.add(rootFileDir);
-            System.out.println(f);
-        }
-        System.out.println(path);
-        return fileList;
-    }*/
 
     /**
      * 查找path中'/'的个数

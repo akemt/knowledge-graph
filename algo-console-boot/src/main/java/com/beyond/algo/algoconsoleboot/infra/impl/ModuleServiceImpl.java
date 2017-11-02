@@ -20,7 +20,6 @@ import com.beyond.algo.vo.AlgModuleEditVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.File;
 
 import static com.beyond.algo.common.StringConstant.src;
@@ -57,7 +56,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     public String getModuleMainFilePath(String usrCode,String modId,String lanSn) throws AlgException {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
-        //TODO 项目名称初始化Tree
+        //项目名称初始化Tree
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(gitConfigModel.getLocalBasePath());
         stringBuilder.append(File.separator);
@@ -99,7 +98,6 @@ public class ModuleServiceImpl implements ModuleService {
             }else{
                 path = showProjectFileService.getSplitPath(usrCode,modId)+File.separator + path;
             }
-            //log.info("current path {} ",path);
             //返回同级目录所有文件和文件夹.
             FileNodes fileNodes = showProjectFileService.ShowProjectFile(path,usrCode,modId);
             log.info("current fileNodes {} ",fileNodes.toString());
