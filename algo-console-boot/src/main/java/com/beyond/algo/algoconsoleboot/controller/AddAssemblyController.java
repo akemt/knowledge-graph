@@ -114,13 +114,13 @@ public class AddAssemblyController extends BaseController {
             List<AlgDic> RunandEnv =algDicMapper.getDictionarylist(runEnv);
             map.put("runEnv",RunandEnv);
             String iscolony="is_colony";
-            List<AlgDic> SingandClu =algDicMapper.getDictionarylist(dicCode);
+            List<AlgDic> SingandClu =algDicMapper.getDictionarylist(iscolony);
             map.put("iscolony",SingandClu);
             String standenv="stand_env";
-            List<AlgDic> Single =algDicMapper.getDictionarylist(dicCode);
+            List<AlgDic> Single =algDicMapper.getDictionarylist(standenv);
             map.put("standenv",Single);
             String gpuenv="gpu_env";
-            List<AlgDic> Cluster =algDicMapper.getDictionarylist(dicCode);
+            List<AlgDic> Cluster =algDicMapper.getDictionarylist(gpuenv);
             map.put("gpuenv",Cluster);
             return Result.ok(map);
         } catch (Exception e) {
