@@ -117,8 +117,8 @@ public class UserServiceImpl implements UserService {
     public void changePassword(UserVo user) throws AlgException {
         // 判断两次输入密码是否一致
          if(!user.getConfirmPassword().equals(user.getNewPassword())){
-             String[] checkMessage = {"两次输入新密码一致",""};
-             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000005",checkMessage);
+             String[] checkMessage = {"两次输入新密码不一致",""};
+             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000004",checkMessage);
          }else{
              // 当两次输入密码一致时候判断输入新密码和原始密码是否一致
              AlgUser  algUser =findByUsrCode(user.getUsrCode());
