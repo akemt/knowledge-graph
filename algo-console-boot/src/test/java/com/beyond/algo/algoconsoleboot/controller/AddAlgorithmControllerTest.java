@@ -43,12 +43,17 @@ public class AddAlgorithmControllerTest {
     @Test
     public void showFile() throws Exception{
         String result = this.mockMvc.perform(post("/addAlgorithm").contentType(MediaType.APPLICATION_JSON)
-                .param("usrSn","45454545")
+                .param("catName","深入学习")
+                .param("envType","1")
+                .param("isColony","1")
+                .param("isOpenSrc","1")
+                .param("isTrain","1")
                 .param("lanName","Java")
-                .param("catName","dee")
-                .param("licName","apache协议")
-                .param("modId","1122")
-                .param("modDesc","asasasadasdsadas21212"))
+                .param("licName","Algmarket platform Licese")
+                .param("modDesc","123")
+                .param("modId","java123")
+                .param("modName","测试")
+                .param("needWeb","1"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }

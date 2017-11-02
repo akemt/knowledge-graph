@@ -31,7 +31,7 @@ public class AddAlgorithmController extends BaseController {
     @RequestMapping(value = "/addAlgorithm", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result AddAlgorithm(AddAlgorithmVo addAlgorithmVo) throws AlgException {
         AlgUser algUser = getUserInfo();
-        addAlgorithmVo.setModName(algUser.getUsrName());
+        addAlgorithmVo.setUsrSn(algUser.getUsrSn());
         addAlgorithmService.addAlgorithm(addAlgorithmVo);
         return Result.successResponse();
     }
