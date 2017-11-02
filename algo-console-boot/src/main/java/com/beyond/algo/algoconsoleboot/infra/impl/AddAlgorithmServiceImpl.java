@@ -24,6 +24,10 @@ public class AddAlgorithmServiceImpl implements AddAlgorithmService {
     @Autowired
     private AlgDicMapper algDicMapper;
 
+    /**
+     * @author ：lindw
+     * @Description:算法新增
+     */
     @Override
     public Boolean addAlgorithm(AddAlgorithmVo addAlgorithmVo) throws AlgException{
         AlgModule algModule = new AlgModule();
@@ -72,13 +76,11 @@ public class AddAlgorithmServiceImpl implements AddAlgorithmService {
         algModule.setIsColony(addAlgorithmVo.getIsColony());
         //集群方案ID
         AlgDic algDic = algDicMapper.selectKeyAll(addAlgorithmVo.getDicValue());
-        //描述
-        algModule.setModSn(addAlgorithmVo.getModSn());
-        if( Assert.isEmpty(algDic)){
-            String[] checkMessage = {"集群值",""};
-            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001",checkMessage);
+        if(!Assert.isEmpty(algDic)){
+            algModule.setColonyPlanId(algDic.getDicKey());
         }
-        algModule.setColonyPlanId(algDic.getDicKey());
+        //描述
+        algModule.setModDesc(addAlgorithmVo.getModDesc());
         // 新增算法
         try {
             algModuleMapper.insert(algModule);
