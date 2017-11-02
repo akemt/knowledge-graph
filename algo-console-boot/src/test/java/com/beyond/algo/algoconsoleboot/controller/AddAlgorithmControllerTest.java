@@ -43,8 +43,8 @@ public class AddAlgorithmControllerTest {
     @Test
     public void showFile() throws Exception{
         String result = this.mockMvc.perform(post("/addAlgorithm").contentType(MediaType.APPLICATION_JSON)
-                .param("catName","深入学习")
-                .param("envType","1")
+                .param("catName","计算机视觉")
+                .param("envType","2")
                 .param("isColony","1")
                 .param("isOpenSrc","1")
                 .param("isTrain","1")

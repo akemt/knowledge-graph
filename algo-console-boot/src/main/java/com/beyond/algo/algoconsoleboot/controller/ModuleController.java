@@ -7,6 +7,7 @@ import com.beyond.algo.algoconsoleboot.infra.ModuleService;
 import com.beyond.algo.algoconsoleboot.model.GitUser;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigEntity;
 import com.beyond.algo.common.AESUtil;
+import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.exception.AlgException;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.File;
 
 /**
  * @author ：lindewei
@@ -41,9 +44,18 @@ public class ModuleController extends BaseController {
 
     //初始化、和返回上一级的目录
     @GetMapping(value = "/{modId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result initTree(@PathVariable("modId") String modId,String path) {
-        try {
+    public Result initTree(@PathVariable("modId") String modId,String path,String fileName) {
+            try {
             log.info("get module file tree: {} ",modId);
+
+            // path为"/" 并且 fileName不为空
+            if("/".equals(path)&&Assert.isNotEmpty(fileName)){
+                path = path+fileName;
+            }else {
+                // 1、path有目录时候，fileName不为空；2、或者path为"/"，fileName为空
+                path = path+File.separator+fileName;
+            }
+
             AlgUser algUser = getUserInfo();
             AlgModuleEditVo algModuleEditVo = moduleService.algModule(algUser.getUsrCode(),algUser.getUsrSn(),modId,path);
             return Result.ok(algModuleEditVo);

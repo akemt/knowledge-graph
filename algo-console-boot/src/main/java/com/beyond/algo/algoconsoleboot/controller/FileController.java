@@ -11,6 +11,7 @@ import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgFileReadWriteVo;
 import com.beyond.algo.vo.AlgModuleEditVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
@@ -26,6 +27,7 @@ import java.io.File;
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("/file")
+@Slf4j
 public class FileController extends BaseController {
     @Autowired
     private ReadFileService readFileService;
@@ -52,6 +54,7 @@ public class FileController extends BaseController {
     // 写入保存（包括新建）
     @RequestMapping(value="{modId}/write", method= RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result write(@PathVariable("modId") String modId, String currentPath,String fileName,String fileContent) {
+        log.info("在编辑页面，新建文件或者修改文件进行保存:{} ","modId:"+modId ,"----currentPath:"+currentPath,"----fileName:"+fileName,"----fileContent:"+fileContent);
         AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
         try {
             AlgUser algUser = getUserInfo();
