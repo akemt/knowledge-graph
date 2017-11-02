@@ -56,12 +56,15 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
         }else{
             fileNodes.setCurrentPath(currentPath.substring(splitPath.length(),currentPath.length()));
         }
-
-        if(file.getParent().equals(splitPath)){
+        //判断当根目录情况下， 设置父节点为跟目录
+        if(currentPath.equals(splitPath)){
             fileNodes.setPatentPath(File.separator);
-        }else{
+        }else if(file.getParent().equals(splitPath)){// /src情况下，设置父节点为跟目录
+            fileNodes.setPatentPath(File.separator);
+        }else{//其他情况均为自己的父目录
             fileNodes.setPatentPath(file.getParent().substring(splitPath.length(),file.getParent().length()));
         }
+
         log.info("ShowProjectFile currentPath and patentPath:{}",fileNodes.getCurrentPath(),fileNodes.getPatentPath());
         List<FileNode> nodeList = new LinkedList<FileNode>();
         //TODO file.list(FilenameFilter filter)
