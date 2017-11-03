@@ -7,6 +7,7 @@ import com.beyond.algo.algoalgorithmsboot.infra.BuildAntProjectService;
 
 import com.beyond.algo.algoalgorithmsboot.infra.GitLibService;
 import com.beyond.algo.algoalgorithmsboot.infra.JGitService;
+import com.beyond.algo.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.gitlab.api.models.GitlabProject;
 import org.gitlab.api.models.GitlabUser;
@@ -111,7 +112,7 @@ public class GitLibController {
      */
     @RequestMapping(value = "/commit", method = RequestMethod.POST)
     public @ResponseBody
-    Result initCommitAndPushAllFiles(GitUser gitUser) {
+    Result initCommitAndPushAllFiles(GitUser gitUser) throws AlgException{
         boolean result = jGitService.commitAndPushAllFiles(gitUser);
         if (result) {
             return Result.successResponse();

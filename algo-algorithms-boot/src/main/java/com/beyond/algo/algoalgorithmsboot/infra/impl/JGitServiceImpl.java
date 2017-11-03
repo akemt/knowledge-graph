@@ -30,15 +30,20 @@ public class JGitServiceImpl implements JGitService {
     private ShowProjectFileService showProjectFileService;
 
     @Override
-    public void gitCloneProject(GitUser gitUser) throws GitAPIException,AlgException {
+    public void gitCloneProject(GitUser gitUser) throws AlgException {
         log.info("增加git的clone项目");
         //Git git = Git.cloneRepository().setURI(projectRepoURI).setDirectory(new File("E:/repo")).call();
         CloneCommand cloneCommand = Git.cloneRepository();
         cloneCommand.setURI(gitUser.getProjectRepoURI());
         cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword()));
         cloneCommand.setDirectory(new File(showProjectFileService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())));
+        try {
+            cloneCommand.call();
+        } catch (GitAPIException e) {
+            e.printStackTrace();
+            throw new AlgException("此处需要添加编码");
+        }
 
-        cloneCommand.call();
         gitUser.setPath(showProjectFileService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+".git");
     }
 
@@ -107,7 +112,7 @@ public class JGitServiceImpl implements JGitService {
      * @param :filePath
      * @return
      */
-    public boolean commitAndPushDelAllFiles(GitUser gitUser)  throws Exception{
+    public boolean commitAndPushDelAllFiles(GitUser gitUser)  throws AlgException{
         logger.info("注册用户：{} 模块ID：{} 文件路径：{} 文件名{}",gitUser.getUsrCode(),gitUser.getModId(),gitUser.getCurrentPath(),gitUser.getFileName());
         String delPath = showProjectFileService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId()) + File.separator +gitUser.getCurrentPath() +File.separator+ gitUser.getFileName();//正式
         //本地删除

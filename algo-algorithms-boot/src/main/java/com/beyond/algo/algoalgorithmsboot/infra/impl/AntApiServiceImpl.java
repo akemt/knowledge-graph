@@ -40,7 +40,7 @@ public class AntApiServiceImpl implements AntApiService {
     @Autowired
     private JGitService jGitService;
 
-    public boolean moduleAntBuild(GitUser gitUser) throws AlgException ,Exception {
+    public void moduleAntBuild(GitUser gitUser) throws AlgException {
         AlgModule algModule = findByUsrSnAndModId(gitUser.getUsrSn(),gitUser.getModId());
         if(Assert.isNULL(algModule)){
             String[] checkMessage = {"算法模块",""};
@@ -60,13 +60,9 @@ public class AntApiServiceImpl implements AntApiService {
         log.info("项目编译路径:{},上传git路径:{}",path,gitUser.getPath());
         boolean gitResult=jGitService.commitAndPushAllFiles(gitUser);
         boolean buildResult= javaModuleAdapter.moduleAntBuild(path);
-        if(buildResult){
-            String projectPath=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId();
-            return buildResult;
-          //  moduleAntClassJar(String projectPath)
-        }
-        return false;
-}
+        //String projectPath=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId();
+        //moduleAntClassJar(String projectPath)
+    }
     public AlgModule findByUsrSnAndModId(String usrSn, String modId) throws AlgException{
         return algModuleMapper.selectByUsrSnAndModId(usrSn,modId);
     }

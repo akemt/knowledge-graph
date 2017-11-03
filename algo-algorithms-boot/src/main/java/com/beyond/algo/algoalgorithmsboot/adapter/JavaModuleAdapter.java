@@ -5,6 +5,8 @@ import com.beyond.algo.algoalgorithmsboot.model.GitConfigModel;
 import com.beyond.algo.algoalgorithmsboot.model.ProjectConfigModel;
 import com.beyond.algo.algoalgorithmsboot.util.FreemarkerUtil;
 import com.beyond.algo.common.FileUtil;
+import com.beyond.algo.exception.AlgException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DefaultLogger;
@@ -13,6 +15,7 @@ import org.apache.tools.ant.ProjectHelper;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +25,11 @@ import java.util.Map;
  * @Description:
  * @Date: create in
  */
+@Slf4j
 public class JavaModuleAdapter implements ModuleAdapter {
 
     @Override
-    public void createModule(String username, String projectName,GitConfigModel gitConfigModel,ProjectConfigModel projectConfigModel) throws Exception {
+    public void createModule(String username, String projectName,GitConfigModel gitConfigModel,ProjectConfigModel projectConfigModel) throws AlgException {
         FileUtil.createDir(gitConfigModel.getLocalBasePath());
 
         // 以用户名作为用户子目录名
@@ -37,12 +41,23 @@ public class JavaModuleAdapter implements ModuleAdapter {
         FileUtil.createDir(projectPath);
 
         // 先将直接拷贝的文件复制到目录下
-        String templatePath = new ClassPathResource("templates/project/java").getFile().getPath();
+        String templatePath = null;
+        try {
+            templatePath = new ClassPathResource("templates/project/java").getFile().getPath();
+        } catch (IOException e) {
+            log.error(e.toString());
+            throw new AlgException("");
+        }
         String[] cloneFileArr = projectConfigModel.getCloneFiles().split(",");
         for (String cloneFileName : cloneFileArr) {
             File srcFile = new File(templatePath + File.separator + cloneFileName);
             File destFile = new File(projectPath + File.separator + cloneFileName);
-            FileUtils.copyFile(srcFile, destFile);
+            try {
+                FileUtils.copyFile(srcFile, destFile);
+            } catch (IOException e) {
+                log.error(e.toString());
+                throw new AlgException("");
+            }
         }
 
         // 拼装参数
@@ -56,7 +71,12 @@ public class JavaModuleAdapter implements ModuleAdapter {
         String[] ftlFileArr = projectConfigModel.getFtlFiles().split(",");
         for (String ftlFileName : ftlFileArr) {
             String destFileName = ftlFileName.substring(0, ftlFileName.lastIndexOf("."));
-            FreemarkerUtil.createFile(templatePath, ftlFileName, projectPath, destFileName, paramMap);
+            try {
+                FreemarkerUtil.createFile(templatePath, ftlFileName, projectPath, destFileName, paramMap);
+            } catch (Exception e) {
+                log.error(e.toString());
+                throw new AlgException("");
+            }
         }
 
         // 生成算法主类
@@ -66,10 +86,15 @@ public class JavaModuleAdapter implements ModuleAdapter {
         FileUtil.createDir(packetPath);
         String mainClassPath = packetPath + File.separator + projectName;
         FileUtil.createDir(mainClassPath);
-        FreemarkerUtil.createFile(templatePath, "Main.java.ftl", mainClassPath, projectName + ".java", paramMap);
+        try {
+            FreemarkerUtil.createFile(templatePath, "Main.java.ftl", mainClassPath, projectName + ".java", paramMap);
+        } catch (Exception e) {
+            log.error(e.toString());
+            throw new AlgException("");
+        }
     }
     @Override
-    public boolean moduleAntBuild(String  path)throws Exception{
+    public boolean moduleAntBuild(String  path)throws AlgException{
         File buildFile = new File(path);
         Project project = new Project();
         DefaultLogger consoleLogger = new DefaultLogger();
