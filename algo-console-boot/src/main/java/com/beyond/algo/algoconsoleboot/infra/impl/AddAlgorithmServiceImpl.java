@@ -9,6 +9,7 @@ import com.beyond.algo.model.*;
 import com.beyond.algo.vo.AddAlgorithmVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AddAlgorithmServiceImpl implements AddAlgorithmService {
@@ -29,6 +30,7 @@ public class AddAlgorithmServiceImpl implements AddAlgorithmService {
      * @Description:算法新增
      */
     @Override
+    @Transactional
     public Boolean addAlgorithm(AddAlgorithmVo addAlgorithmVo) throws AlgException{
         AlgModule algModule = new AlgModule();
         //模块串号

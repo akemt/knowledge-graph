@@ -106,7 +106,7 @@ public class JGitServiceImpl implements JGitService {
      */
     public boolean commitAndPushDelAllFiles(GitUser gitUser)  throws Exception{
         logger.info("注册用户：{} 模块ID：{} 文件路径：{} 文件名{}",gitUser.getUsrCode(),gitUser.getModId(),gitUser.getCurrentPath(),gitUser.getFileName());
-        String delPath = showProjectFileService.getSplitPath(gitUser.getUsrCode(),gitUser.getModId()) + File.separator +gitUser.getCurrentPath() +File.separator+ gitUser.getFileName();//正式
+        String delPath = showProjectFileService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId()) + File.separator +gitUser.getCurrentPath() +File.separator+ gitUser.getFileName();//正式
         //本地删除
         FileUtil.delFile(delPath);
         //git服务器同步删除

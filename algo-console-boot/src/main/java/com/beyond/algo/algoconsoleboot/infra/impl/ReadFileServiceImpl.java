@@ -20,7 +20,7 @@ public class ReadFileServiceImpl implements ReadFileService {
         AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
         String readPath = null;
         try {
-            readPath = showProjectFileService.getSplitPath(usrCode,modId) + "/"+path +"/"+ fileName;
+            readPath = showProjectFileService.getModuleBasePath(usrCode,modId) + "/"+path +"/"+ fileName;
         } catch (Exception e) {
             throw new AlgException("readPath取得失败，用户code：" + usrCode + "，模块id：" + modId + "。", e);
         }
