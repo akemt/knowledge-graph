@@ -55,7 +55,7 @@ public class ModuleServiceImpl implements ModuleService {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         //适配器模式 调用创建算法项目适配器
         // ModuleAdapter createModuleAdapter = (ModuleAdapter)Class.forName("com.beyond.algo.algoconsoleboot.adapter."+ algProgramLang.getLanName() +"ModuleAdapter").newInstance();
-        ModuleAdapter createModuleAdapter = (ModuleAdapter) (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
+        ModuleAdapter createModuleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
         createModuleAdapter.createModule(algUser.getUsrCode(), projectName, gitConfigModel, projectConfigModel);
 
     }
@@ -162,7 +162,7 @@ public class ModuleServiceImpl implements ModuleService {
             //在服务器本地创建项目
             initProject(algUser,algModule.getModId());
             //commit and push 代码
-            jGitService.commitAndPushDelAllFiles(gitUser);
+            jGitService.commitAndPushAllFiles(gitUser);
         } catch (Exception e) {
             throw new AlgException("新增算法插入失败，用户串号：" + algModule.getUsrSn() + "，语言串号：" + algModule.getLanSn()
                     + "，分类串号：" + algModule.getCatSn() + "，协议串号：" + algModule.getLicSn() + "。", e);

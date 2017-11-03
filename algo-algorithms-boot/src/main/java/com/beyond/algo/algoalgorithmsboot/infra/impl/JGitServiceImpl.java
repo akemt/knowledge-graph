@@ -39,8 +39,8 @@ public class JGitServiceImpl implements JGitService {
         cloneCommand.setDirectory(new File(showProjectFileService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())));
         try {
             cloneCommand.call();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            log.error(e.toString());
             throw new AlgException("此处需要添加编码");
         }
 

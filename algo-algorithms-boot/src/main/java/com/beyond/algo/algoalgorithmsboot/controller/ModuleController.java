@@ -112,13 +112,8 @@ public class ModuleController extends BaseController {
     public Result AddAlgorithm(AlgModule algModule) throws AlgException {
         AlgUser algUser = getUserInfo();
         algModule.setUsrSn(algUser.getUsrSn());
-        try {
-            //先保存到数据库
-            moduleService.addAlgModule(algModule, algUser);
-        } catch (Exception e) {
-            throw new AlgException(e.getMessage());
-        }
-
+        //先保存到数据库
+        moduleService.addAlgModule(algModule, algUser);
         return Result.successResponse();
     }
 }
