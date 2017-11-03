@@ -5,6 +5,7 @@ import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.GitUser;
 import com.beyond.algo.common.FileUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -15,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.File;
-
+@Slf4j
 @Service
 public class JGitServiceImpl implements JGitService {
 
@@ -29,6 +30,7 @@ public class JGitServiceImpl implements JGitService {
 
     @Override
     public void gitCloneProject(GitUser gitUser) throws GitAPIException {
+        log.info("增加git的clone项目");
         //Git git = Git.cloneRepository().setURI(projectRepoURI).setDirectory(new File("E:/repo")).call();
         CloneCommand cloneCommand = Git.cloneRepository();
         cloneCommand.setURI(gitUser.getProjectRepoURI());
