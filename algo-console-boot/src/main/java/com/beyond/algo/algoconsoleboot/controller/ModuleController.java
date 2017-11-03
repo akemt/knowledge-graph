@@ -1,9 +1,7 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
 import com.beyond.algo.algoconsoleboot.base.BaseController;
-import com.beyond.algo.algoconsoleboot.infra.AntApiService;
-import com.beyond.algo.algoconsoleboot.infra.JGitService;
-import com.beyond.algo.algoconsoleboot.infra.ModuleService;
+import com.beyond.algo.algoconsoleboot.infra.*;
 import com.beyond.algo.algoconsoleboot.model.GitUser;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigEntity;
 import com.beyond.algo.common.AESUtil;
@@ -12,6 +10,7 @@ import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.AddAlgorithmVo;
 import com.beyond.algo.vo.AlgModuleEditVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +37,14 @@ public class ModuleController extends BaseController {
     private JGitService jGitService;
     @Autowired
     private AntApiService antApiService;
+    @Autowired
+    private AddAlgorithmService addAlgorithmService;
 
     @Autowired
     private ProjectConfigEntity projectConfigEntity;
+
+    @Autowired
+    private GitLibService gitLibService;
 
     //初始化、和返回上一级的目录
     @GetMapping(value = "/{modId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -106,5 +110,29 @@ public class ModuleController extends BaseController {
             return Result.successResponse();
         }
         return Result.failureResponse();
+    }
+
+
+    /**
+     * @author ：lindewei
+     * @Description:算法新增
+     * @param：User
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result AddAlgorithm(AddAlgorithmVo addAlgorithmVo) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        addAlgorithmVo.setUsrSn(algUser.getUsrSn());
+        try{
+            addAlgorithmService.addAlgorithm(addAlgorithmVo);
+            GitUser gitUser = new GitUser();
+            gitUser.setModId(addAlgorithmVo.getModId());
+            gitUser.setUsrCode(algUser.getUsrCode());
+            gitUser.setPassword(algUser.getPasswd());
+            gitLibService.createGitLibProject(gitUser);
+        }catch (Exception e){
+            throw new AlgException(e.getMessage());
+        }
+
+        return Result.successResponse();
     }
 }

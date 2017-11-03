@@ -31,9 +31,9 @@ public class GitLibServiceImpl implements GitLibService {
     @Override
     public GitlabProject createGitLibProject(GitUser gitUser) throws Exception {
         log.info("createGitLibProject方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
-        GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitUser.getUsername(), gitUser.getPassword());
+        GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitUser.getUsrCode(), gitUser.getPassword());
         GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitlabSession.getPrivateToken());
-        GitlabProject gitlabProject = gitlabAPI.createProject(gitUser.getProjectName());
+        GitlabProject gitlabProject = gitlabAPI.createProject(gitUser.getModId());
         gitUser.setProjectRepoURI(gitlabProject.getHttpUrl());
         jGitService.gitCloneProject(gitUser);
         return gitlabProject;
