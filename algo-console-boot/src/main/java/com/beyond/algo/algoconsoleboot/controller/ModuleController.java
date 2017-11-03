@@ -36,10 +36,9 @@ public class ModuleController extends BaseController {
 
     @Autowired
     private JGitService jGitService;
+
     @Autowired
     private AntApiService antApiService;
-    @Autowired
-    private AddAlgorithmService addAlgorithmService;
 
     @Autowired
     private ProjectConfigEntity projectConfigEntity;
@@ -124,7 +123,7 @@ public class ModuleController extends BaseController {
         AlgUser algUser = getUserInfo();
         algModule.setUsrSn(algUser.getUsrSn());
         try{
-            addAlgorithmService.addAlgModule(algModule);
+            moduleService.addAlgModule(algModule);
             GitUser gitUser = new GitUser();
             gitUser.setModId(algModule.getModId());
             gitUser.setUsrCode(algUser.getUsrCode());

@@ -29,4 +29,11 @@ public interface ModuleService {
     AlgModuleEditVo algModule(String usrCode,String usrSn,String modId,String path) throws AlgException;
 
     AlgModuleVersion getLastVersion(String mod_sn) throws AlgException;
+
+    /**
+     * lindewei
+     * 新增算法
+     * @param algModule 新增算法信息
+     */
+    Boolean addAlgModule(AlgModule algModule) throws AlgException;
 }
