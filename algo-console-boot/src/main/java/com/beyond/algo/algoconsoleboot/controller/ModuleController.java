@@ -91,6 +91,7 @@ public class ModuleController extends BaseController {
         return Result.failureResponse();
     }
 
+
     /**
      * @param :gitUser
      * @return
@@ -101,17 +102,16 @@ public class ModuleController extends BaseController {
     public Result buildAndUpLoadProject(GitUser gitUser,@PathVariable("modId") String modId) throws AlgException,Exception {
         gitUser.setModId(modId);
         AlgUser algUser = getUserInfo();
-     //   gitUser.setUsrCode(algUser.getUsrCode());
+        //   gitUser.setUsrCode(algUser.getUsrCode());
         gitUser.setUsrCode(algUser.getUsrCode());
         gitUser.setPassword(  AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
-        log.info("用户名字:{},用户密码:{} ",gitUser.getUsrCode(),gitUser.getPassword());
+        log.info("用户名字:{},用户密码:{},用户usrSn:{},用户modId:{} ",gitUser.getUsrCode(),gitUser.getPassword(),gitUser.getUsrSn(),gitUser.getModId());
         boolean result = antApiService.moduleAntBuild(gitUser);
         if (result) {
             return Result.successResponse();
         }
         return Result.failureResponse();
     }
-
 
     /**
      * @author ：lindewei
