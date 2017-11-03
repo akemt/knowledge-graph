@@ -21,8 +21,8 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
     @Autowired
     private ProjectConfigModel projectConfigModel;
 
-    public String getSplitPath(String usrCode,String modId) throws AlgException {
-        //TODO 项目名称初始化Tree
+    public String getModuleBasePath(String usrCode, String modId) throws AlgException {
+        //项目名称初始化Tree
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(gitConfigModel.getLocalBasePath());
         stringBuilder.append(File.separator);
@@ -36,7 +36,7 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
 
         log.info("ShowProjectFile currentPath :{}",currentPath);
         // 获取用户下项目根路径
-        String splitPath = getSplitPath(usrCode,modId);
+        String splitPath = getModuleBasePath(usrCode,modId);
         //转换标注路径
         File file = new File(currentPath);
         currentPath = file.getPath();

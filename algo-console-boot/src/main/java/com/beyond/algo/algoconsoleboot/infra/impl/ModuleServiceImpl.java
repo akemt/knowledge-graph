@@ -94,9 +94,9 @@ public class ModuleServiceImpl implements ModuleService {
             if (Assert.isEmpty(path)){
                 path = this.getModuleMainFilePath(usrCode,modId,algModule.getLanSn());
             }else if(path.equals("/")){
-                path = showProjectFileService.getSplitPath(usrCode,modId);
+                path = showProjectFileService.getModuleBasePath(usrCode,modId);
             }else{
-                path = showProjectFileService.getSplitPath(usrCode,modId)+File.separator + path;
+                path = showProjectFileService.getModuleBasePath(usrCode,modId)+File.separator + path;
             }
             //返回同级目录所有文件和文件夹.
             FileNodes fileNodes = showProjectFileService.ShowProjectFile(path,usrCode,modId);

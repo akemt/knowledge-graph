@@ -18,7 +18,7 @@ public class WriteFileServiceImpl implements WriteFileService {
     public void writeFile(String usrCode, String modId, String path, String fileName,String fileContent) throws AlgException {
         String writePath = null;
         try {
-            writePath = showProjectFileService.getSplitPath(usrCode,modId) + "/"+path +"/"+ fileName;
+            writePath = showProjectFileService.getModuleBasePath(usrCode,modId) + "/"+path +"/"+ fileName;
         } catch (Exception e) {
             throw new AlgException("路径writePath取得失败，创建者code：" + usrCode + "，模块id：code：" + modId + "。", e);
         }
