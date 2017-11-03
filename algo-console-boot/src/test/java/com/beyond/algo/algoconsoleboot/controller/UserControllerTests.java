@@ -58,7 +58,7 @@ public class UserControllerTests {
 	@Test
 	public void updateUserInformation() throws Exception{
 
-		String result = this.mockMvc.perform(put("/updateUserInformation").contentType(MediaType.APPLICATION_JSON)
+		String result = this.mockMvc.perform(post("/updateUserInformation").contentType(MediaType.APPLICATION_JSON)
 				.param("usrSn","c0a19c1576174b3f97924e75f05f9596")
 				.param("usrName","张传智智")
 				.param("email","zhangchuanzhiTest@126.com")
@@ -78,11 +78,10 @@ public class UserControllerTests {
 
 	@Test
 	public void changePassword() throws Exception{
-		String result = this.mockMvc.perform(post("/user/changePassword").contentType(MediaType.APPLICATION_JSON)
-				.param("usrSn","c0a19c1576174b3f97924e75f05f9596")
+		String result = this.mockMvc.perform(put("/changePassword").contentType(MediaType.APPLICATION_JSON)
 				.param("passwd","12345678")
-				.param("newPassword","123")
-				.param("confirmPassword","123")
+				.param("newPassword","123456789")
+				.param("confirmPassword","123456789")
 				)
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
 		System.out.println(result);

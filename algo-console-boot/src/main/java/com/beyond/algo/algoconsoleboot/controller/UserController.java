@@ -1,6 +1,8 @@
 package com.beyond.algo.algoconsoleboot.controller;
 
 import com.beyond.algo.algoconsoleboot.base.BaseController;
+import com.beyond.algo.algoconsoleboot.model.ProjectConfigEntity;
+import com.beyond.algo.common.AESUtil;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
@@ -28,7 +30,8 @@ public class UserController  extends BaseController {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private ProjectConfigEntity projectConfigEntity;
     /**
      * @author ：zhangchuanzhi
      * @Description:实现用户注册功能
@@ -51,7 +54,7 @@ public class UserController  extends BaseController {
      * @date ：8:49 2017/9/27
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result userLogin(AlgUser user)throws AlgException {
+    public Result userLogin(AlgUser user)throws AlgException,Exception {
         log.info("用户编码:{},用户密码:{}", user.getUsrCode(), user.getPasswd());
         userService.userLogin(user);
         return  Result.successResponse();
@@ -66,9 +69,10 @@ public class UserController  extends BaseController {
      * @date ：8:49 2017/9/27
      */
     @RequestMapping(value = "/changePassword", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result changePassword(UserVo userVo) throws AlgException{
+    public Result changePassword(UserVo userVo) throws AlgException,Exception{
         AlgUser algUser = getUserInfo();
         userVo.setUsrCode(algUser.getUsrCode());
+    //    userVo.setUsrCode("zhang1");
         log.info("用户姓名:{},用户密码:{},用户确认密码:{},用户新密码:{}", userVo.getUsrCode(), userVo.getPasswd(), userVo.getConfirmPassword(), userVo.getNewPassword());
         userService.changePassword(userVo);
         return Result.successResponse();

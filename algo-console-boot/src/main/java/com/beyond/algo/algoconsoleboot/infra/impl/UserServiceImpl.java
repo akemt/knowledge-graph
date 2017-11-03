@@ -21,6 +21,7 @@ import com.beyond.algo.algoconsoleboot.infra.UserService;
 
 import com.beyond.algo.vo.UserAccountVo;
 import com.beyond.algo.vo.UserVo;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import java.util.Date;
 
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
     private final static Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
@@ -76,7 +78,7 @@ public class UserServiceImpl implements UserService {
             gitUser.setFullName(user.getUsrCode());
             gitUser.setUsername(user.getUsrCode());
             gitUser.setEmail(user.getEmail());
-            String passWord= AESUtil.encryptString(user.getPasswd(),projectConfigEntity.getKeyAES());
+            String passWord= AESUtil.encryptAES(user.getPasswd(),projectConfigEntity.getKeyAES());
             user.setPasswd(passWord);
             algUserMapper.insert(user);
             gitLibService.addGitLibUser(gitUser);
@@ -91,7 +93,7 @@ public class UserServiceImpl implements UserService {
      * @date ：15:26 2017/9/28
      */
     @Override
-    public void userLogin(AlgUser user) throws AlgException{
+    public void userLogin(AlgUser user) throws AlgException,Exception{
         String password=user.getPasswd();
         user = algUserMapper.selectUsrname(user.getUsrName());
       // 如果没有这个用户
@@ -100,7 +102,7 @@ public class UserServiceImpl implements UserService {
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000002",checkMessage);
         }
       // 对比密码
-        String passwordEncryp = AESUtil.decrypt(user.getPasswd(),projectConfigEntity.getKeyAES());
+        String passwordEncryp = AESUtil.decryptAES(user.getPasswd(),projectConfigEntity.getKeyAES());
         if(!passwordEncryp.equals(password)){
             String[] checkMessage = {"密码",""};
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000003",checkMessage);
@@ -114,7 +116,7 @@ public class UserServiceImpl implements UserService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public void changePassword(UserVo user) throws AlgException {
+    public void changePassword(UserVo user) throws AlgException,Exception {
         // 判断两次输入密码是否一致
          if(!user.getConfirmPassword().equals(user.getNewPassword())){
              String[] checkMessage = {"两次输入新密码不一致",""};
@@ -122,7 +124,7 @@ public class UserServiceImpl implements UserService {
          }else{
              // 当两次输入密码一致时候判断输入新密码和原始密码是否一致
              AlgUser  algUser =findByUsrCode(user.getUsrCode());
-             String passwordEncryp = AESUtil.decrypt(algUser.getPasswd(),projectConfigEntity.getKeyAES());
+             String passwordEncryp = AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES());
              // 判断输入原始密码是否是数据库密码
              if(user.getPasswd().equals(passwordEncryp)){
                  if(user.getNewPassword().equals(passwordEncryp)){
@@ -134,7 +136,7 @@ public class UserServiceImpl implements UserService {
                  throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000003",checkMessage);
              }
          }
-         String newPassWord=AESUtil.encryptString(user.getNewPassword(),projectConfigEntity.getKeyAES());
+         String newPassWord=AESUtil.encryptAES(user.getNewPassword(),projectConfigEntity.getKeyAES());
          user.setPasswd(newPassWord);
          user.setUpdateDate(new Date());
          algUserMapper.update(user);
