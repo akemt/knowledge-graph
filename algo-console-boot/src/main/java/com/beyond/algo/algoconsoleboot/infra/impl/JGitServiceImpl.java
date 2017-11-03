@@ -5,6 +5,7 @@ import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
 import com.beyond.algo.algoconsoleboot.model.GitUser;
 import com.beyond.algo.common.FileUtil;
+import com.beyond.algo.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -29,24 +30,24 @@ public class JGitServiceImpl implements JGitService {
     private ShowProjectFileService showProjectFileService;
 
     @Override
-    public void gitCloneProject(GitUser gitUser) throws GitAPIException {
+    public void gitCloneProject(GitUser gitUser) throws GitAPIException,AlgException {
         log.info("增加git的clone项目");
         //Git git = Git.cloneRepository().setURI(projectRepoURI).setDirectory(new File("E:/repo")).call();
         CloneCommand cloneCommand = Git.cloneRepository();
         cloneCommand.setURI(gitUser.getProjectRepoURI());
         cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword()));
-        cloneCommand.setDirectory(new File(gitConfigModel.getLocalBasePath() + File.separator + gitUser.getUsrCode() + File.separator + gitUser.getModId()));
+        cloneCommand.setDirectory(new File(showProjectFileService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())));
+
         cloneCommand.call();
-        gitUser.setPath(gitConfigModel.getLocalBasePath() + File.separator + gitUser.getUsrCode() + File.separator + gitUser.getModId()+File.separator+".git");
-        initCommitAndPushAllFiles(gitUser);
+        gitUser.setPath(showProjectFileService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+".git");
     }
 
     /**
-     * 初始化时提交本地所有代码到远端仓库
+     * commit and push 本地所有代码到远端仓库
      * @param :GitUser
      * @return
      */
-    public boolean initCommitAndPushAllFiles(GitUser gitUser) {
+    public boolean commitAndPushAllFiles(GitUser gitUser) {
         logger.info("initCommit方法传入本地仓库路径：{}用户名：{} 用户密码",gitUser.getPath(),gitUser.getUsrCode(),gitUser.getPassword());
         try {
             FileRepository localRepo = new FileRepository( gitUser.getPath());

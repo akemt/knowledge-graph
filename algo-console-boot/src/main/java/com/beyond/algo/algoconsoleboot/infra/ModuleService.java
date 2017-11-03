@@ -35,5 +35,5 @@ public interface ModuleService {
      * 新增算法
      * @param algModule 新增算法信息
      */
-    Boolean addAlgModule(AlgModule algModule) throws AlgException;
+    Boolean addAlgModule(AlgModule algModule,AlgUser algUser) throws AlgException;
 }

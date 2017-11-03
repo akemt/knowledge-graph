@@ -43,9 +43,6 @@ public class ModuleController extends BaseController {
     @Autowired
     private ProjectConfigEntity projectConfigEntity;
 
-    @Autowired
-    private GitLibService gitLibService;
-
     //初始化、和返回上一级的目录
     @GetMapping(value = "/{modId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result initTree(@PathVariable("modId") String modId,String path,String fileName) {
@@ -107,10 +104,8 @@ public class ModuleController extends BaseController {
         gitUser.setPassword(  AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
         log.info("用户名字:{},用户密码:{},用户usrSn:{},用户modId:{} ",gitUser.getUsrCode(),gitUser.getPassword(),gitUser.getUsrSn(),gitUser.getModId());
         boolean result = antApiService.moduleAntBuild(gitUser);
-        if (result) {
-            return Result.successResponse();
-        }
-        return Result.failureResponse();
+        return Result.successResponse();
+
     }
 
     /**
@@ -123,12 +118,8 @@ public class ModuleController extends BaseController {
         AlgUser algUser = getUserInfo();
         algModule.setUsrSn(algUser.getUsrSn());
         try{
-            moduleService.addAlgModule(algModule);
-            GitUser gitUser = new GitUser();
-            gitUser.setModId(algModule.getModId());
-            gitUser.setUsrCode(algUser.getUsrCode());
-            gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
-            gitLibService.createGitLibProject(gitUser);
+            //先保存到数据库
+            moduleService.addAlgModule(algModule,algUser);
         }catch (Exception e){
             throw new AlgException(e.getMessage());
         }

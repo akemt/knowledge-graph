@@ -8,7 +8,7 @@ public interface JGitService {
 
     void gitCloneProject(GitUser gitUser) throws  Exception;
 
-    boolean  initCommitAndPushAllFiles(GitUser gitUser);
+    boolean  commitAndPushAllFiles(GitUser gitUser);
 
     boolean commitAndPushDelAllFiles(GitUser gitUser) throws Exception;
 

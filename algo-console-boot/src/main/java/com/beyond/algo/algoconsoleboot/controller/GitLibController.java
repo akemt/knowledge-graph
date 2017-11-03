@@ -112,7 +112,7 @@ public class GitLibController {
     @RequestMapping(value = "/commit", method = RequestMethod.POST)
     public @ResponseBody
     Result initCommitAndPushAllFiles(GitUser gitUser) {
-        boolean result = jGitService.initCommitAndPushAllFiles(gitUser);
+        boolean result = jGitService.commitAndPushAllFiles(gitUser);
         if (result) {
             return Result.successResponse();
         }

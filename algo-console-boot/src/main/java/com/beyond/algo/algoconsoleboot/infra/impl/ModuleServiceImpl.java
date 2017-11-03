@@ -1,14 +1,12 @@
 package com.beyond.algo.algoconsoleboot.infra.impl;
 
 import com.beyond.algo.algoconsoleboot.adapter.infra.ModuleAdapter;
-import com.beyond.algo.algoconsoleboot.infra.ModuleService;
-import com.beyond.algo.algoconsoleboot.infra.ShowProjectFileService;
+import com.beyond.algo.algoconsoleboot.infra.*;
 import com.beyond.algo.algoconsoleboot.model.GitConfigModel;
+import com.beyond.algo.algoconsoleboot.model.GitUser;
+import com.beyond.algo.algoconsoleboot.model.ProjectConfigEntity;
 import com.beyond.algo.algoconsoleboot.model.ProjectConfigModel;
-import com.beyond.algo.common.AdapterUtil;
-import com.beyond.algo.common.Assert;
-import com.beyond.algo.common.FileNodes;
-import com.beyond.algo.common.UUIDUtil;
+import com.beyond.algo.common.*;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgModuleMapper;
 import com.beyond.algo.mapper.AlgModuleVersionMapper;
@@ -42,6 +40,14 @@ public class ModuleServiceImpl implements ModuleService {
     private AlgModuleVersionMapper algModuleVersionMapper;
     @Autowired
     private AlgProgramLangMapper algProgramLangMapper;
+    @Autowired
+    private JGitService jGitService;;
+
+    @Autowired
+    private ProjectConfigEntity projectConfigEntity;
+
+    @Autowired
+    private GitLibService gitLibService;
 
     @Override
     public void initProject(AlgUser algUser, String projectName) throws Exception {
@@ -130,7 +136,7 @@ public class ModuleServiceImpl implements ModuleService {
      */
     @Override
     @Transactional
-    public Boolean addAlgModule(AlgModule algModule) throws AlgException {
+    public Boolean addAlgModule(AlgModule algModule,AlgUser algUser) throws AlgException {
         //模块串号
         algModule.setModSn(UUIDUtil.createUUID());
         // 新增算法
@@ -146,6 +152,17 @@ public class ModuleServiceImpl implements ModuleService {
             algModuleVersion.setLatestCommit("1234567890123456789");
             algModuleVersion.setModSn(algModule.getModSn());
             algModuleVersionMapper.insert(algModuleVersion);
+
+            GitUser gitUser = new GitUser();
+            gitUser.setModId(algModule.getModId());
+            gitUser.setUsrCode(algUser.getUsrCode());
+            gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
+            //在git上创建项目
+            gitLibService.createGitLibProject(gitUser);
+            //在服务器本地创建项目
+            initProject(algUser,algModule.getModId());
+            //commit and push 代码
+            jGitService.commitAndPushDelAllFiles(gitUser);
         } catch (Exception e) {
             throw new AlgException("新增算法插入失败，用户串号：" + algModule.getUsrSn() + "，语言串号：" + algModule.getLanSn()
                     + "，分类串号：" + algModule.getCatSn() + "，协议串号：" + algModule.getLicSn() + "。", e);

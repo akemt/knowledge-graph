@@ -42,7 +42,7 @@ public class BuildAntProjectServiceImpl implements BuildAntProjectService {
              log.info("zip包路径:"+localPath);
              ZipUtil.unZip(localPath,gitUser.getDescDir());
              gitUser.setPath(gitUser.getPath()+File.separator+".git");
-             jGitService.initCommitAndPushAllFiles(gitUser);
+             jGitService.commitAndPushAllFiles(gitUser);
           // jGitService.initCommitAndPushAllFiles(gitUser.getPath()+"/.git",gitUser.getUsername(),gitUser.getPassword());
          }else{
              log.info("没有zip");

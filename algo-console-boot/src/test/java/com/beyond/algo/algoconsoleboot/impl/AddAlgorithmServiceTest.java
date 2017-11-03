@@ -21,7 +21,7 @@ public class AddAlgorithmServiceTest {
     @Test
     public void AddAlgorithmService() throws Exception {
 
-        moduleService.addAlgModule(null);
+        //moduleService.addAlgModule(null);
 
         System.out.println("");
     }
