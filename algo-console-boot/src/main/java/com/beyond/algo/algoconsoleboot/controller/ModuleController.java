@@ -127,7 +127,7 @@ public class ModuleController extends BaseController {
             GitUser gitUser = new GitUser();
             gitUser.setModId(algModule.getModId());
             gitUser.setUsrCode(algUser.getUsrCode());
-            gitUser.setPassword(algUser.getPasswd());
+            gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
             gitLibService.createGitLibProject(gitUser);
         }catch (Exception e){
             throw new AlgException(e.getMessage());
