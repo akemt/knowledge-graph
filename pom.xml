@@ -11,7 +11,7 @@
     <modules>
         <module>common</module>
         <module>algo-dao</module>
-        <module>algo-console-boot</module>
+        <module>algo-algorithms-boot</module>
         <module>algo-blog-boot</module>
         <module>algo-image-boot</module>
         <module>algo-data-boot</module>
