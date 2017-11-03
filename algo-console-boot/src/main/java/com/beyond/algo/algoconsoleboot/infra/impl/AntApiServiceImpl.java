@@ -51,12 +51,13 @@ public class AntApiServiceImpl implements AntApiService {
             String[] checkMessage = {"算法模块",""};
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000006",checkMessage);
         }
+        log.info("algModule模块的语言串号:{}",algModule.getLanSn());
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         if(Assert.isNULL(algProgramLang)){
             String[] checkMessage = {"语言模块",""};
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000006",checkMessage);
         }
-        log.info("modId:{},usrSn:{}",gitUser.getModId(),gitUser.getUsrSn());
+        log.info("语言表获得语言:{}",algProgramLang.getLanName());
         //适配器模式 调用创建算法项目适配器
         ModuleAdapter javaModuleAdapter =(ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
         String path=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+ Constant.map.get(algProgramLang.getLanName());
