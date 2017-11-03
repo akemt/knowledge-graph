@@ -44,7 +44,7 @@ public class AddAlgorithmServiceImpl implements AddAlgorithmService {
             algModuleVersionMapper.insert(algModuleVersion);
         } catch (Exception e) {
             throw new AlgException("新增算法插入失败，用户串号：" + algModule.getUsrSn() + "，语言串号：" + algModule.getLanSn()
-                    + "，分类串号：" + algModule.getCatSn() + "，语言串号：" + algModule.getLanSn() + "。", e);
+                    + "，分类串号：" + algModule.getCatSn() + "，协议串号：" + algModule.getLicSn() + "。", e);
         }
         return false;
     }

@@ -32,7 +32,7 @@ public class AddAlgorithmController extends BaseController {
     public Result AddAlgorithm(AddAlgorithmVo addAlgorithmVo) throws AlgException {
         AlgUser algUser = getUserInfo();
         addAlgorithmVo.setUsrSn(algUser.getUsrSn());
-        addAlgorithmService.addAlgorithm(addAlgorithmVo);
+        //addAlgorithmService.addAlgorithm(addAlgorithmVo);
         return Result.successResponse();
     }
 }
