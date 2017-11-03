@@ -9,6 +9,7 @@ import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.exception.AlgException;
+import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AddAlgorithmVo;
 import com.beyond.algo.vo.AlgModuleEditVo;
@@ -119,13 +120,13 @@ public class ModuleController extends BaseController {
      * @param：User
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result AddAlgorithm(AddAlgorithmVo addAlgorithmVo) throws AlgException {
+    public Result AddAlgorithm(AlgModule algModule) throws AlgException {
         AlgUser algUser = getUserInfo();
-        addAlgorithmVo.setUsrSn(algUser.getUsrSn());
+        algModule.setUsrSn(algUser.getUsrSn());
         try{
-            addAlgorithmService.addAlgorithm(addAlgorithmVo);
+            addAlgorithmService.addAlgModule(algModule);
             GitUser gitUser = new GitUser();
-            gitUser.setModId(addAlgorithmVo.getModId());
+            gitUser.setModId(algModule.getModId());
             gitUser.setUsrCode(algUser.getUsrCode());
             gitUser.setPassword(algUser.getPasswd());
             gitLibService.createGitLibProject(gitUser);

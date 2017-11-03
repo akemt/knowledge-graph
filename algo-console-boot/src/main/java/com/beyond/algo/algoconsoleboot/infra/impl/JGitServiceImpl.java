@@ -32,10 +32,10 @@ public class JGitServiceImpl implements JGitService {
         //Git git = Git.cloneRepository().setURI(projectRepoURI).setDirectory(new File("E:/repo")).call();
         CloneCommand cloneCommand = Git.cloneRepository();
         cloneCommand.setURI(gitUser.getProjectRepoURI());
-        cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsername(), gitUser.getPassword()));
-        cloneCommand.setDirectory(new File(gitConfigModel.getLocalBasePath() + File.separator + gitUser.getUsername() + File.separator + gitUser.getProjectName()));
+        cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword()));
+        cloneCommand.setDirectory(new File(gitConfigModel.getLocalBasePath() + File.separator + gitUser.getUsrCode() + File.separator + gitUser.getModId()));
         cloneCommand.call();
-        gitUser.setPath(gitConfigModel.getLocalBasePath() + File.separator + gitUser.getUsername() + File.separator + gitUser.getProjectName()+File.separator+".git");
+        gitUser.setPath(gitConfigModel.getLocalBasePath() + File.separator + gitUser.getUsrCode() + File.separator + gitUser.getModId()+File.separator+".git");
         initCommitAndPushAllFiles(gitUser);
     }
 
@@ -45,7 +45,7 @@ public class JGitServiceImpl implements JGitService {
      * @return
      */
     public boolean initCommitAndPushAllFiles(GitUser gitUser) {
-        logger.info("initCommit方法传入本地仓库路径：{}用户名：{} 用户密码",gitUser.getPath(),gitUser.getUsername(),gitUser.getPassword());
+        logger.info("initCommit方法传入本地仓库路径：{}用户名：{} 用户密码",gitUser.getPath(),gitUser.getUsrCode(),gitUser.getPassword());
         try {
             FileRepository localRepo = new FileRepository( gitUser.getPath());
             Git git = new Git(localRepo);
