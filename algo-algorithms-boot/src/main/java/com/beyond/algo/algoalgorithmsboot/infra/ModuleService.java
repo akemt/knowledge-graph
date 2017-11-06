@@ -6,6 +6,8 @@ import com.beyond.algo.model.AlgModuleVersion;
 import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgModuleEditVo;
 
+import java.util.Map;
+
 public interface ModuleService {
 
     /**
@@ -36,4 +38,10 @@ public interface ModuleService {
      * @param algModule 新增算法信息
      */
     Boolean addAlgModule(AlgModule algModule,AlgUser algUser) throws AlgException;
+
+    /**
+     * lindewei
+     * 新增算法初始化
+     */
+    Map addInit() throws AlgException;
 }
