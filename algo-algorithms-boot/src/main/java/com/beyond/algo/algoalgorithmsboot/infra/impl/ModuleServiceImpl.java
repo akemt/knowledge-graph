@@ -8,21 +8,22 @@ import com.beyond.algo.algoalgorithmsboot.model.ProjectConfigEntity;
 import com.beyond.algo.algoalgorithmsboot.model.ProjectConfigModel;
 import com.beyond.algo.common.*;
 import com.beyond.algo.exception.AlgException;
-import com.beyond.algo.mapper.AlgModuleMapper;
-import com.beyond.algo.mapper.AlgModuleVersionMapper;
-import com.beyond.algo.mapper.AlgProgramLangMapper;
-import com.beyond.algo.model.AlgModule;
-import com.beyond.algo.model.AlgModuleVersion;
-import com.beyond.algo.model.AlgProgramLang;
-import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.mapper.*;
+import com.beyond.algo.model.*;
 import com.beyond.algo.vo.AlgModuleEditVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.beyond.algo.common.StringConstant.src;
 
@@ -41,13 +42,15 @@ public class ModuleServiceImpl implements ModuleService {
     @Autowired
     private AlgProgramLangMapper algProgramLangMapper;
     @Autowired
-    private JGitService jGitService;;
-
+    private JGitService jGitService;
     @Autowired
     private ProjectConfigEntity projectConfigEntity;
-
     @Autowired
     private GitLibService gitLibService;
+    @Autowired
+    private AlgDicMapper algDicMapper;
+    @Autowired
+    private AlgLicenseMapper algLicenseMapper;
 
     @Override
     public void initProject(AlgUser algUser, String projectName) throws Exception {
@@ -119,7 +122,8 @@ public class ModuleServiceImpl implements ModuleService {
             algModuleEditVo.setLatestVersion(algModuleVersion.getVerCodeL1() + "." + algModuleVersion.getVerCodeL2() + "." + algModuleVersion.getVerCodeL3());
             algModuleEditVo.setFileNodes(fileNodes);
         } catch (Exception e) {
-            throw new AlgException("fileNodes取得失败，路径path：" + path + "，用户usrCode：" + usrCode + "，模块ID：" + modId + "。", e);
+            log.error("目录树文件读取失败：{},{},{}",path, usrCode, modId,e);
+            throw new AlgException("BEYOND.ALG.MODULE.TREE.0000001",new String[]{});
         }
         return algModuleEditVo;
     }
@@ -147,7 +151,7 @@ public class ModuleServiceImpl implements ModuleService {
             algModuleVersion.setCreateDate(new Date());
             algModuleVersion.setVerCodeL1(0);
             algModuleVersion.setVerCodeL2(0);
-            algModuleVersion.setVerCodeL3(1);
+            algModuleVersion.setVerCodeL3(0);
             //TODO 未实现版本 等其他信息
             algModuleVersion.setLatestCommit("1234567890123456789");
             algModuleVersion.setModSn(algModule.getModSn());
@@ -164,9 +168,45 @@ public class ModuleServiceImpl implements ModuleService {
             //commit and push 代码
             jGitService.commitAndPushAllFiles(gitUser);
         } catch (Exception e) {
-            throw new AlgException("新增算法插入失败，用户串号：" + algModule.getUsrSn() + "，语言串号：" + algModule.getLanSn()
-                    + "，分类串号：" + algModule.getCatSn() + "，协议串号：" + algModule.getLicSn() + "。", e);
+            log.error("算法新增增加失败。用户串号：{},语言串号：{},分类串号：{},协议串号：{}",algModule.getUsrSn(),algModule.getLanSn(),algModule.getCatSn(),algModule.getLicSn(),e);
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002",new String[]{});
         }
         return false;
+    }
+
+    /**
+     * lindewei
+     * 新增算法初始化
+     */
+    public Map addInit() throws AlgException {
+        try {
+            //初始化
+            Map<String,List> map=new HashMap<String,List>();
+            //编程语言
+            List<AlgProgramLang> algProgramLang =algProgramLangMapper.selectAll();
+            map.put("algProgramLang",algProgramLang);
+            //协议
+            List<AlgLicense> license = algLicenseMapper.selectAll();
+            map.put("license",license);
+            //集群
+            String moduleAccessMode="module_access_mode";
+            List<AlgDic> AccessandCall =algDicMapper.getDictionarylist(moduleAccessMode);
+            map.put("moduleAccessMode",AccessandCall);
+            String runEnv="run_env";
+            List<AlgDic> RunandEnv =algDicMapper.getDictionarylist(runEnv);
+            map.put("runEnv",RunandEnv);
+            String iscolony="is_colony";
+            List<AlgDic> SingandClu =algDicMapper.getDictionarylist(iscolony);
+            map.put("iscolony",SingandClu);
+            String standenv="stand_env";
+            List<AlgDic> Single =algDicMapper.getDictionarylist(standenv);
+            map.put("standenv",Single);
+            String gpuenv="gpu_env";
+            List<AlgDic> Cluster =algDicMapper.getDictionarylist(gpuenv);
+            map.put("gpuenv",Cluster);
+            return map;
+        } catch (Exception e) {
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002",new String[]{});
+        }
     }
 }

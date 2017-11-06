@@ -9,8 +9,7 @@ import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.exception.AlgException;
-import com.beyond.algo.model.AlgModule;
-import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.model.*;
 import com.beyond.algo.vo.AlgModuleEditVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：lindewei
@@ -119,5 +121,21 @@ public class ModuleController extends BaseController {
         //先保存到数据库
         moduleService.addAlgModule(algModule, algUser);
         return Result.successResponse();
+    }
+
+    /**
+     * @author ：lindewei
+     * @Description:集群
+     * @param：dicSort 分类
+     */
+    @RequestMapping(value = "/addinit", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result init(String dicCode) {
+        try {
+            Map map = moduleService.addInit();
+            return Result.ok(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
+        }
     }
 }
