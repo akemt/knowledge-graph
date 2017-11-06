@@ -87,7 +87,7 @@ public class ModuleController extends BaseController {
      * @Description:ant项目进行编译打包同时解压到指定目录并且代码上传git上 author:zhangchuanzhi
      */
     @RequestMapping(value = "/{usrCode}/{modId}/build", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result buildAndUpLoadProject(GitUser gitUser, @PathVariable("usrCode") String usrCode,@PathVariable("modId") String modId) throws AlgException {
+    public Result buildAndUpLoadProject(GitUser gitUser, @PathVariable("usrCode") String usrCode,@PathVariable("modId") String modId) throws AlgException,Exception {
 
 
         AlgUser algUser = getUserInfo();
