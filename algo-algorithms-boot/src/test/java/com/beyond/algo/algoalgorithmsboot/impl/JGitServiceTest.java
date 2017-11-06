@@ -6,6 +6,8 @@ import com.beyond.algo.common.FileUtil;
 import com.beyond.algo.algoalgorithmsboot.infra.BuildAntProjectService;
 import com.beyond.algo.algoalgorithmsboot.infra.JGitService;
 import com.beyond.algo.algoalgorithmsboot.model.GitUser;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -13,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.io.File;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,8 +36,13 @@ public class JGitServiceTest {
 
     @Test
     public void initCommitAllFilesTest() throws Exception {
+        GitUser gitUser=new GitUser();
+                gitUser.setPath("E:/repo/zhang/TestJavaZhang/.git");
+                gitUser.setUsrCode("zhang");
+                gitUser.setPassword("12345678");
+                 String version= jGitService.commitAndPushAllFiles(gitUser);
+                System.out.println(version);
 
-     //   jGitService.initCommitAndPushAllFiles("E:/repo/test1/TestProject/.git", "test1", "test1234");
     }
 
     @Test
@@ -58,6 +67,26 @@ public class JGitServiceTest {
         gitUser.setDescDir("D:/test");
         gitUser.setUsername("test1");
         buildAntProjectService.buildAndUpLoadProject(gitUser);
+
+    }
+    @Test
+    // 本地编译打包上传测试
+    public void getHistoryInfo() throws Exception {
+          Git git=null;
+        File gitDir = new File("E:/repo/zhang/TestJavaZhang/.git");
+
+            if (git == null) {
+                git = Git.open(gitDir);
+            }
+            Iterable<RevCommit> gitlog= git.log().setMaxCount(1).call();
+            for (RevCommit revCommit : gitlog) {
+                String version=revCommit.getName();//版本号
+                System.out.println (revCommit.getParent(0).toString());
+                revCommit.getAuthorIdent().getName();
+                revCommit.getAuthorIdent().getEmailAddress();
+                revCommit.getAuthorIdent().getWhen();//时间
+                System.out.println(version);
+            }
 
     }
 

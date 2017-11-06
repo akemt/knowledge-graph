@@ -11,5 +11,5 @@ import com.beyond.algo.exception.AlgException;
  */
 public interface ModuleAdapter {
     void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel) throws AlgException;
-    boolean moduleAntBuild(String  path)throws AlgException;
+    boolean moduleAntBuild(String  path)throws AlgException,Exception;
 }

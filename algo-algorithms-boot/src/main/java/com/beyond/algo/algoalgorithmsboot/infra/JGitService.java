@@ -9,7 +9,7 @@ public interface JGitService {
 
     void gitCloneProject(GitUser gitUser) throws AlgException;
 
-    boolean  commitAndPushAllFiles(GitUser gitUser)throws AlgException;
+    String  commitAndPushAllFiles(GitUser gitUser)throws AlgException;
 
     boolean commitAndPushDelAllFiles(GitUser gitUser) throws AlgException;
 

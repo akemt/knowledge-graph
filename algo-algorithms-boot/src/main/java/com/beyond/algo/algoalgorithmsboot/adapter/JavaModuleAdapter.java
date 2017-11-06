@@ -94,7 +94,7 @@ public class JavaModuleAdapter implements ModuleAdapter {
         }
     }
     @Override
-    public boolean moduleAntBuild(String  path)throws AlgException{
+    public boolean moduleAntBuild(String  path)throws AlgException,Exception{
         File buildFile = new File(path);
         Project project = new Project();
         DefaultLogger consoleLogger = new DefaultLogger();
@@ -113,8 +113,10 @@ public class JavaModuleAdapter implements ModuleAdapter {
 
         //    moduleAntZip("E:\\repo\\qihe\\TestJava2\\");
         } catch (BuildException e) {
+            log.info("构建错误",e);
             project.fireBuildFinished(e);  //构建抛出异常
-            return false;
+            throw new Exception(e);
+          //  return false;
         }
         return true;
 
