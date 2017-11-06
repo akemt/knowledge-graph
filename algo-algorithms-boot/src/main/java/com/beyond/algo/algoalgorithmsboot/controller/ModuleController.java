@@ -129,7 +129,7 @@ public class ModuleController extends BaseController {
      * @param：dicSort 分类
      */
     @RequestMapping(value = "/addinit", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result init(String dicCode) {
+    public Result init() {
         try {
             Map map = moduleService.addInit();
             return Result.ok(map);
