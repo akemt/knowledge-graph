@@ -128,7 +128,7 @@ public class ModuleController extends BaseController {
      * @Description:集群
      * @param：dicSort 分类
      */
-    @RequestMapping(value = "/addinit", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/module/add", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result init() {
         try {
             Map map = moduleService.addInit();
