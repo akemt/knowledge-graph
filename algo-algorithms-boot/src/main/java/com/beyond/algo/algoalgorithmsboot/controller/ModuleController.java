@@ -51,13 +51,17 @@ public class ModuleController extends BaseController {
         AlgUser algUser = getUserInfo();
         //权限验证
         authService.isModuleByUser(algUser.getUsrCode(), modId);
-        // path为"/" 并且 fileName不为空
-        if ("/".equals(path) && Assert.isNotEmpty(fileName)) {
+
+        if(Assert.isEmpty(path) && Assert.isEmpty(fileName)){
+            path = "";
+        }else if ("/".equals(path) && Assert.isNotEmpty(fileName)) {
+            // path为"/" 并且 fileName不为空
             path = path + fileName;
-        } else {
+        }else {
             // 1、path有目录时候，fileName不为空；2、或者path为"/"，fileName为空
             path = path + File.separator + fileName;
         }
+
         AlgUser paramsUser = userService.findByUsrCode(usrCode);
         AlgModuleEditVo algModuleEditVo = moduleService.algModule(paramsUser.getUsrCode(), paramsUser.getUsrSn(), modId, path);
         return Result.ok(algModuleEditVo);
