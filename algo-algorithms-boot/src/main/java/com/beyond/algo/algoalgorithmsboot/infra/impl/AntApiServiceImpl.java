@@ -63,7 +63,10 @@ public class AntApiServiceImpl implements AntApiService {
         gitUser.setPath(gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+".git");
         log.info("项目编译路径:{},上传git路径:{}",path,gitUser.getPath());
         String version=jGitService.commitAndPushAllFiles(gitUser);
-        algModuleVersionMapper.updateLatestCommit(algModule.getModSn());
+        AlgModuleVersion algModuleVersion=new AlgModuleVersion();
+        algModuleVersion.setLatestCommit(version);
+        algModuleVersion.setModSn(algModule.getModSn());
+        algModuleVersionMapper.updateLatestCommit(algModuleVersion);
         boolean buildResult= javaModuleAdapter.moduleAntBuild(path);
         //String projectPath=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId();
         //moduleAntClassJar(String projectPath)

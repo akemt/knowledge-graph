@@ -82,8 +82,7 @@ public class ContentControllerTest {
     }
     @Test
     public void getAlgorithmDetail() throws Exception{
-        String result = this.mockMvc.perform(get("/content/getAlgorithmDetail").contentType(MediaType.APPLICATION_JSON)
-                .param("modSn","2"))
+        String result = this.mockMvc.perform(get("/zhang1/2/glgorithmdetail").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }

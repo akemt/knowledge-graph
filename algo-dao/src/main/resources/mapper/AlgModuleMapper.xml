@@ -135,7 +135,7 @@
         </where>
     </sql>
 
-    <select id="getAlgorithmDetail" resultMap="queryForListMap"  parameterType="java.lang.String">
+    <select id="getAlgorithmDetail" resultMap="queryForListMap"  parameterType="com.beyond.algo.vo.AlgorithmDetailVo" >
         select algModule.mod_sn,algModule.mod_id,algModule.need_web
         ,algModule.env_type,algModule.need_call_other,algLicense.lic_name,lan.lan_name
         ,algModuleVersion.ver_code,algStar.count
@@ -144,7 +144,8 @@
         left join  alg_program_lang lan on algModule.lan_sn =lan.lan_sn
         left join (select mod_sn,max(CONCAT(ver_code_l1,ver_code_l2,ver_code_l3)) as ver_code from alg_module_version GROUP BY mod_sn) algModuleVersion on algModule.mod_sn =algModuleVersion.mod_sn
         left join(select count(mod_sn) count,mod_sn from alg_star GROUP BY mod_sn) algStar ON algStar.mod_sn=algModule.mod_sn
-        where algModule.mod_sn=#{modSn,jdbcType=VARCHAR}
+        where algModule.mod_id=#{modId,jdbcType=VARCHAR}
+        and algModule.usr_sn=#{usrSn,jdbcType=VARCHAR}
     </select>
 
 </mapper>

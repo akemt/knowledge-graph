@@ -16,5 +16,5 @@ public interface AlgModuleVersionMapper {
 
     AlgModuleVersion selectLatestAll(String mod_sn);
 
-    int updateLatestCommit(String mod_sn);
+    int updateLatestCommit( AlgModuleVersion algModuleVersion);
 }

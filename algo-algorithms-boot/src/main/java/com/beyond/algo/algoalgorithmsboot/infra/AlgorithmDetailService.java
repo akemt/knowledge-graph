@@ -2,6 +2,7 @@ package com.beyond.algo.algoalgorithmsboot.infra;
 
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.vo.AlgModuleVo;
+import com.beyond.algo.vo.AlgorithmDetailVo;
 
 /**
  * @author ：zhangchuanzhi
@@ -9,5 +10,5 @@ import com.beyond.algo.vo.AlgModuleVo;
  * @date ：13:29 2017/10/24
  */
 public interface AlgorithmDetailService {
-    AlgModuleVo getAlgorithmDetail(String modSn) throws AlgException;
+    AlgModuleVo getAlgorithmDetail(AlgorithmDetailVo algorithmDetailVo) throws AlgException;
 }

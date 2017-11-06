@@ -2,6 +2,7 @@ package com.beyond.algo.mapper;
 
 import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.vo.AlgModuleVo;
+import com.beyond.algo.vo.AlgorithmDetailVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,5 +32,5 @@ public interface AlgModuleMapper {
 
     AlgModule selectByUsrSnAndModId(@Param("usrSn") String usrSn, @Param("modId")String modId);
 
-    AlgModuleVo getAlgorithmDetail(String modSn);
+    AlgModuleVo getAlgorithmDetail(AlgorithmDetailVo algorithmDetailVo);
 }

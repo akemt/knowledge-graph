@@ -112,4 +112,18 @@
         from alg_user
         where usr_code = #{usrCode,jdbcType=VARCHAR}
     </select>
+    <sql id="alg_user">
+        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+        create_date, update_date
+        from alg_user
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            <trim prefixOverrides="and">
+                <if test="usrSn != null and usrSn !=''">and usr_sn = #{usrSn,jdbcType=VARCHAR}</if>
+                <if test="modId != null and modId !=''">and mod_id = #{modId,jdbcType=VARCHAR}</if>
+            </trim>
+        </where>
+    </sql>
+
 </mapper>

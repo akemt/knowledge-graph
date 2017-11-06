@@ -4,17 +4,17 @@ import com.beyond.algo.algoalgorithmsboot.base.BaseController;
 import com.beyond.algo.algoalgorithmsboot.infra.AlgorithmCollectAndRankService;
 import com.beyond.algo.algoalgorithmsboot.infra.AlgorithmDetailService;
 import com.beyond.algo.algoalgorithmsboot.infra.UseAlgorithmService;
+import com.beyond.algo.algoalgorithmsboot.infra.UserService;
+import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgUser;
-import com.beyond.algo.vo.AlgArticleListVo;
-import com.beyond.algo.vo.AlgModuleVo;
-import com.beyond.algo.vo.AlgRUserModuleCallTransVo;
-import com.beyond.algo.vo.CollectArticlesVo;
+import com.beyond.algo.vo.*;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +28,6 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/content")
 public class ContentController extends BaseController {
     @Autowired
     private UseAlgorithmService useAlgorithmService;
@@ -36,6 +35,8 @@ public class ContentController extends BaseController {
     private AlgorithmCollectAndRankService algorithmCollectAndRankService;
     @Autowired
     private AlgorithmDetailService algorithmDetailService;
+    @Autowired
+    private UserService userService;
     /**
      * @author ：zhangchuanzhi
      * @Description:用户使用情况
@@ -121,10 +122,17 @@ public class ContentController extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：14:22 2017/10/19
      */
-    @RequestMapping(value="/getAlgorithmDetail", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result getAlgorithmDetail(String modSn ) throws AlgException {
-        log.info("算法模块id:{}",modSn);
-        AlgModuleVo algModuleVo = algorithmDetailService.getAlgorithmDetail(modSn);
-        return Result.ok(algModuleVo);
+    @RequestMapping(value="/{usrCode}/{modId}/glgorithmdetail", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result getAlgorithmDetail(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId ) throws AlgException {
+        log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
+        AlgUser  algUser=userService.findByUsrCode(usrCode);
+        if(Assert.isNotNULL(algUser)){
+            AlgorithmDetailVo algorithmDetailVo=new AlgorithmDetailVo();
+            algorithmDetailVo.setModId(modId);
+            algorithmDetailVo.setUsrSn(algUser.getUsrSn());
+            AlgModuleVo algModuleVo = algorithmDetailService.getAlgorithmDetail(algorithmDetailVo);
+            return Result.ok(algModuleVo);
+        }
+        return null;
     }
 }
