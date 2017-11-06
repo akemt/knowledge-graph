@@ -113,11 +113,8 @@ public class GitLibController {
     @RequestMapping(value = "/commit", method = RequestMethod.POST)
     public @ResponseBody
     Result initCommitAndPushAllFiles(GitUser gitUser) throws AlgException{
-        boolean result = jGitService.commitAndPushAllFiles(gitUser);
-        if (result) {
-            return Result.successResponse();
-        }
-        return Result.failureResponse();
+        String version = jGitService.commitAndPushAllFiles(gitUser);
+        return Result.successResponse();
     }
 
     /**

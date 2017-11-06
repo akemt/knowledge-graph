@@ -11,6 +11,7 @@ import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,8 +53,9 @@ public class JGitServiceImpl implements JGitService {
      * @param :GitUser
      * @return
      */
-    public boolean commitAndPushAllFiles(GitUser gitUser) {
+    public String commitAndPushAllFiles(GitUser gitUser)throws AlgException  {
         logger.info("initCommit方法传入本地仓库路径：{}用户名：{} 用户密码",gitUser.getPath(),gitUser.getUsrCode(),gitUser.getPassword());
+        String version="";
         try {
             FileRepository localRepo = new FileRepository( gitUser.getPath());
             Git git = new Git(localRepo);
@@ -67,11 +69,25 @@ public class JGitServiceImpl implements JGitService {
             PushCommand pushCommand = git.push();
             pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword()));
             pushCommand.call();
-            return true;
+            File gitDir = new File(gitUser.getPath());
+            if (git == null) {
+                git = Git.open(gitDir);
+            }
+            Iterable<RevCommit> gitlog= git.log().setMaxCount(1).call();
+            for (RevCommit revCommit : gitlog) {
+                version=revCommit.getName();//版本号
+                revCommit.getAuthorIdent().getName();
+                revCommit.getAuthorIdent().getEmailAddress();
+                revCommit.getAuthorIdent().getWhen();//时间
+            }
+
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            log.info("提交git代码失败");
+            String[] checkMessage = {"上传代码",""};
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000003",checkMessage);
+
         }
+        return version;
     }
 
     /**

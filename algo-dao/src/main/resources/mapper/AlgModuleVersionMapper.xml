@@ -69,4 +69,12 @@
     and ver_code_l2 = (select max(ver_code_l2) from alg_module_version where mod_sn = #{mod_sn,jdbcType=VARCHAR} GROUP BY mod_sn)
     and ver_code_l3 = (select max(ver_code_l3) from alg_module_version where mod_sn = #{mod_sn,jdbcType=VARCHAR} GROUP BY mod_sn)
   </select>
+  <update id="updateLatestCommit" parameterType="java.lang.String" >
+    UPDATE alg_module_version a
+    JOIN  (select mod_sn, max(CONCAT(ver_code_l1,ver_code_l2,ver_code_l3)) as ver_code
+         from alg_module_version GROUP BY mod_sn) b
+    on a.mod_sn=b.mod_sn and  CONCAT(a.ver_code_l1,a.ver_code_l2,a.ver_code_l3)=b.ver_code
+    set  a.latest_commit =b.ver_code
+    where a.mod_sn=#{mod_sn,jdbcType=VARCHAR}
+  </update>
 </mapper>

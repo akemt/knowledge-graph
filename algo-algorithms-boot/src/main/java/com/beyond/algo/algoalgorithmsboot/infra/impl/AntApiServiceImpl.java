@@ -10,8 +10,10 @@ import com.beyond.algo.common.Assert;
 import com.beyond.algo.constant.Constant;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgModuleMapper;
+import com.beyond.algo.mapper.AlgModuleVersionMapper;
 import com.beyond.algo.mapper.AlgProgramLangMapper;
 import com.beyond.algo.model.AlgModule;
+import com.beyond.algo.model.AlgModuleVersion;
 import com.beyond.algo.model.AlgProgramLang;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tools.ant.Project;
@@ -39,8 +41,10 @@ public class AntApiServiceImpl implements AntApiService {
     private AlgProgramLangMapper algProgramLangMapper;
     @Autowired
     private JGitService jGitService;
+    @Autowired
+    private AlgModuleVersionMapper algModuleVersionMapper;
 
-    public void moduleAntBuild(GitUser gitUser) throws AlgException {
+    public void moduleAntBuild(GitUser gitUser) throws AlgException,Exception {
         AlgModule algModule = findByUsrSnAndModId(gitUser.getUsrSn(),gitUser.getModId());
         if(Assert.isNULL(algModule)){
             String[] checkMessage = {"算法模块",""};
@@ -58,7 +62,8 @@ public class AntApiServiceImpl implements AntApiService {
         String path=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+ Constant.map.get(algProgramLang.getLanName());
         gitUser.setPath(gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+".git");
         log.info("项目编译路径:{},上传git路径:{}",path,gitUser.getPath());
-        boolean gitResult=jGitService.commitAndPushAllFiles(gitUser);
+        String version=jGitService.commitAndPushAllFiles(gitUser);
+        algModuleVersionMapper.updateLatestCommit(algModule.getModSn());
         boolean buildResult= javaModuleAdapter.moduleAntBuild(path);
         //String projectPath=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId();
         //moduleAntClassJar(String projectPath)

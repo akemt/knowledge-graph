@@ -10,5 +10,5 @@ import com.beyond.algo.exception.AlgException;
  */
 public interface AntApiService {
 
-    void moduleAntBuild(GitUser gitUser) throws AlgException;
+    void moduleAntBuild(GitUser gitUser) throws AlgException,Exception;
 }

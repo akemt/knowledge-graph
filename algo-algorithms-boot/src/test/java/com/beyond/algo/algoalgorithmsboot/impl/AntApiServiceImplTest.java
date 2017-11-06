@@ -2,6 +2,7 @@ package com.beyond.algo.algoalgorithmsboot.impl;
 
 import com.beyond.algo.algoalgorithmsboot.AlgoAlgorithmsBootApplication;
 import com.beyond.algo.algoalgorithmsboot.infra.AntApiService;
+import com.beyond.algo.algoalgorithmsboot.model.GitUser;
 import com.beyond.algo.model.AlgUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,11 +19,12 @@ public class AntApiServiceImplTest {
 
     @Test
     public void moduleAntBuildTest() throws Exception {
-        AlgUser algUser = new AlgUser();
+    /*    AlgUser algUser = new AlgUser();
         algUser.setUsrSn("37bf2269ee4845da8e86861bbde2438a");
         algUser.setUsrCode("qihe");
-        algUser.setUsrName("祁贺");
-    //    antApiService.moduleAntBuild(algUser,"TestJava2");
+        algUser.setUsrName("祁贺");*/
+        GitUser gitUser=new GitUser();
+        antApiService.moduleAntBuild(gitUser);
     }
 
 }
