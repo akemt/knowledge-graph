@@ -1,12 +1,10 @@
 package com.beyond.algo.algoalgorithmsboot.controller;
 
 import com.beyond.algo.algoalgorithmsboot.base.BaseController;
-import com.beyond.algo.algoalgorithmsboot.infra.ModuleService;
-import com.beyond.algo.algoalgorithmsboot.infra.ReadFileService;
-import com.beyond.algo.algoalgorithmsboot.infra.ShowProjectFileService;
+import com.beyond.algo.algoalgorithmsboot.infra.*;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
-import com.beyond.algo.algoalgorithmsboot.infra.WriteFileService;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgFileReadWriteVo;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/file")
 @Slf4j
 public class FileController extends BaseController {
     @Autowired
@@ -33,32 +30,25 @@ public class FileController extends BaseController {
     private ShowProjectFileService showProjectFileService;
     @Autowired
     private ModuleService moduleService;
+    @Autowired
+    private AuthService authService;
 
     // 读取文本
-    @RequestMapping(value = "{modId}/read", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result read(@PathVariable("modId") String modId, String currentPath,String fileName) {
-        try {
-            AlgUser algUser = getUserInfo();
-            AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(algUser.getUsrCode(), modId, currentPath, fileName);
-            return Result.ok(algFileReadWriteVo);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+    @RequestMapping(value = "/{usrCode}/{modId}/read", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result read(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String currentPath, String fileName) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(algUser.getUsrCode(), modId, currentPath, fileName);
+        return Result.ok(algFileReadWriteVo);
     }
 
     // 写入保存（包括新建）
-    @RequestMapping(value="{modId}/write", method= RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result write(@PathVariable("modId") String modId, String currentPath,String fileName,String fileContent) {
-        log.info("在编辑页面，新建文件或者修改文件进行保存:{} ","modId:"+modId ,"----currentPath:"+currentPath,"----fileName:"+fileName,"----fileContent:"+fileContent);
-        AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
-        try {
-            AlgUser algUser = getUserInfo();
-            writeFileService.writeFile(algUser.getUsrCode(), modId, currentPath, fileName,fileContent);//写入文件中，并且保存到路径下。
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+    @RequestMapping(value = "/{usrCode}/{modId}/write", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result write(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String currentPath, String fileName, String fileContent) throws AlgException {
+        log.info("在编辑页面，新建文件或者修改文件进行保存:{} ", "modId:" + modId, "----currentPath:" + currentPath, "----fileName:" + fileName, "----fileContent:" + fileContent);
+        AlgUser algUser = getUserInfo();
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        writeFileService.writeFile(algUser.getUsrCode(), modId, currentPath, fileName, fileContent);//写入文件中，并且保存到路径下。
         return Result.successResponse();
     }
 }

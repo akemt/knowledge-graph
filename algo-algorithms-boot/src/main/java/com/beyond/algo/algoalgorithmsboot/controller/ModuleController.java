@@ -56,6 +56,8 @@ public class ModuleController extends BaseController {
 
         if(Assert.isEmpty(path) && Assert.isEmpty(fileName)){
             path = "";
+        }else if(Assert.isNotEmpty(path) && Assert.isEmpty(fileName)){
+            path = path;
         }else if ("/".equals(path) && Assert.isNotEmpty(fileName)) {
             // path为"/" 并且 fileName不为空
             path = path + fileName;
@@ -125,8 +127,7 @@ public class ModuleController extends BaseController {
 
     /**
      * @author ：lindewei
-     * @Description:集群
-     * @param：dicSort 分类
+     * @Description: 算法新增初始化
      */
     @RequestMapping(value = "/module/add", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result init() {
