@@ -98,12 +98,12 @@ public class ModuleController extends BaseController {
      * @return
      * @Description:ant项目进行编译打包同时解压到指定目录并且代码上传git上 author:zhangchuanzhi
      */
-    @RequestMapping(value = "/{usrCode}/{modId}/build", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result buildAndUpLoadProject(GitUser gitUser, @PathVariable("usrCode") String usrCode,@PathVariable("modId") String modId) throws AlgException,Exception {
-
-
+    @RequestMapping(value = "/{usrCode}/{modId}/build", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result buildAndUpLoadProject(@PathVariable("usrCode") String usrCode,@PathVariable("modId") String modId) throws AlgException,Exception {
+        GitUser gitUser=new GitUser();
         AlgUser algUser = getUserInfo();
         authService.isModuleByUser(algUser.getUsrCode(), modId);
+        gitUser.setUsrSn(algUser.getUsrSn());
         gitUser.setModId(modId);
         //   gitUser.setUsrCode(algUser.getUsrCode());
         gitUser.setUsrCode(algUser.getUsrCode());
