@@ -3,6 +3,7 @@ package com.beyond.algo.algoalgorithmsboot.infra;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.model.AlgModuleVersion;
+import com.beyond.algo.model.AlgProgramLang;
 import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgModuleEditVo;
 
@@ -44,4 +45,10 @@ public interface ModuleService {
      * 新增算法初始化
      */
     Map addInit() throws AlgException;
+
+    /**
+     * lindewei
+     * 依赖功能：查找语言
+     */
+    AlgProgramLang getLanguage(String usrCode, String modId) throws AlgException;
 }

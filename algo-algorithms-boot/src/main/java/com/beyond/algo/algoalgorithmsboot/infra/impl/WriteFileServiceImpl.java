@@ -6,6 +6,7 @@ import java.io.OutputStream;
 
 import com.beyond.algo.algoalgorithmsboot.infra.ShowProjectFileService;
 import com.beyond.algo.algoalgorithmsboot.infra.WriteFileService;
+import com.beyond.algo.common.Assert;
 import com.beyond.algo.exception.AlgException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,13 @@ public class WriteFileServiceImpl implements WriteFileService {
     public void writeFile(String usrCode, String modId, String path, String fileName,String fileContent) throws AlgException {
         String writePath = null;
         try {
-            writePath = showProjectFileService.getModuleBasePath(usrCode,modId) + "/"+path +"/"+ fileName;
+            if(Assert.isEmpty(path)){
+                writePath = showProjectFileService.getModuleBasePath(usrCode,modId) + File.separator + fileName;
+            }else {
+                writePath = showProjectFileService.getModuleBasePath(usrCode,modId) + File.separator +path + File.separator + fileName;
+            }
         } catch (Exception e) {
-            throw new AlgException("路径writePath取得失败，创建者code：" + usrCode + "，模块id：code：" + modId + "。", e);
+            throw new AlgException("BEYOND.ALG.MODULE.WRITE.0000009",new String[]{},e);
         }
         // 构建指定文件
         File file = new File(writePath);
