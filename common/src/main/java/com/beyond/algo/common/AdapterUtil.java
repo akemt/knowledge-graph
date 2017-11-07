@@ -15,7 +15,7 @@ public class AdapterUtil {
             return Class.forName("com.beyond.algo.algoalgorithmsboot.adapter."+ lanName +"ModuleAdapter").newInstance();
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new AlgException("");
+            throw new AlgException("BEYOND.ALG.MODULE.COPY.0000006",new String[]{},e);
         }
     }
 }
