@@ -1,15 +1,19 @@
 package com.beyond.algo.algoalgorithmsboot.controller;
 
+import com.beyond.algo.algoalgorithmsboot.base.BaseController;
 import com.beyond.algo.algoalgorithmsboot.infra.AuthCodeDomainService;
 import com.beyond.algo.algoalgorithmsboot.infra.AuthCodeService;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgAuthCode;
 import com.beyond.algo.model.AlgAuthCodeDomain;
+import com.beyond.algo.model.AlgUser;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +28,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/authCode")
-public class AuthCodeController {
+public class AuthCodeController extends BaseController {
     private final static Logger logger = LoggerFactory.getLogger(AuthCodeController.class);
 
     @Autowired
@@ -32,64 +36,39 @@ public class AuthCodeController {
     @Autowired
     private AuthCodeDomainService authCodeDomainService;
 
-    @RequestMapping(value = "/listAuthCode/{usrSn}" ,method = RequestMethod.GET)
-    public Result listAuthCode(@PathVariable("usrSn") String usrSn){
-        try {
-            List<AlgAuthCode> result= authCodeService.listUserAuthCode(usrSn);
-            return Result.ok(result);
-        } catch (Exception e) {
-            log.error("返回authCode表中内容失败", e);
-            e.printStackTrace();
-            return  new Result<>(ResultEnum.FAILURE.code,e.getMessage());
-        }
+    @RequestMapping(value = "/listAuthCode" ,method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result listAuthCode() throws AlgException {
+        AlgUser algUser = getUserInfo();
+        List<AlgAuthCode> result= authCodeService.listUserAuthCode(algUser.getUsrSn());
+        return Result.ok(result);
     }
-    @RequestMapping(value="/listAuthCodeDomain/{acdSn}",method = RequestMethod.GET)
-    public Result listAuthCodeDomain(@PathVariable("acdSn") String acdSn){
-        try {
-            List<AlgAuthCodeDomain> result = authCodeDomainService.listAcdSnUrl(acdSn);
-            return Result.ok(result);
-        } catch (Exception e) {
-            log.error("返回authCodeDomain表中内容失败");
-            e.printStackTrace();
-            return new Result<>(ResultEnum.FAILURE.code,e.getMessage());
-        }
+    @RequestMapping(value="/listAuthCodeDomain/{acdSn}",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result listAuthCodeDomain(@PathVariable("acdSn") String acdSn) throws AlgException {
+        List<AlgAuthCodeDomain> result = authCodeDomainService.listAcdSnUrl(acdSn);
+        return Result.ok(result);
     }
 
-    @RequestMapping(value="/generateKey",method=RequestMethod.POST)
-    public Result generateKey(AlgAuthCode algAuthCode,String[] addUrl){
-        try {
-            Result result = authCodeService.generateKey(algAuthCode, addUrl);
-            return result;
-        } catch (Exception e) {
-            log.error("生成KEY失败");
-            e.printStackTrace();
-            return new Result<>(ResultEnum.FAILURE.code,e.getMessage());
-        }
+    @RequestMapping(value="/generateKey",method=RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result generateKey(AlgAuthCode algAuthCode,String[] addUrl) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        algAuthCode.setUsrSn(algUser.getUsrSn());
+        authCodeService.generateKey(algAuthCode, addUrl);
+        return Result.successResponse();
     }
-    @RequestMapping(value = "/deleteAuthCode/{acdSn}",method = RequestMethod.GET)
-    public Result deleteAuthCode(@PathVariable("acdSn") String acdSn){
+    @RequestMapping(value = "/deleteAuthCode/{acdSn}",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result deleteAuthCode(@PathVariable("acdSn") String acdSn) throws AlgException {
         logger.info("主键:{}",acdSn);
-        try {
-            //删除authCode表中内容
-            Result result = authCodeService.deleteAuthCode(acdSn);
-            return result;
-        } catch (Exception e) {
-            log.error("删除authCode表失败");
-            e.printStackTrace();
-            return new Result<>(ResultEnum.FAILURE.code,e.getMessage());
-        }
+        //删除authCode表中内容
+        authCodeService.deleteAuthCode(acdSn);
+        return Result.successResponse();
     }
-    @RequestMapping(value = "/update",method= RequestMethod.POST)
-    public Result update(AlgAuthCode algAuthCode,String[] addUrl){
+    @RequestMapping(value = "/update",method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result update(AlgAuthCode algAuthCode,String[] addUrl) throws AlgException {
         logger.info("名字:{}",algAuthCode.getAcdName());
-        try {
-            //更新authcode表
-            Result resultAuthCode = authCodeService.updateAuthCode(algAuthCode,addUrl);
-            return resultAuthCode;
-        } catch (Exception e) {
-            log.error("更新authCode表失败");
-            e.printStackTrace();
-            return new Result<>(ResultEnum.FAILURE.code,e.getMessage());
-        }
+        AlgUser algUser = getUserInfo();
+        algAuthCode.setUsrSn(algUser.getUsrSn());
+        //更新authcode表
+        authCodeService.updateAuthCode(algAuthCode,addUrl);
+        return Result.successResponse();
     }
 }
