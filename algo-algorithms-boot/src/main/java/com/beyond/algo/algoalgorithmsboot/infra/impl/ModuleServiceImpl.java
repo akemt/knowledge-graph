@@ -206,7 +206,7 @@ public class ModuleServiceImpl implements ModuleService {
             map.put("gpuenv",Cluster);
             return map;
         } catch (Exception e) {
-            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002",new String[]{});
+            throw new AlgException("BEYOND.ALG.MODULE.INIT.0000007",new String[]{});
         }
     }
 }

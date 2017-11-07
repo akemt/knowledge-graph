@@ -46,7 +46,7 @@ public class JavaModuleAdapter implements ModuleAdapter {
             templatePath = new ClassPathResource("templates/project/java").getFile().getPath();
         } catch (IOException e) {
             log.error(e.toString());
-            throw new AlgException("");
+            throw new AlgException("BEYOND.ALG.MODULE.COPY.0000003",new String[]{},e);
         }
         String[] cloneFileArr = projectConfigModel.getCloneFiles().split(",");
         for (String cloneFileName : cloneFileArr) {
@@ -56,7 +56,7 @@ public class JavaModuleAdapter implements ModuleAdapter {
                 FileUtils.copyFile(srcFile, destFile);
             } catch (IOException e) {
                 log.error(e.toString());
-                throw new AlgException("");
+                throw new AlgException("BEYOND.ALG.MODULE.COPY.0000003",new String[]{},e);
             }
         }
 
@@ -75,7 +75,7 @@ public class JavaModuleAdapter implements ModuleAdapter {
                 FreemarkerUtil.createFile(templatePath, ftlFileName, projectPath, destFileName, paramMap);
             } catch (Exception e) {
                 log.error(e.toString());
-                throw new AlgException("");
+                throw new AlgException("BEYOND.ALG.MODULE.GENERATE.0000004",new String[]{},e);
             }
         }
 
@@ -90,7 +90,7 @@ public class JavaModuleAdapter implements ModuleAdapter {
             FreemarkerUtil.createFile(templatePath, "Main.java.ftl", mainClassPath, projectName + ".java", paramMap);
         } catch (Exception e) {
             log.error(e.toString());
-            throw new AlgException("");
+            throw new AlgException("BEYOND.ALG.MODULE.GENERATE.0000005",new String[]{},e);
         }
     }
     @Override
