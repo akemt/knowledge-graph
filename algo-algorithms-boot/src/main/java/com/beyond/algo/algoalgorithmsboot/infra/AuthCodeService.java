@@ -10,8 +10,8 @@ import java.util.List;
  * @version Created in：2017/10/12 0012 下午 9:48
  */
 public interface AuthCodeService {
-    Result generateKey(AlgAuthCode algAuthCode,String[] addUrl);
-    Result deleteAuthCode(String acdSn);
-    Result updateAuthCode(AlgAuthCode algAuthCode,String[] addUrl);
+    void generateKey(AlgAuthCode algAuthCode,String[] addUrl);
+    void deleteAuthCode(String acdSn);
+    void updateAuthCode(AlgAuthCode algAuthCode,String[] addUrl);
     List<AlgAuthCode> listUserAuthCode(String usrSn);
 }

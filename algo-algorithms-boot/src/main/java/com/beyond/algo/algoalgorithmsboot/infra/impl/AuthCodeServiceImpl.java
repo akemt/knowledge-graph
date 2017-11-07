@@ -27,7 +27,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 
     @Override
     @Transactional
-    public Result generateKey(AlgAuthCode algAuthCode,String[] addUrl) {
+    public void generateKey(AlgAuthCode algAuthCode,String[] addUrl) {
         //主键插入
         String acdSn = UUIDUtil.createUUID();
         algAuthCode.setAcdSn(acdSn);
@@ -58,13 +58,11 @@ public class AuthCodeServiceImpl implements AuthCodeService {
                 algAuthCodeDomainMapper.insert(algAuthCodeDomain);
             }
         }
-
-        return Result.successResponse();
     }
 
     @Override
     @Transactional
-    public Result deleteAuthCode(String acdSn) {
+    public void deleteAuthCode(String acdSn) {
         algAuthCodeMapper.deleteByPrimaryKey(acdSn);
         //List<AlgAuthCodeDomain> resultAuthDomain = authCodeDomainService.listAcdSnUrl(acdSn);
         List<AlgAuthCodeDomain> resultAuthDomain = algAuthCodeDomainMapper.listAcdSnUrl(acdSn);
@@ -73,12 +71,11 @@ public class AuthCodeServiceImpl implements AuthCodeService {
             //Result result = authCodeDomainService.deleteByAcdSn(acdSn);
             algAuthCodeDomainMapper.deleteByAcdSn(acdSn);
         }
-        return Result.successResponse();
     }
 
     @Override
     @Transactional
-    public Result updateAuthCode(AlgAuthCode algAuthCode,String[] addUrl) {
+    public void updateAuthCode(AlgAuthCode algAuthCode,String[] addUrl) {
         //首先更新AuthCode表
         algAuthCodeMapper.updateByPrimaryKey(algAuthCode);
 
@@ -109,7 +106,6 @@ public class AuthCodeServiceImpl implements AuthCodeService {
                 algAuthCodeDomainMapper.insert(algAuthCodeDomain);
             }
         }
-        return Result.successResponse();
     }
     @Override
     public List<AlgAuthCode> listUserAuthCode(String usrSn) {
