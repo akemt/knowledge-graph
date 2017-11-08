@@ -1,9 +1,11 @@
 package com.beyond.algo.algoalgorithmsboot.controller;
 
+import com.beyond.algo.algoalgorithmsboot.base.BaseController;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.algoalgorithmsboot.infra.PayCashService;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgCashTrans;
+import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.PayRecordVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +23,7 @@ import java.util.List;
  * @date ：16:00 2017/10/11
  */
 @RestController
-@RequestMapping("/pay")
-public class PayCashController {
+public class PayCashController extends BaseController {
     private final static Logger logger = LoggerFactory.getLogger(PayCashController.class);
 
     @Autowired
@@ -36,6 +37,8 @@ public class PayCashController {
      */
     @RequestMapping(value="/payRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result payRecord(PayRecordVo payRecordVo) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        payRecordVo.setUsrSn(algUser.getUsrSn());
         logger.info("用户id:{},Page:{},Row:{}",payRecordVo.getUsrSn(),payRecordVo.getPage(),payRecordVo.getRows());
         List<AlgCashTrans> algCashTransList= payCashService.payRecord(payRecordVo);
         return Result.ok(algCashTransList);
