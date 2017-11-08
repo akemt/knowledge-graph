@@ -13,4 +13,5 @@ public class AlgModuleVo extends AlgModule {
     private String licName;
     private String lanName;
     private String verCode;
+    private String url;
 }
