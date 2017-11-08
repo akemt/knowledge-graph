@@ -35,7 +35,7 @@ public class AlgModuleListController {
             numPage = 1;
         }
         if(Assert.isEmpty(numRows)){
-            numRows = 10;
+            numRows = 100;
         }
         List<AlgModuleListVo> result = algModuleListService.findModuleList(catName, usage, modName, numPage, numRows);
         return Result.ok(result);
