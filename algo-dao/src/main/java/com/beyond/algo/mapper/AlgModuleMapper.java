@@ -1,6 +1,7 @@
 package com.beyond.algo.mapper;
 
 import com.beyond.algo.model.AlgModule;
+import com.beyond.algo.vo.AlgModuleListVo;
 import com.beyond.algo.vo.AlgModuleVo;
 import com.beyond.algo.vo.AlgorithmDetailVo;
 import org.apache.ibatis.annotations.Param;
@@ -20,15 +21,14 @@ public interface AlgModuleMapper {
 
     List<AlgModule> getRankList(List rankList);
 
-    List<AlgModule> listAlgByUsage( String catName, String usage , String modName);
-
-    /*List<AlgModule> listAlgByUsageStar(String catName);
-
-    List<AlgModule> listAlgByUsageFollow(String catName);
-
-    List<AlgModule> listAlgByUsageCall(String catName);
-
-    List<AlgModule> listAlgByUsageCredit(String catName);*/
+    /**
+     *  分页查询算法列表
+     * @param catName
+     * @param usage
+     * @param modName
+     * @return
+     */
+    List<AlgModuleListVo> findModuleList(String catName, String usage , String modName);
 
     AlgModule selectByUsrSnAndModId(@Param("usrSn") String usrSn, @Param("modId")String modId);
 
