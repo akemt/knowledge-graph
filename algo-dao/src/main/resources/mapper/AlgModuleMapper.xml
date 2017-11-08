@@ -104,7 +104,7 @@
         usa.follow_cnt as follow_cnt,
         usa.call_cnt as call_cnt,
         lan.lan_name as lan_name,
-        concat('/algorithms','/',us.usr_code,'/',mo.mod_id) as url
+        concat('/algo','/',us.usr_code,'/',mo.mod_id) as url
     </sql>
     <select id="findModuleList" resultMap="ModuleListMap">
         select
