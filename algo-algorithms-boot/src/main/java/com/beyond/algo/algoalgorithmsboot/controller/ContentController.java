@@ -122,7 +122,7 @@ public class ContentController extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：14:22 2017/10/19
      */
-    @RequestMapping(value="/{usrCode}/{modId}/glgorithmdetail", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value="/{usrCode}/{modId}/algorithmdetail", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result getAlgorithmDetail(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId ) throws AlgException {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
         AlgUser  algUser=userService.findByUsrCode(usrCode);

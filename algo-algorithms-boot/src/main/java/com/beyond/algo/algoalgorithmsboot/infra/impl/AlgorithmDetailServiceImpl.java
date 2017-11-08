@@ -8,6 +8,8 @@ import com.beyond.algo.vo.AlgorithmDetailVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+
 /**
  * @author ：zhangchuanzhi
  * @Description:算法详情
@@ -20,6 +22,7 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
     @Override
     public AlgModuleVo getAlgorithmDetail(AlgorithmDetailVo algorithmDetailVo)throws AlgException {
         AlgModuleVo algModuleVo=algModuleMapper.getAlgorithmDetail(algorithmDetailVo);
+        algModuleVo.setUrl(algorithmDetailVo.getUsrSn()+ File.separator+algorithmDetailVo.getModId()+File.separator+"edit");
         return algModuleVo;
     }
 }
