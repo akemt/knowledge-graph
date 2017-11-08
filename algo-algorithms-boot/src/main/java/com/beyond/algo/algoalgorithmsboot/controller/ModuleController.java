@@ -156,7 +156,6 @@ public class ModuleController extends BaseController {
         authService.isModuleByUser(algUser.getUsrCode(), modId);
         //定义文件名和路径的变量
         String dependFile = null;
-        String dependPath = null;
         //判断何种的对应的配置文件
         AlgProgramLang algProgramLang = moduleService.getLanguage(usrCode,modId);
         if(algProgramLang.getLanName().equals("Java")){
@@ -172,11 +171,18 @@ public class ModuleController extends BaseController {
      * @Description: 依赖文件修改保存
      */
     @RequestMapping(value = "/{usrCode}/{modId}/dependWrite", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result dependWrite(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String dependFile, String fileContent) throws AlgException {
+    public Result dependWrite(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String fileContent) throws AlgException {
         log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
         AlgUser algUser = getUserInfo();
         //权限验证
         authService.isModuleByUser(algUser.getUsrCode(), modId);
+        //定义文件名和路径的变量
+        String dependFile = null;
+        //判断何种的对应的配置文件
+        AlgProgramLang algProgramLang = moduleService.getLanguage(usrCode,modId);
+        if(algProgramLang.getLanName().equals("Java")){
+            dependFile = "ivy.xml";
+        }
         writeFileService.writeFile(algUser.getUsrCode(), modId, null, dependFile, fileContent);//写入文件中，并且保存到路径下。
         return Result.successResponse();
     }
