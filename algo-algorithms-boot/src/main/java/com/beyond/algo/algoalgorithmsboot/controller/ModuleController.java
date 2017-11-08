@@ -10,6 +10,7 @@ import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.*;
+import com.beyond.algo.vo.AlgFileReadWriteVo;
 import com.beyond.algo.vo.AlgModuleEditVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +33,22 @@ public class ModuleController extends BaseController {
 
     @Autowired
     private ModuleService moduleService;
-
     @Autowired
     private JGitService jGitService;
-
     @Autowired
     private AntApiService antApiService;
-
     @Autowired
     private ProjectConfigEntity projectConfigEntity;
     @Autowired
     private AuthService authService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ReadFileService readFileService;
+    @Autowired
+    private WriteFileService writeFileService;
+    @Autowired
+    private ShowProjectFileService showProjectFileService;
 
     //初始化、和返回上一级的目录
     @GetMapping(value = "/{usrCode}/{modId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -138,5 +142,48 @@ public class ModuleController extends BaseController {
             e.printStackTrace();
             return new Result<Object>(ResultEnum.FAILURE.code, e.getMessage());
         }
+    }
+
+    /**
+     * @author ：lindewei
+     * @Description: 依赖文件读取
+     */
+    @RequestMapping(value = "/{usrCode}/{modId}/dependRead", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result dependRead(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId) throws AlgException {
+        log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
+        AlgUser algUser = getUserInfo();
+        //权限验证
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        //定义文件名和路径的变量
+        String dependFile = null;
+        //判断何种的对应的配置文件
+        AlgProgramLang algProgramLang = moduleService.getLanguage(usrCode,modId);
+        if(algProgramLang.getLanName().equals("Java")){
+            dependFile = "ivy.xml";
+        }
+        //读取文件
+        AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(usrCode, modId, null, dependFile);
+        return Result.ok(algFileReadWriteVo);
+    }
+
+    /**
+     * @author ：lindewei
+     * @Description: 依赖文件修改保存
+     */
+    @RequestMapping(value = "/{usrCode}/{modId}/dependWrite", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result dependWrite(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String fileContent) throws AlgException {
+        log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
+        AlgUser algUser = getUserInfo();
+        //权限验证
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        //定义文件名和路径的变量
+        String dependFile = null;
+        //判断何种的对应的配置文件
+        AlgProgramLang algProgramLang = moduleService.getLanguage(usrCode,modId);
+        if(algProgramLang.getLanName().equals("Java")){
+            dependFile = "ivy.xml";
+        }
+        writeFileService.writeFile(algUser.getUsrCode(), modId, null, dependFile, fileContent);//写入文件中，并且保存到路径下。
+        return Result.successResponse();
     }
 }

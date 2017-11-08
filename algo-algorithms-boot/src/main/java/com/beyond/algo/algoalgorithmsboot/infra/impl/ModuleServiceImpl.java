@@ -1,7 +1,10 @@
 package com.beyond.algo.algoalgorithmsboot.infra.impl;
 
 import com.beyond.algo.algoalgorithmsboot.adapter.infra.ModuleAdapter;
-import com.beyond.algo.algoalgorithmsboot.infra.*;
+import com.beyond.algo.algoalgorithmsboot.infra.GitLibService;
+import com.beyond.algo.algoalgorithmsboot.infra.JGitService;
+import com.beyond.algo.algoalgorithmsboot.infra.ModuleService;
+import com.beyond.algo.algoalgorithmsboot.infra.ShowProjectFileService;
 import com.beyond.algo.algoalgorithmsboot.model.GitConfigModel;
 import com.beyond.algo.algoalgorithmsboot.model.GitUser;
 import com.beyond.algo.algoalgorithmsboot.model.ProjectConfigEntity;
@@ -13,11 +16,8 @@ import com.beyond.algo.model.*;
 import com.beyond.algo.vo.AlgModuleEditVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.File;
 import java.util.Date;
@@ -51,6 +51,10 @@ public class ModuleServiceImpl implements ModuleService {
     private AlgDicMapper algDicMapper;
     @Autowired
     private AlgLicenseMapper algLicenseMapper;
+    @Autowired
+    private AlgUserMapper algUserMapper;
+    @Autowired
+    private ShowProjectFileService showProjectFileService;
 
     @Override
     public void initProject(AlgUser algUser, String projectName) throws Exception {
@@ -62,9 +66,6 @@ public class ModuleServiceImpl implements ModuleService {
         createModuleAdapter.createModule(algUser.getUsrCode(), projectName, gitConfigModel, projectConfigModel);
 
     }
-
-    @Autowired
-    private ShowProjectFileService showProjectFileService;
 
     //返回文件的后缀名
     @Override
@@ -208,5 +209,16 @@ public class ModuleServiceImpl implements ModuleService {
         } catch (Exception e) {
             throw new AlgException("BEYOND.ALG.MODULE.INIT.0000007",new String[]{});
         }
+    }
+
+    /**
+     * lindewei
+     * 依赖功能：查找语言
+     */
+    public AlgProgramLang getLanguage(String usrCode,String modId) throws AlgException{
+        AlgUser algUser = algUserMapper.selectUsrCode(usrCode);
+        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(),modId);
+        AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
+        return algProgramLang;
     }
 }
