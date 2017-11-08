@@ -21,7 +21,6 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/algCatRank")
 public class AlgModuleListController {
 
     @Autowired
@@ -29,7 +28,7 @@ public class AlgModuleListController {
 
     @Value("server.context-path")
     private String contextPath; //   /algorithms + File.se
-    @RequestMapping(value = "/listAlg",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/module/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public  Result listAlg(String catName,String usage,String modName,Integer numPage,Integer numRows) throws AlgException {
         //log.info()
         if(Assert.isEmpty(numPage)){
