@@ -60,8 +60,8 @@ public class AlgModuleListController extends BaseController {
     /**
      @Description:我的算法(无参)
      */
-    @RequestMapping(value = "/module/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result listAlgTwo(String catName,String usage,String modName,Integer numPage,Integer numRows,String id) throws AlgException {
+    @RequestMapping(value = "/module/mylist",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public  Result myListAlg(String catName,String usage,String modName,Integer numPage,Integer numRows,String id) throws AlgException {
         //log.info()
         if(Assert.isEmpty(numPage)){
             numPage = 1;
