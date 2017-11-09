@@ -61,7 +61,7 @@ public class AlgModuleListController extends BaseController {
      @Description:我的算法(无参)
      */
     @RequestMapping(value = "/module/mylist",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result myListAlg(String catName,String usage,String modName,Integer numPage,Integer numRows,String id) throws AlgException {
+    public  Result myListAlg(Integer numPage,Integer numRows) throws AlgException {
         //log.info()
         if(Assert.isEmpty(numPage)){
             numPage = 1;
@@ -70,7 +70,7 @@ public class AlgModuleListController extends BaseController {
             numRows = 100;
         }
         AlgUser algUser = getUserInfo();
-        List<AlgModuleListVo> result = algModuleListService.findModuleList(catName, usage, modName, numPage, numRows,id,algUser.getUsrCode());
+        List<AlgModuleListVo> result = algModuleListService.findModuleList(null, null, null, numPage, numRows,null,algUser.getUsrCode());
         return Result.ok(result);
     }
 }
