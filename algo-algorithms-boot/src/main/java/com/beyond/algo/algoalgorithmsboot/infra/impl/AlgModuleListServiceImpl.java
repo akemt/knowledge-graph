@@ -2,8 +2,10 @@ package com.beyond.algo.algoalgorithmsboot.infra.impl;
 
 import com.beyond.algo.algoalgorithmsboot.infra.AlgModuleListService;
 import com.beyond.algo.exception.AlgException;
+import com.beyond.algo.mapper.AlgArticleListMapper;
 import com.beyond.algo.mapper.AlgModuleMapper;
 import com.beyond.algo.mapper.AlgModuleUsageMapper;
+import com.beyond.algo.model.AlgArticleList;
 import com.beyond.algo.model.AlgModule;
 import com.beyond.algo.vo.AlgModuleListVo;
 import com.github.pagehelper.PageHelper;
@@ -22,12 +24,20 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
     AlgModuleMapper algModuleMapper;
     @Autowired
     AlgModuleUsageMapper algModuleUsageMapper;
+    @Autowired
+    AlgArticleListMapper algArticleListMapper;
 
     @Override
-    public List<AlgModuleListVo> findModuleList(String catName, String usage ,String modName,Integer numPage,Integer numRows) throws AlgException {
+    public List<AlgModuleListVo> findModuleList(String catName, String usage ,String modName,Integer numPage,Integer numRows,String id) throws AlgException {
         //初步设定用数据库进行排序查询
         PageHelper.startPage(numPage,numRows);
-        List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleList(catName,usage,modName);
+        List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleList(catName,usage,modName,id);
         return resultAlgModule;
+    }
+    @Override
+    //为不同实现功能获取文献信息
+    public AlgArticleList findAlgArticleList(Integer id) throws AlgException{
+        AlgArticleList algArticleList = algArticleListMapper.selectByPrimaryKey(id);
+        return algArticleList;
     }
 }

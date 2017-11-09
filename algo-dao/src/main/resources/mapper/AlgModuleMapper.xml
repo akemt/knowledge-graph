@@ -28,6 +28,7 @@
         <result column="follow_cnt" property="followCnt" jdbcType="VARCHAR"/>
         <result column="call_cnt" property="callCnt" jdbcType="VARCHAR"/>
         <result column="lan_name" property="lanName" jdbcType="VARCHAR"/>
+        <result column="usr_name" property="usrName" jdbcType="VARCHAR"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
         <result column="papertext" property="papertext" jdbcType="VARCHAR"/>
         <result column="id" property="id" jdbcType="VARCHAR"/>
@@ -106,6 +107,7 @@
         usa.follow_cnt as follow_cnt,
         usa.call_cnt as call_cnt,
         lan.lan_name as lan_name,
+        us.usr_name as usr_name,
         concat('/algo','/',us.usr_code,'/',mo.mod_id) as url,
 	    art.papertext as papertext,
 	    art.id as id
@@ -124,6 +126,7 @@
             <trim prefixOverrides="and">
                 <if test="arg0 != null and arg0 !=''">and ac.cat_sn = #{arg0,jdbcType=VARCHAR}</if>
                 <if test="arg2 != null and arg2 !=''">and (mo.mod_name like concat(#{arg2,jdbcType=VARCHAR},'%') or mo.mod_desc like concat(#{arg2,jdbcType=VARCHAR},'%') )</if>
+                <if test="arg3 != null and arg3 !=''">and mo.atl_sn = #{arg3,jdbcType=VARCHAR}</if>
             </trim>
         </where>
         <if test="arg1 == ''"> order by usa.star_cnt DESC </if>
