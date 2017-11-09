@@ -1,6 +1,12 @@
 package com.beyond.algo.algodataboot.controller;
 
+
+import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
+import com.beyond.algo.exception.AlgException;
+import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.ModelDataVo;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author ：huangjinqing
@@ -25,6 +32,7 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/algo_modelset")
+@Slf4j
 public class ModelSetController {
 
 
@@ -210,5 +218,23 @@ public class ModelSetController {
             return resultVo;
         }
     }
-
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:算法详情的数据模型
+     * @param：accSn
+     * @Modify By :zhangchuanzhi
+     * @date ：9:14 2017/11/09
+     */
+    @RequestMapping(value="/{usrCode}/{modId}/modeldata", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result modeldata(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId,ModelDataVo modelDataVo ) throws AlgException {
+        log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
+        AlgUser algUser = modelSetService.findByUsrCode(usrCode);
+        if(Assert.isNULL(algUser)){
+         //   String[] checkMessage = {"个人主页",""};
+          //  throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001",checkMessage);
+        }
+        modelDataVo.setUsrSn(algUser.getUsrSn());
+        List<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo);
+        return  Result.ok(mdelDataVoList);
+    }
 }

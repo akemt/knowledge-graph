@@ -1,8 +1,11 @@
 package com.beyond.algo.algodataboot.infra;
 
 import com.beyond.algo.common.Result;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgModelSet;
 import com.beyond.algo.model.AlgModel;
+import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.ModelDataVo;
 
 import javax.management.relation.RoleList;
 import java.lang.reflect.Array;
@@ -82,4 +85,7 @@ public interface ModelSetService {
      */
     Result queryAlgModel(String modelSetSn) throws Exception;
 
+     AlgUser findByUsrCode(String usrCode);
+
+    List<ModelDataVo>  queryModelDataSet(ModelDataVo modelDataVo) throws AlgException;
 }

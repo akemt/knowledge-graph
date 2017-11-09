@@ -1,6 +1,11 @@
 package com.beyond.algo.algodataboot.infra.impl;
 
 import com.beyond.algo.algodataboot.infra.ModelSetService;
+import com.beyond.algo.exception.AlgException;
+import com.beyond.algo.mapper.AlgUserMapper;
+import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.ModelDataVo;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +33,9 @@ public class ModelSetServiceImpl implements ModelSetService {
 
     @Autowired
     private AlgModelMapper algModelMapper;
+
+    @Autowired
+    private AlgUserMapper algUserMapper;
 
     @Override
     public Result addModelSet(AlgModelSet modelSet) throws Exception {
@@ -147,5 +155,17 @@ public class ModelSetServiceImpl implements ModelSetService {
             return new Result("获取所有模型集失败，模型集串号：" + modelSetSn);
         }
 
+    }
+    @Override
+    public AlgUser findByUsrCode(String usrCode){
+
+        return algUserMapper.selectUsrCode(usrCode);
+    }
+    @Override
+    public List<ModelDataVo> queryModelDataSet(ModelDataVo modelDataVo)throws AlgException{
+        //分页处理
+        PageHelper.startPage(modelDataVo.getPage(), modelDataVo.getRows());
+        List<ModelDataVo> modelDataVoList = algModelMapper.queryModelDataSet(modelDataVo);
+        return modelDataVoList;
     }
 }
