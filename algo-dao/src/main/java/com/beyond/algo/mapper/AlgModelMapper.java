@@ -1,6 +1,8 @@
 package com.beyond.algo.mapper;
 
 import com.beyond.algo.model.AlgModel;
+import com.beyond.algo.vo.ModelDataVo;
+
 import java.util.List;
 
 public interface AlgModelMapper {
@@ -15,4 +17,6 @@ public interface AlgModelMapper {
     int updateByPrimaryKey(AlgModel record);
 
     int deleteByModelSetSn (String modelSetSn);
+
+    List<ModelDataVo> queryModelDataSet(ModelDataVo modelDataVo);
 }

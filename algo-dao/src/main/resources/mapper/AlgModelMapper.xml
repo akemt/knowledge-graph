@@ -15,6 +15,10 @@
     <result column="is_open_src" property="isOpenSrc" jdbcType="VARCHAR" />
     <result column="comment" property="comment" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="queryForListMap" type="com.beyond.algo.vo.ModelDataVo"  extends="BaseResultMap">
+    <result column="data_addr" jdbcType="VARCHAR" property="dataUrl" />
+    <result column="create_time" jdbcType="VARCHAR" property="createDate" />
+  </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from alg_model
     where model_sn = #{modelSn,jdbcType=VARCHAR}
@@ -61,5 +65,12 @@
     model_name, model_en_name, model_size, is_open_src, comment
     from alg_model
     where model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
+  </select>
+
+  <select id="queryModelDataSet" resultMap="queryForListMap" parameterType="com.beyond.algo.vo.ModelDataVo" >
+    select date_format(alg_model.create_time,'%Y-%c-%d %h:%i:%s') create_time , alg_model.model_address,alg_model.is_open_src, alg_model.comment,alg_data.data_addr
+    from alg_model left join alg_data on alg_model.dat_sn=alg_data.data_sn
+    where alg_model.usr_sn= #{usrSn,jdbcType=VARCHAR}
+    order by alg_model.create_time desc
   </select>
 </mapper>

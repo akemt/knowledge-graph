@@ -116,4 +116,13 @@ public class ModelSetControllerTest {
         System.out.println(result);
     }
 
+    @Test
+    public void queryModelList() throws Exception {
+        String result = this.mockMvc.perform(post("/algo_modelset/qwer1/test/modeldata").contentType(MediaType.APPLICATION_JSON)
+                .param("page","0")
+                .param("rows","2"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
 }
