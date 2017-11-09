@@ -35,7 +35,7 @@ public class AlgModuleListController extends BaseController {
      @Description:我的算法列表
      */
     @RequestMapping(value = "/module/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result listAlg(String catName,String usage,String modName,Integer numPage,Integer numRows,String strId) throws AlgException {
+    public  Result listAlg(String catName,String usage,String modName,Integer numPage,Integer numRows,String id) throws AlgException {
         //log.info()
         if(Assert.isEmpty(numPage)){
             numPage = 1;
@@ -43,7 +43,7 @@ public class AlgModuleListController extends BaseController {
         if(Assert.isEmpty(numRows)){
             numRows = 100;
         }
-        List<AlgModuleListVo> result = algModuleListService.findModuleList(catName, usage, modName, numPage, numRows,strId,null);
+        List<AlgModuleListVo> result = algModuleListService.findModuleList(catName, usage, modName, numPage, numRows,id,null);
         return Result.ok(result);
     }
 
@@ -60,8 +60,8 @@ public class AlgModuleListController extends BaseController {
     /**
      @Description:我的算法(无参)
      */
-    @RequestMapping(value = "/module/mylist",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result listAlgTwo(String catName,String usage,String modName,Integer numPage,Integer numRows,String strId) throws AlgException {
+    @RequestMapping(value = "/module/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public  Result listAlgTwo(String catName,String usage,String modName,Integer numPage,Integer numRows,String id) throws AlgException {
         //log.info()
         if(Assert.isEmpty(numPage)){
             numPage = 1;
@@ -70,7 +70,7 @@ public class AlgModuleListController extends BaseController {
             numRows = 100;
         }
         AlgUser algUser = getUserInfo();
-        List<AlgModuleListVo> result = algModuleListService.findModuleList(catName, usage, modName, numPage, numRows,strId,algUser.getUsrCode());
+        List<AlgModuleListVo> result = algModuleListService.findModuleList(catName, usage, modName, numPage, numRows,id,algUser.getUsrCode());
         return Result.ok(result);
     }
 }
