@@ -28,7 +28,7 @@ public interface AlgModuleMapper {
      * @param modName
      * @return
      */
-    List<AlgModuleListVo> findModuleList(String catName, String usage , String modName,String id);
+    List<AlgModuleListVo> findModuleList(String catName, String usage, String modName,String id,String usrCode);
 
     AlgModule selectByUsrSnAndModId(@Param("usrSn") String usrSn, @Param("modId")String modId);
 

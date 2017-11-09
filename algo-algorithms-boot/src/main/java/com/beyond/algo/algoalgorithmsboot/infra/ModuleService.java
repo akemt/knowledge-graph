@@ -51,4 +51,10 @@ public interface ModuleService {
      * 依赖功能：查找语言
      */
     AlgProgramLang getLanguage(String usrCode, String modId) throws AlgException;
+
+    /**
+     * lindewei
+     * 版本接口
+     */
+    void addVer(String usrCode,String modId,String verMark)throws AlgException;
 }

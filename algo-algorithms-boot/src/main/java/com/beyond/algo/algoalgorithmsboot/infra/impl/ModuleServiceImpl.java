@@ -179,6 +179,7 @@ public class ModuleServiceImpl implements ModuleService {
      * lindewei
      * 新增算法初始化
      */
+    @Override
     public Map addInit() throws AlgException {
         try {
             //初始化
@@ -215,10 +216,19 @@ public class ModuleServiceImpl implements ModuleService {
      * lindewei
      * 依赖功能：查找语言
      */
+    @Override
     public AlgProgramLang getLanguage(String usrCode,String modId) throws AlgException{
         AlgUser algUser = algUserMapper.selectUsrCode(usrCode);
         AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(),modId);
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         return algProgramLang;
+    }
+
+    /**
+     * lindewei
+     * 版本接口
+     */
+    public void addVer(String usrCode,String modId,String verMark)throws AlgException{
+
     }
 }

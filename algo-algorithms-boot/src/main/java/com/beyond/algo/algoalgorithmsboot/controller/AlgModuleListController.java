@@ -1,10 +1,12 @@
 package com.beyond.algo.algoalgorithmsboot.controller;
 
+import com.beyond.algo.algoalgorithmsboot.base.BaseController;
 import com.beyond.algo.algoalgorithmsboot.infra.AlgModuleListService;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgArticleList;
+import com.beyond.algo.model.AlgUser;
 import com.beyond.algo.vo.AlgModuleListVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-public class AlgModuleListController {
+public class AlgModuleListController extends BaseController {
 
     @Autowired
     private AlgModuleListService algModuleListService;
@@ -41,7 +43,7 @@ public class AlgModuleListController {
         if(Assert.isEmpty(numRows)){
             numRows = 100;
         }
-        List<AlgModuleListVo> result = algModuleListService.findModuleList(catName, usage, modName, numPage, numRows,strId);
+        List<AlgModuleListVo> result = algModuleListService.findModuleList(catName, usage, modName, numPage, numRows,strId,null);
         return Result.ok(result);
     }
 
@@ -53,5 +55,22 @@ public class AlgModuleListController {
         //获取文献信息
         AlgArticleList algArticleList = algModuleListService.findAlgArticleList(id);
         return Result.ok(algArticleList);
+    }
+
+    /**
+     @Description:我的算法(无参)
+     */
+    @RequestMapping(value = "/module/listTwo",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public  Result listAlgTwo(String catName,String usage,String modName,Integer numPage,Integer numRows,String strId) throws AlgException {
+        //log.info()
+        if(Assert.isEmpty(numPage)){
+            numPage = 1;
+        }
+        if(Assert.isEmpty(numRows)){
+            numRows = 100;
+        }
+        AlgUser algUser = getUserInfo();
+        List<AlgModuleListVo> result = algModuleListService.findModuleList(catName, usage, modName, numPage, numRows,strId,algUser.getUsrCode());
+        return Result.ok(result);
     }
 }

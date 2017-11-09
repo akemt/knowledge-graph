@@ -28,10 +28,10 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
     AlgArticleListMapper algArticleListMapper;
 
     @Override
-    public List<AlgModuleListVo> findModuleList(String catName, String usage ,String modName,Integer numPage,Integer numRows,String id) throws AlgException {
+    public List<AlgModuleListVo> findModuleList(String catName, String usage ,String modName,Integer numPage,Integer numRows,String id,String usrCode) throws AlgException {
         //初步设定用数据库进行排序查询
         PageHelper.startPage(numPage,numRows);
-        List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleList(catName,usage,modName,id);
+        List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleList(catName,usage,modName,id,usrCode);
         return resultAlgModule;
     }
     @Override
