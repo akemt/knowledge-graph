@@ -14,6 +14,8 @@ import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.*;
 import com.beyond.algo.model.*;
 import com.beyond.algo.vo.AlgModuleEditVo;
+import com.beyond.algo.vo.AlgModuleVo;
+import com.beyond.algo.vo.AlgorithmDetailVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -229,6 +231,24 @@ public class ModuleServiceImpl implements ModuleService {
      * 版本接口
      */
     public void addVer(String usrCode,String modId,String verMark)throws AlgException{
-
+        AlgUser algUser = algUserMapper.selectUsrCode(usrCode);
+        //给AlgorithmDetailVo赋值
+        AlgorithmDetailVo algorithmDetailVo = new AlgorithmDetailVo();
+        algorithmDetailVo.setUsrSn(algUser.getUsrSn());
+        algorithmDetailVo.setModId(modId);
+        //获取最新的版本
+        AlgModuleVo algModuleVo = algModuleMapper.getAlgorithmDetail(algorithmDetailVo);
+        AlgModuleVersion algModuleVersion = algModuleVersionMapper.selectLatestAll(algModuleVo.getModSn());
+        //插入新的版本号
+        if("H".equals(verMark)){
+            algModuleVersion.setVerCodeL1(algModuleVersion.getVerCodeL1()+1);
+        }else if("M".equals(verMark)){
+            algModuleVersion.setVerCodeL2(algModuleVersion.getVerCodeL2()+1);
+        }else{
+            algModuleVersion.setVerCodeL3(algModuleVersion.getVerCodeL3()+1);
+        }
+        algModuleVersion.setVerSn(UUIDUtil.createUUID());
+        algModuleVersion.setCreateDate(new Date());
+        algModuleVersionMapper.insert(algModuleVersion);
     }
 }

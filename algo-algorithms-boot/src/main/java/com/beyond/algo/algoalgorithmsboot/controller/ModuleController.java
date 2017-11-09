@@ -186,4 +186,14 @@ public class ModuleController extends BaseController {
         writeFileService.writeFile(algUser.getUsrCode(), modId, null, dependFile, fileContent);//写入文件中，并且保存到路径下。
         return Result.successResponse();
     }
+
+    /**
+     * @author ：lindewei
+     * @Description: 发布接口
+     */
+    @RequestMapping(value = "/{usrCode}/{modId}/publish", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode,String verMark) throws AlgException {
+        moduleService.addVer(usrCode, modId,verMark);
+        return Result.successResponse();
+    }
 }
