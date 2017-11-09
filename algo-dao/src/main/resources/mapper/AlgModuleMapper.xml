@@ -29,6 +29,8 @@
         <result column="call_cnt" property="callCnt" jdbcType="VARCHAR"/>
         <result column="lan_name" property="lanName" jdbcType="VARCHAR"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="papertext" property="papertext" jdbcType="VARCHAR"/>
+        <result column="id" property="id" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="queryForListMap" type="com.beyond.algo.vo.AlgModuleVo"  extends="BaseResultMap">
         <result column="lic_name" jdbcType="VARCHAR" property="licName" />
@@ -104,7 +106,9 @@
         usa.follow_cnt as follow_cnt,
         usa.call_cnt as call_cnt,
         lan.lan_name as lan_name,
-        concat('/algorithms','/',us.usr_code,'/',mo.mod_id) as url
+        concat('/algo','/',us.usr_code,'/',mo.mod_id) as url,
+	    art.papertext as papertext,
+	    art.id as id
     </sql>
     <select id="findModuleList" resultMap="ModuleListMap">
         select
@@ -115,6 +119,7 @@
         left join (select max(create_date) as createDate ,mod_sn from alg_module_version group by mod_sn) amv on amv.mod_sn = mo.mod_sn
         left join alg_program_lang lan on lan.lan_sn = mo.lan_sn
         left join alg_user us on us.usr_sn = mo.usr_sn
+        left join alg_article_list art on art.id = mo.atl_sn
         <where>
             <trim prefixOverrides="and">
                 <if test="arg0 != null and arg0 !=''">and ac.cat_sn = #{arg0,jdbcType=VARCHAR}</if>

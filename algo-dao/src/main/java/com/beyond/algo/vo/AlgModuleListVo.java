@@ -12,5 +12,7 @@ public class AlgModuleListVo {
     private String callCnt;
     private String lanName;
     private String url;
+    private String papertext;
+    private String id;
 
 }

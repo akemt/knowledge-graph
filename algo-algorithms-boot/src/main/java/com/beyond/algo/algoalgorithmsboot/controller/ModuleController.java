@@ -172,7 +172,7 @@ public class ModuleController extends BaseController {
      */
     @RequestMapping(value = "/{usrCode}/{modId}/dependWrite", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result dependWrite(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String fileContent) throws AlgException {
-        log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
+        log.info("depend write module file tree: usrCode:{} and modId: {} and fileContent:{}", usrCode, modId,fileContent);
         AlgUser algUser = getUserInfo();
         //权限验证
         authService.isModuleByUser(algUser.getUsrCode(), modId);
