@@ -85,7 +85,8 @@ public class AlgModuleListController extends BaseController {
         if(Assert.isEmpty(numRows)){
             numRows = 100;
         }
-        List<AlgModuleListVo> result = algModuleListService.findModuleCollect(catName, usage, modName, numPage, numRows,null);
+        AlgUser algUser = getUserInfo();
+        List<AlgModuleListVo> result = algModuleListService.findModuleCollect(catName, usage, modName, numPage, numRows,algUser.getUsrSn());
         return Result.ok(result);
     }
 }

@@ -17,5 +17,5 @@ public interface AlgModuleListService {
     AlgArticleList findAlgArticleList(Integer id) throws AlgException;
 
     //我的收藏
-    List<AlgModuleListVo> findModuleCollect(String catName, String usage, String modName, Integer numPage, Integer numRows,String usrCode) throws AlgException;
+    List<AlgModuleListVo> findModuleCollect(String catName, String usage, String modName, Integer numPage, Integer numRows,String usrSn) throws AlgException;
 }

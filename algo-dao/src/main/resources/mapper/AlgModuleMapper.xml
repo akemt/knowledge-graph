@@ -177,11 +177,12 @@
         left join alg_program_lang lan on lan.lan_sn = mo.lan_sn
         left join alg_user us on us.usr_sn = mo.usr_sn
         left join alg_article_list art on art.id = mo.atl_sn
+        left join alg_star star on star.mod_sn = mo.mod_sn
         <where>
             <trim prefixOverrides="and">
                 <if test="arg0 != null and arg0 !=''">and ac.cat_sn = #{arg0,jdbcType=VARCHAR}</if>
                 <if test="arg2 != null and arg2 !=''">and (mo.mod_name like concat(#{arg2,jdbcType=VARCHAR},'%') or mo.mod_desc like concat(#{arg2,jdbcType=VARCHAR},'%') )</if>
-                <if test="arg3 != null and arg3 !=''">and us.usr_code = #{arg4,jdbcType=VARCHAR}</if>
+                <if test="arg3 != null and arg3 !=''">and star.usr_sn = #{arg3,jdbcType=VARCHAR}</if>
             </trim>
         </where>
         <if test="arg1 == ''"> order by usa.star_cnt DESC </if>
