@@ -23,6 +23,7 @@
     <resultMap id="ModuleListMap" type="com.beyond.algo.vo.AlgModuleListVo">
         <result column="mod_name" property="modName" jdbcType="VARCHAR"/>
         <result column="mod_id" property="modId" jdbcType="VARCHAR"/>
+        <result column="mod_desc" property="modDesc" jdbcType="VARCHAR"/>
         <result column="create_date" property="createDate" jdbcType="VARCHAR"/>
         <result column="star_cnt" property="starCnt" jdbcType="VARCHAR"/>
         <result column="follow_cnt" property="followCnt" jdbcType="VARCHAR"/>
@@ -31,7 +32,7 @@
         <result column="usr_name" property="usrName" jdbcType="VARCHAR"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
         <result column="papertext" property="papertext" jdbcType="VARCHAR"/>
-        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="article_id" property="articleId" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="queryForListMap" type="com.beyond.algo.vo.AlgModuleVo"  extends="BaseResultMap">
         <result column="lic_name" jdbcType="VARCHAR" property="licName" />
@@ -105,6 +106,7 @@
     <sql id="findModuleListColumn">
         mo.mod_id as mod_id,
         mo.mod_name as mod_name,
+        mo.mod_desc as mod_desc,
         amv.createDate as create_date,
         usa.star_cnt as star_cnt,
         usa.follow_cnt as follow_cnt,
@@ -113,7 +115,7 @@
         us.usr_name as usr_name,
         concat('/algo','/',us.usr_code,'/',mo.mod_id) as url,
 	    art.papertext as papertext,
-	    art.id as id
+	    art.id as article_id
     </sql>
     <select id="findModuleList" resultMap="ModuleListMap">
         select
