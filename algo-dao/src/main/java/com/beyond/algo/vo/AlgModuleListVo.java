@@ -14,6 +14,7 @@ public class AlgModuleListVo {
     private String usrName;
     private String url;
     private String papertext;
-    private String id;
+    private String articleId;
+    private String modDesc;
 
 }
