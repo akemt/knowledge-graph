@@ -125,12 +125,18 @@ public class ContentController extends BaseController {
     @RequestMapping(value="/{usrCode}/{modId}/algorithmdetail", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result getAlgorithmDetail(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId ) throws AlgException {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
+        log.debug("测试");
         AlgUser  algUser=userService.findByUsrCode(usrCode);
         if(Assert.isNotNULL(algUser)){
             AlgorithmDetailVo algorithmDetailVo=new AlgorithmDetailVo();
             algorithmDetailVo.setModId(modId);
             algorithmDetailVo.setUsrSn(algUser.getUsrSn());
+            algorithmDetailVo.setUsrCode(usrCode);
             AlgModuleVo algModuleVo = algorithmDetailService.getAlgorithmDetail(algorithmDetailVo);
+            if(Assert.isNULL(algModuleVo)){
+                String[] checkMessage = {"查询失败"};
+                throw new AlgException("BEYOND.ALG.MODILE.VALID.0000011",checkMessage);
+            }
             return Result.ok(algModuleVo);
         }
         return null;
