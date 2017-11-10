@@ -196,4 +196,14 @@ public class ModuleController extends BaseController {
         moduleService.addVer(usrCode, modId, verMark);
         return Result.successResponse();
     }
+
+    /**
+     * @author ：lindewei
+     * @Description: 分类接口
+     */
+    @RequestMapping(value = "/module/category", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result category() throws AlgException {
+        List<AlgAlgoCategory> AlgAlgoCategory = moduleService.category();
+        return Result.ok(AlgAlgoCategory);
+    }
 }

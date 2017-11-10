@@ -57,6 +57,8 @@ public class ModuleServiceImpl implements ModuleService {
     private AlgUserMapper algUserMapper;
     @Autowired
     private ShowProjectFileService showProjectFileService;
+    @Autowired
+    private AlgAlgoCategoryMapper algAlgoCategoryMapper;
 
     @Override
     public void initProject(AlgUser algUser, String projectName) throws Exception {
@@ -256,5 +258,13 @@ public class ModuleServiceImpl implements ModuleService {
         } catch (Exception e){
             throw new AlgException("BEYOND.ALG.MODULE.PUBLISH.0000010",new String[]{});
         }
+    }
+
+    /**
+     * lindewei
+     * 分类接口
+     */
+    public List<AlgAlgoCategory> category()throws AlgException{
+        return algAlgoCategoryMapper.selectAll();
     }
 }
