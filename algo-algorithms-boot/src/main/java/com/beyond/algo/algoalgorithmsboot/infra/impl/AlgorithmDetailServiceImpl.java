@@ -1,6 +1,7 @@
 package com.beyond.algo.algoalgorithmsboot.infra.impl;
 
 import com.beyond.algo.algoalgorithmsboot.infra.AlgorithmDetailService;
+import com.beyond.algo.common.Assert;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgModuleMapper;
 import com.beyond.algo.vo.AlgModuleVo;
@@ -22,7 +23,11 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
     @Override
     public AlgModuleVo getAlgorithmDetail(AlgorithmDetailVo algorithmDetailVo)throws AlgException {
         AlgModuleVo algModuleVo=algModuleMapper.getAlgorithmDetail(algorithmDetailVo);
-        algModuleVo.setUrl(algorithmDetailVo.getUsrSn()+ File.separator+algorithmDetailVo.getModId()+File.separator+"edit");
+        if(Assert.isNotNULL(algModuleVo)) {
+            algModuleVo.setUrl(algorithmDetailVo.getUsrCode() + File.separator + algorithmDetailVo.getModId() + File.separator + "edit");
+            algModuleVo.setDataUrl(algorithmDetailVo.getUsrCode() + File.separator + algorithmDetailVo.getModId());
+            algModuleVo.setUsrCode(algorithmDetailVo.getUsrCode());
+        }
         return algModuleVo;
     }
 }
