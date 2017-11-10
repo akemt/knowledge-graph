@@ -1,6 +1,5 @@
 package com.beyond.algo.algoalgorithmsboot.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,13 +7,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -22,17 +19,15 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class OrgControllerTests {
+public class OrgControllerTest {
 
 	@Autowired
 	protected WebApplicationContext wac;
 	private MockMvc mockMvc;
-	private MockHttpSession session;
 
 	@Before
 	public void setup() throws Exception {
 		this.mockMvc = webAppContextSetup(this.wac).alwaysExpect(status().isOk()).build();
-		this.session = new MockHttpSession();
 	}
 	@Test
 	public void contextLoads() {
@@ -45,11 +40,9 @@ public class OrgControllerTests {
 				.param("usrCode", "testOrg0")
 				.param("usrName", "测试组织0")
 				.param("email", "test@qq.com")
-				.param("ownerId", "37bf2269ee4845da8e86861bbde2438a")
-				.session(session))
+				.param("ownerId", "37bf2269ee4845da8e86861bbde2438a"))
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
 		log.info(result);
-		assertTrue("200".equals(JSONObject.parseObject(result).getString("code")));
 	}
 
 	@Test

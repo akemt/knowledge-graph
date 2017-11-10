@@ -18,14 +18,13 @@ public class OrgServiceImplTest {
     private OrgService orgService;
 
     @Test
-    @Transactional
     public void createOrgTest() throws Exception {
 
         AlgUser org = new AlgUser();
         org.setUsrCode("testOrg2");
         org.setUsrName("测试组织2");
         org.setEmail("test@qq.com");
-        org.setOwnerId("37bf2269ee4845da8e86861bbde2438a");
+        org.setOwnerId("64bd0e5ee1a6409f97d12c271bb8fa68");
 
         orgService.createOrg(org, "qihe", "12345678");
     }
