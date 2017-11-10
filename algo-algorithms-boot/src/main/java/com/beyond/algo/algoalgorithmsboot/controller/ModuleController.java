@@ -193,7 +193,7 @@ public class ModuleController extends BaseController {
      */
     @RequestMapping(value = "/{usrCode}/{modId}/publish", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode,String verMark) throws AlgException {
-        moduleService.addVer(usrCode, modId,verMark);
+        moduleService.addVer(usrCode, modId, verMark);
         return Result.successResponse();
     }
 }

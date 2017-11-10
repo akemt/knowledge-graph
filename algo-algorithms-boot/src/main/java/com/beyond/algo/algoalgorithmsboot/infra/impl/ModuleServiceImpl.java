@@ -142,7 +142,7 @@ public class ModuleServiceImpl implements ModuleService {
      * @Description:算法新增
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = AlgException.class)
     public Boolean addAlgModule(AlgModule algModule,AlgUser algUser) throws AlgException {
         //模块串号
         algModule.setModSn(UUIDUtil.createUUID());
@@ -238,7 +238,9 @@ public class ModuleServiceImpl implements ModuleService {
         algorithmDetailVo.setModId(modId);
         //获取最新的版本
         AlgModuleVo algModuleVo = algModuleMapper.getAlgorithmDetail(algorithmDetailVo);
+        log.info("获取最新的版本:current modSn: {} ", algModuleVo.getModSn());
         AlgModuleVersion algModuleVersion = algModuleVersionMapper.selectLatestAll(algModuleVo.getModSn());
+        log.info("获取最新的版本:current verSn: {} ", algModuleVersion.getVerSn());
         //插入新的版本号
         if("H".equals(verMark)){
             algModuleVersion.setVerCodeL1(algModuleVersion.getVerCodeL1()+1);
@@ -249,6 +251,10 @@ public class ModuleServiceImpl implements ModuleService {
         }
         algModuleVersion.setVerSn(UUIDUtil.createUUID());
         algModuleVersion.setCreateDate(new Date());
-        algModuleVersionMapper.insert(algModuleVersion);
+        try{
+            algModuleVersionMapper.insert(algModuleVersion);
+        } catch (Exception e){
+            throw new AlgException("BEYOND.ALG.MODULE.PUBLISH.0000010",new String[]{});
+        }
     }
 }

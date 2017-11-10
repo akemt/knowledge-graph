@@ -27,7 +27,7 @@ public class OrgServiceImpl implements OrgService {
     private GitLibService gitLibService;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = AlgException.class)
     public AlgUser createOrg(AlgUser org, String createUserCode, String password) throws AlgException {
         if (algUserMapper.countOrgByCode(org.getUsrCode()) > 0) {
             throw new AlgException("git创建组织失败，组织编码已存在:" + org.getUsrCode());
@@ -63,7 +63,7 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = AlgException.class)
     public void deleteOrg(String orgSn) throws AlgException {
         AlgUser org = algUserMapper.selectByPrimaryKey(orgSn);
 
