@@ -33,4 +33,9 @@ public interface AlgModuleMapper {
     AlgModule selectByUsrSnAndModId(@Param("usrSn") String usrSn, @Param("modId")String modId);
 
     AlgModuleVo getAlgorithmDetail(AlgorithmDetailVo algorithmDetailVo);
+
+    /**
+     *  我的收藏列表
+     */
+    List<AlgModuleListVo> findModuleCollect(String catName, String usage, String modName,String usrCode);
 }

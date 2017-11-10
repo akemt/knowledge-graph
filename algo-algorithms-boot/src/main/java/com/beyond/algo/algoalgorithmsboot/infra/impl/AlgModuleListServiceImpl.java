@@ -34,10 +34,20 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
         List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleList(catName,usage,modName,id,usrCode);
         return resultAlgModule;
     }
+
     @Override
     //为不同实现功能获取文献信息
     public AlgArticleList findAlgArticleList(Integer id) throws AlgException{
         AlgArticleList algArticleList = algArticleListMapper.selectByPrimaryKey(id);
         return algArticleList;
+    }
+
+    //我的收藏
+    @Override
+    public List<AlgModuleListVo> findModuleCollect(String catName, String usage ,String modName,Integer numPage,Integer numRows, String usrCode) throws AlgException {
+        //初步设定用数据库进行排序查询
+        PageHelper.startPage(numPage,numRows);
+        List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleCollect(catName,usage,modName,usrCode);
+        return resultAlgModule;
     }
 }

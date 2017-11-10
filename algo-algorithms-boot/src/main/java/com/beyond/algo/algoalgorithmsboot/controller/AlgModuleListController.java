@@ -73,4 +73,19 @@ public class AlgModuleListController extends BaseController {
         List<AlgModuleListVo> result = algModuleListService.findModuleList(null, null, null, numPage, numRows,null,algUser.getUsrCode());
         return Result.ok(result);
     }
+
+    /**
+     @Description:我的收藏
+     */
+    @RequestMapping(value = "/module/collect",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public  Result listAlgcollect(String catName,String usage,String modName,Integer numPage,Integer numRows) throws AlgException {
+        if(Assert.isEmpty(numPage)){
+            numPage = 1;
+        }
+        if(Assert.isEmpty(numRows)){
+            numRows = 100;
+        }
+        List<AlgModuleListVo> result = algModuleListService.findModuleCollect(catName, usage, modName, numPage, numRows,null);
+        return Result.ok(result);
+    }
 }

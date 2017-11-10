@@ -167,5 +167,28 @@
         where algModule.mod_id=#{modId,jdbcType=VARCHAR}
         and algModule.usr_sn=#{usrSn,jdbcType=VARCHAR}
     </select>
+    <select id="findModuleCollect" resultMap="ModuleListMap">
+        select
+        <include refid="findModuleListColumn"/>
+        from alg_module mo
+        left join alg_algo_category ac on mo.cat_sn = ac.cat_sn
+        left join alg_module_usage usa on usa.mod_sn = mo.mod_sn
+        left join (select max(create_date) as createDate ,mod_sn from alg_module_version group by mod_sn) amv on amv.mod_sn = mo.mod_sn
+        left join alg_program_lang lan on lan.lan_sn = mo.lan_sn
+        left join alg_user us on us.usr_sn = mo.usr_sn
+        left join alg_article_list art on art.id = mo.atl_sn
+        <where>
+            <trim prefixOverrides="and">
+                <if test="arg0 != null and arg0 !=''">and ac.cat_sn = #{arg0,jdbcType=VARCHAR}</if>
+                <if test="arg2 != null and arg2 !=''">and (mo.mod_name like concat(#{arg2,jdbcType=VARCHAR},'%') or mo.mod_desc like concat(#{arg2,jdbcType=VARCHAR},'%') )</if>
+                <if test="arg3 != null and arg3 !=''">and us.usr_code = #{arg4,jdbcType=VARCHAR}</if>
+            </trim>
+        </where>
+        <if test="arg1 == ''"> order by usa.star_cnt DESC </if>
+        <if test="arg1 == 'starCnt'"> order by usa.star_cnt DESC </if>
+        <if test="arg1 == 'followCnt'"> order by usa.follow_cnt DESC </if>
+        <if test="arg1 == 'callCnt'"> order by usa.call_cnt DESC </if>
+        <if test="arg1 == 'creditCnt'"> order by usa.credit_cnt DESC </if>
+    </select>
 
 </mapper>
