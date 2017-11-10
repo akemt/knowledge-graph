@@ -12,6 +12,10 @@ import java.util.List;
  */
 public interface AlgModuleListService {
     List<AlgModuleListVo> findModuleList(String catName, String usage, String modName, Integer numPage, Integer numRows,String id,String usrCode) throws AlgException;
+
     //为不同实现功能获取文献信息
     AlgArticleList findAlgArticleList(Integer id) throws AlgException;
+
+    //我的收藏
+    List<AlgModuleListVo> findModuleCollect(String catName, String usage, String modName, Integer numPage, Integer numRows,String usrCode) throws AlgException;
 }
