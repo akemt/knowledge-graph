@@ -142,7 +142,7 @@ public class ModuleServiceImpl implements ModuleService {
      * @Description:算法新增
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = AlgException.class)
     public Boolean addAlgModule(AlgModule algModule,AlgUser algUser) throws AlgException {
         //模块串号
         algModule.setModSn(UUIDUtil.createUUID());
