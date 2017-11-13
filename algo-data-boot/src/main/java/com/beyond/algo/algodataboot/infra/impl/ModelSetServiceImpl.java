@@ -1,9 +1,11 @@
 package com.beyond.algo.algodataboot.infra.impl;
 
 import com.beyond.algo.algodataboot.infra.ModelSetService;
+import com.beyond.algo.common.Assert;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgUserMapper;
 import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.AlgModelSetVo;
 import com.beyond.algo.vo.ModelDataVo;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,16 +129,18 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public Result queryAlgModelSet(String usrSn) throws Exception {
-        try {
-            Result result = new Result();
-            List<AlgModelSet> allAlgModelSet = algModelSetMapper.selectAll(usrSn);
-            result.setData(allAlgModelSet);
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result("获取所有模型集失败，用户串号：" + usrSn);
-        }
+    public  List<AlgModelSetVo> queryAlgModelSet(String usrSn) throws AlgException {
+            List<AlgModelSetVo> algModelSetVoList = algModelSetMapper.queryModelSet(usrSn);
+            if(Assert.isNotEmpty(algModelSetVoList)){
+                String modelSetSn= algModelSetVoList.get(0).getModelSetSn();
+                AlgModel algModel=new AlgModel();
+                algModel.setUsrSn(usrSn);
+                algModel.setModelSetSn(modelSetSn);
+                List<ModelDataVo> algModelList=algModelMapper.queryModel(algModel);
+                algModelSetVoList.get(0).setAlgModelVolist(algModelList);
+                return algModelSetVoList;
+            }
+            return null;
     }
 
     @Override

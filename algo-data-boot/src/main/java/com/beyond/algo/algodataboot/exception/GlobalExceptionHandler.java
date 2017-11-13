@@ -1,4 +1,4 @@
-package exception;
+package com.beyond.algo.algodataboot.exception;
 
 import com.beyond.algo.base.Error;
 import com.beyond.algo.common.JsonUtil;

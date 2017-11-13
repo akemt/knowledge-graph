@@ -5,6 +5,7 @@ import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgModelSet;
 import com.beyond.algo.model.AlgModel;
 import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.AlgModelSetVo;
 import com.beyond.algo.vo.ModelDataVo;
 
 import javax.management.relation.RoleList;
@@ -74,7 +75,7 @@ public interface ModelSetService {
      * @param： String usrSn
      * @date ：13：46 2017/10/21
      */
-    Result queryAlgModelSet(String usrSn) throws Exception;
+    List<AlgModelSetVo> queryAlgModelSet(String usrSn) throws AlgException;
 
 
     /**

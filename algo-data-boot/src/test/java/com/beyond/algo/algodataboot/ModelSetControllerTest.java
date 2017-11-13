@@ -103,14 +103,13 @@ public class ModelSetControllerTest {
     }
     @Test
     public void queryModelSet() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_modelset/queryModelSet").contentType(MediaType.APPLICATION_JSON)
-                .param("usrSn", "zjy"))
+        String result = this.mockMvc.perform(post("/queryModelSet").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
     @Test
     public void queryModel() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_modelset/queryModel").contentType(MediaType.APPLICATION_JSON)
+        String result = this.mockMvc.perform(post("/queryModel").contentType(MediaType.APPLICATION_JSON)
                 .param("modelSetSn", "5a0e41ea4c904012b71b4f2ea2043c6f"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
