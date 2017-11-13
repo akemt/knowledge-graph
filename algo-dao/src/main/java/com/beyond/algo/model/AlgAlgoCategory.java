@@ -7,6 +7,8 @@ public class AlgAlgoCategory {
 
     private String modSn;
 
+    private String catSort;
+
     public String getCatSn() {
         return catSn;
     }
@@ -29,5 +31,13 @@ public class AlgAlgoCategory {
 
     public void setModSn(String modSn) {
         this.modSn = modSn == null ? null : modSn.trim();
+    }
+
+    public String getCatSort() {
+        return catSort;
+    }
+
+    public void setCatSort(String catSort) {
+        this.catSort = catSort;
     }
 }

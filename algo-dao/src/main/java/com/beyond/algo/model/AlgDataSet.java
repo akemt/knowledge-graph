@@ -7,6 +7,8 @@ public class AlgDataSet {
 
     private String dataSetName;
 
+    private String dataOrderby;
+
     public String getDataSetSn() {
         return dataSetSn;
     }
@@ -29,5 +31,13 @@ public class AlgDataSet {
 
     public void setDataSetName(String dataSetName) {
         this.dataSetName = dataSetName == null ? null : dataSetName.trim();
+    }
+
+    public String getDataOrderby() {
+        return dataOrderby;
+    }
+
+    public void setDataOrderby(String dataOrderby) {
+        this.dataOrderby = dataOrderby;
     }
 }
