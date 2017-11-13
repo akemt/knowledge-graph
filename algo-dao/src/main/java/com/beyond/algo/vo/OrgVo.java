@@ -5,6 +5,7 @@ import com.beyond.algo.model.AlgUser;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,14 +14,16 @@ import java.util.List;
 @Data
 public class OrgVo extends AlgUser {
 
-    // API调用次数
+    // 总调用次数
     private Long modCallCnt;
     // 积分
     private BigDecimal cashBal;
-    // 受益
+    // 收益
     private BigDecimal earnBal;
+    // 创建人
+    private AlgUser owner;
     // 算法集合
-    private List<AlgModule> moduleList;
+    private List<AlgModuleListVo> moduleList;
     // 组织下用户集合
     private List<AlgUser> memberList;
 }

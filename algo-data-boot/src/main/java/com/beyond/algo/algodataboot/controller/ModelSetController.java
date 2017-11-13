@@ -1,10 +1,12 @@
 package com.beyond.algo.algodataboot.controller;
 
 
+import base.BaseController;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.AlgModelSetVo;
 import com.beyond.algo.vo.ModelDataVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -31,9 +33,8 @@ import java.util.List;
  * @date ：19:55 2017/10/17
  */
 @RestController
-@RequestMapping("/algo_modelset")
 @Slf4j
-public class ModelSetController {
+public class ModelSetController  extends BaseController {
 
 
     private final static Logger logger = LoggerFactory.getLogger(ModelSetController.class);
@@ -142,16 +143,12 @@ public class ModelSetController {
      * @date : 14:15 2017/10/21
      */
     @RequestMapping(value = "/queryModelSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result<Object> queryModelSet(String usrSn){
+    public Result queryModelSet() throws AlgException{
         logger.info("查询用户的模型集");
-        try{
-            Result result=modelSetService.queryAlgModelSet(usrSn);
-            return result;
-        }catch(Exception e){
-            logger.info("查询用户的模型集失败");
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        AlgUser algUser = getUserInfo();
+        List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet(algUser.getUsrSn());
+       // List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet("8ec99d9819744a8aa0db947a6be6db4c");
+        return Result.ok(AlgModelSetVoList);
     }
 
     /**

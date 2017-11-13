@@ -10,11 +10,18 @@
     <result column="is_org" property="isOrg" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="passwd" property="passwd" jdbcType="VARCHAR" />
-      <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+    <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
     <result column="need_notify" property="needNotify" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
   </resultMap>
+
+  <resultMap id="OrgVoMap" type="com.beyond.algo.vo.OrgVo" extends="BaseResultMap">
+    <result column="mod_call_cnt" property="modCallCnt" jdbcType="Integer" />
+    <result column="cash_bal" property="cashBal" jdbcType="BIGINT" />
+    <result column="earn_bal" property="earnBal" jdbcType="BIGINT" />
+  </resultMap>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from alg_user
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
@@ -125,5 +132,13 @@
             </trim>
         </where>
     </sql>
+
+    <!-- 获取组织详情，积分和收益暂时为0 -->
+    <select id="selectOrgVoByPrimaryKey" resultMap="OrgVoMap" parameterType="java.lang.String" >
+        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+        create_date, update_date, '0' as cash_bal, '0' as earn_bal
+        from alg_user
+        where usr_sn = #{usrSn,jdbcType=VARCHAR}
+    </select>
 
 </mapper>

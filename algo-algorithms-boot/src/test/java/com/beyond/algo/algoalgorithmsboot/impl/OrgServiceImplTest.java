@@ -2,6 +2,7 @@ package com.beyond.algo.algoalgorithmsboot.impl;
 
 import com.beyond.algo.algoalgorithmsboot.AlgoAlgorithmsBootApplication;
 import com.beyond.algo.algoalgorithmsboot.infra.OrgService;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,7 @@ public class OrgServiceImplTest {
     private OrgService orgService;
 
     @Test
-    public void createOrgTest() throws Exception {
+    public void createOrgTest() throws AlgException {
 
         AlgUser org = new AlgUser();
         org.setUsrCode("testOrg2");
@@ -31,8 +32,12 @@ public class OrgServiceImplTest {
 
     @Test
     @Transactional
-    public void deleteOrgTest() throws Exception {
+    public void deleteOrgTest() throws AlgException {
         orgService.deleteOrg("8e70e57b5e104f1b9d4d4dc0b141d83b");
     }
 
+    @Test
+    public void getOrgDetailTest() throws AlgException {
+        orgService.getOrgDetail("1ab380d8078d414f8edc4dcc33a65348");
+    }
 }

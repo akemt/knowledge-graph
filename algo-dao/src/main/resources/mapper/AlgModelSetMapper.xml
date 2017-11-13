@@ -7,6 +7,8 @@
         <result column="model_set_name" property="modelSetName" jdbcType="VARCHAR"/>
         <result column="model_orderby" property="modelOrderby" jdbcType="VARCHAR"/>
     </resultMap>
+    <resultMap id="queryForListMap" type="com.beyond.algo.vo.AlgModelSetVo"  extends="BaseResultMap">
+    </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from alg_model_set
     where model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
@@ -34,4 +36,11 @@
     from alg_model_set
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </select>
+
+    <select id="queryModelSet" resultMap="queryForListMap" parameterType="java.lang.String">
+        select model_set_sn, usr_sn, model_set_name, model_orderby
+        from alg_model_set
+        where usr_sn = #{usrSn,jdbcType=VARCHAR}
+        order by model_orderby DESC
+    </select>
 </mapper>

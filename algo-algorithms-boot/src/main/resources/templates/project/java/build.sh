@@ -5,8 +5,8 @@ JARS="ivy dist lib"
 # Build jars
 ant stage $@ && \
 
-# Assemble beyondalgo.zip
-zip -1 -FS -r beyondalgo.zip $JARS
+# Assemble algmarket.zip
+zip -1 -FS -r algmarket.zip $JARS
 
 EXIT_CODE=$?
 

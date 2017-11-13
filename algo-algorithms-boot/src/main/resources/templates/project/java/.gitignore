@@ -1,4 +1,4 @@
-# Beyondalgo gitignore
+# algmarket gitignore
 
 bin
 ivy
@@ -9,4 +9,4 @@ logs
 
 /project/target
 
-beyondalgo.zip
+algmarket.zip

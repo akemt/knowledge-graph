@@ -1,4 +1,4 @@
-package beyondalgo.${projectName};
+package algmarket.${projectName};
 
 import com.google.gson.*;
 import java.util.*;
@@ -18,5 +18,9 @@ public class ${projectName} {
         // Your algorithm code goes here
         Integer i = 1;
         return "Hello " + input + i;
+    }
+
+    public static void main(String args[]){
+        System.out.println("hello I come in ,"+args);
     }
 }

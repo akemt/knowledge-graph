@@ -61,9 +61,8 @@ public class ModuleServiceImpl implements ModuleService {
     private AlgAlgoCategoryMapper algAlgoCategoryMapper;
 
     @Override
-    public void initProject(AlgUser algUser, String projectName) throws Exception {
-        AlgModule algModule = findByUsrSnAndModId(algUser.getUsrSn(), projectName);
-        AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
+    public void initProject(AlgUser algUser, String projectName,String lanSn) throws Exception {
+        AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
         //适配器模式 调用创建算法项目适配器
         // ModuleAdapter createModuleAdapter = (ModuleAdapter)Class.forName("com.beyond.algo.algoconsoleboot.adapter."+ algProgramLang.getLanName() +"ModuleAdapter").newInstance();
         ModuleAdapter createModuleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
@@ -150,6 +149,8 @@ public class ModuleServiceImpl implements ModuleService {
         algModule.setModSn(UUIDUtil.createUUID());
         // 新增算法
         try {
+            algModuleMapper.insert(algModule);
+
             GitUser gitUser = new GitUser();
             gitUser.setModId(algModule.getModId());
             gitUser.setUsrCode(algUser.getUsrCode());
@@ -157,11 +158,11 @@ public class ModuleServiceImpl implements ModuleService {
             //在git上创建项目
             gitLibService.createGitLibProject(gitUser);
             //在服务器本地创建项目
-            initProject(algUser,algModule.getModId());
+            initProject(algUser,algModule.getModId(),algModule.getLanSn());
             //commit and push 代码
             String version = jGitService.commitAndPushAllFiles(gitUser);
 
-            algModuleMapper.insert(algModule);
+
             AlgModuleVersion algModuleVersion = new AlgModuleVersion();
             algModuleVersion.setVerSn(UUIDUtil.createUUID());
             algModuleVersion.setCreateDate(new Date());
