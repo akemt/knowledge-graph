@@ -17,7 +17,7 @@
   </resultMap>
 
   <resultMap id="OrgVoMap" type="com.beyond.algo.vo.OrgVo" extends="BaseResultMap">
-    <result column="mod_call_cnt" property="modCallCnt" jdbcType="Integer" />
+    <result column="mod_call_cnt" property="modCallCnt" jdbcType="BIGINT" />
     <result column="cash_bal" property="cashBal" jdbcType="BIGINT" />
     <result column="earn_bal" property="earnBal" jdbcType="BIGINT" />
   </resultMap>
