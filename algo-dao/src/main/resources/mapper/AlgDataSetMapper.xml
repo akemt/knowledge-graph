@@ -5,30 +5,32 @@
     <id column="data_set_sn" property="dataSetSn" jdbcType="VARCHAR" />
     <result column="usr_sn" property="usrSn" jdbcType="VARCHAR" />
     <result column="data_set_name" property="dataSetName" jdbcType="VARCHAR" />
+    <result column="data_orderby" property="dataOrderby" jdbcType="VARCHAR" />
   </resultMap>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from alg_data_set
     where data_set_sn = #{dataSetSn,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.beyond.algo.model.AlgDataSet" >
-    insert into alg_data_set (data_set_sn, usr_sn, data_set_name
+    insert into alg_data_set (data_set_sn, usr_sn, data_set_name, data_orderby
       )
-    values (#{dataSetSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{dataSetName,jdbcType=VARCHAR}
+    values (#{dataSetSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{dataSetName,jdbcType=VARCHAR}, #{dataOrderby,jdbcType=VARCHAR}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algo.model.AlgDataSet" >
     update alg_data_set
     set usr_sn = #{usrSn,jdbcType=VARCHAR},
-      data_set_name = #{dataSetName,jdbcType=VARCHAR}
+      data_set_name = #{dataSetName,jdbcType=VARCHAR},
+      data_orderby = #{dataOrderby,jdbcType=VARCHAR}
     where data_set_sn = #{dataSetSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select data_set_sn, usr_sn, data_set_name
+    select data_set_sn, usr_sn, data_set_name, data_orderby
     from alg_data_set
     where data_set_sn = #{dataSetSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select data_set_sn, usr_sn, data_set_name
+    select data_set_sn, usr_sn, data_set_name, data_orderby
     from alg_data_set
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </select>

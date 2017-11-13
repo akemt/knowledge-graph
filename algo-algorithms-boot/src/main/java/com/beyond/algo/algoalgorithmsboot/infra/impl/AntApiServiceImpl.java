@@ -50,24 +50,24 @@ public class AntApiServiceImpl implements AntApiService {
             String[] checkMessage = {"算法模块",""};
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000006",checkMessage);
         }
-        log.info("algModule模块的语言串号:{}",algModule.getLanSn());
+        log.debug("algModule模块的语言串号:{}",algModule.getLanSn());
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         if(Assert.isNULL(algProgramLang)){
             String[] checkMessage = {"语言模块",""};
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000006",checkMessage);
         }
-        log.info("语言表获得语言:{}",algProgramLang.getLanName());
+        log.debug("语言表获得语言:{}",algProgramLang.getLanName());
         //适配器模式 调用创建算法项目适配器
         ModuleAdapter javaModuleAdapter =(ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
         String path=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+ Constant.map.get(algProgramLang.getLanName());
         gitUser.setPath(gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+".git");
-        log.info("项目编译路径:{},上传git路径:{}",path,gitUser.getPath());
+        log.debug("项目编译路径:{},上传git路径:{}",path,gitUser.getPath());
         String version=jGitService.commitAndPushAllFiles(gitUser);
         AlgModuleVersion algModuleVersion=new AlgModuleVersion();
         algModuleVersion.setLatestCommit(version);
         algModuleVersion.setModSn(algModule.getModSn());
         algModuleVersionMapper.updateLatestCommit(algModuleVersion);
-        boolean buildResult= javaModuleAdapter.moduleAntBuild(path);
+        javaModuleAdapter.moduleAntBuild(path);
         //String projectPath=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId();
         //moduleAntClassJar(String projectPath)
     }

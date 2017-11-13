@@ -1,12 +1,10 @@
 package com.beyond.algo.algoalgorithmsboot.infra;
 
 import com.beyond.algo.exception.AlgException;
-import com.beyond.algo.model.AlgModule;
-import com.beyond.algo.model.AlgModuleVersion;
-import com.beyond.algo.model.AlgProgramLang;
-import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.model.*;
 import com.beyond.algo.vo.AlgModuleEditVo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ModuleService {
@@ -14,7 +12,7 @@ public interface ModuleService {
     /**
      * 初始化算法工程.
      */
-    void initProject(AlgUser algUser, String projectName) throws Exception;
+    void initProject(AlgUser algUser, String projectName,String lanSn) throws Exception;
 
     AlgModule findByUsrSnAndModId(String usrSn,String modId) throws AlgException;
 
@@ -57,4 +55,10 @@ public interface ModuleService {
      * 版本接口
      */
     void addVer(String usrCode,String modId,String verMark)throws AlgException;
+
+    /**
+     * lindewei
+     * 分类接口
+     */
+    List<AlgAlgoCategory> category()throws AlgException;
 }

@@ -108,7 +108,7 @@ public class ModuleController extends BaseController {
         //   gitUser.setUsrCode(algUser.getUsrCode());
         gitUser.setUsrCode(algUser.getUsrCode());
         gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(), projectConfigEntity.getKeyAES()));
-        log.info("用户名字:{},用户密码:{},用户usrSn:{},用户modId:{} ", gitUser.getUsrCode(), gitUser.getPassword(), gitUser.getUsrSn(), gitUser.getModId());
+        log.debug("用户名字:{},用户密码:{},用户usrSn:{},用户modId:{} ", gitUser.getUsrCode(), gitUser.getPassword(), gitUser.getUsrSn(), gitUser.getModId());
         antApiService.moduleAntBuild(gitUser);
         Result result = Result.successResponse();
         return result;
@@ -195,5 +195,15 @@ public class ModuleController extends BaseController {
     public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode,String verMark) throws AlgException {
         moduleService.addVer(usrCode, modId, verMark);
         return Result.successResponse();
+    }
+
+    /**
+     * @author ：lindewei
+     * @Description: 分类接口
+     */
+    @RequestMapping(value = "/module/category", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result category() throws AlgException {
+        List<AlgAlgoCategory> AlgAlgoCategory = moduleService.category();
+        return Result.ok(AlgAlgoCategory);
     }
 }

@@ -57,11 +57,12 @@ public class ModuleServiceImpl implements ModuleService {
     private AlgUserMapper algUserMapper;
     @Autowired
     private ShowProjectFileService showProjectFileService;
+    @Autowired
+    private AlgAlgoCategoryMapper algAlgoCategoryMapper;
 
     @Override
-    public void initProject(AlgUser algUser, String projectName) throws Exception {
-        AlgModule algModule = findByUsrSnAndModId(algUser.getUsrSn(), projectName);
-        AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
+    public void initProject(AlgUser algUser, String projectName,String lanSn) throws Exception {
+        AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
         //适配器模式 调用创建算法项目适配器
         // ModuleAdapter createModuleAdapter = (ModuleAdapter)Class.forName("com.beyond.algo.algoconsoleboot.adapter."+ algProgramLang.getLanName() +"ModuleAdapter").newInstance();
         ModuleAdapter createModuleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
@@ -149,16 +150,6 @@ public class ModuleServiceImpl implements ModuleService {
         // 新增算法
         try {
             algModuleMapper.insert(algModule);
-            AlgModuleVersion algModuleVersion = new AlgModuleVersion();
-            algModuleVersion.setVerSn(UUIDUtil.createUUID());
-            algModuleVersion.setCreateDate(new Date());
-            algModuleVersion.setVerCodeL1(0);
-            algModuleVersion.setVerCodeL2(0);
-            algModuleVersion.setVerCodeL3(0);
-            //TODO 未实现版本 等其他信息
-            algModuleVersion.setLatestCommit("1234567890123456789");
-            algModuleVersion.setModSn(algModule.getModSn());
-            algModuleVersionMapper.insert(algModuleVersion);
 
             GitUser gitUser = new GitUser();
             gitUser.setModId(algModule.getModId());
@@ -167,9 +158,22 @@ public class ModuleServiceImpl implements ModuleService {
             //在git上创建项目
             gitLibService.createGitLibProject(gitUser);
             //在服务器本地创建项目
-            initProject(algUser,algModule.getModId());
+            initProject(algUser,algModule.getModId(),algModule.getLanSn());
             //commit and push 代码
-            jGitService.commitAndPushAllFiles(gitUser);
+            String version = jGitService.commitAndPushAllFiles(gitUser);
+
+
+            AlgModuleVersion algModuleVersion = new AlgModuleVersion();
+            algModuleVersion.setVerSn(UUIDUtil.createUUID());
+            algModuleVersion.setCreateDate(new Date());
+            algModuleVersion.setVerCodeL1(0);
+            algModuleVersion.setVerCodeL2(0);
+            algModuleVersion.setVerCodeL3(0);
+            //TODO 未实现版本 等其他信息
+            algModuleVersion.setLatestCommit(version);
+            algModuleVersion.setModSn(algModule.getModSn());
+            algModuleVersionMapper.insert(algModuleVersion);
+
         } catch (Exception e) {
             log.error("算法新增增加失败。用户串号：{},语言串号：{},分类串号：{},协议串号：{}",algModule.getUsrSn(),algModule.getLanSn(),algModule.getCatSn(),algModule.getLicSn(),e);
             throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002",new String[]{});
@@ -256,5 +260,13 @@ public class ModuleServiceImpl implements ModuleService {
         } catch (Exception e){
             throw new AlgException("BEYOND.ALG.MODULE.PUBLISH.0000010",new String[]{});
         }
+    }
+
+    /**
+     * lindewei
+     * 分类接口
+     */
+    public List<AlgAlgoCategory> category()throws AlgException{
+        return algAlgoCategoryMapper.selectAll();
     }
 }

@@ -31,7 +31,7 @@ public class ModuleServiceImplTest {
         AlgUser algUser = new AlgUser();
         algUser.setUsrCode("zhang");
         algUser.setUsrSn("9c371a86c6e5439097de4b20024479f3");
-        moduleService.initProject(algUser, "TestJavaZhang");
+        moduleService.initProject(algUser, "TestJavaZhang","1");
     }
 
     @Test
