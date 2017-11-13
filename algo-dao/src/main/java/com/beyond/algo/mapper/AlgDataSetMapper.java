@@ -14,4 +14,8 @@ public interface AlgDataSetMapper {
 
     int updateByPrimaryKey(AlgDataSet record);
 
+    int dataSetCount(String usrSn,String dataSetName);
+
+    String getMaxDataOrderBy(String usrSn);
+
 }

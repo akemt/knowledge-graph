@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -32,6 +33,18 @@ public class DataSetControllerTest {
     public void contextLoads() {
 
     }
+
+    //初始化测试
+    @Test
+    public void initData() throws Exception {
+        String result = this.mockMvc.perform(get("/initdata").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+
+
+    //-----------------------------------------------------old
     @Test
     public void showDataSet() throws Exception {
         String result = this.mockMvc.perform(post("/algo_dataset/showDataSet").contentType(MediaType.APPLICATION_JSON)

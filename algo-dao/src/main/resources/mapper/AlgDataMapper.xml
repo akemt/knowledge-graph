@@ -76,4 +76,16 @@
     from alg_data
     where data_set_sn = #{dataSetSn,jdbcType=VARCHAR}
   </select>
+  <select id="findDataList" resultMap="BaseResultMap">
+    select a.data_sn as data_sn, a.data_set_sn as data_set_sn, a.usr_sn as usr_sn, a.data_name as data_name,
+    a.data_en_name as data_en_name, a.creat_time as creat_time, a.data_size as data_size,a.data_addr as data_addr,
+    a.data_loc as data_loc, a.is_open_src as is_open_src, a.data_abs as data_abs, a.data_content as data_content,
+    a.data_credit as data_credit
+    from alg_data a
+    left join alg_data_set b on b.data_set_sn = a.data_set_sn
+    where a.usr_sn = #{usrSn,jdbcType=VARCHAR}
+    and b.data_orderby = (select max(data_orderby) maxodr from alg_data_set
+    where usr_sn = #{usrSn,jdbcType=VARCHAR} group by usr_sn)
+    and b.usr_sn = #{usrSn,jdbcType=VARCHAR}
+  </select>
 </mapper>

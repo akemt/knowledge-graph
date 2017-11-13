@@ -17,4 +17,6 @@ public interface AlgDataMapper {
     int checkDataEnName(AlgData record);
 
     int dataCount(String dataSetSn);
+
+    List<AlgData> findDataList(String usrSn);
 }
