@@ -150,18 +150,6 @@ public class ModuleServiceImpl implements ModuleService {
         algModule.setModSn(UUIDUtil.createUUID());
         // 新增算法
         try {
-            algModuleMapper.insert(algModule);
-            AlgModuleVersion algModuleVersion = new AlgModuleVersion();
-            algModuleVersion.setVerSn(UUIDUtil.createUUID());
-            algModuleVersion.setCreateDate(new Date());
-            algModuleVersion.setVerCodeL1(0);
-            algModuleVersion.setVerCodeL2(0);
-            algModuleVersion.setVerCodeL3(0);
-            //TODO 未实现版本 等其他信息
-            algModuleVersion.setLatestCommit("1234567890123456789");
-            algModuleVersion.setModSn(algModule.getModSn());
-            algModuleVersionMapper.insert(algModuleVersion);
-
             GitUser gitUser = new GitUser();
             gitUser.setModId(algModule.getModId());
             gitUser.setUsrCode(algUser.getUsrCode());
@@ -171,7 +159,20 @@ public class ModuleServiceImpl implements ModuleService {
             //在服务器本地创建项目
             initProject(algUser,algModule.getModId());
             //commit and push 代码
-            jGitService.commitAndPushAllFiles(gitUser);
+            String version = jGitService.commitAndPushAllFiles(gitUser);
+
+            algModuleMapper.insert(algModule);
+            AlgModuleVersion algModuleVersion = new AlgModuleVersion();
+            algModuleVersion.setVerSn(UUIDUtil.createUUID());
+            algModuleVersion.setCreateDate(new Date());
+            algModuleVersion.setVerCodeL1(0);
+            algModuleVersion.setVerCodeL2(0);
+            algModuleVersion.setVerCodeL3(0);
+            //TODO 未实现版本 等其他信息
+            algModuleVersion.setLatestCommit(version);
+            algModuleVersion.setModSn(algModule.getModSn());
+            algModuleVersionMapper.insert(algModuleVersion);
+
         } catch (Exception e) {
             log.error("算法新增增加失败。用户串号：{},语言串号：{},分类串号：{},协议串号：{}",algModule.getUsrSn(),algModule.getLanSn(),algModule.getCatSn(),algModule.getLicSn(),e);
             throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002",new String[]{});
