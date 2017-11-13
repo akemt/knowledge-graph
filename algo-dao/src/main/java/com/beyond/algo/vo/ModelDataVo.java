@@ -16,4 +16,5 @@ public class ModelDataVo extends AlgModel{
     private int total;
     private String usrSn;
     private String createDate;
+    private String dataName;
 }
