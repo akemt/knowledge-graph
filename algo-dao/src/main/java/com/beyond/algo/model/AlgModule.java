@@ -5,6 +5,8 @@ public class AlgModule {
 
     private String usrSn;
 
+    private String createSn;
+
     private String lanSn;
 
     private String catSn;
@@ -39,6 +41,14 @@ public class AlgModule {
 
     public void setModSn(String modSn) {
         this.modSn = modSn == null ? null : modSn.trim();
+    }
+
+    public String getCreateSn() {
+        return createSn;
+    }
+
+    public void setCreateSn(String createSn) {
+        this.createSn = createSn == null ? null : createSn.trim();
     }
 
     public String getUsrSn() {

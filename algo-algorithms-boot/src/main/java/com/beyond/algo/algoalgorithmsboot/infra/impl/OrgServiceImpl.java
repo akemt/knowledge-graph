@@ -1,30 +1,37 @@
 package com.beyond.algo.algoalgorithmsboot.infra.impl;
 
 import com.beyond.algo.algoalgorithmsboot.infra.GitLibService;
+import com.beyond.algo.algoalgorithmsboot.infra.OrgService;
+import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.UUIDUtil;
 import com.beyond.algo.exception.AlgException;
-import com.beyond.algo.algoalgorithmsboot.infra.OrgService;
+import com.beyond.algo.mapper.AlgModuleMapper;
 import com.beyond.algo.mapper.AlgRUserOrgInviteMapper;
 import com.beyond.algo.mapper.AlgUserMapper;
 import com.beyond.algo.model.AlgRUserOrgInvite;
 import com.beyond.algo.model.AlgUser;
+import com.beyond.algo.vo.AlgModuleListVo;
+import com.beyond.algo.vo.OrgVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
 public class OrgServiceImpl implements OrgService {
 
-    @Autowired(required = false)
+    @Autowired
     private AlgUserMapper algUserMapper;
-    @Autowired(required = false)
+    @Autowired
     private AlgRUserOrgInviteMapper algRUserOrgInviteMapper;
-    @Autowired(required = false)
+    @Autowired
     private GitLibService gitLibService;
+    @Autowired
+    private AlgModuleMapper algModuleMapper;
 
     @Override
     @Transactional(rollbackFor = AlgException.class)
@@ -78,5 +85,29 @@ public class OrgServiceImpl implements OrgService {
             log.error("gitlab删除组织失败。", e);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000002", new String[]{org.getUsrCode()}, e);
         }
+    }
+
+    @Override
+    public OrgVo getOrgDetail(String orgSn) throws AlgException {
+        OrgVo orgVo = algUserMapper.selectOrgVoByPrimaryKey(orgSn);
+        if (Assert.isNotEmpty(orgVo.getOwnerId())) {
+            AlgUser owner = algUserMapper.selectByPrimaryKey(orgVo.getOwnerId());
+            orgVo.setOwner(owner);
+        }
+
+        // TODO:获取算法列表方法待定
+        List<AlgModuleListVo> moduleList = algModuleMapper.findModuleList(null, null, null, null, null);
+        orgVo.setModuleList(moduleList);
+        // 根据算法列表计算组织总调用次数
+        Long modCallCnt = 0L;
+        if (moduleList.size() > 0) {
+            for (AlgModuleListVo moduleVo:moduleList) {
+                modCallCnt += Long.valueOf(moduleVo.getCallCnt());
+            }
+        }
+
+        // TODO:获取组织成员
+
+        return orgVo;
     }
 }
