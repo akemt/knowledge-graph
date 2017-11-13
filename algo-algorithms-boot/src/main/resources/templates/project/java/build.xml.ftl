@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="GaoTest" default="repl" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="${projectName}" default="repl" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
   <description>
     Algorithmia build file
   </description>
@@ -28,7 +28,7 @@
   <property name="jar.version.file" value="${r'${user}'}-${r'${algo}'}.jar"/>
 
   <!-- Executables -->
-  <property name="run.class" value="algorithmia.Main"/>
+  <property name="run.class" value="algmarket.${projectName}.${projectName}"/>
 
   <!-- Initialize -->
   <target name="init">
