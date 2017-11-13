@@ -7,6 +7,8 @@ public class AlgModelSet {
 
     private String modelSetName;
 
+    private String modelOrderby;
+
     public String getModelSetSn() {
         return modelSetSn;
     }
@@ -29,5 +31,13 @@ public class AlgModelSet {
 
     public void setModelSetName(String modelSetName) {
         this.modelSetName = modelSetName == null ? null : modelSetName.trim();
+    }
+
+    public String getModelOrderby() {
+        return modelOrderby;
+    }
+
+    public void setModelOrderby(String modelOrderby) {
+        this.modelOrderby = modelOrderby;
     }
 }

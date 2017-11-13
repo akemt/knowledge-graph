@@ -32,6 +32,5 @@ public class AddAlgorithmServiceTest {
         System.out.println(UUIDUtil.createUUID());
         System.out.println(UUIDUtil.createUUID());
         System.out.println(UUIDUtil.createUUID());
-
     }
 }
