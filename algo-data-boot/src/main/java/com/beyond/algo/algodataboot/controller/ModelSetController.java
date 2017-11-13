@@ -145,9 +145,9 @@ public class ModelSetController  extends BaseController {
     @RequestMapping(value = "/queryModelSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result queryModelSet() throws AlgException{
         logger.info("查询用户的模型集");
-      //  AlgUser algUser = getUserInfo();
-     //   List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet(algUser.getUsrSn());
-        List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet("8ec99d9819744a8aa0db947a6be6db4c");
+        AlgUser algUser = getUserInfo();
+        List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet(algUser.getUsrSn());
+       // List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet("8ec99d9819744a8aa0db947a6be6db4c");
         return Result.ok(AlgModelSetVoList);
     }
 
