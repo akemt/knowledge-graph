@@ -110,7 +110,7 @@ public class ModelSetControllerTest {
     @Test
     public void queryModel() throws Exception {
         String result = this.mockMvc.perform(post("/queryModel").contentType(MediaType.APPLICATION_JSON)
-                .param("modelSetSn", "5a0e41ea4c904012b71b4f2ea2043c6f"))
+                .param("modelSetSn", "2"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }

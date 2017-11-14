@@ -144,21 +144,9 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public Result queryAlgModel(String modelSetSn) throws Exception {
-        try {
-            Result result = new Result();
-            if(modelSetSn.isEmpty()) {
-               result.setMsg("模型集合串号为空");
-               return result;
-            }
-            List<AlgModel> allAlgModel = algModelMapper.selectAll(modelSetSn);
-            result.setData(allAlgModel);
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result("获取所有模型集失败，模型集串号：" + modelSetSn);
-        }
-
+    public List<ModelDataVo> queryAlgModel( AlgModel algModel) throws AlgException {
+            List<ModelDataVo> allAlgModel = algModelMapper.queryModel(algModel);
+            return allAlgModel;
     }
     @Override
     public AlgUser findByUsrCode(String usrCode){
