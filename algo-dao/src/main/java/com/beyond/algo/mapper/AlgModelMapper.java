@@ -21,4 +21,6 @@ public interface AlgModelMapper {
     List<ModelDataVo> queryModelDataSet(ModelDataVo modelDataVo);
 
     List<ModelDataVo> queryModel (AlgModel algModel);
+
+    int checkData (AlgModel algModel);
 }

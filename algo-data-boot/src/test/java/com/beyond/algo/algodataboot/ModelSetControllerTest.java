@@ -42,17 +42,16 @@ public class ModelSetControllerTest {
 
     @Test
     public void addModelSet() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_modelset/addModelSet").contentType(MediaType.APPLICATION_JSON)
-                .param("modelSetName", "插入排序")
-                .param("usrSn", "1321"))
+        String result = this.mockMvc.perform(get("/addModelSet").contentType(MediaType.APPLICATION_JSON)
+                .param("modelSetName", "智能工业4"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
 
     @Test
     public void deleteModelSet() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_modelset/deleteModelSet").contentType(MediaType.APPLICATION_JSON)
-                .param("modelSetSn", "329406a7108b447eb889eb319be657da"))
+        String result = this.mockMvc.perform(delete("/deleteModelSet").contentType(MediaType.APPLICATION_JSON)
+                .param("modelSetSn", "4"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }

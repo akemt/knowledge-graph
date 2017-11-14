@@ -83,4 +83,16 @@
     where alg_model.model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
     and  alg_model.usr_sn=#{usrSn,jdbcType=VARCHAR}
   </select>
+
+  <select id="checkData" resultType="java.lang.Integer"  parameterType="com.beyond.algo.model.AlgModel"  >
+    select COUNT(1)
+    from alg_model
+    WHERE
+    <if test="usrSn == null and usrSn !=''" >
+      usr_sn = #{usrSn,jdbcType=VARCHAR}
+    </if>
+    <if test="modelSetSn != null and  modelSetSn !=''" >
+      model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
+    </if>
+  </select>
 </mapper>
