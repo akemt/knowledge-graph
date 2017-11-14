@@ -38,7 +38,7 @@
   <select id="dataSetCount" resultType="java.lang.Integer" parameterType="java.lang.String" >
     select count(*)
     from alg_data_set
-    where usr_sn = #{usrSn,jdbcType=VARCHAR} and data_set_name = #{dataSetName,jdbcType=VARCHAR}
+    where usr_sn = #{arg0,jdbcType=VARCHAR} and data_set_name = #{arg1,jdbcType=VARCHAR}
   </select>
   <select id="getMaxDataOrderBy" resultType="java.lang.String" parameterType="java.lang.String" >
     select max(data_orderby) as data_orderby

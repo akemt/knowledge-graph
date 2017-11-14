@@ -8,10 +8,13 @@ import com.beyond.algo.mapper.AlgDataMapper;
 import com.beyond.algo.mapper.AlgDataSetMapper;
 import com.beyond.algo.model.AlgData;
 import com.beyond.algo.model.AlgDataSet;
+import com.beyond.algo.model.AlgUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,21 +47,21 @@ public class DataSetServiceImpl implements DataSetService {
 
     //添加数据集
     @Override
-    public Result addDataSet(AlgDataSet dataSet,String usrSn) throws AlgException {
+    public Result addDataSet(AlgDataSet dataSet) throws AlgException {
         try {
             if (Assert.isEmpty(dataSet.getDataSetName())) {
                 return Result.failure("数据集名称不能为空！");
             }
-            if(algDataSetMapper.dataSetCount(usrSn,dataSet.getDataSetName())>0){
+            if(algDataSetMapper.dataSetCount(dataSet.getUsrSn(),dataSet.getDataSetName())>0){
                 return Result.failure(dataSet.getDataSetName() + "数据集名称已经存在！");
             }
 
             //取出当前用户最大排序值
-            String dataOrderBy =algDataSetMapper.getMaxDataOrderBy(usrSn);
+            int max = Integer.parseInt(algDataSetMapper.getMaxDataOrderBy(dataSet.getUsrSn())) + 1;
+            String dataOrderBy = Integer.toString(max);
 
             //生成数据集随机串
             dataSet.setDataSetSn(UUID.randomUUID().toString().replace("-", ""));
-            dataSet.setUsrSn(usrSn);
             dataSet.setDataOrderby(dataOrderBy);
 
             algDataSetMapper.insert(dataSet);
@@ -124,16 +127,29 @@ public class DataSetServiceImpl implements DataSetService {
 
     //新增数据
     @Override
-    public Result addData(AlgData algData,String usrSn) throws AlgException {
+    public Result addData(AlgData algData,AlgUser algUser) throws AlgException {
         try {
             if (Assert.isEmpty(algData.getDataName())||Assert.isEmpty(algData.getDataEnName())) {
                 return Result.failure("数据名称或英文名为空");
             }
-            if (algDataMapper.checkDataEnName(algData) != 0 ){
+            if (algDataMapper.checkDataEnName(algUser.getUsrSn(),algData.getDataEnName()) != 0 ){
                 return Result.failure("数据英文名已存在");
             }
             //生成数据集随机串
             algData.setDataSn(UUID.randomUUID().toString().replace("-", ""));
+            //用户串号
+            algData.setUsrSn(algUser.getUsrSn());
+            //上传时间
+            algData.setCreatTime(new Date());
+            //数据地址
+            String dataPath = null;
+            if(Assert.isEmpty(algData.getDataEnName())){
+                dataPath = "data://" + algUser.getUsrCode() + "/" + algData.getDataSn();
+            }else {
+                dataPath = "data://" + algUser.getUsrCode() + "/" + algData.getDataEnName();
+            }
+            algData.setDataAddr(dataPath);
+
             algDataMapper.insert(algData);
         } catch (Exception e) {
             e.printStackTrace();
@@ -142,104 +158,7 @@ public class DataSetServiceImpl implements DataSetService {
         return Result.successResponse();
     }
 
-
-
-
-
-    //-----------------------------------------------------------old
-    /**@Override
-    public List<AlgDataSet> showDataSet(String usrSn) throws Exception {
-        List<AlgDataSet> algDataSetsList = algDataSetMapper.selectAll(usrSn);
-        return algDataSetsList;
-    }*/
-
-    /** @Override
-    public Result addDataSet(AlgDataSet dataSet) throws Exception {
-        try {
-            if (Assert.isEmpty(dataSet.getDataSetName())) {
-                return Result.failure("数据集名称为空");
-            }
-            //生成数据集随机串
-            dataSet.setDataSetSn(UUID.randomUUID().toString().replace("-", ""));
-            algDataSetMapper.insert(dataSet);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.failureResponse();
-        }
-        return Result.successResponse();
-    }*/
-
-
-    /**@Override
-    public Result deleteDataSet(String dataSetSn) throws Exception {
-        try{
-            if(Assert.isEmpty(dataSetSn))
-            {
-                return Result.failure("数据集串号为空");
-            }
-            if(algDataMapper.dataCount(dataSetSn) != 0){
-                return Result.failure("数据集中还存在数据，无法删除");
-            }
-            algDataSetMapper.deleteByPrimaryKey(dataSetSn);
-        }catch(Exception e){
-            e.printStackTrace();
-            return Result.failureResponse();
-        }
-        return Result.successResponse();
-    }*/
-
-   // @Override
-    /**public Result queryAlgDatabySet(String dataSetSn) throws Exception {
-        try {
-            Result result = new Result();
-            if(Assert.isEmpty(dataSetSn)) {
-                result.setMsg("数据集合串号为空");
-                return result;
-            }
-            List<AlgData> allAlgData = algDataMapper.queryAlgDatabySet(dataSetSn);
-            result.setData(allAlgData);
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result("获取所有模型集失败，模型集串号：" + dataSetSn);
-        }
-    }*/
-
-    /**@Override
-    public Result addData(AlgData algData) throws Exception {
-        try {
-            if (Assert.isEmpty(algData.getDataName())||Assert.isEmpty(algData.getDataEnName())) {
-                return Result.failure("数据名称或英文名为空");
-            }
-            if (algDataMapper.checkDataEnName(algData) != 0 ){
-                return Result.failure("数据英文名已存在");
-            }
-            //生成数据集随机串
-            algData.setDataSn(UUID.randomUUID().toString().replace("-", ""));
-            algDataMapper.insert(algData);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.failureResponse();
-        }
-        return Result.successResponse();
-    }*/
-
-    /**@Override
-    public Result deleteData(String dataSn) throws Exception {
-        try{
-            if(Assert.isEmpty(dataSn))
-            {
-                return Result.failure("数据串号为空");
-            }
-            algDataMapper.deleteByPrimaryKey(dataSn);
-        }catch(Exception e){
-            e.printStackTrace();
-            return Result.failureResponse();
-        }
-        return Result.successResponse();
-    }*/
-
-    @Override
+    /*@Override
     public Result modifyData(AlgData algData) throws Exception {
         try {
             if (Assert.isEmpty(algData.getDataSn())) {
@@ -254,5 +173,5 @@ public class DataSetServiceImpl implements DataSetService {
             return Result.failure("修改数据失败");
         }
         return Result.successResponse();
-    }
+    }*/
 }
