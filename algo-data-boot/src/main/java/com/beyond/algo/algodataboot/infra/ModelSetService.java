@@ -81,10 +81,10 @@ public interface ModelSetService {
     /**
      * @author ：huangjinqing
      * @Description: 查询模型集的模型
-     * @param： String AlgModelSetSn
+     * @param： algModelSet
      * @date ：13：46 2017/10/21
      */
-    Result queryAlgModel(String modelSetSn) throws Exception;
+    List<ModelDataVo> queryAlgModel(AlgModel algModel) throws AlgException;
 
      AlgUser findByUsrCode(String usrCode);
 

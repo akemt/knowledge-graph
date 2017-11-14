@@ -1,7 +1,8 @@
 package com.beyond.algo.algodataboot.controller;
 
 
-import base.BaseController;
+
+import com.beyond.algo.algodataboot.base.BaseController;
 import com.beyond.algo.common.Assert;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.exception.AlgException;
@@ -153,20 +154,20 @@ public class ModelSetController  extends BaseController {
 
     /**
      * @auther: huangjinqing
-     * @Description: 查询用户的模型集
+     * @Description: 查询用户的模型集,当点击模型集时候
      * @date : 14:18 2017/10/21
      */
     @RequestMapping(value = "/queryModel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    Result<Object> queryModel(String modelSetSn){
-        logger.info("查询模型集的模型");
-        try{
-            Result result=modelSetService.queryAlgModel(modelSetSn);
-            return result;
-        }catch(Exception e){
-            logger.info("查询模型集的模型失败");
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+    Result<Object> queryModel(String modelSetSn)throws AlgException{
+        AlgUser algUser = getUserInfo();
+        logger.info("模型集串号：{},用户ID:{}",modelSetSn,algUser.getUsrSn());
+        AlgModel algModelSet=new AlgModel();
+        algModelSet.setUsrSn(algUser.getUsrSn());
+        // algModelSet.setUsrSn("8ec99d9819744a8aa0db947a6be6db4c");
+        algModelSet.setModelSetSn(modelSetSn);
+        List<ModelDataVo> mdelDataVoList=modelSetService.queryAlgModel(algModelSet);
+        return Result.ok(mdelDataVoList);
     }
 
     /**
@@ -234,4 +235,5 @@ public class ModelSetController  extends BaseController {
         List<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo);
         return  Result.ok(mdelDataVoList);
     }
+
 }

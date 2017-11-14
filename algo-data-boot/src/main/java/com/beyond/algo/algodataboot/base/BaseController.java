@@ -1,4 +1,4 @@
-package base;
+package com.beyond.algo.algodataboot.base;
 
 import com.beyond.algo.algodataboot.infra.UserService;
 import com.beyond.algo.common.Assert;
