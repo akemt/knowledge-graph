@@ -43,4 +43,31 @@
         where usr_sn = #{usrSn,jdbcType=VARCHAR}
         order by model_orderby DESC
     </select>
+    <sql id="sql_where">
+        <where>
+            <trim prefixOverrides="and">
+            <if test="usrSn != null and usrSn!=''" >
+                and  usr_sn = #{usrSn,jdbcType=VARCHAR}
+            </if>
+            <if test="modelSetSn != null and modelSetSn!=''" >
+                and  model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
+            </if>
+            <if test="modelSetName != null and modelSetName!=''" >
+                and  model_set_name = #{modelSetName,jdbcType=VARCHAR}
+            </if>
+            </trim>
+        </where>
+    </sql>
+    <select id="checkData" resultType="java.lang.Integer"  parameterType="com.beyond.algo.model.AlgModelSet"  >
+        select COUNT(1)
+        from alg_model_set
+        <include refid="sql_where"/>
+    </select>
+    <select id="checkMaxOrderby" resultType="java.lang.String"  parameterType="java.lang.String"  >
+        select max(model_orderby)
+        from alg_model_set
+        where usr_sn = #{usrSn,jdbcType=VARCHAR}
+        group by usr_sn
+    </select>
+
 </mapper>

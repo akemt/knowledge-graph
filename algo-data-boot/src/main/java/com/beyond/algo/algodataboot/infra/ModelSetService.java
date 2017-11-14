@@ -27,7 +27,7 @@ public interface ModelSetService {
      * @param：User
      * @date ：20:22 2017/10/17
      */
-    Result addModelSet(AlgModelSet modelSet) throws Exception;
+    void addModelSet(AlgModelSet modelSet) throws AlgException;
 
     /**
      * @author ：huangjinqing
@@ -35,7 +35,7 @@ public interface ModelSetService {
      * @param： String modelSetSn
      * @date ： 18:59 2017/10/18
      */
-    Result deleteModelSet(String modelSetSn) throws Exception;
+    int deleteModelSet(AlgModel algModel) throws AlgException;
 
     /**
      * @author ：huangjinqing

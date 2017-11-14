@@ -51,17 +51,17 @@ public class ModelSetController  extends BaseController {
      * @param：
      * @date ：19:56 2017/10/17
      */
-    @RequestMapping(value = "/addModelSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result<Object> addModelSet(AlgModelSet modelSet){
-        logger.info("模型集名称:{},用户ID:{}", modelSet.getModelSetName(),modelSet.getUsrSn());
-        try {
-            Result result = modelSetService.addModelSet(modelSet);
-            return result;
-        } catch (Exception e) {
-            logger.info("添加模型集失败", e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+    @RequestMapping(value = "/addModelSet", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result addModelSet(String  modelSetName) throws AlgException{
+            AlgUser algUser = getUserInfo();
+            AlgModelSet modelSet=new AlgModelSet();
+            modelSet.setModelSetName(modelSetName);
+            modelSet.setUsrSn(modelSet.getUsrSn());
+          //  modelSet.setUsrSn("3");
+            logger.info("模型集名称:{},用户ID:{}", modelSet.getModelSetName(),modelSet.getUsrSn());
+            modelSetService.addModelSet(modelSet);
+            return Result.successResponse();
+
     }
     /**
      * @author ：huangjinqing
@@ -69,17 +69,16 @@ public class ModelSetController  extends BaseController {
      * @param： String modelSetSn
      * @date ：19:56 2017/10/18
      */
-    @RequestMapping(value = "/deleteModelSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result<Object> deleteModelSet(String modelSetSn) {
-        logger.info("模型集串号：{}", modelSetSn);
-        try {
-            Result result = modelSetService.deleteModelSet(modelSetSn);
-            return result;
-        } catch (Exception e) {
-            logger.info("删除模型集失败", e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+    @RequestMapping(value = "/deleteModelSet", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result<Object>  deleteModelSet(String modelSetSn) throws AlgException{
+        AlgUser algUser = getUserInfo();
+        AlgModel algModel=new AlgModel();
+        logger.info("模型集串号：{},用户串号", modelSetSn,algUser.getUsrSn());
+        algModel.setModelSetSn(modelSetSn);
+        algModel.setUsrSn(algUser.getUsrSn());
+       // algModel.setUsrSn("3");
+        int count= modelSetService.deleteModelSet(algModel);
+        return Result.ok(count);
     }
 
     /**
