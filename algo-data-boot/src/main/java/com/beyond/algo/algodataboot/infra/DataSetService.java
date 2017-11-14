@@ -49,14 +49,11 @@ public interface DataSetService {
      */
     Result queryAlgDatabySet(String dataSetSn) throws AlgException;
 
-
-
-
-
-
-
-
-
+    /**
+     * @author ：lindewei
+     * @Description: 新增数据
+     */
+    Result addData(AlgData algData,String usrSn)throws AlgException;
 
 
 
@@ -100,7 +97,7 @@ public interface DataSetService {
      * @param： AlgData
      * @date ： 2017-10-22 19:08:32
      */
-    Result addData(AlgData algData)throws Exception;
+    //Result addData(AlgData algData)throws Exception;
     /**
      * @author ：ZhangJiayue
      * @Description: 删除数据

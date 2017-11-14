@@ -133,10 +133,22 @@ public class DataSetController {
         }
     }
 
-
-
-
-
+    /**
+     * @author ：Lindewei
+     * @Description: 新增数据
+     */
+    @RequestMapping(value = "/addData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result addData(AlgData algData) throws AlgException {
+        try {
+            //AlgUser algUser = getUserInfo();
+            //Result result = dataSetService.addData(algData,algUser.getUsrSn());
+            Result result = dataSetService.addData(algData,"37bf2269ee4845da8e86861bbde2438a");
+            return result;
+        } catch (Exception e) {
+            logger.info("新增数据失败", e);
+            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
+        }
+    }
 
 
 
@@ -233,7 +245,7 @@ public class DataSetController {
      * @param: AlgData
      * @date: 2017-10-22 19:07:10
      */
-    @RequestMapping(value = "/addData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    /**@RequestMapping(value = "/addData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     Result<Object> addAlgData(AlgData algData) {
         logger.info("数据串号：{}");
@@ -244,7 +256,7 @@ public class DataSetController {
             logger.info("添加数据失败", e);
             return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
-    }
+    }*/
     /**
      * @author ：ZhangJiayue
      * @Description: 删除数据

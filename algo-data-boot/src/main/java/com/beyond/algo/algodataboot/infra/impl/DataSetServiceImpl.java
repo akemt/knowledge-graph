@@ -122,6 +122,26 @@ public class DataSetServiceImpl implements DataSetService {
         }
     }
 
+    //新增数据
+    @Override
+    public Result addData(AlgData algData,String usrSn) throws AlgException {
+        try {
+            if (Assert.isEmpty(algData.getDataName())||Assert.isEmpty(algData.getDataEnName())) {
+                return Result.failure("数据名称或英文名为空");
+            }
+            if (algDataMapper.checkDataEnName(algData) != 0 ){
+                return Result.failure("数据英文名已存在");
+            }
+            //生成数据集随机串
+            algData.setDataSn(UUID.randomUUID().toString().replace("-", ""));
+            algDataMapper.insert(algData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.failureResponse();
+        }
+        return Result.successResponse();
+    }
+
 
 
 
@@ -185,7 +205,7 @@ public class DataSetServiceImpl implements DataSetService {
         }
     }*/
 
-    @Override
+    /**@Override
     public Result addData(AlgData algData) throws Exception {
         try {
             if (Assert.isEmpty(algData.getDataName())||Assert.isEmpty(algData.getDataEnName())) {
@@ -202,7 +222,7 @@ public class DataSetServiceImpl implements DataSetService {
             return Result.failureResponse();
         }
         return Result.successResponse();
-    }
+    }*/
 
     /**@Override
     public Result deleteData(String dataSn) throws Exception {
