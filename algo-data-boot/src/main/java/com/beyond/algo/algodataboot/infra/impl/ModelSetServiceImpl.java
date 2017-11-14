@@ -87,17 +87,8 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public Result deleteModel(String modelSn) throws Exception {
-        try {
-            if (modelSn.isEmpty()) {
-                return Result.failure("模型串号为空");
-            }
+    public void deleteModel(String modelSn) throws AlgException {
             algModelMapper.deleteByPrimaryKey(modelSn);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.failureResponse();
-        }
-        return Result.successResponse();
     }
 
     @Override

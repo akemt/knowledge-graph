@@ -107,17 +107,14 @@ public class ModelSetController  extends BaseController {
      * @param: String modelSn
      * @date: 19:09 2017/10/18
      */
-    @RequestMapping(value = "/deleteModel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deleteModel", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    Result<Object> deleteModel(String modelSn) {
+    Result deleteModel(String modelSn)throws AlgException {
+        AlgUser algUser = getUserInfo();
         logger.info("模型串号：{}", modelSn);
-        try {
-            Result result = modelSetService.deleteModel(modelSn);
-            return result;
-        } catch (Exception e) {
-            logger.info("删除模型失败", e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        modelSetService.deleteModel(modelSn);
+        return Result.successResponse();
+
     }
 
     /**
@@ -143,7 +140,7 @@ public class ModelSetController  extends BaseController {
      * @Description: 查询用户的模型集
      * @date : 14:15 2017/10/21
      */
-    @RequestMapping(value = "/queryModelSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/queryModelSet", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result queryModelSet() throws AlgException{
         logger.info("查询用户的模型集");
         AlgUser algUser = getUserInfo();
@@ -157,14 +154,14 @@ public class ModelSetController  extends BaseController {
      * @Description: 查询用户的模型集,当点击模型集时候
      * @date : 14:18 2017/10/21
      */
-    @RequestMapping(value = "/queryModel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/queryModel", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     Result<Object> queryModel(String modelSetSn)throws AlgException{
         AlgUser algUser = getUserInfo();
         logger.info("模型集串号：{},用户ID:{}",modelSetSn,algUser.getUsrSn());
-        AlgModel algModelSet=new AlgModel();
-        algModelSet.setUsrSn(algUser.getUsrSn());
-        // algModelSet.setUsrSn("8ec99d9819744a8aa0db947a6be6db4c");
+       AlgModel algModelSet=new AlgModel();
+       algModelSet.setUsrSn(algUser.getUsrSn());
+       //  algModelSet.setUsrSn("8ec99d9819744a8aa0db947a6be6db4c");
         algModelSet.setModelSetSn(modelSetSn);
         List<ModelDataVo> mdelDataVoList=modelSetService.queryAlgModel(algModelSet);
         return Result.ok(mdelDataVoList);
