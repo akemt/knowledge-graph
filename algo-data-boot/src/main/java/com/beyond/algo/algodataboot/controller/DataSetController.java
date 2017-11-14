@@ -1,6 +1,7 @@
 package com.beyond.algo.algodataboot.controller;
 
 
+import com.beyond.algo.algodataboot.base.BaseController;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
 import com.beyond.algo.algodataboot.infra.DataSetService;
@@ -27,8 +28,7 @@ import java.util.Map;
  */
 @RestController
 @Slf4j
-//public class DataSetController extends BaseController {
-public class DataSetController {
+public class DataSetController extends BaseController {
 
     private final static Logger logger = LoggerFactory.getLogger(DataSetController.class);
 

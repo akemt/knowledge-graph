@@ -57,8 +57,12 @@ public class DataSetServiceImpl implements DataSetService {
             }
 
             //取出当前用户最大排序值
-            int max = Integer.parseInt(algDataSetMapper.getMaxDataOrderBy(dataSet.getUsrSn())) + 1;
-            String dataOrderBy = Integer.toString(max);
+            String dataOrderBy =algDataSetMapper.getMaxDataOrderBy(dataSet.getUsrSn());
+            int max = 1;
+            if(Assert.isNotEmpty(dataOrderBy)){
+                max = Integer.parseInt(algDataSetMapper.getMaxDataOrderBy(dataSet.getUsrSn())) + 1;
+            }
+            dataOrderBy = Integer.toString(max);
 
             //生成数据集随机串
             dataSet.setDataSetSn(UUID.randomUUID().toString().replace("-", ""));

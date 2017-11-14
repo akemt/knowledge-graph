@@ -39,8 +39,8 @@ public class DataSetServiceTests {
     @Test
     public void addDataSetTest() throws Exception {
         AlgDataSet dataSet = new AlgDataSet();
-        dataSet.setDataSetName("数据集XXX");
-        dataSet.setUsrSn("37bf2269ee4845da8e86861bbde2438a");
+        dataSet.setDataSetName("数据集XaaXX");
+        dataSet.setUsrSn("dddddddddddddddddd");
         dataSetService.addDataSet(dataSet);
     }
 
