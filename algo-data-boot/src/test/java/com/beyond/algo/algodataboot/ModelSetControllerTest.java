@@ -10,6 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -40,17 +42,16 @@ public class ModelSetControllerTest {
 
     @Test
     public void addModelSet() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_modelset/addModelSet").contentType(MediaType.APPLICATION_JSON)
-                .param("modelSetName", "插入排序")
-                .param("usrSn", "1321"))
+        String result = this.mockMvc.perform(get("/addModelSet").contentType(MediaType.APPLICATION_JSON)
+                .param("modelSetName", "智能工业4"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
 
     @Test
     public void deleteModelSet() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_modelset/deleteModelSet").contentType(MediaType.APPLICATION_JSON)
-                .param("modelSetSn", "329406a7108b447eb889eb319be657da"))
+        String result = this.mockMvc.perform(delete("/deleteModelSet").contentType(MediaType.APPLICATION_JSON)
+                .param("modelSetSn", "4"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
@@ -72,8 +73,8 @@ public class ModelSetControllerTest {
 
     @Test
     public void deleteModel() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_modelset/deleteModel").contentType(MediaType.APPLICATION_JSON)
-                .param("modelSn", "24488612a256467a923d8de84d56e310"))
+        String result = this.mockMvc.perform(delete("/deleteModel").contentType(MediaType.APPLICATION_JSON)
+                .param("modelSn", "3"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
@@ -103,13 +104,13 @@ public class ModelSetControllerTest {
     }
     @Test
     public void queryModelSet() throws Exception {
-        String result = this.mockMvc.perform(post("/queryModelSet").contentType(MediaType.APPLICATION_JSON))
+        String result = this.mockMvc.perform(get("/queryModelSet").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
     @Test
     public void queryModel() throws Exception {
-        String result = this.mockMvc.perform(post("/queryModel").contentType(MediaType.APPLICATION_JSON)
+        String result = this.mockMvc.perform(get("/queryModel").contentType(MediaType.APPLICATION_JSON)
                 .param("modelSetSn", "2"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);

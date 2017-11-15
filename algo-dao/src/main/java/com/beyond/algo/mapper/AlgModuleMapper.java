@@ -23,12 +23,12 @@ public interface AlgModuleMapper {
 
     /**
      *  分页查询算法列表
-     * @param catName
+     * @param catSn
      * @param usage
      * @param modName
      * @return
      */
-    List<AlgModuleListVo> findModuleList(String catName, String usage, String modName,String id,String usrCode);
+    List<AlgModuleListVo> findModuleList(String catSn, String usage, String modName,String id,String usrCode);
 
     AlgModule selectByUsrSnAndModId(@Param("usrSn") String usrSn, @Param("modId")String modId);
 
@@ -37,5 +37,5 @@ public interface AlgModuleMapper {
     /**
      *  我的收藏列表
      */
-    List<AlgModuleListVo> findModuleCollect(String catName, String usage, String modName,String usrSn);
+    List<AlgModuleListVo> findModuleCollect(String catSn, String usage, String modName,String usrSn);
 }

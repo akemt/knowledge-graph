@@ -14,7 +14,7 @@ public interface AlgDataMapper {
 
     int updateByPrimaryKey(AlgData record);
 
-    int checkDataEnName(AlgData record);
+    int checkDataEnName(String usrSn,String dataEnName);
 
     int dataCount(String dataSetSn);
 

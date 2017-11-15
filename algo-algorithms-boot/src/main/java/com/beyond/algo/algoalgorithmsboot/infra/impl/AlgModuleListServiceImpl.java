@@ -28,10 +28,10 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
     AlgArticleListMapper algArticleListMapper;
 
     @Override
-    public List<AlgModuleListVo> findModuleList(String catName, String usage ,String modName,Integer numPage,Integer numRows,String id,String usrCode) throws AlgException {
+    public List<AlgModuleListVo> findModuleList(String catSn, String usage ,String modName,Integer numPage,Integer numRows,String id,String usrCode) throws AlgException {
         //初步设定用数据库进行排序查询
         PageHelper.startPage(numPage,numRows);
-        List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleList(catName,usage,modName,id,usrCode);
+        List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleList(catSn,usage,modName,id,usrCode);
         return resultAlgModule;
     }
 
@@ -44,10 +44,10 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
 
     //我的收藏
     @Override
-    public List<AlgModuleListVo> findModuleCollect(String catName, String usage ,String modName,Integer numPage,Integer numRows, String usrSn) throws AlgException {
+    public List<AlgModuleListVo> findModuleCollect(String catSn, String usage ,String modName,Integer numPage,Integer numRows, String usrSn) throws AlgException {
         //初步设定用数据库进行排序查询
         PageHelper.startPage(numPage,numRows);
-        List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleCollect(catName,usage,modName,usrSn);
+        List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleCollect(catSn,usage,modName,usrSn);
         return resultAlgModule;
     }
 }

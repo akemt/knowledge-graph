@@ -2,6 +2,7 @@ package com.beyond.algo.algodataboot.infra.impl;
 
 import com.beyond.algo.algodataboot.infra.ModelSetService;
 import com.beyond.algo.common.Assert;
+import com.beyond.algo.common.UUIDUtil;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgUserMapper;
 import com.beyond.algo.model.AlgUser;
@@ -40,34 +41,35 @@ public class ModelSetServiceImpl implements ModelSetService {
     private AlgUserMapper algUserMapper;
 
     @Override
-    public Result addModelSet(AlgModelSet modelSet) throws Exception {
-        try {
+    public void addModelSet(AlgModelSet modelSet) throws AlgException {
             //生成模型集随机串
             if (modelSet.getModelSetName().isEmpty()) {
-                return Result.failure("模型集名称为空");
+                throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000001");
             }
-            modelSet.setModelSetSn(UUID.randomUUID().toString().replace("-", ""));
+            int count= algModelSetMapper.checkData(modelSet);
+            if(count>0){
+                String[] checkMessage = {"模型集",""};
+                throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000002",checkMessage);
+            }
+            String maxOrderby =algModelSetMapper.checkMaxOrderby(modelSet.getUsrSn());
+            if(Assert.isNotEmpty(maxOrderby)){
+                maxOrderby=String.valueOf(Integer.valueOf(maxOrderby)+1);
+            }else{
+                maxOrderby="1";
+            }
+            modelSet.setModelOrderby(maxOrderby);
+            modelSet.setModelSetSn(UUIDUtil.createUUID());
             algModelSetMapper.insert(modelSet);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.failureResponse();
-        }
-        return Result.successResponse();
     }
 
     @Override
-    public Result deleteModelSet(String modelSetSn) throws Exception {
-        try {
-            if (modelSetSn.isEmpty()) {
-                return Result.failure("模型集串号为空");
+    public int deleteModelSet(AlgModel algModel) throws AlgException {
+            int count= algModelMapper.checkData(algModel);
+            if(count==0) {
+                algModelSetMapper.deleteByPrimaryKey(algModel.getModelSetSn());
+                return  1;
             }
-            this.deleteModelByModelSetSn(modelSetSn);
-            algModelSetMapper.deleteByPrimaryKey(modelSetSn);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.failureResponse();
-        }
-        return Result.successResponse();
+            return 0;
     }
 
     @Override
@@ -87,17 +89,8 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public Result deleteModel(String modelSn) throws Exception {
-        try {
-            if (modelSn.isEmpty()) {
-                return Result.failure("模型串号为空");
-            }
+    public void deleteModel(String modelSn) throws AlgException {
             algModelMapper.deleteByPrimaryKey(modelSn);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.failureResponse();
-        }
-        return Result.successResponse();
     }
 
     @Override

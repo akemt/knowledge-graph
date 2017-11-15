@@ -42,79 +42,49 @@ public class DataSetControllerTest {
         System.out.println(result);
     }
 
-
-
-    //-----------------------------------------------------old
-    @Test
-    public void showDataSet() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_dataset/showDataSet").contentType(MediaType.APPLICATION_JSON)
-                .param("usrSn", "data11"))
-                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-        System.out.println(result);
-    }
+    //添加数据集
     @Test
     public void addDataSet() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_dataset/addDataSet").contentType(MediaType.APPLICATION_JSON)
-                .param("dataSetName", "数据集")
-                .param("usrSn", "data11"))
-                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-        System.out.println(result);
-    }
-    @Test
-    public void deleteDataSet() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_dataset/deleteDataSet").contentType(MediaType.APPLICATION_JSON)
-                .param("dataSetSn", "6ad675dfe66040de8c6f6886fb73792c"))
+        String result = this.mockMvc.perform(post("/adddataset").contentType(MediaType.APPLICATION_JSON)
+                .param("dataSetName", "a6666")
+                .param("usrSn", "a6666"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
 
-    @Test
-    public void showData() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_dataset/showData").contentType(MediaType.APPLICATION_JSON)
-                .param("dataSetSn", "6ad675dfe66040de8c6f6886fb73792c"))
-                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-        System.out.println(result);
-    }
-    @Test
-    public void addData() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_dataset/addData").contentType(MediaType.APPLICATION_JSON)
-                .param("dataSetSn", "6ad675dfe66040de8c6f6886fb73792c")
-                .param("usrSn", "data11")
-                .param("dataName", "数学2")
-                .param("dataEnName", "math3")
-                .param("dataSize", "1231ee")
-                .param("dataAddr", "1231")
-                .param("dataLoc", "1")
-                .param("isOpenSrc", "1")
-                .param("dataAbs", "1")
-                .param("dataContent", "1")
-                .param("dataCredit", "1231"))
-                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-        System.out.println(result);
-    }
+    //删除数据
     @Test
     public void deleteData() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_dataset/deleteData").contentType(MediaType.APPLICATION_JSON)
-                .param("dataSn", "50778c1a6848419f93569cc15f937f85"))
+        String result = this.mockMvc.perform(post("/deleteData").contentType(MediaType.APPLICATION_JSON)
+                .param("dataSn", "888"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
+
+    //删除当前数据集
     @Test
-    public void modifyData() throws Exception {
-        String result = this.mockMvc.perform(post("/algo_dataset/modifyData").contentType(MediaType.APPLICATION_JSON)
-                .param("dataSn", "91c74defe4184ba495f668766537880f")
-                .param("dataSetSn", "6ad675dfe66040de8c6f6886fb73792c")
-                .param("usrSn", "data11")
-                .param("dataName", "数学9")
-                .param("dataEnName", "math4")
-                .param("dataSize", "1231ee")
-                .param("dataAddr", "1231")
-                .param("dataLoc", "1")
-                .param("isOpenSrc", "1")
-                .param("dataAbs", "1")
-                .param("dataContent", "1")
-                .param("dataCredit", "1231"))
+    public void deleteDataSet() throws Exception {
+        String result = this.mockMvc.perform(post("/deleteDataSet").contentType(MediaType.APPLICATION_JSON)
+                .param("dataSetSn", "fba4aa1b36864c71bbf44c069e5d6e0d"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
+    }
+
+    //点击数据集关联查询数据
+    @Test
+    public void showData() throws Exception {
+        String result = this.mockMvc.perform(get("/showData").contentType(MediaType.APPLICATION_JSON)
+                .param("dataSetSn", "777"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+    //新增数据
+    @Test
+    public void addData() throws Exception {
+        //String result = this.mockMvc.perform(post("/showData").contentType(MediaType.APPLICATION_JSON)
+        //        .param("dataSetSn", "777"))
+        //        .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        //System.out.println(result);
     }
 }

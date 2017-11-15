@@ -17,4 +17,8 @@ public interface AlgModelSetMapper {
     int updateByPrimaryKey(AlgModelSet record);
 
     List<AlgModelSetVo> queryModelSet(String usrSn);
+
+    int checkData(AlgModelSet algModelSet);
+
+    String checkMaxOrderby(String usrSn);
 }

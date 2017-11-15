@@ -51,17 +51,17 @@ public class ModelSetController  extends BaseController {
      * @param：
      * @date ：19:56 2017/10/17
      */
-    @RequestMapping(value = "/addModelSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result<Object> addModelSet(AlgModelSet modelSet){
-        logger.info("模型集名称:{},用户ID:{}", modelSet.getModelSetName(),modelSet.getUsrSn());
-        try {
-            Result result = modelSetService.addModelSet(modelSet);
-            return result;
-        } catch (Exception e) {
-            logger.info("添加模型集失败", e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+    @RequestMapping(value = "/addModelSet", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result addModelSet(String  modelSetName) throws AlgException{
+            AlgUser algUser = getUserInfo();
+            AlgModelSet modelSet=new AlgModelSet();
+            modelSet.setModelSetName(modelSetName);
+            modelSet.setUsrSn(modelSet.getUsrSn());
+          //  modelSet.setUsrSn("3");
+            logger.info("模型集名称:{},用户ID:{}", modelSet.getModelSetName(),modelSet.getUsrSn());
+            modelSetService.addModelSet(modelSet);
+            return Result.successResponse();
+
     }
     /**
      * @author ：huangjinqing
@@ -69,17 +69,16 @@ public class ModelSetController  extends BaseController {
      * @param： String modelSetSn
      * @date ：19:56 2017/10/18
      */
-    @RequestMapping(value = "/deleteModelSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result<Object> deleteModelSet(String modelSetSn) {
-        logger.info("模型集串号：{}", modelSetSn);
-        try {
-            Result result = modelSetService.deleteModelSet(modelSetSn);
-            return result;
-        } catch (Exception e) {
-            logger.info("删除模型集失败", e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+    @RequestMapping(value = "/deleteModelSet", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result<Object>  deleteModelSet(String modelSetSn) throws AlgException{
+        AlgUser algUser = getUserInfo();
+        AlgModel algModel=new AlgModel();
+        logger.info("模型集串号：{},用户串号", modelSetSn,algUser.getUsrSn());
+        algModel.setModelSetSn(modelSetSn);
+        algModel.setUsrSn(algUser.getUsrSn());
+       // algModel.setUsrSn("3");
+        int count= modelSetService.deleteModelSet(algModel);
+        return Result.ok(count);
     }
 
     /**
@@ -107,17 +106,14 @@ public class ModelSetController  extends BaseController {
      * @param: String modelSn
      * @date: 19:09 2017/10/18
      */
-    @RequestMapping(value = "/deleteModel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deleteModel", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    Result<Object> deleteModel(String modelSn) {
+    Result deleteModel(String modelSn)throws AlgException {
+        AlgUser algUser = getUserInfo();
         logger.info("模型串号：{}", modelSn);
-        try {
-            Result result = modelSetService.deleteModel(modelSn);
-            return result;
-        } catch (Exception e) {
-            logger.info("删除模型失败", e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        modelSetService.deleteModel(modelSn);
+        return Result.successResponse();
+
     }
 
     /**
@@ -143,7 +139,7 @@ public class ModelSetController  extends BaseController {
      * @Description: 查询用户的模型集
      * @date : 14:15 2017/10/21
      */
-    @RequestMapping(value = "/queryModelSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/queryModelSet", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result queryModelSet() throws AlgException{
         logger.info("查询用户的模型集");
         AlgUser algUser = getUserInfo();
@@ -157,14 +153,14 @@ public class ModelSetController  extends BaseController {
      * @Description: 查询用户的模型集,当点击模型集时候
      * @date : 14:18 2017/10/21
      */
-    @RequestMapping(value = "/queryModel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/queryModel", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
     Result<Object> queryModel(String modelSetSn)throws AlgException{
         AlgUser algUser = getUserInfo();
         logger.info("模型集串号：{},用户ID:{}",modelSetSn,algUser.getUsrSn());
-        AlgModel algModelSet=new AlgModel();
-        algModelSet.setUsrSn(algUser.getUsrSn());
-        // algModelSet.setUsrSn("8ec99d9819744a8aa0db947a6be6db4c");
+       AlgModel algModelSet=new AlgModel();
+       algModelSet.setUsrSn(algUser.getUsrSn());
+       //  algModelSet.setUsrSn("8ec99d9819744a8aa0db947a6be6db4c");
         algModelSet.setModelSetSn(modelSetSn);
         List<ModelDataVo> mdelDataVoList=modelSetService.queryAlgModel(algModelSet);
         return Result.ok(mdelDataVoList);

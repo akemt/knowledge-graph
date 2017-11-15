@@ -60,16 +60,11 @@
     from alg_data
     WHERE data_set_sn = #{dataSetSn,jdbcType=VARCHAR}
   </select>
-  <select id="checkDataEnName" resultType="java.lang.Integer"  parameterType="com.beyond.algo.model.AlgData"  >
-    select COUNT(*)
+  <select id="checkDataEnName" resultType="java.lang.Integer"  parameterType="java.lang.String"  >
+    select count(*)
     from alg_data
-    WHERE
-    <if test="dataSn == null" >
-      usr_sn = #{usrSn,jdbcType=VARCHAR} AND data_en_name = #{dataEnName,jdbcType=VARCHAR}
-    </if>
-    <if test="dataSn != null" >
-      usr_sn = #{usrSn,jdbcType=VARCHAR} AND data_en_name = #{dataEnName,jdbcType=VARCHAR} AND data_sn != #{dataSn,jdbcType=VARCHAR}
-    </if>
+    where usr_sn = #{arg0,jdbcType=VARCHAR}
+    <if test="arg1 != null and arg1 !=''">and data_en_name = #{arg1,jdbcType=VARCHAR}</if>
   </select>
   <select id="dataCount" resultType="java.lang.Integer"  parameterType="java.lang.String">
     select COUNT(*)
