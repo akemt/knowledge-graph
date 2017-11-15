@@ -2,20 +2,22 @@ package com.beyond.algo.algodataboot.controller;
 
 
 import com.beyond.algo.algodataboot.base.BaseController;
+import com.beyond.algo.algodataboot.infra.DataSetService;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.ResultEnum;
-import com.beyond.algo.algodataboot.infra.DataSetService;
 import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.model.AlgData;
 import com.beyond.algo.model.AlgDataSet;
+import com.beyond.algo.model.AlgUser;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,16 +44,15 @@ public class DataSetController extends BaseController {
     @RequestMapping(value = "/initdata", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result initData() throws AlgException {
         try {
-            //todo
-            //AlgUser algUser = getUserInfo();
+            AlgUser algUser = getUserInfo();
             Map<String,List> dataMap=new HashMap<String,List>();
             //我的数据集
-            //List<AlgDataSet> dataSetList = dataSetService.getDataSet(algUser.getUsrSn());
-            List<AlgDataSet> dataSetList = dataSetService.getDataSet("37bf2269ee4845da8e86861bbde2438a");
+            List<AlgDataSet> dataSetList = dataSetService.getDataSet(algUser.getUsrSn());
+            //List<AlgDataSet> dataSetList = dataSetService.getDataSet("37bf2269ee4845da8e86861bbde2438a");
             dataMap.put("algDataSet",dataSetList);
             //我的数据
-            //List<AlgData> algDataList = dataSetService.getData(algUser.getUsrSn());
-            List<AlgData> algDataList = dataSetService.getData("37bf2269ee4845da8e86861bbde2438a");
+            List<AlgData> algDataList = dataSetService.getData(algUser.getUsrSn());
+            //List<AlgData> algDataList = dataSetService.getData("37bf2269ee4845da8e86861bbde2438a");
             dataMap.put("algData",algDataList);
             return Result.ok(dataMap);
         }catch (Exception e){
@@ -66,13 +67,11 @@ public class DataSetController extends BaseController {
      */
     @RequestMapping(value = "/adddataset", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result addDataSet(AlgDataSet dataSet) throws AlgException {
-        //todo
-        //AlgUser algUser = getUserInfo();
-        //logger.info("数据集名称:{},用户ID:{}", dataSet.getDataSetName(),algUser.getUsrSn());
-        logger.info("数据集名称:{},用户ID:{}", dataSet.getDataSetName(),null);
+        AlgUser algUser = getUserInfo();
+        logger.info("数据集名称:{},用户ID:{}", dataSet.getDataSetName(),algUser.getUsrSn());
+        //logger.info("数据集名称:{},用户ID:{}", dataSet.getDataSetName(),null);
         try {
-            //Result result = dataSetService.addDataSet(dataSet,algUser.getUsrSn());
-            //dataSet.setUsrSn(algUser.getUsrSn());
+            dataSet.setUsrSn(algUser.getUsrSn());
             Result result = dataSetService.addDataSet(dataSet);
             return result;
         } catch (Exception e) {
@@ -139,9 +138,9 @@ public class DataSetController extends BaseController {
     @RequestMapping(value = "/addData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result addData(AlgData algData) throws AlgException {
         try {
-            //AlgUser algUser = getUserInfo();
-            //Result result = dataSetService.addData(algData,algUser.getUsrSn());
-            Result result = dataSetService.addData(algData,null);
+            AlgUser algUser = getUserInfo();
+            Result result = dataSetService.addData(algData,algUser);
+            //Result result = dataSetService.addData(algData,null);
             return result;
         } catch (Exception e) {
             logger.info("新增数据失败", e);
