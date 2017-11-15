@@ -71,7 +71,7 @@ public class DataSetServiceImpl implements DataSetService {
             algDataSetMapper.insert(dataSet);
         } catch (Exception e) {
             log.error("添加数据集添加失败。数据集串号：{},用户串号：{},数据集名称：{},数据集排序：{}",dataSet.getDataSetSn(),dataSet.getUsrSn(),dataSet.getDataSetName(),dataSet.getDataOrderby(),e);
-            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002",new String[]{});
+            throw new AlgException("BEYOND.ALG.DATASET.COMMON.ADD.0000001",new String[]{});
         }
         return Result.successResponse();
     }
@@ -86,8 +86,8 @@ public class DataSetServiceImpl implements DataSetService {
             }
             algDataMapper.deleteByPrimaryKey(dataSn);
         }catch(Exception e){
-            e.printStackTrace();
-            return Result.failureResponse();
+            log.error("删除数据失败。数据串号：{}",dataSn,e);
+            throw new AlgException("BEYOND.ALG.DATA.COMMON.DEL.0000002",new String[]{});
         }
         return Result.successResponse();
     }
@@ -105,8 +105,8 @@ public class DataSetServiceImpl implements DataSetService {
             }
             algDataSetMapper.deleteByPrimaryKey(dataSetSn);
         }catch(Exception e){
-            e.printStackTrace();
-            return Result.failureResponse();
+            log.error("删除数据失败。数据集串号：{}",dataSetSn,e);
+            throw new AlgException("BEYOND.ALG.DATASET.COMMON.DEL.0000003",new String[]{});
         }
         return Result.successResponse();
     }
@@ -124,8 +124,8 @@ public class DataSetServiceImpl implements DataSetService {
             result.setData(allAlgData);
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
-            return new Result("获取所有模型集失败，模型集串号：" + dataSetSn);
+            log.error("获取所有数据集失败，模型集串号：{}",dataSetSn,e);
+            throw new AlgException("BEYOND.ALG.DATA.COMMON.FIND.0000004",new String[]{});
         }
     }
 
@@ -156,8 +156,9 @@ public class DataSetServiceImpl implements DataSetService {
 
             algDataMapper.insert(algData);
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.failureResponse();
+            log.error("新增数据失败。数据串号：{},数据集串号：{},用户串号：{},数据名称：{},数据英文名称：{}",algData.getDataSn(),algData.getDataSetSn(),algData.getUsrSn(),
+                    algData.getDataName(),algData.getDataEnName(),e);
+            throw new AlgException("BEYOND.ALG.DATA.COMMON.ADD.0000005",new String[]{});
         }
         return Result.successResponse();
     }
