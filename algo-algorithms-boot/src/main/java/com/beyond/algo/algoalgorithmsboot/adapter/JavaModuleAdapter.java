@@ -7,18 +7,18 @@ import com.beyond.algo.algoalgorithmsboot.util.FreemarkerUtil;
 import com.beyond.algo.common.FileUtil;
 import com.beyond.algo.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DefaultLogger;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.beyond.algo.constant.Constant.FILE_READ_SIZE;
 
 /**
  * @Author: qihe
@@ -29,7 +29,7 @@ import java.util.Map;
 public class JavaModuleAdapter implements ModuleAdapter {
 
     @Override
-    public void createModule(String username, String projectName,GitConfigModel gitConfigModel,ProjectConfigModel projectConfigModel) throws AlgException {
+    public void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel) throws AlgException {
         FileUtil.createDir(gitConfigModel.getLocalBasePath());
 
         // 以用户名作为用户子目录名
@@ -42,21 +42,37 @@ public class JavaModuleAdapter implements ModuleAdapter {
 
         // 先将直接拷贝的文件复制到目录下
         String templatePath = null;
-        try {
-            templatePath = new ClassPathResource("templates/project/java").getFile().getPath();
-        } catch (IOException e) {
-            log.error(e.toString());
-            throw new AlgException("BEYOND.ALG.MODULE.COPY.0000003",new String[]{},e);
-        }
+        templatePath = "jar:" + this.getClass().getClassLoader().getResource("/templates/project/java/").getPath();
         String[] cloneFileArr = projectConfigModel.getCloneFiles().split(",");
         for (String cloneFileName : cloneFileArr) {
-            File srcFile = new File(templatePath + File.separator + cloneFileName);
-            File destFile = new File(projectPath + File.separator + cloneFileName);
+            OutputStream ous = null;
+            InputStream ins = null;
             try {
-                FileUtils.copyFile(srcFile, destFile);
+                log.debug("templatePath is : {} ",templatePath);
+                URL url = new URL(templatePath + cloneFileName);
+                log.debug("url path : {}",url.getPath());
+                ins = url.openStream();
+                //URL读取不到以.开头的文件
+                if(cloneFileName.equals("gitignore")){
+                    cloneFileName = "." + cloneFileName;
+                }
+                File destFile = new File(projectPath + File.separator + cloneFileName);
+                ous = new FileOutputStream(destFile);
+                int bytesRead = 0;
+                byte[] buffer = new byte[FILE_READ_SIZE];
+                while ((bytesRead = ins.read(buffer, 0, FILE_READ_SIZE)) != -1) {
+                    ous.write(buffer, 0, bytesRead);
+                }
             } catch (IOException e) {
                 log.error(e.toString());
                 throw new AlgException("BEYOND.ALG.MODULE.COPY.0000003",new String[]{},e);
+            }finally {
+                try {
+                    ous.close();
+                    ins.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -75,7 +91,7 @@ public class JavaModuleAdapter implements ModuleAdapter {
                 FreemarkerUtil.createFile(templatePath, ftlFileName, projectPath, destFileName, paramMap);
             } catch (Exception e) {
                 log.error(e.toString());
-                throw new AlgException("BEYOND.ALG.MODULE.GENERATE.0000004",new String[]{},e);
+                throw new AlgException("BEYOND.ALG.MODULE.GENERATE.0000004", new String[]{}, e);
             }
         }
 
@@ -90,11 +106,12 @@ public class JavaModuleAdapter implements ModuleAdapter {
             FreemarkerUtil.createFile(templatePath, "Main.java.ftl", mainClassPath, projectName + ".java", paramMap);
         } catch (Exception e) {
             log.error(e.toString());
-            throw new AlgException("BEYOND.ALG.MODULE.GENERATE.0000005",new String[]{},e);
+            throw new AlgException("BEYOND.ALG.MODULE.GENERATE.0000005", new String[]{}, e);
         }
     }
+
     @Override
-    public boolean moduleAntBuild(String  path)throws AlgException,Exception{
+    public boolean moduleAntBuild(String path) throws AlgException, Exception {
         File buildFile = new File(path);
         Project project = new Project();
         DefaultLogger consoleLogger = new DefaultLogger();
@@ -111,12 +128,12 @@ public class JavaModuleAdapter implements ModuleAdapter {
             project.executeTarget(project.getDefaultTarget());
             project.fireBuildFinished(null);  //构建结束
 
-        //    moduleAntZip("E:\\repo\\qihe\\TestJava2\\");
+            //    moduleAntZip("E:\\repo\\qihe\\TestJava2\\");
         } catch (BuildException e) {
-            log.info("构建错误",e);
+            log.info("构建错误", e);
             project.fireBuildFinished(e);  //构建抛出异常
             throw new Exception(e);
-          //  return false;
+            //  return false;
         }
         return true;
 

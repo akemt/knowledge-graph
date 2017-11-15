@@ -1,14 +1,12 @@
 package com.beyond.algo.algoalgorithmsboot.util;
 
-import freemarker.cache.FileTemplateLoader;
-import freemarker.cache.TemplateLoader;
+import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import org.apache.commons.io.IOUtils;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
+import java.net.URL;
 import java.util.Map;
 
 public class FreemarkerUtil {
@@ -26,9 +24,12 @@ public class FreemarkerUtil {
 
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_23);
         configuration.setDefaultEncoding("utf-8");
-
-        TemplateLoader templateLoader = new FileTemplateLoader(new File(templatePath));
-        configuration.setTemplateLoader(templateLoader);
+        URL url = new URL(templatePath + templateFileName);
+        InputStream ins = url.openStream();
+        String content = IOUtils.toString(ins, "UTF-8");
+        StringTemplateLoader stringTemplateLoader = new StringTemplateLoader();
+        stringTemplateLoader.putTemplate(templateFileName,content);
+        configuration.setTemplateLoader(stringTemplateLoader);
         Template template = configuration.getTemplate(templateFileName);
 
         String outfile = destPath + File.separator + destFileName;
