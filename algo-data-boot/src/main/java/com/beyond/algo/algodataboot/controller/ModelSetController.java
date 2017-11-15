@@ -224,8 +224,8 @@ public class ModelSetController  extends BaseController {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
         AlgUser algUser = modelSetService.findByUsrCode(usrCode);
         if(Assert.isNULL(algUser)){
-         //   String[] checkMessage = {"个人主页",""};
-          //  throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001",checkMessage);
+            String[] checkMessage = {"查询结果为空",""};
+            throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);
         }
         modelDataVo.setUsrSn(algUser.getUsrSn());
         List<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo);
