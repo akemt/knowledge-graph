@@ -79,6 +79,12 @@ public class DataSetControllerTest {
         System.out.println(result);
     }
 
-
-
+    //新增数据
+    @Test
+    public void addData() throws Exception {
+        //String result = this.mockMvc.perform(post("/showData").contentType(MediaType.APPLICATION_JSON)
+        //        .param("dataSetSn", "777"))
+        //        .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        //System.out.println(result);
+    }
 }

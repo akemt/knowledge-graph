@@ -37,5 +37,5 @@ public interface AlgModuleMapper {
     /**
      *  我的收藏列表
      */
-    List<AlgModuleListVo> findModuleCollect(String catName, String usage, String modName,String usrSn);
+    List<AlgModuleListVo> findModuleCollect(String catSn, String usage, String modName,String usrSn);
 }
