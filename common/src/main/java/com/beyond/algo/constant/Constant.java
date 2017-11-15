@@ -13,6 +13,8 @@ public class Constant {
      */
     public static final String SCRIPT_DELIMIT = ((char) 27) + "";
 
+    public static final int FILE_READ_SIZE = 8192;
+
     public final static Map map = new HashMap();
     static {
         map.put("Java", "build.xml");
