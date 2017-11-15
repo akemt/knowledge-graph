@@ -133,11 +133,11 @@ public class DataSetServiceImpl implements DataSetService {
     @Override
     public Result addData(AlgData algData,AlgUser algUser) throws AlgException {
         try {
-            if (Assert.isEmpty(algData.getDataName())||Assert.isEmpty(algData.getDataEnName())) {
-                return Result.failure("数据名称或英文名为空");
+            if (Assert.isEmpty(algData.getDataName())) {
+                return Result.failure("数据名称不能为空！");
             }
-            if (algDataMapper.checkDataEnName(algUser.getUsrSn(),algData.getDataEnName()) != 0 ){
-                return Result.failure("数据英文名已存在");
+            if (Assert.isNotEmpty(algData.getDataEnName()) && algDataMapper.checkDataEnName(algUser.getUsrSn(),algData.getDataEnName()) != 0 ){
+                return Result.failure("数据英文名已存在！");
             }
             //生成数据集随机串
             algData.setDataSn(UUID.randomUUID().toString().replace("-", ""));
