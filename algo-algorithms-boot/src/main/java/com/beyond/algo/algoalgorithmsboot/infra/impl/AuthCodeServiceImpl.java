@@ -3,6 +3,7 @@ package com.beyond.algo.algoalgorithmsboot.infra.impl;
 import com.beyond.algo.common.Result;
 import com.beyond.algo.common.UUIDUtil;
 import com.beyond.algo.algoalgorithmsboot.infra.AuthCodeService;
+import com.beyond.algo.exception.AlgException;
 import com.beyond.algo.mapper.AlgAuthCodeDomainMapper;
 import com.beyond.algo.mapper.AlgAuthCodeMapper;
 import com.beyond.algo.model.AlgAuthCode;
@@ -27,7 +28,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     private AlgAuthCodeDomainMapper algAuthCodeDomainMapper;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = AlgException.class)
     public void generateKey(AlgAuthCode algAuthCode,String[] addUrl) {
         //主键插入
         String acdSn = UUIDUtil.createUUID();
@@ -63,7 +64,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = AlgException.class)
     public void deleteAuthCode(String acdSn) {
         algAuthCodeMapper.deleteByPrimaryKey(acdSn);
         //List<AlgAuthCodeDomain> resultAuthDomain = authCodeDomainService.listAcdSnUrl(acdSn);
@@ -76,7 +77,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = AlgException.class)
     public void updateAuthCode(AlgAuthCode algAuthCode,String[] addUrl) {
         //首先更新AuthCode表
         algAuthCodeMapper.updateByPrimaryKey(algAuthCode);
