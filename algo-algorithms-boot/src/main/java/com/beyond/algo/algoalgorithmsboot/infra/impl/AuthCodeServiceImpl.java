@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
         //授权码生成，后期看看用别的方法生成串号
         String acdId = "Beyond" + UUIDUtil.getRandomString(15) + "1";
         algAuthCode.setAcdId(acdId);
+        algAuthCode.setCreateDate(new Date());
         //将对象AuthCode插入数据库
         algAuthCodeMapper.insert(algAuthCode);
 

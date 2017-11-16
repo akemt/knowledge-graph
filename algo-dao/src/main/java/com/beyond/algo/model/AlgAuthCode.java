@@ -1,5 +1,7 @@
 package com.beyond.algo.model;
 
+import java.util.Date;
+
 public class AlgAuthCode {
     private String acdSn;
 
@@ -16,6 +18,8 @@ public class AlgAuthCode {
     private String restrictUrl;
 
     private String dataUseType;
+
+    private Date createDate;
 
     public String getAcdSn() {
         return acdSn;
@@ -79,5 +83,13 @@ public class AlgAuthCode {
 
     public void setDataUseType(String dataUseType) {
         this.dataUseType = dataUseType == null ? null : dataUseType.trim();
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }

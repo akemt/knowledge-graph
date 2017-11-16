@@ -36,7 +36,7 @@ public class AuthCodeController extends BaseController {
     @Autowired
     private AuthCodeDomainService authCodeDomainService;
 
-    @RequestMapping(value = "/listAuthCode" ,method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/listAuthCode" ,method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result listAuthCode() throws AlgException {
         AlgUser algUser = getUserInfo();
         List<AlgAuthCode> result= authCodeService.listUserAuthCode(algUser.getUsrSn());
@@ -48,14 +48,14 @@ public class AuthCodeController extends BaseController {
         return Result.ok(result);
     }
 
-    @RequestMapping(value="/generateKey",method=RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value="/generateKey",method=RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result generateKey(AlgAuthCode algAuthCode,String[] addUrl) throws AlgException {
         AlgUser algUser = getUserInfo();
         algAuthCode.setUsrSn(algUser.getUsrSn());
         authCodeService.generateKey(algAuthCode, addUrl);
         return Result.successResponse();
     }
-    @RequestMapping(value = "/deleteAuthCode/{acdSn}",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deleteAuthCode/{acdSn}",method = RequestMethod.DELETE,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result deleteAuthCode(@PathVariable("acdSn") String acdSn) throws AlgException {
         logger.info("主键:{}",acdSn);
         //删除authCode表中内容
