@@ -18,6 +18,7 @@ import com.beyond.algm.vo.AlgModuleVo;
 import com.beyond.algm.vo.AlgorithmDetailVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,13 +61,16 @@ public class ModuleServiceImpl implements ModuleService {
     @Autowired
     private AlgAlgoCategoryMapper algAlgoCategoryMapper;
 
+    @Value("${spring.profiles.active}")
+    private String active;
+
     @Override
     public void initProject(AlgUser algUser, String projectName,String lanSn) throws Exception {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
         //适配器模式 调用创建算法项目适配器
         // ModuleAdapter createModuleAdapter = (ModuleAdapter)Class.forName("com.beyond.algo.algoconsoleboot.adapter."+ algProgramLang.getLanName() +"ModuleAdapter").newInstance();
         ModuleAdapter createModuleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
-        createModuleAdapter.createModule(algUser.getUsrCode(), projectName, gitConfigModel, projectConfigModel);
+        createModuleAdapter.createModule(algUser.getUsrCode(), projectName, gitConfigModel, projectConfigModel,active);
 
     }
 

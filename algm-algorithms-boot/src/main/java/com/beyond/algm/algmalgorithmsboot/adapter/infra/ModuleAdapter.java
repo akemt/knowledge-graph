@@ -10,6 +10,15 @@ import com.beyond.algm.exception.AlgException;
  * @Date: create in
  */
 public interface ModuleAdapter {
-    void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel) throws AlgException;
+    /**
+     *
+     * @param username 创建用户名称
+     * @param projectName 项目Id
+     * @param gitConfigModel git基础配置
+     * @param projectConfigModel 项目基础配置
+     * @param active 调试器开关
+     * @throws AlgException
+     */
+    void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel,String active) throws AlgException;
     boolean moduleAntBuild(String  path)throws AlgException,Exception;
 }

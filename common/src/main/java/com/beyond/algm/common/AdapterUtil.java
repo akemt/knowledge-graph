@@ -15,7 +15,7 @@ public class AdapterUtil {
 
             return Class.forName("com.beyond.algm.algmalgorithmsboot.adapter."+ lanName +"ModuleAdapter").newInstance();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("创建{}ModuleAdapter 适配器类失败，具体信息:{}",lanName,e.getMessage());
             throw new AlgException("BEYOND.ALG.MODULE.COPY.0000006",new String[]{},e);
         }
     }

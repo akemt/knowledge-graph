@@ -4,14 +4,17 @@ import com.beyond.algm.algmalgorithmsboot.adapter.infra.ModuleAdapter;
 import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigModel;
 import com.beyond.algm.algmalgorithmsboot.util.FreemarkerUtil;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.exception.AlgException;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DefaultLogger;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.taskdefs.Javac;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
 import java.net.URL;
@@ -29,8 +32,9 @@ import static com.beyond.algm.constant.Constant.FILE_READ_SIZE;
 @Slf4j
 public class JavaModuleAdapter implements ModuleAdapter {
 
+
     @Override
-    public void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel) throws AlgException {
+    public void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel,String active) throws AlgException {
         FileUtil.createDir(gitConfigModel.getLocalBasePath());
 
         // 以用户名作为用户子目录名
@@ -43,7 +47,16 @@ public class JavaModuleAdapter implements ModuleAdapter {
 
         // 先将直接拷贝的文件复制到目录下
         String templatePath = null;
-        templatePath = "jar:" + this.getClass().getClassLoader().getResource("/templates/project/java/").getPath();
+
+        if(Assert.isNotEmpty(active)&&active.equals("dev")){
+            try {
+                templatePath = "file:" + new ClassPathResource("/templates/project/java/").getFile().getPath()+File.separator;
+            }catch (Exception e){
+                log.debug("调试创建项目获取模板失败,错误:{}",e.getMessage());
+            }
+        }else{
+            templatePath = "jar:" + this.getClass().getClassLoader().getResource("/templates/project/java/").getPath();
+        }
         String[] cloneFileArr = projectConfigModel.getCloneFiles().split(",");
         for (String cloneFileName : cloneFileArr) {
             OutputStream ous = null;
@@ -65,7 +78,7 @@ public class JavaModuleAdapter implements ModuleAdapter {
                     ous.write(buffer, 0, bytesRead);
                 }
             } catch (IOException e) {
-                log.error(e.toString());
+                log.error(e.getMessage());
                 throw new AlgException("BEYOND.ALG.MODULE.COPY.0000003",new String[]{},e);
             }finally {
                 try {
