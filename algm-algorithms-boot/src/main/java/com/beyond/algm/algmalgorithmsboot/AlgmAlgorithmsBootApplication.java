@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan(basePackages = "com.beyond.algo.mapper")
+@MapperScan(basePackages = "com.beyond.algm.mapper")
 public class AlgmAlgorithmsBootApplication {
 
 	public static void main(String[] args) {

@@ -18,10 +18,6 @@ public class AntApiServiceImplTest {
 
     @Test
     public void moduleAntBuildTest() throws Exception {
-    /*    AlgUser algUser = new AlgUser();
-        algUser.setUsrSn("37bf2269ee4845da8e86861bbde2438a");
-        algUser.setUsrCode("qihe");
-        algUser.setUsrName("祁贺");*/
         GitUser gitUser=new GitUser();
         antApiService.moduleAntBuild(gitUser);
     }
