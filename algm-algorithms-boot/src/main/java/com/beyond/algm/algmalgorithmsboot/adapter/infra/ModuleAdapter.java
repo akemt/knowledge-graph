@@ -20,5 +20,13 @@ public interface ModuleAdapter {
      * @throws AlgException
      */
     void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel,String active) throws AlgException;
-    boolean moduleAntBuild(String  path)throws AlgException,Exception;
+
+    /**
+     * 项目编译
+     * @param path java 的path为 bulid.xml
+     * @return
+     * @throws AlgException
+     * @throws Exception
+     */
+    boolean moduleAntBuild(String  path)throws AlgException;
 }

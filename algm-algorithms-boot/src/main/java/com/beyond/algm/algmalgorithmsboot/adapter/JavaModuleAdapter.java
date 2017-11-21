@@ -125,7 +125,7 @@ public class JavaModuleAdapter implements ModuleAdapter {
     }
 
     @Override
-    public boolean moduleAntBuild(String path) throws AlgException, Exception {
+    public boolean moduleAntBuild(String path) throws AlgException {
         File buildFile = new File(path);
         Project project = new Project();
         DefaultLogger consoleLogger = new DefaultLogger();
@@ -150,8 +150,7 @@ public class JavaModuleAdapter implements ModuleAdapter {
         } catch (BuildException e) {
             log.info("构建错误", e);
             project.fireBuildFinished(e);  //构建抛出异常
-            throw new Exception(e);
-            //  return false;
+            throw new AlgException(e);
         }
         return true;
 
