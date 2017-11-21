@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algm.mapper.AlgArticleListMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algm.model.AlgArticleList" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sid" property="sid" jdbcType="VARCHAR" />
+    <result column="doi" property="doi" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="VARCHAR" />
+    <result column="journalName" property="journalname" jdbcType="VARCHAR" />
+    <result column="articleType" property="articletype" jdbcType="VARCHAR" />
+    <result column="citation" property="citation" jdbcType="VARCHAR" />
+    <result column="papertext" property="papertext" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="LONGVARCHAR" />
+    <result column="keywords" property="keywords" jdbcType="LONGVARCHAR" />
+    <result column="bibtex" property="bibtex" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <resultMap id="queryForListMap" type="com.beyond.algm.vo.AlgArticleListVo" extends="BaseResultMap">
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from alg_article_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algm.model.AlgArticleList" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into alg_article_list (sid, doi, title, 
+      date, journalName, articleType, 
+      citation, papertext, summary, 
+      keywords, bibtex)
+    values (#{sid,jdbcType=VARCHAR}, #{doi,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{date,jdbcType=VARCHAR}, #{journalname,jdbcType=VARCHAR}, #{articletype,jdbcType=VARCHAR}, 
+      #{citation,jdbcType=VARCHAR}, #{papertext,jdbcType=VARCHAR}, #{summary,jdbcType=LONGVARCHAR}, 
+      #{keywords,jdbcType=LONGVARCHAR}, #{bibtex,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgArticleList" >
+    update alg_article_list
+    set sid = #{sid,jdbcType=VARCHAR},
+      doi = #{doi,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      date = #{date,jdbcType=VARCHAR},
+      journalName = #{journalname,jdbcType=VARCHAR},
+      articleType = #{articletype,jdbcType=VARCHAR},
+      citation = #{citation,jdbcType=VARCHAR},
+      papertext = #{papertext,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=LONGVARCHAR},
+      keywords = #{keywords,jdbcType=LONGVARCHAR},
+      bibtex = #{bibtex,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, sid, doi, title, date, journalName, articleType, citation, papertext, 
+    summary, keywords, bibtex
+    from alg_article_list
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, sid, doi, title, date, journalName, articleType, citation, papertext, 
+    summary, keywords, bibtex
+    from alg_article_list
+  </select>
+  <select id="searchArticles" resultMap="queryForListMap" parameterType="com.beyond.algm.vo.AlgArticleListVo">
+    select algArticleList.summary ,algArticleList.date, algArticleList.title,algAuthorList.fullname
+    from alg_article_list algArticleList
+    LEFT JOIN (SELECT group_concat(fullname) fullname,sid from alg_author_list GROUP BY sid) algAuthorList ON algArticleList.sid=algAuthorList.sid
+    WHERE algArticleList.id=#{id,jdbcType=INTEGER}
+  </select>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algm.mapper.AlgLicenseMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algm.model.AlgLicense" >
+    <id column="lic_sn" property="licSn" jdbcType="VARCHAR" />
+    <result column="lic_name" property="licName" jdbcType="VARCHAR" />
+    <result column="lic_content" property="licContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_license
+    where lic_sn = #{licSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algm.model.AlgLicense" >
+    insert into alg_license (lic_sn, lic_name, lic_content
+      )
+    values (#{licSn,jdbcType=VARCHAR}, #{licName,jdbcType=VARCHAR}, #{licContent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgLicense" >
+    update alg_license
+    set lic_name = #{licName,jdbcType=VARCHAR},
+      lic_content = #{licContent,jdbcType=LONGVARCHAR}
+    where lic_sn = #{licSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select lic_sn, lic_name, lic_content
+    from alg_license
+    where lic_sn = #{licSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select lic_sn, lic_name, lic_content
+    from alg_license
+  </select>
+  <select id="selectLicSn" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select lic_sn, lic_name, lic_content
+    from alg_license
+    where lic_name = #{licName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectLicName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select lic_sn, lic_name, lic_content
+    from alg_license
+    where lic_sn = #{licSn,jdbcType=VARCHAR}
+  </select>
+</mapper>

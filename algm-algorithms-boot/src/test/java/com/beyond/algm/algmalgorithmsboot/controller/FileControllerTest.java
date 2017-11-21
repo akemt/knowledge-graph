@@ -1,0 +1,74 @@
+package com.beyond.algm.algmalgorithmsboot.controller;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
+/**
+ * @author ：Lindewei
+ * @Description:文件读写保存
+ * @date ：10:26 2017/10/13
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class FileControllerTest {
+    @Autowired
+    protected WebApplicationContext wac;
+    private MockMvc mockMvc;
+
+    @Autowired
+    private FileController fileController;
+
+    @Before
+    public void setup() throws Exception {
+        this.mockMvc = webAppContextSetup(this.wac).alwaysExpect(status().isOk()).build();
+    }
+    @Test
+    public void contextLoads() {
+
+    }
+
+    //文件读测试
+    @Test
+    public void testReadFile() throws Exception{
+
+        /**String result = this.mockMvc.perform(post("/file/TestJava/read").contentType(MediaType.APPLICATION_JSON)
+                .param("currentPath","src/beyondalgo/TestJava")
+                .param("fileName","asasasas.txt"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();*/
+        //System.out.println(result);
+    }
+
+    //创建新的文本、初始化读取的文本编辑内容保存测试
+    @Test
+    public void testWriteFile() throws Exception{
+
+        String result = this.mockMvc.perform(post("/file/TestJava/write").contentType(MediaType.APPLICATION_JSON)
+                .param("currentPath","src/beyondalgo/TestJava")
+                .param("fileName","asasasas.txt")
+                .param("fileContent","D:/JGitServiceTest.javaadsdsadjkajdkajd打断对方考虑52545454545对方"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+    //创建新的文本、初始化读取的文本编辑内容保存测试
+    @Test
+    public void delFile() throws Exception{
+
+        String result = this.mockMvc.perform(post("/module/del").contentType(MediaType.APPLICATION_JSON)
+                .param("currentPath","src/beyondalgo/TestJava")
+                .param("fileName","asasasas.java")
+                .param("modId","TestJava"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+}

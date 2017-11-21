@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algm.mapper.AlgAuthorListMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algm.model.AlgAuthorList" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="aid" property="aid" jdbcType="VARCHAR" />
+    <result column="fullname" property="fullname" jdbcType="VARCHAR" />
+    <result column="simname" property="simname" jdbcType="VARCHAR" />
+    <result column="sid" property="sid" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from alg_author_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algm.model.AlgAuthorList" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into alg_author_list (aid, fullname, simname, 
+      sid)
+    values (#{aid,jdbcType=VARCHAR}, #{fullname,jdbcType=VARCHAR}, #{simname,jdbcType=VARCHAR}, 
+      #{sid,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgAuthorList" >
+    update alg_author_list
+    set aid = #{aid,jdbcType=VARCHAR},
+      fullname = #{fullname,jdbcType=VARCHAR},
+      simname = #{simname,jdbcType=VARCHAR},
+      sid = #{sid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, aid, fullname, simname, sid
+    from alg_author_list
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, aid, fullname, simname, sid
+    from alg_author_list
+  </select>
+</mapper>

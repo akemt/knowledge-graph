@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algm.mapper.AlgUserMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algm.model.AlgUser" >
+    <id column="usr_sn" property="usrSn" jdbcType="VARCHAR" />
+    <result column="owner_id" property="ownerId" jdbcType="VARCHAR" />
+    <result column="usr_name" property="usrName" jdbcType="VARCHAR" />
+    <result column="usr_code" property="usrCode" jdbcType="VARCHAR" />
+    <result column="usr_url" property="usrUrl" jdbcType="VARCHAR" />
+    <result column="is_org" property="isOrg" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="passwd" property="passwd" jdbcType="VARCHAR" />
+    <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+    <result column="need_notify" property="needNotify" jdbcType="VARCHAR" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <resultMap id="OrgVoMap" type="com.beyond.algm.vo.OrgVo" extends="BaseResultMap">
+    <result column="mod_call_cnt" property="modCallCnt" jdbcType="BIGINT" />
+    <result column="cash_bal" property="cashBal" jdbcType="BIGINT" />
+    <result column="earn_bal" property="earnBal" jdbcType="BIGINT" />
+  </resultMap>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_user
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algm.model.AlgUser" >
+    insert into alg_user (usr_sn, owner_id, usr_name, 
+      usr_code, usr_url, is_org, 
+      email, passwd,telephone, need_notify,
+      create_date, update_date)
+    values (#{usrSn,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{usrName,jdbcType=VARCHAR}, 
+      #{usrCode,jdbcType=VARCHAR}, #{usrUrl,jdbcType=VARCHAR}, #{isOrg,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR}, #{needNotify,jdbcType=VARCHAR},
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgUser" >
+    update alg_user
+    set owner_id = #{ownerId,jdbcType=VARCHAR},
+      usr_name = #{usrName,jdbcType=VARCHAR},
+      usr_code = #{usrCode,jdbcType=VARCHAR},
+      usr_url = #{usrUrl,jdbcType=VARCHAR},
+      is_org = #{isOrg,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      passwd = #{passwd,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      need_notify = #{needNotify,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+    create_date, update_date
+    from alg_user
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+    create_date, update_date
+    from alg_user
+  </select>
+
+  <select id="selectUsrname" resultMap="BaseResultMap" >
+    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+    create_date, update_date
+    from alg_user
+    where usr_name = #{usrName,jdbcType=VARCHAR}
+  </select>
+
+    <update id="update" parameterType="com.beyond.algm.model.AlgUser" >
+        update alg_user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="ownerId != null" >
+                owner_id = #{ownerId,jdbcType=VARCHAR},
+            </if>
+            <if test="usrName != null" >
+                usr_name = #{usrName,jdbcType=VARCHAR},
+            </if>
+            <if test="usrUrl != null" >
+                usr_url = #{usrUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="isOrg != null" >
+                is_org = #{isOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="passwd != null" >
+               passwd = #{passwd,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null" >
+                telephone = #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="needNotify != null" >
+               need_notify = #{needNotify,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null" >
+              create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateDate != null" >
+              update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+        where usr_code = #{usrCode,jdbcType=VARCHAR}
+    </update>
+
+    <select id="countOrgByCode" resultType="java.lang.Integer" parameterType="java.lang.String" >
+        select count(*)
+        from alg_user
+        where usr_code = #{orgCode,jdbcType=VARCHAR} and is_org = '1'
+    </select>
+
+    <select id="selectUsrCode" resultMap="BaseResultMap" >
+        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+        create_date, update_date
+        from alg_user
+        where usr_code = #{usrCode,jdbcType=VARCHAR}
+    </select>
+    <sql id="alg_user">
+        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+        create_date, update_date
+        from alg_user
+    </sql>
+    <sql id="Base_Where_Clause">
+        <where>
+            <trim prefixOverrides="and">
+                <if test="usrSn != null and usrSn !=''">and usr_sn = #{usrSn,jdbcType=VARCHAR}</if>
+                <if test="modId != null and modId !=''">and mod_id = #{modId,jdbcType=VARCHAR}</if>
+            </trim>
+        </where>
+    </sql>
+
+    <!-- 获取组织详情，积分和收益暂时为0 -->
+    <select id="selectOrgVoByPrimaryKey" resultMap="OrgVoMap" parameterType="java.lang.String" >
+        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+        create_date, update_date, '0' as cash_bal, '0' as earn_bal
+        from alg_user
+        where usr_sn = #{usrSn,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

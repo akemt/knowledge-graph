@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond.algm.mapper.AlgProgramLangMapper">
+  <resultMap id="BaseResultMap" type="com.beyond.algm.model.AlgProgramLang">
+    <id column="lan_sn" jdbcType="VARCHAR" property="lanSn" />
+    <result column="lan_name" jdbcType="VARCHAR" property="lanName" />
+    <result column="lan_suffix" jdbcType="VARCHAR" property="lanSuffix" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from alg_program_lang
+    where lan_sn = #{lanSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algm.model.AlgProgramLang">
+    insert into alg_program_lang (lan_sn, lan_name, lan_suffix
+      )
+    values (#{lanSn,jdbcType=VARCHAR}, #{lanName,jdbcType=VARCHAR}, #{lanSuffix,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgProgramLang">
+    update alg_program_lang
+    set lan_name = #{lanName,jdbcType=VARCHAR},
+      lan_suffix = #{lanSuffix,jdbcType=VARCHAR}
+    where lan_sn = #{lanSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select lan_sn, lan_name, lan_suffix
+    from alg_program_lang
+    where lan_sn = #{lanSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select lan_sn, lan_name, lan_suffix
+    from alg_program_lang
+  </select>
+  <select id="selectLanSn" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select lan_sn, lan_name, lan_suffix
+    from alg_program_lang
+    where lan_name = #{lanName,jdbcType=VARCHAR}
+  </select>
+</mapper>

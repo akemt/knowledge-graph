@@ -1,0 +1,128 @@
+package com.beyond.algm.algmdataboot;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
+/**
+ * @author ：huangjinqing
+ * @Description:算法商店模型模块Controller测试类
+ * @date ：9:28 2017/10/18
+ */
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class ModelSetControllerTest {
+
+    @Autowired
+    protected WebApplicationContext wac;
+    private MockMvc mockMvc;
+
+    @Before
+    public void setup() throws Exception {
+        this.mockMvc = webAppContextSetup(this.wac).alwaysExpect(status().isOk()).build();
+    }
+
+    @Test
+    public void contextLoads() {
+
+    }
+
+    @Test
+    public void addModelSet() throws Exception {
+        String result = this.mockMvc.perform(get("/addModelSet").contentType(MediaType.APPLICATION_JSON)
+                .param("modelSetName", "智能工业4"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+    @Test
+    public void deleteModelSet() throws Exception {
+        String result = this.mockMvc.perform(delete("/deleteModelSet").contentType(MediaType.APPLICATION_JSON)
+                .param("modelSetSn", "4"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+    @Test
+    public void addAlgModel() throws Exception {
+        String result = this.mockMvc.perform(post("/algo_modelset/addModel").contentType(MediaType.APPLICATION_JSON)
+                .param("datSn", "asf11")
+                .param("usrSn", "qqq")
+                .param("modelSetSn", "5a0e41ea4c904012b71b4f2ea2043c6f")
+                .param("verSn", "0")
+                .param("modelName", "1231vq")
+                .param("modelEnName", "1231ee12")
+                .param("modelSize", "1231")
+                .param("isOpenSrc", "1")
+                .param("comment", "1231"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+    @Test
+    public void deleteModel() throws Exception {
+        String result = this.mockMvc.perform(delete("/deleteModel").contentType(MediaType.APPLICATION_JSON)
+                .param("modelSn", "3"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+    @Test
+    public void modifyAlgModel() throws Exception {
+        String result = this.mockMvc.perform(post("/algo_modelset/modifyModel").contentType(MediaType.APPLICATION_JSON)
+                .param("datSn", "1116661")
+                .param("usrSn", "2266622")
+                .param("modelSn", "785a55e7e7344328adc72e48fe4e3eec")
+                .param("verSn", "6")
+                .param("modelName", "1231666vq")
+                .param("modelEnName", "1231ee12")
+                .param("modelSize", "241")
+                .param("isOpenSrc", "6")
+                .param("comment", "1v弄via欧喷爱积分帕宋"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+    @Test
+    public void fileUpload() throws Exception {
+        String result = this.mockMvc.perform(post("/algo_modelset/modelFileUpload").contentType(MediaType.APPLICATION_JSON)
+                .param("modelSetSn", "33ba30fce4e14dd690f61ec44701d974")
+                .param("usrSn", "1231")
+                .param("file",""))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+    @Test
+    public void queryModelSet() throws Exception {
+        String result = this.mockMvc.perform(get("/queryModelSet").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+    @Test
+    public void queryModel() throws Exception {
+        String result = this.mockMvc.perform(get("/queryModel").contentType(MediaType.APPLICATION_JSON)
+                .param("modelSetSn", "2"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+    @Test
+    public void queryModelList() throws Exception {
+        String result = this.mockMvc.perform(post("/algo_modelset/qwer1/test/modeldata").contentType(MediaType.APPLICATION_JSON)
+                .param("page","0")
+                .param("rows","2"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+}

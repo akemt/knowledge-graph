@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.beyond.algm.mapper.AlgCashHisMapper">
+  <resultMap id="BaseResultMap" type="com.beyond.algm.model.AlgCashHis">
+    <id column="tra_sn" jdbcType="VARCHAR" property="traSn" />
+    <result column="usr_sn" jdbcType="VARCHAR" property="usrSn" />
+    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="cash_src" jdbcType="VARCHAR" property="cashSrc" />
+    <result column="currency" jdbcType="VARCHAR" property="currency" />
+    <result column="credit_per_unit" jdbcType="REAL" property="creditPerUnit" />
+    <result column="cash" jdbcType="REAL" property="cash" />
+    <result column="cust_no" jdbcType="VARCHAR" property="custNo" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="cash_time" jdbcType="TIMESTAMP" property="cashTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <resultMap id="queryForListMap" type="com.beyond.algm.vo.PayRecordVo" extends="BaseResultMap">
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from alg_cash_his
+    where tra_sn = #{traSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algm.model.AlgCashHis">
+    insert into alg_cash_his (tra_sn, usr_sn, order_id, 
+      cash_src, currency, credit_per_unit, 
+      cash, cust_no, status, 
+      description, cash_time, create_time
+      )
+    values (#{traSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, 
+      #{cashSrc,jdbcType=VARCHAR}, #{currency,jdbcType=VARCHAR}, #{creditPerUnit,jdbcType=REAL}, 
+      #{cash,jdbcType=REAL}, #{custNo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{cashTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgCashHis">
+    update alg_cash_his
+    set usr_sn = #{usrSn,jdbcType=VARCHAR},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      cash_src = #{cashSrc,jdbcType=VARCHAR},
+      currency = #{currency,jdbcType=VARCHAR},
+      credit_per_unit = #{creditPerUnit,jdbcType=REAL},
+      cash = #{cash,jdbcType=REAL},
+      cust_no = #{custNo,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      cash_time = #{cashTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where tra_sn = #{traSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select tra_sn, usr_sn, order_id, cash_src, currency, credit_per_unit, cash, cust_no, 
+    status, description, cash_time, create_time
+    from alg_cash_his
+    where tra_sn = #{traSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select tra_sn, usr_sn, order_id, cash_src, currency, credit_per_unit, cash, cust_no, 
+    status, description, cash_time, create_time
+    from alg_cash_his
+  </select>
+
+  <sql id="sql_sum">
+    select sum(cash) cash from alg_cash_his
+  </sql>
+  <sql id="sql_where">
+    <where>
+      1=1
+      <if test="status != null" >
+        and status=#{status,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+
+  <select id="selectTotalCash" resultType="java.lang.String" parameterType="com.beyond.algm.model.AlgCashHis" >
+    <include refid="sql_sum"/>
+    <include refid="sql_where"/>
+    GROUP BY usr_sn= #{usrSn,jdbcType=VARCHAR}
+  </select>
+</mapper>

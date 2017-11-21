@@ -1,10 +1,10 @@
 package com.beyond.algm.algmcallboot.exception;
 
-import com.beyond.algo.base.Error;
-import com.beyond.algo.common.JsonUtil;
-import com.beyond.algo.common.Result;
-import com.beyond.algo.constant.Constant;
-import com.beyond.algo.exception.AlgException;
+import com.beyond.algm.base.Error;
+import com.beyond.algm.common.JsonUtil;
+import com.beyond.algm.common.Result;
+import com.beyond.algm.constant.Constant;
+import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -17,9 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 /**
- * @author ：zhangchuanzhi
- * @Description:异常处理
- * @date ：9:10 2017/11/13
+ * @Author: qihe
+ * @Description:
+ * @Date: create in 2017/10/27 10:53
  */
 @RestController
 @ControllerAdvice
