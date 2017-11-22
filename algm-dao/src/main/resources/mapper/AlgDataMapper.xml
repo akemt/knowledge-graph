@@ -16,6 +16,13 @@
     <result column="data_content" property="dataContent" jdbcType="VARCHAR" />
     <result column="data_credit" property="dataCredit" jdbcType="INTEGER" />
   </resultMap>
+  <resultMap id="DifDataResultMap" type="com.beyond.algm.vo.AlgDifDataListVo" >
+    <result column="data_name" property="dataName" jdbcType="VARCHAR" />
+    <result column="data_addr" property="dataAddr" jdbcType="VARCHAR" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+    <result column="usr_name" property="usrName" jdbcType="VARCHAR"/>
+  </resultMap>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from alg_data
     where data_sn = #{dataSn,jdbcType=VARCHAR}
@@ -82,5 +89,15 @@
     and b.data_orderby = (select max(data_orderby) maxodr from alg_data_set
     where usr_sn = #{usrSn,jdbcType=VARCHAR} group by usr_sn)
     and b.usr_sn = #{usrSn,jdbcType=VARCHAR}
+  </select>
+  <select id="findDifDataList" resultMap="DifDataResultMap">
+    select da.data_name data_name,da.data_addr data_addr,da.creat_time creat_time,us.usr_name usr_name FROM alg_data da
+     left join alg_data_ver ver on da.data_sn = ver.data_sn
+     left join alg_module_version ion on ver.ver_sn = ion.ver_sn
+     left join alg_module mo on ion.mod_sn = mo.mod_sn
+     left join alg_article_list art on mo.atl_sn = art.id
+     left join alg_data_set se on da.data_set_sn = se.data_set_sn
+     left join alg_user us on se.usr_sn = us.usr_sn
+    where  art.id = #{id,jdbcType=INTEGER}
   </select>
 </mapper>

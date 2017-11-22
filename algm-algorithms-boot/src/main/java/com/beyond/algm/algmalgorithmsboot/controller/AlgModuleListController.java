@@ -7,6 +7,7 @@ import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgArticleList;
 import com.beyond.algm.model.AlgUser;
+import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,15 @@ public class AlgModuleListController extends BaseController {
         }
         AlgUser algUser = getUserInfo();
         List<AlgModuleListVo> result = algModuleListService.findModuleCollect(catSn, usage, modName, numPage, numRows,algUser.getUsrSn());
+        return Result.ok(result);
+    }
+
+    /**
+     @Description:数据列表
+     */
+    @RequestMapping(value = "/module/difdata",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public  Result difDataList(Integer id) throws AlgException {
+        List<AlgDifDataListVo> result = algModuleListService.findDifDataList(id);
         return Result.ok(result);
     }
 }
