@@ -111,8 +111,8 @@ public class ModelSetController  extends BaseController {
     Result deleteModel(String modelSn)throws AlgException {
         AlgUser algUser = getUserInfo();
         logger.info("模型串号：{}", modelSn);
-        modelSetService.deleteModel(modelSn);
-        return Result.successResponse();
+        int count= modelSetService.deleteModel(modelSn);
+        return  Result.ok(count);
 
     }
 
