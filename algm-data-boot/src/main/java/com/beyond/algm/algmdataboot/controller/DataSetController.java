@@ -84,7 +84,7 @@ public class DataSetController extends BaseController {
      * @author ：Lindewei
      * @Description: 删除数据
      */
-    @RequestMapping(value = "/deleteData", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deletedata", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result deleteData(String dataSn) throws AlgException {
         logger.info("数据集串号：{}",dataSn);
         try{
@@ -101,7 +101,7 @@ public class DataSetController extends BaseController {
      * @author ：Lindewei
      * @Description: 删除当前数据集
      */
-    @RequestMapping(value = "/deleteDataSet", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deletedataSet", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result deleteDataSet(String dataSetSn) throws AlgException {
         logger.info("数据集串号：{}",dataSetSn);
         try{
@@ -118,7 +118,7 @@ public class DataSetController extends BaseController {
      * @author ：Lindewei
      * @Description: 点击数据集关联查询数据
      */
-    @RequestMapping(value = "/showData", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/showdata", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result showData(String dataSetSn) throws AlgException {
         logger.info("数据集串号：{}",dataSetSn);
         try{
@@ -135,7 +135,7 @@ public class DataSetController extends BaseController {
      * @author ：Lindewei
      * @Description: 新增数据
      */
-    @RequestMapping(value = "/addData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/adddata", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result addData(AlgData algData) throws AlgException {
         try {
             AlgUser algUser = getUserInfo();
@@ -144,6 +144,23 @@ public class DataSetController extends BaseController {
             return result;
         } catch (Exception e) {
             logger.info("新增数据失败", e);
+            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
+        }
+    }
+
+    /**
+     * @author ：Lindewei
+     * @Description: 数据商城
+     */
+    @RequestMapping(value = "/datamall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result dataMall(String dataContent) throws AlgException {
+        logger.info("数据搜索名：{}",dataContent);
+        try{
+            Result result=dataSetService.algDataMall(dataContent);
+            return result;
+        }catch(Exception e)
+        {
+            logger.info("查看数据集失败",e);
             return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
     }

@@ -111,7 +111,7 @@ public class DataSetServiceImpl implements DataSetService {
     }
 
     //点击数据集关联查询数据
-    // @Override
+    @Override
     public Result queryAlgDatabySet(String dataSetSn) throws AlgException {
         try {
             Result result = new Result();
@@ -160,6 +160,20 @@ public class DataSetServiceImpl implements DataSetService {
             throw new AlgException("BEYOND.ALG.DATA.COMMON.ADD.0000005",new String[]{});
         }
         return Result.successResponse();
+    }
+
+    //数据商城
+    @Override
+    public Result algDataMall(String dataContent) throws AlgException {
+        try {
+            Result result = new Result();
+            List<AlgData> allAlgData = algDataMapper.findAlgDataMall(dataContent);
+            result.setData(allAlgData);
+            return result;
+        } catch (Exception e) {
+            log.error("获取所有数据集失败，数据名称：{}",dataContent,e);
+            throw new AlgException("BEYOND.ALG.DATA.COMMON.FIND.0000004",new String[]{});
+        }
     }
 
     /*@Override

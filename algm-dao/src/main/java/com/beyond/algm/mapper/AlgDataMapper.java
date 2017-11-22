@@ -24,4 +24,7 @@ public interface AlgDataMapper {
 
     //我的收藏-不同实现-数据列表
     List<AlgDifDataListVo> findDifDataList(Integer id);
+
+    //数据商城
+    List<AlgData> findAlgDataMall(String dataContent);
 }
