@@ -1,7 +1,9 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.infra.MvnService;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.exception.AlgException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.shared.invoker.*;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.Arrays;
  * @Date: create in 2017/11/23 11:03
  */
 @Service
+@Slf4j
 public class MvnServiceImpl implements MvnService {
 
     public void mvnPackageMod() throws AlgException{
@@ -22,7 +25,15 @@ public class MvnServiceImpl implements MvnService {
         request.setGoals( Arrays.asList( "clean", "package -Dmaven.test.skip=true"));
 
         Invoker invoker = new DefaultInvoker();
-        invoker.setMavenHome(new File(System.getenv("MAVEN_HOME")));
+        String mavenHomePath = System.getenv("MAVEN_HOME");
+        if(Assert.isEmpty(mavenHomePath)|| "".equals(mavenHomePath)){
+            mavenHomePath = System.getenv("M2_HOME");
+        }
+        if(Assert.isEmpty(mavenHomePath)|| "".equals(mavenHomePath)){
+            log.error("Can not get maven env,please install apache maven and configuring environment variables");
+            throw new AlgException("发布项目失败，获取不到 maven 路径！");
+        }
+        invoker.setMavenHome(new File(mavenHomePath));
         try {
             invoker.execute(request);
             InvocationResult result = invoker.execute( request );
