@@ -88,8 +88,7 @@ public class ModelSetController  extends BaseController {
      * @date: 19:09 2017/10/18
      */
     @RequestMapping(value = "/addModel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result<Object> addAlgModel(AlgModel algModel) {
+    public Result<Object> addAlgModel(AlgModel algModel) {
         logger.info("模型串号：{}");
         try {
             Result result = modelSetService.addAlgModel(algModel);
@@ -107,8 +106,7 @@ public class ModelSetController  extends BaseController {
      * @date: 19:09 2017/10/18
      */
     @RequestMapping(value = "/deleteModel", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result deleteModel(String modelSn)throws AlgException {
+    public Result deleteModel(String modelSn)throws AlgException {
         AlgUser algUser = getUserInfo();
         logger.info("模型串号：{}", modelSn);
         int count= modelSetService.deleteModel(modelSn);
@@ -123,8 +121,7 @@ public class ModelSetController  extends BaseController {
      * @date: 10:21 2017/10/19
      */
     @RequestMapping(value = "/modifyModel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result<Object> modifyModel(AlgModel algModel) {
+    public Result<Object> modifyModel(AlgModel algModel) {
         logger.info("修改模型信息");
         try {
             Result result = modelSetService.modifyAlgModel(algModel);
@@ -154,8 +151,7 @@ public class ModelSetController  extends BaseController {
      * @date : 14:18 2017/10/21
      */
     @RequestMapping(value = "/queryModel", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result<Object> queryModel(String modelSetSn)throws AlgException{
+    public Result<Object> queryModel(String modelSetSn)throws AlgException{
         AlgUser algUser = getUserInfo();
         logger.info("模型集串号：{},用户ID:{}",modelSetSn,algUser.getUsrSn());
        AlgModel algModelSet=new AlgModel();
