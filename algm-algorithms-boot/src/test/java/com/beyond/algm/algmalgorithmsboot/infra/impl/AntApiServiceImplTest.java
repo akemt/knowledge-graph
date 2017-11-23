@@ -1,7 +1,8 @@
-package com.beyond.algm.algmalgorithmsboot.impl;
+package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.AlgmAlgorithmsBootApplication;
-import com.beyond.algm.algmalgorithmsboot.infra.DictionaryService;
+import com.beyond.algm.algmalgorithmsboot.infra.AntApiService;
+import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +11,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AlgmAlgorithmsBootApplication.class)
-public class DictionaryServiceImplTest {
+public class AntApiServiceImplTest {
 
     @Autowired
-    private DictionaryService dictionaryService;
+    private AntApiService antApiService;
 
     @Test
     public void moduleAntBuildTest() throws Exception {
-        String code="module_access_mode";
-        //List<AlgDic> algDicList=dictionaryService.getDictionarylist(code);
+        GitUser gitUser=new GitUser();
+        antApiService.moduleAntBuild(gitUser);
     }
 
 }
