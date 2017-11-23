@@ -107,8 +107,8 @@ public class AlgModuleListController extends BaseController {
      @Description:不同实现(替换：“我的算法列表listAlg + 不同实现-获取文献信息difRealize + 数据列表difDataList”三个请求)
      */
     @RequestMapping(value = "/module/difreal",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result difRealize1(String catSn,String usage,String modName,Integer numPage,Integer numRows,Integer id) throws AlgException {
-        //log.info()
+    public  Result difRealize1(Integer numPage,Integer numRows,Integer id) throws AlgException {
+            log.info("文章ID: id {} ", id);
             if(Assert.isEmpty(numPage)){
                 numPage = 1;
             }
@@ -121,7 +121,7 @@ public class AlgModuleListController extends BaseController {
             difMap.put("algArticleList",algArticleList);
             //文献信息
             String idd = id.toString();
-            List<AlgModuleListVo> literature = algModuleListService.findModuleList(catSn, usage, modName, numPage, numRows,idd,null);
+            List<AlgModuleListVo> literature = algModuleListService.findModuleList(null, null, null, numPage, numRows,idd,null);
             difMap.put("literature",literature);
             //数据列表
             List<AlgDifDataListVo> dataList = algModuleListService.findDifDataList(id);
