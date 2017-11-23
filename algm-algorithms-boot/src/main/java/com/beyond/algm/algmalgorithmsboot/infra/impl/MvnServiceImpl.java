@@ -34,7 +34,7 @@ public class MvnServiceImpl implements MvnService {
             throw new AlgException("发布项目失败，获取不到 maven 路径！");
         }
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setPomFile( new File( "D:/IdeaProjects/algmarket-publish/pom.xml" ) );
+        request.setPomFile( new File( "E:\\alg-publish\\gaohaijun\\TestProject2\\pom.xml" ) );
         request.setGoals( Arrays.asList( "clean", "package -Dmaven.test.skip=true"));
 
         Invoker invoker = new DefaultInvoker();

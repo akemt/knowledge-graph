@@ -17,7 +17,7 @@ public class PublishServiceImplTest {
 
     @Test
     public void initProject() throws Exception {
-        publishService.initBootProject("test1", "TestProject2", "This is a boot test.", "0.1.0");
+        publishService.initBootProject("1","gaohaijun", "TestProject2", "This is a boot test.", "0.1.0");
     }
 
 }

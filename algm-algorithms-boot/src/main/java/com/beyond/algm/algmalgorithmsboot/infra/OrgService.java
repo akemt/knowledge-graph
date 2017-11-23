@@ -4,6 +4,8 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.OrgVo;
 
+import java.util.List;
+
 public interface OrgService {
 
     /**
@@ -25,9 +27,24 @@ public interface OrgService {
     /**
      * 获取组织详情
      *
-     * @param orgSn
-     * @return
-     * @throws AlgException
+     * @param orgSn 组织串号
+     * @return 组织详情
      */
     OrgVo getOrgDetail(String orgSn) throws AlgException;
+
+    /**
+     * 获取组织列表
+     *
+     * @param usrSn 用户串号
+     * @return 组织列表
+     */
+    List<OrgVo> getOrgList(String usrSn) throws AlgException;
+
+    /**
+     * 为组织添加成员
+     *
+     * @param orgSn    组织串号
+     * @param memberSn 成员用户串号
+     */
+    void addMember(String orgSn, String memberSn) throws AlgException;
 }

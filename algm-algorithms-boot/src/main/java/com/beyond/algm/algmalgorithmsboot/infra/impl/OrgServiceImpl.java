@@ -110,4 +110,14 @@ public class OrgServiceImpl implements OrgService {
 
         return orgVo;
     }
+
+    @Override
+    public List<OrgVo> getOrgList(String usrSn) throws AlgException {
+        return null;
+    }
+
+    @Override
+    public void addMember(String orgSn, String memberSn) throws AlgException {
+
+    }
 }

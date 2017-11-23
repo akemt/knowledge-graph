@@ -5,12 +5,15 @@ import com.beyond.algm.algmalgorithmsboot.infra.OrgService;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgUser;
+import com.beyond.algm.vo.OrgVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -45,6 +48,30 @@ public class OrgController extends BaseController {
     @ResponseBody
     public Result<Boolean> deleteOrg(String orgSn) throws AlgException {
         orgService.deleteOrg(orgSn);
+        return Result.ok(true);
+    }
+
+    /**
+     * 根据用户串号获取
+     * @param usrSn 用户串号
+     * @return 组织列表
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<List<OrgVo>> getOrgList(String usrSn) throws AlgException {
+        List<OrgVo> orgList = orgService.getOrgList(usrSn);
+        return Result.ok(orgList);
+    }
+
+    /**
+     * 将用户添加到组织中
+     *
+     * @param orgSn    组织串号
+     * @param memberSn 添加进组织的用户串号
+     * @return 是否成功
+     */
+    public Result<Boolean> addMember(String orgSn, String memberSn) throws AlgException {
+        orgService.addMember(orgSn, memberSn);
         return Result.ok(true);
     }
 }
