@@ -2,6 +2,7 @@ package com.beyond.algm.algmalgorithmsboot.infra;
 
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgArticleList;
+import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface AlgModuleListService {
 
     //我的收藏
     List<AlgModuleListVo> findModuleCollect(String catSn, String usage, String modName, Integer numPage, Integer numRows,String usrSn) throws AlgException;
+
+    //数据列表
+    List<AlgDifDataListVo> findDifDataList(Integer id) throws AlgException;
 }

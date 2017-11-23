@@ -57,6 +57,12 @@ public interface DataSetService {
     Result addData(AlgData algData,AlgUser algUser)throws AlgException;
 
     /**
+     * @author ：lindewei
+     * @Description: 点击数据集关联查询数据
+     */
+    Result algDataMall(String dataContent) throws AlgException;
+
+    /**
      * @author ：ZhangJiayue
      * @Description: 修改数据
      * @param： String dataSn

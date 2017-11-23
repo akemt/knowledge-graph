@@ -43,4 +43,14 @@ public class AlgModuleListControllerTest {
         //结果：[{"modSn":null,"usrSn":"aac44b648b10429cbaf85a6ae0113a65","lanSn":"3","catSn":"suanfafenlei447ba557b99472cbb701","licSn":"111111111111","atlSn":null,"modName":"人脸识别01","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null},{"modSn":null,"usrSn":"37bf2269ee4845da8e86861bbde2438a","lanSn":"1","catSn":"suanfafenlei447ba557b99472cbb701","licSn":"111111111111","atlSn":null,"modName":"人脸识别02","modId":"TestJava","isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null},{"modSn":null,"usrSn":"aac44b648b10429cbaf85a6ae0113a65","lanSn":"2","catSn":"suanfafenlei447ba557b99472cbb701","licSn":"111111111111","atlSn":null,"modName":"人脸识别03","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null},{"modSn":null,"usrSn":"aac44b648b10429cbaf85a6ae0113a65","lanSn":"3","catSn":"suanfafenlei447ba557b99472cbb701","licSn":"111111111111","atlSn":null,"modName":"人脸识别04","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null}]
         //{"code":200,"msg":"成功","detail":null,"data":[{"modSn":null,"usrSn":"aac44b648b10429cbaf85a6ae0113a65","lanSn":"3","catSn":"suanfafenlei447ba557b99472cbb701","licSn":"111111111111","atlSn":null,"modName":"人脸识别01","modId":null,"isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null},{"modSn":null,"usrSn":"37bf2269ee4845da8e86861bbde2438a","lanSn":"1","catSn":"suanfafenlei447ba557b99472cbb701","licSn":"111111111111","atlSn":null,"modName":"人脸识别02","modId":"TestJava","isOpenSrc":null,"needWeb":null,"needCallOther":null,"envType":null}]}
     }
+    /**
+     @Description:数据列表测试
+     */
+    @Test
+    public void difDataList() throws Exception {
+        String result = this.mockMvc.perform(get("/module/difdata").contentType(MediaType.APPLICATION_JSON)
+                .param("id","1"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 }

@@ -3,9 +3,11 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 import com.beyond.algm.algmalgorithmsboot.infra.AlgModuleListService;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgArticleListMapper;
+import com.beyond.algm.mapper.AlgDataMapper;
 import com.beyond.algm.mapper.AlgModuleMapper;
 import com.beyond.algm.mapper.AlgModuleUsageMapper;
 import com.beyond.algm.model.AlgArticleList;
+import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
     AlgModuleUsageMapper algModuleUsageMapper;
     @Autowired
     AlgArticleListMapper algArticleListMapper;
+    @Autowired
+    AlgDataMapper algDataMapper;
 
     @Override
     public List<AlgModuleListVo> findModuleList(String catSn, String usage ,String modName,Integer numPage,Integer numRows,String id,String usrCode) throws AlgException {
@@ -47,6 +51,13 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
         //初步设定用数据库进行排序查询
         PageHelper.startPage(numPage,numRows);
         List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleCollect(catSn,usage,modName,usrSn);
+        return resultAlgModule;
+    }
+
+    //不同是实现- 数据列表
+    @Override
+    public List<AlgDifDataListVo> findDifDataList(Integer id) throws AlgException {
+        List<AlgDifDataListVo> resultAlgModule = algDataMapper.findDifDataList(id);
         return resultAlgModule;
     }
 }
