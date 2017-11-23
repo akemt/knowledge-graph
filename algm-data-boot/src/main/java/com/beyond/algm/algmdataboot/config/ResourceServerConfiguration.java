@@ -16,8 +16,7 @@ public class ResourceServerConfiguration  extends ResourceServerConfigurerAdapte
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/register",
-                        "/module/list"
+                .antMatchers(
                 ).permitAll().and()
                 .authorizeRequests().anyRequest().authenticated();
     }

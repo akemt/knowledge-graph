@@ -106,9 +106,9 @@ public class ModelSetController  extends BaseController {
      * @param: String modelSn
      * @date: 19:09 2017/10/18
      */
-    @RequestMapping(value = "/deleteModel", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deleteModel", method = {RequestMethod.DELETE}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public @ResponseBody
-    Result deleteModel(String modelSn)throws AlgException {
+    Result deleteModel(@RequestBody String modelSn)throws AlgException {
         AlgUser algUser = getUserInfo();
         logger.info("模型串号：{}", modelSn);
         int count= modelSetService.deleteModel(modelSn);
