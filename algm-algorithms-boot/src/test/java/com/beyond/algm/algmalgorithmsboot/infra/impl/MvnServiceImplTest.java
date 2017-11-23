@@ -23,7 +23,7 @@ public class MvnServiceImplTest {
 
     @Test
     public void mvnPackageMod() throws Exception {
-        mvnService.mvnPackageMod();
+        mvnService.mvnPackageMod("gaohaijun", "TestProject2");
     }
 
 }
