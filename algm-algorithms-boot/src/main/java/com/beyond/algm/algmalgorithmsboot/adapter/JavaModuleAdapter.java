@@ -9,11 +9,9 @@ import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.exception.AlgException;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.DefaultLogger;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.ProjectHelper;
+import org.apache.tools.ant.*;
 import org.apache.tools.ant.taskdefs.Javac;
+import org.apache.tools.ant.types.Path;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
@@ -137,12 +135,12 @@ public class JavaModuleAdapter implements ModuleAdapter {
         try {
             project.fireBuildStarted();  //项目开始构建
             project.init();
-            Javac javac = (Javac) project.createTask("javac");
-            javac.setProject(project);
-            //是否执行外部的javac
-            javac.setFork(true);
+
             ProjectHelper helper = ProjectHelper.getProjectHelper();
             helper.parse(project, buildFile);
+            Task task = project.getTargets().get("compile").getTasks()[1];
+            task.getRuntimeConfigurableWrapper().setAttribute("fork","true");
+
             project.executeTarget(project.getDefaultTarget());
             project.fireBuildFinished(null);  //构建结束
 
