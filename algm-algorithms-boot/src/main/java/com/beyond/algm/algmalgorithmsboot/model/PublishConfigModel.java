@@ -11,4 +11,5 @@ public class PublishConfigModel {
     private String localBasePath;
     private String distFolder;
     private String javaVersion;
+    private String packageName;
 }

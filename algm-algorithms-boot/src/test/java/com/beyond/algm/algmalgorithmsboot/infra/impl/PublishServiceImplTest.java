@@ -1,8 +1,7 @@
-package com.beyond.algm.algmalgorithmsboot.impl;
+package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.AlgmAlgorithmsBootApplication;
-import com.beyond.algm.algmalgorithmsboot.infra.AntApiService;
-import com.beyond.algm.algmalgorithmsboot.model.GitUser;
+import com.beyond.algm.algmalgorithmsboot.infra.PublishService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +10,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AlgmAlgorithmsBootApplication.class)
-public class AntApiServiceImplTest {
+public class PublishServiceImplTest {
 
     @Autowired
-    private AntApiService antApiService;
+    private PublishService publishService;
 
     @Test
-    public void moduleAntBuildTest() throws Exception {
-        GitUser gitUser=new GitUser();
-        antApiService.moduleAntBuild(gitUser);
+    public void initProject() throws Exception {
+        publishService.initBootProject("1","gaohaijun", "TestProject2", "This is a boot test.", "0.1.0");
     }
 
 }

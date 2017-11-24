@@ -1,4 +1,4 @@
-package com.beyond.algm.algmalgorithmsboot.impl;
+package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.AlgmAlgorithmsBootApplication;
 import com.beyond.algm.algmalgorithmsboot.infra.ShowProjectFileService;

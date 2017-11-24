@@ -19,4 +19,14 @@ public class AdapterUtil {
             throw new AlgException("BEYOND.ALG.MODULE.COPY.0000006",new String[]{},e);
         }
     }
+
+    public static Object publishAdapter(String lanName)  throws AlgException {
+        try {
+
+            return Class.forName("com.beyond.algm.algmalgorithmsboot.adapter."+ lanName +"PublishAdapter").newInstance();
+        } catch (Exception e) {
+            log.error("创建{}PublishAdapter 适配器类失败，具体信息:{}",lanName,e.getMessage());
+            throw new AlgException("BEYOND.ALG.MODULE.COPY.0000006",new String[]{},e);
+        }
+    }
 }
