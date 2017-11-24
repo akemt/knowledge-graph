@@ -56,7 +56,7 @@ public class ModelSetController  extends BaseController {
             AlgUser algUser = getUserInfo();
             AlgModelSet modelSet=new AlgModelSet();
             modelSet.setModelSetName(modelSetName);
-            modelSet.setUsrSn(modelSet.getUsrSn());
+            modelSet.setUsrSn(algUser.getUsrSn());
           //  modelSet.setUsrSn("3");
             logger.info("模型集名称:{},用户ID:{}", modelSet.getModelSetName(),modelSet.getUsrSn());
             modelSetService.addModelSet(modelSet);
@@ -73,6 +73,7 @@ public class ModelSetController  extends BaseController {
     public Result<Object>  deleteModelSet(String modelSetSn) throws AlgException{
         AlgUser algUser = getUserInfo();
         AlgModel algModel=new AlgModel();
+        // 预留方法判断是否是本人
         logger.info("模型集串号：{},用户串号", modelSetSn,algUser.getUsrSn());
         algModel.setModelSetSn(modelSetSn);
         algModel.setUsrSn(algUser.getUsrSn());
@@ -108,6 +109,7 @@ public class ModelSetController  extends BaseController {
     @RequestMapping(value = "/deleteModel", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result deleteModel(String modelSn)throws AlgException {
         AlgUser algUser = getUserInfo();
+        // 预留方法判断是否是本人
         logger.info("模型串号：{}", modelSn);
         int count= modelSetService.deleteModel(modelSn);
         return  Result.ok(count);
@@ -153,6 +155,7 @@ public class ModelSetController  extends BaseController {
     @RequestMapping(value = "/queryModel", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<Object> queryModel(String modelSetSn)throws AlgException{
         AlgUser algUser = getUserInfo();
+        // 预留方法判断是否是本人
         logger.info("模型集串号：{},用户ID:{}",modelSetSn,algUser.getUsrSn());
        AlgModel algModelSet=new AlgModel();
        algModelSet.setUsrSn(algUser.getUsrSn());
