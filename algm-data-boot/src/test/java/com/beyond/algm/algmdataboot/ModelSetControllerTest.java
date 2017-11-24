@@ -74,7 +74,7 @@ public class ModelSetControllerTest {
     @Test
     public void deleteModel() throws Exception {
         String result = this.mockMvc.perform(delete("/deleteModel").contentType(MediaType.APPLICATION_JSON)
-                .param("modelSn", "3"))
+                .param("modelSn", "6"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
