@@ -4,6 +4,7 @@ import com.beyond.algm.algmalgorithmsboot.infra.UserService;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgUser;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -20,7 +21,9 @@ public class BaseController {
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000002",checkMessage);
         }
         Authentication auth = ctx.getAuthentication();
+        if(Assert.isNULL(auth)){
+            return null;
+        }
         return userService.findByUsrCode(auth.getName());
-
     }
 }

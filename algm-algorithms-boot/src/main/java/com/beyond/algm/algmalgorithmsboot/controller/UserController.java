@@ -2,6 +2,7 @@ package com.beyond.algm.algmalgorithmsboot.controller;
 
 import com.beyond.algm.algmalgorithmsboot.base.BaseController;
 import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.algmalgorithmsboot.infra.UserService;
 import com.beyond.algm.exception.AlgException;
@@ -122,4 +123,25 @@ public class UserController  extends BaseController {
         log.info("用户名字:{}", algUser.getUsrCode());
         return Result.ok(algUser);
     }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:用户登录信息
+     * @param：accSn
+     * @Modify By :zhangchuanzhi
+     * @date ：9:14 2017/11/24
+     */
+    @RequestMapping(value = "/getUserLogInfor", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result getUserLogInfor() throws AlgException{
+        AlgUser algUser = getUserInfo();
+        if(Assert.isNotNULL(algUser)){
+            AlgUser user = new AlgUser();
+            user.setUsrCode(algUser.getUsrCode());
+            user.setUsrSn(algUser.getUsrSn());
+            return Result.ok(user);
+        }else{
+            return Result.ok(0);
+        }
+    }
+
 }
