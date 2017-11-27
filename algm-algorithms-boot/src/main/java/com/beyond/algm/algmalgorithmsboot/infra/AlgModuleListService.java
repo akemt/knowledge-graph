@@ -22,7 +22,7 @@ public interface AlgModuleListService {
     AlgArticleList findAlgArticleList(Integer id) throws AlgException;
 
     //我的收藏
-    List<AlgModuleListVo> findModuleCollect(String catSn, String usage, String modName, Integer numPage, Integer numRows,String usrSn) throws AlgException;
+    Page<AlgModuleListVo> findModuleCollect(String catSn, String usage, String modName, Integer pageNum,Integer pageSize,String usrSn) throws AlgException;
 
     //数据列表
     List<AlgDifDataListVo> findDifDataList(Integer id) throws AlgException;

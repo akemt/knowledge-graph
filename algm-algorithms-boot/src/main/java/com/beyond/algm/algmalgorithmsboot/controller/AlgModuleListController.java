@@ -66,33 +66,27 @@ public class AlgModuleListController extends BaseController {
      @Description:我的算法(无参)
      */
     @RequestMapping(value = "/module/mylist",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result myListAlg(Integer numPage,Integer numRows) throws AlgException {
+    public  Result myListAlg(Integer pageNum,Integer pageSize) throws AlgException {
         //log.info()
-        if(Assert.isEmpty(numPage)){
-            numPage = 1;
-        }
-        if(Assert.isEmpty(numRows)){
-            numRows = 100;
-        }
+        pageNum = pageNum == null ? 1 : pageNum;
+        pageSize = pageSize == null ? 10 : pageSize;
         AlgUser algUser = getUserInfo();
-        List<AlgModuleListVo> result = algModuleListService.findModuleList(null, null, null, numPage, numRows,null,algUser.getUsrCode());
-        return Result.ok(result);
+        Page<AlgModuleListVo> page = algModuleListService.findModulePage(null, null, null, pageNum, pageSize,null,algUser.getUsrCode());
+        PageInfo pageInfo = new PageInfo(page);
+        return Result.ok(pageInfo);
     }
 
     /**
      @Description:我的收藏
      */
     @RequestMapping(value = "/module/collect",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result listAlgcollect(String catSn,String usage,String modName,Integer numPage,Integer numRows) throws AlgException {
-        if(Assert.isEmpty(numPage)){
-            numPage = 1;
-        }
-        if(Assert.isEmpty(numRows)){
-            numRows = 100;
-        }
+    public  Result listAlgcollect(String catSn,String usage,String modName,Integer pageNum,Integer pageSize) throws AlgException {
+        pageNum = pageNum == null ? 1 : pageNum;
+        pageSize = pageSize == null ? 10 : pageSize;
         AlgUser algUser = getUserInfo();
-        List<AlgModuleListVo> result = algModuleListService.findModuleCollect(catSn, usage, modName, numPage, numRows,algUser.getUsrSn());
-        return Result.ok(result);
+        Page<AlgModuleListVo> page = algModuleListService.findModuleCollect(catSn, usage, modName, pageNum, pageSize,algUser.getUsrSn());
+        PageInfo pageInfo = new PageInfo(page);
+        return Result.ok(pageInfo);
     }
 
     /**
