@@ -41,8 +41,8 @@ public class AuthCodeController extends BaseController {
         List<AlgAuthCode> result= authCodeService.listUserAuthCode(algUser.getUsrSn());
         return Result.ok(result);
     }
-    @RequestMapping(value="/listAuthCodeDomain/{acdSn}",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result listAuthCodeDomain(@PathVariable("acdSn") String acdSn) throws AlgException {
+    @RequestMapping(value="/listAuthCodeDomain",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result listAuthCodeDomain(String acdSn) throws AlgException {
         List<AlgAuthCodeDomain> result = authCodeDomainService.listAcdSnUrl(acdSn);
         return Result.ok(result);
     }
@@ -54,8 +54,8 @@ public class AuthCodeController extends BaseController {
         authCodeService.generateKey(algAuthCode, addUrl);
         return Result.successResponse();
     }
-    @RequestMapping(value = "/deleteAuthCode/{acdSn}",method = RequestMethod.DELETE,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result deleteAuthCode(@PathVariable("acdSn") String acdSn) throws AlgException {
+    @RequestMapping(value = "/deleteAuthCode",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result deleteAuthCode(String acdSn) throws AlgException {
         logger.info("主键:{}",acdSn);
         //删除authCode表中内容
         authCodeService.deleteAuthCode(acdSn);
