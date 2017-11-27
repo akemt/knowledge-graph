@@ -10,6 +10,8 @@ import com.beyond.algm.model.AlgArticleList;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,16 +41,15 @@ public class AlgModuleListController extends BaseController {
      @Description:我的算法列表
      */
     @RequestMapping(value = "/module/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result listAlg(String catSn,String usage,String modName,Integer numPage,Integer numRows,String id) throws AlgException {
+    public  Result listAlg(String catSn,String usage,String modName,Integer pageNum,Integer pageSize,String id) throws AlgException {
         //log.info()
-        if(Assert.isEmpty(numPage)){
-            numPage = 1;
-        }
-        if(Assert.isEmpty(numRows)){
-            numRows = 100;
-        }
-        List<AlgModuleListVo> result = algModuleListService.findModuleList(catSn, usage, modName, numPage, numRows,id,null);
-        return Result.ok(result);
+        pageNum = pageNum == null ? 1 : pageNum;
+        pageSize = pageSize == null ? 10 : pageSize;
+
+        Page<AlgModuleListVo> page = algModuleListService.findModulePage(catSn, usage, modName, pageNum, pageSize,id,null);
+        PageInfo pageInfo = new PageInfo(page);
+
+        return Result.ok(pageInfo);
     }
 
     /**

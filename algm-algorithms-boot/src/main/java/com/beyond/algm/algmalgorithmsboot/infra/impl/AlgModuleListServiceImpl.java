@@ -9,6 +9,7 @@ import com.beyond.algm.mapper.AlgModuleUsageMapper;
 import com.beyond.algm.model.AlgArticleList;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,14 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
         //初步设定用数据库进行排序查询
         PageHelper.startPage(numPage,numRows);
         List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleList(catSn,usage,modName,id,usrCode);
+        return resultAlgModule;
+    }
+    //分页的
+    @Override
+    public Page<AlgModuleListVo> findModulePage(String catSn, String usage , String modName, Integer pageNum,Integer pageSize, String id, String usrCode) throws AlgException {
+        //初步设定用数据库进行排序查询
+        PageHelper.startPage(pageNum,pageSize);
+        Page<AlgModuleListVo> resultAlgModule = algModuleMapper.findModulePage(catSn,usage,modName,id,usrCode);
         return resultAlgModule;
     }
 
