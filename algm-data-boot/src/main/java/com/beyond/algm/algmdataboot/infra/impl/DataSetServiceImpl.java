@@ -9,6 +9,7 @@ import com.beyond.algm.mapper.AlgDataSetMapper;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -164,9 +165,11 @@ public class DataSetServiceImpl implements DataSetService {
 
     //数据商城
     @Override
-    public Result algDataMall(String dataContent) throws AlgException {
+    public Result algDataMall(String dataContent,Integer numPage,Integer numRows) throws AlgException {
         try {
             Result result = new Result();
+            //初步设定用数据库进行排序查询
+            PageHelper.startPage(numPage,numRows);
             List<AlgData> allAlgData = algDataMapper.findAlgDataMall(dataContent);
             result.setData(allAlgData);
             return result;

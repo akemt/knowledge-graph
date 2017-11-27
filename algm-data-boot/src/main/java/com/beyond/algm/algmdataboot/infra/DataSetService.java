@@ -58,9 +58,9 @@ public interface DataSetService {
 
     /**
      * @author ：lindewei
-     * @Description: 点击数据集关联查询数据
+     * @Description: 数据商城
      */
-    Result algDataMall(String dataContent) throws AlgException;
+    Result algDataMall(String dataContent,Integer numPage,Integer numRows) throws AlgException;
 
     /**
      * @author ：ZhangJiayue

@@ -3,6 +3,7 @@ package com.beyond.algm.algmdataboot.controller;
 
 import com.beyond.algm.algmdataboot.base.BaseController;
 import com.beyond.algm.algmdataboot.infra.DataSetService;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.common.ResultEnum;
 import com.beyond.algm.exception.AlgException;
@@ -153,10 +154,16 @@ public class DataSetController extends BaseController {
      * @Description: 数据商城
      */
     @RequestMapping(value = "/datamall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result dataMall(String dataContent) throws AlgException {
+    public Result dataMall(String dataContent,Integer numPage,Integer numRows) throws AlgException {
         logger.info("数据搜索名：{}",dataContent);
         try{
-            Result result=dataSetService.algDataMall(dataContent);
+            if(Assert.isEmpty(numPage)){
+                numPage = 1;
+            }
+            if(Assert.isEmpty(numRows)){
+                numRows = 100;
+            }
+            Result result=dataSetService.algDataMall(dataContent,numPage,numRows);
             return result;
         }catch(Exception e)
         {
