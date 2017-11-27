@@ -40,13 +40,13 @@ public class AuthCodeServiceImpl implements AuthCodeService {
         algAuthCodeMapper.insert(algAuthCode);
 
         //插入默认的Url “algo://*”
-        AlgAuthCodeDomain algAuthCodeDomainDefault  = new AlgAuthCodeDomain();
+        /*AlgAuthCodeDomain algAuthCodeDomainDefault  = new AlgAuthCodeDomain();
         String addSnDefault = UUIDUtil.createUUID();
         algAuthCodeDomainDefault.setAddSn(addSnDefault);
         algAuthCodeDomainDefault.setAcdSn(algAuthCode.getAcdSn());
         algAuthCodeDomainDefault.setAddUrl("algo://*");
         //Result resultDomainDefault = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomainDefault);
-        algAuthCodeDomainMapper.insert(algAuthCodeDomainDefault);
+        algAuthCodeDomainMapper.insert(algAuthCodeDomainDefault);*/
 
         //插入全部允许调用算法Url的路径
         if(addUrl != null){
@@ -86,13 +86,13 @@ public class AuthCodeServiceImpl implements AuthCodeService {
         algAuthCodeDomainMapper.deleteByAcdSn(algAuthCode.getAcdSn());
         //重新插入前端传过来的Url
         //插入默认的Url “algo://*”
-        AlgAuthCodeDomain algAuthCodeDomainDefault  = new AlgAuthCodeDomain();
+        /*AlgAuthCodeDomain algAuthCodeDomainDefault  = new AlgAuthCodeDomain();
         String addSnDefault = UUIDUtil.createUUID();
         algAuthCodeDomainDefault.setAddSn(addSnDefault);
         algAuthCodeDomainDefault.setAcdSn(algAuthCode.getAcdSn());
         algAuthCodeDomainDefault.setAddUrl("algo://*");
         //Result resultDomainDefault = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomainDefault);
-        algAuthCodeDomainMapper.insert(algAuthCodeDomainDefault);
+        algAuthCodeDomainMapper.insert(algAuthCodeDomainDefault);*/
         /*if(resultDomainDefault.getMsg() != "成功"){
             return Result.failureResponse();
         }*/
