@@ -70,4 +70,11 @@ public interface ModuleService {
      * @throws AlgException
      */
     void publishModule(String modId,String usrCode,String verMark) throws AlgException;
+
+
+    /**
+     * @author ：lindewei
+     * @Description: 校验算法是否有重复
+     */
+    Boolean isRepeat(String modId,String UsrSn) throws AlgException;
 }

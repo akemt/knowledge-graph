@@ -165,7 +165,6 @@ public class ModuleServiceImpl implements ModuleService {
             //commit and push 代码
             String version = jGitService.commitAndPushAllFiles(gitUser);
 
-
             AlgModuleVersion algModuleVersion = new AlgModuleVersion();
             algModuleVersion.setVerSn(UUIDUtil.createUUID());
             algModuleVersion.setCreateDate(new Date());
@@ -281,5 +280,23 @@ public class ModuleServiceImpl implements ModuleService {
         AlgModuleVersion algModuleVersion = addVersion(usrCode, modId, verMark);
         dockerService.makeDockerImage(modId,usrCode,algModuleVersion);
 
+    }
+
+    /**
+     * @author ：lindewei
+     * @Description: 校验算法是否有重复
+     */
+    public Boolean isRepeat(String modId,String UsrSn) throws AlgException{
+        //项目modId大写转换小写。
+        String strModId = modId.toLowerCase();
+        //校验
+        AlgModule algModule = algModuleMapper.selectIsRepeat(strModId,UsrSn);
+        if(Assert.isEmpty(algModule)){
+            //有重名存在
+            return false;
+        }else {
+            //无重名存在
+            return true;
+        }
     }
 }

@@ -42,4 +42,9 @@ public interface AlgModuleMapper {
      *  我的收藏列表
      */
     Page<AlgModuleListVo> findModuleCollect(String catSn, String usage, String modName,String usrSn);
+
+    /**
+     *  校验算法是否有重复
+     */
+    AlgModule selectIsRepeat(@Param("usrSn") String usrSn, @Param("modId")String modId);
 }
