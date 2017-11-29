@@ -286,11 +286,11 @@ public class ModuleServiceImpl implements ModuleService {
      * @author ：lindewei
      * @Description: 校验算法是否有重复
      */
-    public Boolean isRepeat(String modId,String UsrSn) throws AlgException{
+    public Boolean isRepeat(String modId,String usrSn) throws AlgException{
         //项目modId大写转换小写。
         String strModId = modId.toLowerCase();
         //校验
-        AlgModule algModule = algModuleMapper.selectIsRepeat(strModId,UsrSn);
+        AlgModule algModule = algModuleMapper.selectIsRepeat(strModId,usrSn);
         if(Assert.isEmpty(algModule)){
             //有重名存在
             return false;
