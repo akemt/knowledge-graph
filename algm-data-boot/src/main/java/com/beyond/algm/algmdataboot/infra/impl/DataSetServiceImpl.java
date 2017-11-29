@@ -9,6 +9,7 @@ import com.beyond.algm.mapper.AlgDataSetMapper;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,18 +166,11 @@ public class DataSetServiceImpl implements DataSetService {
 
     //数据商城
     @Override
-    public Result algDataMall(String dataContent,Integer numPage,Integer numRows) throws AlgException {
-        try {
-            Result result = new Result();
-            //初步设定用数据库进行排序查询
-            PageHelper.startPage(numPage,numRows);
-            List<AlgData> allAlgData = algDataMapper.findAlgDataMall(dataContent);
-            result.setData(allAlgData);
-            return result;
-        } catch (Exception e) {
-            log.error("获取所有数据集失败，数据名称：{}",dataContent,e);
-            throw new AlgException("BEYOND.ALG.DATA.COMMON.FIND.0000004",new String[]{});
-        }
+    public Page<AlgData> algDataMall(String dataContent,Integer pageNum,Integer pageSize) throws AlgException {
+        //初步设定用数据库进行排序查询
+        PageHelper.startPage(pageNum,pageSize);
+        Page<AlgData> allAlgData = algDataMapper.findAlgDataMall(dataContent);
+        return allAlgData;
     }
 
     /*@Override

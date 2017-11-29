@@ -56,10 +56,10 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
 
     //我的收藏
     @Override
-    public List<AlgModuleListVo> findModuleCollect(String catSn, String usage ,String modName,Integer numPage,Integer numRows, String usrSn) throws AlgException {
+    public Page<AlgModuleListVo> findModuleCollect(String catSn, String usage ,String modName,Integer pageNum,Integer pageSize, String usrSn) throws AlgException {
         //初步设定用数据库进行排序查询
-        PageHelper.startPage(numPage,numRows);
-        List<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleCollect(catSn,usage,modName,usrSn);
+        PageHelper.startPage(pageNum,pageSize);
+        Page<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleCollect(catSn,usage,modName,usrSn);
         return resultAlgModule;
     }
 
