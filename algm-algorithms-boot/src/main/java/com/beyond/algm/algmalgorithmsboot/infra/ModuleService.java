@@ -54,11 +54,20 @@ public interface ModuleService {
      * lindewei
      * 版本接口
      */
-    void addVer(String usrCode,String modId,String verMark)throws AlgException;
+    AlgModuleVersion addVersion(String usrCode,String modId,String verMark)throws AlgException;
 
     /**
      * lindewei
      * 分类接口
      */
-    List<AlgAlgoCategory> category()throws AlgException;
+    List<AlgAlgoCategory> category() throws AlgException;
+
+    /**
+     * 算法发布统一入口
+     * @param modId 算法英文名称
+     * @param usrCode 用户英文名称
+     * @param verMark H,L,M 对应高、中、低
+     * @throws AlgException
+     */
+    void publishModule(String modId,String usrCode,String verMark) throws AlgException;
 }

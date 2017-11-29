@@ -1,10 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.adapter.infra.ModuleAdapter;
-import com.beyond.algm.algmalgorithmsboot.infra.GitLibService;
-import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
-import com.beyond.algm.algmalgorithmsboot.infra.ModuleService;
-import com.beyond.algm.algmalgorithmsboot.infra.ShowProjectFileService;
+import com.beyond.algm.algmalgorithmsboot.infra.*;
 import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
@@ -60,6 +57,8 @@ public class ModuleServiceImpl implements ModuleService {
     private ShowProjectFileService showProjectFileService;
     @Autowired
     private AlgAlgoCategoryMapper algAlgoCategoryMapper;
+    @Autowired
+    private DockerService dockerService;
 
     @Value("${spring.profiles.active}")
     private String active;
@@ -139,7 +138,7 @@ public class ModuleServiceImpl implements ModuleService {
     //获取最后的版本
     @Override
     public AlgModuleVersion getLastVersion(String mod_sn) throws AlgException {
-        return algModuleVersionMapper.selectLatestAll(mod_sn);
+        return algModuleVersionMapper.queryLatestVersion(mod_sn);
     }
 
     /**
@@ -238,22 +237,24 @@ public class ModuleServiceImpl implements ModuleService {
      * lindewei
      * 版本接口
      */
-    public void addVer(String usrCode,String modId,String verMark)throws AlgException{
+    public AlgModuleVersion addVersion(String usrCode,String modId,String verMark)throws AlgException{
         AlgUser algUser = algUserMapper.selectUsrCode(usrCode);
         //给AlgorithmDetailVo赋值
         AlgorithmDetailVo algorithmDetailVo = new AlgorithmDetailVo();
         algorithmDetailVo.setUsrSn(algUser.getUsrSn());
         algorithmDetailVo.setModId(modId);
         //获取最新的版本
-        AlgModuleVo algModuleVo = algModuleMapper.getAlgorithmDetail(algorithmDetailVo);
-        log.info("获取最新的版本:current modSn: {} ", algModuleVo.getModSn());
-        AlgModuleVersion algModuleVersion = algModuleVersionMapper.selectLatestAll(algModuleVo.getModSn());
+        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(usrCode,modId);
+        AlgModuleVersion algModuleVersion = algModuleVersionMapper.queryLatestVersion(algModule.getModSn());
         log.info("获取最新的版本:current verSn: {} ", algModuleVersion.getVerSn());
         //插入新的版本号
         if("H".equals(verMark)){
             algModuleVersion.setVerCodeL1(algModuleVersion.getVerCodeL1()+1);
+            algModuleVersion.setVerCodeL2(0);
+            algModuleVersion.setVerCodeL3(0);
         }else if("M".equals(verMark)){
             algModuleVersion.setVerCodeL2(algModuleVersion.getVerCodeL2()+1);
+            algModuleVersion.setVerCodeL3(0);
         }else{
             algModuleVersion.setVerCodeL3(algModuleVersion.getVerCodeL3()+1);
         }
@@ -264,6 +265,7 @@ public class ModuleServiceImpl implements ModuleService {
         } catch (Exception e){
             throw new AlgException("BEYOND.ALG.MODULE.PUBLISH.0000010",new String[]{});
         }
+        return algModuleVersion;
     }
 
     /**
@@ -272,5 +274,12 @@ public class ModuleServiceImpl implements ModuleService {
      */
     public List<AlgAlgoCategory> category()throws AlgException{
         return algAlgoCategoryMapper.selectAll();
+    }
+
+    @Transactional(rollbackFor = AlgException.class)
+    public void publishModule(String modId,String usrCode,String verMark)throws AlgException{
+        AlgModuleVersion algModuleVersion = addVersion(usrCode, modId, verMark);
+        dockerService.makeDockerImage(modId,usrCode,algModuleVersion);
+
     }
 }

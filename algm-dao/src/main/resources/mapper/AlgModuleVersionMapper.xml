@@ -63,7 +63,7 @@
     ver_run_port, ver_compiled, verIs_dirty, ver_url, create_date, ver_dependency, ver_description
     from alg_module_version
   </select>
-  <select id="selectLatestAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="queryLatestVersion" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select * from alg_module_version
     where mod_sn = #{modSn,jdbcType=VARCHAR} and concat(ver_code_l1,ver_code_l2,ver_code_l3) = (
     select max(concat(ver_code_l1,ver_code_l2,ver_code_l3)) as ver_code

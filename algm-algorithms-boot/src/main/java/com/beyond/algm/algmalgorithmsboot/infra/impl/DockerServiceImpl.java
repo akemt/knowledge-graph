@@ -2,6 +2,7 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.infra.DockerService;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.model.AlgModuleVersion;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.DockerCmdExecFactory;
 import com.github.dockerjava.api.model.Info;
@@ -12,9 +13,14 @@ import com.github.dockerjava.core.command.BuildImageResultCallback;
 import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @Author: qihe
@@ -26,10 +32,15 @@ import java.io.File;
 public class DockerServiceImpl implements DockerService {
     @Autowired
     private DockerClient dockerClient;
-    public void makeDockerImage() throws AlgException{
-        /*Info info = dockerClient.infoCmd().exec();
-        System.out.print(info);*/
-        String imageId = dockerClient.buildImageCmd(new File("/work/docker_images", "Dockerfile")).withNoCache(true).exec(new BuildImageResultCallback()).awaitImageId();
+
+    @Value("${project.packageName}")
+    private String projectName;
+
+    public void makeDockerImage(String modId, String usrCode, AlgModuleVersion algModuleVersion) throws AlgException{
+        Set tags = new HashSet<String>();
+        String tag = projectName+"/" + usrCode + modId.toLowerCase() ;
+        tags.add(tag);
+        String imageId = dockerClient.buildImageCmd(new File("/work/docker_images", "Dockerfile")).withTags(tags).withNoCache(true).exec(new BuildImageResultCallback()).awaitImageId();
         log.debug("create image id:{}",imageId);
         log.info("create image id:{}",imageId);
     }
