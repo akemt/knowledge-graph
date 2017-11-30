@@ -62,4 +62,19 @@ public interface ModuleService {
      */
     List<AlgAlgoCategory> category() throws AlgException;
 
+    /**
+     * 算法发布统一入口
+     * @param modId 算法英文名称
+     * @param usrCode 用户英文名称
+     * @param verMark H,L,M 对应高、中、低
+     * @throws AlgException
+     */
+    void publishModule(String modId,String usrCode,String verMark) throws AlgException;
+
+
+    /**
+     * @author ：lindewei
+     * @Description: 校验算法是否有重复
+     */
+    Boolean isRepeat(String modId,String UsrSn) throws AlgException;
 }

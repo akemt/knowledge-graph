@@ -128,8 +128,14 @@ public class ModuleController extends BaseController {
         AlgUser algUser = getUserInfo();
         algModule.setUsrSn(algUser.getUsrSn());
         //先保存到数据库
-        moduleService.addAlgModule(algModule, algUser);
-        return Result.successResponse();
+        if(moduleService.isRepeat(algModule.getModId(),algUser.getUsrSn())){
+            //无算法重名，可以插入。
+            moduleService.addAlgModule(algModule, algUser);
+            return Result.successResponse();
+        }else {
+            //有重名存在。
+            return Result.failureResponse();
+        }
     }
 
     /**

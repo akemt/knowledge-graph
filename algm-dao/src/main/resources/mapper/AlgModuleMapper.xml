@@ -216,4 +216,10 @@
         <if test="arg1 == 'creditCnt'"> order by usa.credit_cnt DESC </if>
     </select>
 
+    <select id="selectIsRepeat" resultMap="BaseResultMap">
+        select * from alg_module
+        where usr_sn = #{usrSn,jdbcType=VARCHAR}
+        and lower(mod_id) = #{modId,jdbcType=VARCHAR}
+    </select>
+
 </mapper>

@@ -165,7 +165,6 @@ public class ModuleServiceImpl implements ModuleService {
             //commit and push 代码
             String version = jGitService.commitAndPushAllFiles(gitUser);
 
-
             AlgModuleVersion algModuleVersion = new AlgModuleVersion();
             algModuleVersion.setVerSn(UUIDUtil.createUUID());
             algModuleVersion.setCreateDate(new Date());
@@ -244,7 +243,7 @@ public class ModuleServiceImpl implements ModuleService {
         algorithmDetailVo.setUsrSn(algUser.getUsrSn());
         algorithmDetailVo.setModId(modId);
         //获取最新的版本
-        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(),modId);
+        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(usrCode,modId);
         AlgModuleVersion algModuleVersion = algModuleVersionMapper.queryLatestVersion(algModule.getModSn());
         log.info("获取最新的版本:current verSn: {} ", algModuleVersion.getVerSn());
         //插入新的版本号
@@ -274,5 +273,30 @@ public class ModuleServiceImpl implements ModuleService {
      */
     public List<AlgAlgoCategory> category()throws AlgException{
         return algAlgoCategoryMapper.selectAll();
+    }
+
+    @Transactional(rollbackFor = AlgException.class)
+    public void publishModule(String modId,String usrCode,String verMark)throws AlgException{
+        AlgModuleVersion algModuleVersion = addVersion(usrCode, modId, verMark);
+        dockerService.makeDockerImage(modId,usrCode,algModuleVersion);
+
+    }
+
+    /**
+     * @author ：lindewei
+     * @Description: 校验算法是否有重复
+     */
+    public Boolean isRepeat(String modId,String usrSn) throws AlgException{
+        //项目modId大写转换小写。
+        String strModId = modId.toLowerCase();
+        //校验
+        AlgModule algModule = algModuleMapper.selectIsRepeat(strModId,usrSn);
+        if(Assert.isEmpty(algModule)){
+            //有重名存在
+            return false;
+        }else {
+            //无重名存在
+            return true;
+        }
     }
 }
