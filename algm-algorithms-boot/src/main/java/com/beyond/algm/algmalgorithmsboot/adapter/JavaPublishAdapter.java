@@ -26,7 +26,7 @@ import java.util.Map;
 public class JavaPublishAdapter implements PublishAdapter {
 
     @Override
-    public void initBootProject(String userCode, String projectName, String projectDescription, String algoVersion, PublishConfigModel publishConfigModel, String active) throws AlgException {
+    public void initBootProject(String userCode, String projectName, String projectDescription, String algoVersion, PublishConfigModel publishConfigModel, String active,String publishPath) throws AlgException {
 
         //TODO：先判断有没有项目，项目下有没有压缩包
 
@@ -100,7 +100,7 @@ public class JavaPublishAdapter implements PublishAdapter {
             throw new AlgException(e);
         }
         //TODO 生成jar包
-        makeDistJar("");
+        makeDistJar(publishPath);
         //TODO：将项目中的zip压缩包直接解压缩到dist文件夹下
 
         //TODO：调用mvnService编译工程
