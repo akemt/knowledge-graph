@@ -1,10 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.adapter.infra.ModuleAdapter;
-import com.beyond.algm.algmalgorithmsboot.infra.GitLibService;
-import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
-import com.beyond.algm.algmalgorithmsboot.infra.ModuleService;
-import com.beyond.algm.algmalgorithmsboot.infra.ShowProjectFileService;
+import com.beyond.algm.algmalgorithmsboot.infra.*;
 import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
@@ -59,6 +56,8 @@ public class ModuleServiceImpl implements ModuleService {
     private ShowProjectFileService showProjectFileService;
     @Autowired
     private AlgAlgoCategoryMapper algAlgoCategoryMapper;
+    @Autowired
+    private PathService pathService;
 
     @Value("${spring.profiles.active}")
     private String active;
@@ -67,32 +66,9 @@ public class ModuleServiceImpl implements ModuleService {
     public void initProject(AlgUser algUser, String projectName,String lanSn) throws Exception {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
         //适配器模式 调用创建算法项目适配器
-        // ModuleAdapter createModuleAdapter = (ModuleAdapter)Class.forName("com.beyond.algo.algoconsoleboot.adapter."+ algProgramLang.getLanName() +"ModuleAdapter").newInstance();
         ModuleAdapter createModuleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
         createModuleAdapter.createModule(algUser.getUsrCode(), projectName, gitConfigModel, projectConfigModel,active);
 
-    }
-
-    //返回文件的后缀名
-    @Override
-    public String getModuleMainFilePath(String usrCode, String modId, String lanSn) throws AlgException {
-        AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
-        //项目名称初始化Tree
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(gitConfigModel.getLocalBasePath());
-        stringBuilder.append(File.separator);
-        stringBuilder.append(usrCode);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(modId);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(src);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(projectConfigModel.getPackageName());
-        stringBuilder.append(File.separator);
-        stringBuilder.append(modId);
-        stringBuilder.append(File.separator);
-
-        return stringBuilder.toString();
     }
 
     public AlgModule findByUsrSnAndModId(String usrSn, String modId) throws AlgException {
@@ -113,11 +89,11 @@ public class ModuleServiceImpl implements ModuleService {
             //项目名称初始化Tree
             // path 为空的情况是，是项目主文件路径
             if (Assert.isEmpty(path)) {
-                path = this.getModuleMainFilePath(usrCode, modId, algModule.getLanSn());
+                path = pathService.getModuleMainFilePath(usrCode, modId, algModule.getLanSn());
             } else if (path.equals("/")) {
-                path = showProjectFileService.getModuleBasePath(usrCode, modId);
+                path = pathService.getModuleBasePath(usrCode, modId);
             } else {
-                path = showProjectFileService.getModuleBasePath(usrCode, modId) + File.separator + path;
+                path = pathService.getModuleBasePath(usrCode, modId) + File.separator + path;
             }
             //返回同级目录所有文件和文件夹.
             FileNodes fileNodes = showProjectFileService.ShowProjectFile(path, usrCode, modId);

@@ -9,6 +9,7 @@ import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tools.ant.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 
@@ -98,7 +99,8 @@ public class JavaPublishAdapter implements PublishAdapter {
         } catch (Exception e) {
             throw new AlgException(e);
         }
-
+        //TODO 生成jar包
+        makeDistJar("");
         //TODO：将项目中的zip压缩包直接解压缩到dist文件夹下
 
         //TODO：调用mvnService编译工程
@@ -106,5 +108,35 @@ public class JavaPublishAdapter implements PublishAdapter {
         //TODO：调用dockerApi封装docker镜像，并推送到harbor上
 
         //TODO：启动k8s
+    }
+
+
+
+
+    private void makeDistJar(String path) throws AlgException{
+        File buildFile = new File(path);
+        Project project = new Project();
+        DefaultLogger consoleLogger = new DefaultLogger();
+        consoleLogger.setErrorPrintStream(System.err);
+        consoleLogger.setOutputPrintStream(System.out);
+        consoleLogger.setMessageOutputLevel(Project.MSG_INFO);
+        project.addBuildListener(consoleLogger);
+
+        try {
+            project.fireBuildStarted();  //项目开始构建
+            project.init();
+
+            ProjectHelper helper = ProjectHelper.getProjectHelper();
+            helper.parse(project, buildFile);
+            Task task = project.getTargets().get("compile").getTasks()[1];
+            task.getRuntimeConfigurableWrapper().setAttribute("fork","true");
+
+            project.executeTarget("stage");
+            project.fireBuildFinished(null);  //构建结束
+        } catch (BuildException e) {
+            log.error("构建错误", e);
+            project.fireBuildFinished(e);  //构建抛出异常
+            throw new AlgException(e);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
+import com.beyond.algm.algmalgorithmsboot.infra.PathService;
 import com.beyond.algm.algmalgorithmsboot.infra.ReadFileService;
 import com.beyond.algm.algmalgorithmsboot.infra.ShowProjectFileService;
 import com.beyond.algm.common.Assert;
@@ -15,6 +16,8 @@ import java.io.InputStreamReader;
 public class ReadFileServiceImpl implements ReadFileService {
     @Autowired
     private ShowProjectFileService showProjectFileService;
+    @Autowired
+    private PathService pathService;
 
     @Override
     public AlgFileReadWriteVo readFile(String usrCode, String modId, String path, String fileName) throws AlgException {
@@ -22,9 +25,9 @@ public class ReadFileServiceImpl implements ReadFileService {
         String readPath = null;
         try {
             if(Assert.isEmpty(path)){
-                readPath = showProjectFileService.getModuleBasePath(usrCode,modId) + File.separator + fileName;
+                readPath = pathService.getModuleBasePath(usrCode,modId) + File.separator + fileName;
             }else {
-                readPath = showProjectFileService.getModuleBasePath(usrCode,modId) + File.separator +path + File.separator + fileName;
+                readPath = pathService.getModuleBasePath(usrCode,modId) + File.separator +path + File.separator + fileName;
             }
         } catch (Exception e) {
             throw new AlgException("BEYOND.ALG.MODULE.READ.0000008",new String[]{},e);

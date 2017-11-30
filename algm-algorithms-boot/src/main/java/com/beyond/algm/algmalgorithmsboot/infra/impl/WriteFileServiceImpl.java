@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import com.beyond.algm.algmalgorithmsboot.infra.PathService;
 import com.beyond.algm.algmalgorithmsboot.infra.ShowProjectFileService;
 import com.beyond.algm.algmalgorithmsboot.infra.WriteFileService;
 import com.beyond.algm.common.Assert;
@@ -17,14 +18,16 @@ import org.springframework.stereotype.Service;
 public class WriteFileServiceImpl implements WriteFileService {
     @Autowired
     private ShowProjectFileService showProjectFileService;
+    @Autowired
+    private PathService pathService;
     @Override
     public void writeFile(String usrCode, String modId, String path, String fileName,String fileContent) throws AlgException {
         String writePath = null;
         try {
             if(Assert.isEmpty(path)){
-                writePath = showProjectFileService.getModuleBasePath(usrCode,modId) + File.separator + fileName;
+                writePath = pathService.getModuleBasePath(usrCode,modId) + File.separator + fileName;
             }else {
-                writePath = showProjectFileService.getModuleBasePath(usrCode,modId) + File.separator +path + File.separator + fileName;
+                writePath = pathService.getModuleBasePath(usrCode,modId) + File.separator +path + File.separator + fileName;
             }
         } catch (Exception e) {
             throw new AlgException("BEYOND.ALG.MODULE.WRITE.0000009",new String[]{},e);

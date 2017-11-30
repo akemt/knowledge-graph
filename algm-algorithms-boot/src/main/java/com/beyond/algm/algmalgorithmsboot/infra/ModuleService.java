@@ -16,8 +16,6 @@ public interface ModuleService {
 
     AlgModule findByUsrSnAndModId(String usrSn,String modId) throws AlgException;
 
-    String getModuleMainFilePath(String usrCode,String modId,String lanSn) throws AlgException;
-
     /**
      *
      * @param usrCode

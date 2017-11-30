@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @SpringBootTest(classes = AlgmAlgorithmsBootApplication.class)
 public class AntApiServiceImplTest {
 
+
     @Autowired
     private AntApiService antApiService;
 
@@ -21,6 +22,11 @@ public class AntApiServiceImplTest {
         GitUser gitUser=new GitUser();
         gitUser.setPath("123");
         antApiService.moduleAntBuild(gitUser);
+    }
+
+    @Test
+    public void moduleAntZip() throws Exception {
+        antApiService.moduleAntZip("erniu4","TestJavaK1");
     }
 
 }

@@ -1,8 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
-import com.beyond.algm.algmalgorithmsboot.infra.ShowProjectFileService;
-import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
+import com.beyond.algm.algmalgorithmsboot.infra.PathService;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.exception.AlgException;
@@ -16,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.io.File;
 @Slf4j
 @Service
@@ -24,10 +24,7 @@ public class JGitServiceImpl implements JGitService {
     private final static Logger logger = LoggerFactory.getLogger(JGitServiceImpl.class);
 
     @Autowired
-    private GitConfigModel gitConfigModel;
-
-    @Autowired
-    private ShowProjectFileService showProjectFileService;
+    private PathService pathService;
 
     @Override
     public void gitCloneProject(GitUser gitUser) throws AlgException {
@@ -36,7 +33,7 @@ public class JGitServiceImpl implements JGitService {
         CloneCommand cloneCommand = Git.cloneRepository();
         cloneCommand.setURI(gitUser.getProjectRepoURI());
         cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword()));
-        cloneCommand.setDirectory(new File(showProjectFileService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())));
+        cloneCommand.setDirectory(new File(pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())));
         try {
             cloneCommand.call();
         } catch (Exception e) {
@@ -44,7 +41,7 @@ public class JGitServiceImpl implements JGitService {
             throw new AlgException("此处需要添加编码");
         }
 
-        gitUser.setPath(showProjectFileService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+".git");
+        gitUser.setPath(pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+".git");
     }
 
     /**
@@ -129,21 +126,9 @@ public class JGitServiceImpl implements JGitService {
      */
     public boolean commitAndPushDelAllFiles(GitUser gitUser)  throws AlgException{
         logger.info("注册用户：{} 模块ID：{} 文件路径：{} 文件名{}",gitUser.getUsrCode(),gitUser.getModId(),gitUser.getCurrentPath(),gitUser.getFileName());
-        String delPath = showProjectFileService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId()) + File.separator +gitUser.getCurrentPath() +File.separator+ gitUser.getFileName();//正式
+        String delPath = pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId()) + File.separator +gitUser.getCurrentPath() +File.separator+ gitUser.getFileName();//正式
         //本地删除
         FileUtil.delFile(delPath);
-        //git服务器同步删除
-        /**FileRepository localRepo = new FileRepository( gitUser.getPath());
-         Git git = new Git(localRepo);
-         AddCommand addCommand = git.add().setUpdate(true).addFilepattern(".");
-         addCommand.call();
-         CommitCommand commitCommand = git.commit();
-         commitCommand.setMessage("init project");
-         commitCommand.setAllowEmpty(true);
-         commitCommand.call();
-         PushCommand pushCommand = git.push();
-         pushCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsername(), gitUser.getPassword()));
-         pushCommand.call();*/
         return true;
 
 
