@@ -15,6 +15,8 @@ public class Constant {
 
     public static final int FILE_READ_SIZE = 8192;
 
+    public static final String ZIP_SUFFIX = ".zip";
+
     public final static Map map = new HashMap();
     static {
         map.put("Java", "build.xml");

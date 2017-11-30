@@ -3,7 +3,6 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.AlgmAlgorithmsBootApplication;
 import com.beyond.algm.common.FileUtil;
-import com.beyond.algm.algmalgorithmsboot.infra.BuildAntProjectService;
 import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import org.eclipse.jgit.api.Git;
@@ -24,8 +23,7 @@ import java.io.File;
 public class JGitServiceTest {
     @Autowired
     private JGitService jGitService;
-    @Autowired
-    private BuildAntProjectService buildAntProjectService;
+
     private final static Logger logger = LoggerFactory.getLogger(JGitServiceTest.class);
     GitUser gitUser = new GitUser();
 
@@ -59,16 +57,6 @@ public class JGitServiceTest {
 
     }
 
-    @Test
-    // 本地编译打包上传测试
-    public void BuildAntProject() throws Exception {
-        gitUser.setPassword("test1234");
-        gitUser.setPath("E:/repo/test1/TestProject");
-        gitUser.setDescDir("D:/test");
-        gitUser.setUsername("test1");
-        buildAntProjectService.buildAndUpLoadProject(gitUser);
-
-    }
     @Test
     // 本地编译打包上传测试
     public void getHistoryInfo() throws Exception {
