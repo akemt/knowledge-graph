@@ -44,8 +44,8 @@ public class PublishServiceImpl implements PublishService {
     public void initBootProject(String lanSn, String userCode, String modId, String modDesc, String version) throws AlgException {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
         PublishAdapter publishAdapter =(PublishAdapter) AdapterUtil.publishAdapter(algProgramLang.getLanName());
-
-        publishAdapter.initBootProject(userCode, modId, modDesc, version, publishConfigModel, active,"");
+        String modPath = pathService.getModuleBasePath(userCode,modId);
+        publishAdapter.initBootProject(userCode, modId, modDesc, version, publishConfigModel, active,modPath,"");
     }
 
 
