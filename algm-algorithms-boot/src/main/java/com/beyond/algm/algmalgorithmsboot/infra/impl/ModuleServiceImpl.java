@@ -275,13 +275,6 @@ public class ModuleServiceImpl implements ModuleService {
         return algAlgoCategoryMapper.selectAll();
     }
 
-    @Transactional(rollbackFor = AlgException.class)
-    public void publishModule(String modId,String usrCode,String verMark)throws AlgException{
-        AlgModuleVersion algModuleVersion = addVersion(usrCode, modId, verMark);
-        dockerService.makeDockerImage(modId,usrCode,algModuleVersion);
-
-    }
-
     /**
      * @author ：lindewei
      * @Description: 校验算法是否有重复
