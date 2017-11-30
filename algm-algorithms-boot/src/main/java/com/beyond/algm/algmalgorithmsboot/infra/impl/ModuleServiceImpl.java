@@ -219,7 +219,7 @@ public class ModuleServiceImpl implements ModuleService {
         algorithmDetailVo.setUsrSn(algUser.getUsrSn());
         algorithmDetailVo.setModId(modId);
         //获取最新的版本
-        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(usrCode,modId);
+        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(),modId);
         AlgModuleVersion algModuleVersion = algModuleVersionMapper.queryLatestVersion(algModule.getModSn());
         log.info("获取最新的版本:current verSn: {} ", algModuleVersion.getVerSn());
         //插入新的版本号
