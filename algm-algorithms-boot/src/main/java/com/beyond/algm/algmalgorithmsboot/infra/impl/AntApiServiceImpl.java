@@ -3,6 +3,7 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 import com.beyond.algm.algmalgorithmsboot.adapter.infra.ModuleAdapter;
 import com.beyond.algm.algmalgorithmsboot.infra.AntApiService;
 import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
+import com.beyond.algm.algmalgorithmsboot.infra.PathService;
 import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.common.AdapterUtil;
@@ -48,6 +49,8 @@ public class AntApiServiceImpl implements AntApiService {
     private JGitService jGitService;
     @Autowired
     private AlgModuleVersionMapper algModuleVersionMapper;
+    @Autowired
+    private PathService pathService;
 
     public void moduleAntBuild(GitUser gitUser) throws AlgException {
         AlgModule algModule = findByUsrSnAndModId(gitUser.getUsrSn(),gitUser.getModId());
@@ -64,8 +67,8 @@ public class AntApiServiceImpl implements AntApiService {
         log.debug("语言表获得语言:{}",algProgramLang.getLanName());
         //适配器模式 调用创建算法项目适配器
         ModuleAdapter moduleAdapter =(ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
-        String path=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+ Constant.map.get(algProgramLang.getLanName());
-        gitUser.setPath(gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId()+File.separator+".git");
+        String path=pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+ Constant.map.get(algProgramLang.getLanName());
+        gitUser.setPath(pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+".git");
         log.debug("项目编译路径:{},上传git路径:{}",path,gitUser.getPath());
         String version=jGitService.commitAndPushAllFiles(gitUser);
         AlgModuleVersion algModuleVersion=new AlgModuleVersion();
@@ -73,8 +76,6 @@ public class AntApiServiceImpl implements AntApiService {
         algModuleVersion.setModSn(algModule.getModSn());
         algModuleVersionMapper.updateLatestCommit(algModuleVersion);
         moduleAdapter.moduleAntBuild(path);
-        //String projectPath=gitConfigModel.getLocalBasePath()+File.separator+gitUser.getUsrCode()+File.separator+gitUser.getModId();
-        //moduleAntClassJar(String projectPath)
     }
     public AlgModule findByUsrSnAndModId(String usrSn, String modId) throws AlgException{
         return algModuleMapper.selectByUsrSnAndModId(usrSn,modId);

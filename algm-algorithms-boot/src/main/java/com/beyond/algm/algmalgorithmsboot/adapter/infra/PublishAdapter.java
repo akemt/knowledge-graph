@@ -18,5 +18,5 @@ public interface PublishAdapter {
      * @param algoVersion
      * @throws AlgException
      */
-    void initBootProject(String userCode, String projectName, String projectDescription, String algoVersion, PublishConfigModel publishConfigModel, String active) throws AlgException;
+    void initBootProject(String userCode, String projectName, String projectDescription, String algoVersion, PublishConfigModel publishConfigModel, String active,String publishPath) throws AlgException;
 }
