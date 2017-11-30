@@ -259,13 +259,7 @@ public class ModuleServiceImpl implements ModuleService {
         //项目modId大写转换小写。
         String strModId = modId.toLowerCase();
         //校验
-        AlgModule algModule = algModuleMapper.selectIsRepeat(strModId,usrSn);
-        if(Assert.isEmpty(algModule)){
-            //有重名存在
-            return false;
-        }else {
-            //无重名存在
-            return true;
-        }
+        int count = algModuleMapper.selectIsRepeat(strModId,usrSn);
+        return count>0?true:false;
     }
 }
