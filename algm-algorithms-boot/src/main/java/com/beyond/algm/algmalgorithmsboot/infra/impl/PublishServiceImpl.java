@@ -45,7 +45,8 @@ public class PublishServiceImpl implements PublishService {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
         PublishAdapter publishAdapter =(PublishAdapter) AdapterUtil.publishAdapter(algProgramLang.getLanName());
         String modPath = pathService.getModuleBasePath(userCode,modId);
-        publishAdapter.initBootProject(userCode, modId, modDesc, version, publishConfigModel, active,modPath,"");
+        String publishPath = pathService.getPublishPath(userCode, modId);
+        publishAdapter.initBootProject(userCode, modId, modDesc, version, publishConfigModel, active,modPath,publishPath);
     }
 
 

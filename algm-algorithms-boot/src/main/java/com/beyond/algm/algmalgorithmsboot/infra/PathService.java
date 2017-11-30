@@ -27,4 +27,13 @@ public interface PathService {
      * @throws AlgException
      */
     String getModuleMainFilePath(String usrCode, String modId, String lanSn) throws AlgException;
+
+    /**
+     * 返回Spring Boot发布项目的用户级别目录 例：E:\alg-publish\gaohaijun
+     * @param usrCode
+     * @param modId
+     * @return
+     */
+    String getPublishPath(String usrCode, String modId);
+
 }
