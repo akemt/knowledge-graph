@@ -2,23 +2,17 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.infra.DockerService;
 import com.beyond.algm.exception.AlgException;
-import com.beyond.algm.model.AlgModuleVersion;
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.command.DockerCmdExecFactory;
-import com.github.dockerjava.api.model.Info;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.command.BuildImageResultCallback;
-import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,16 +27,21 @@ public class DockerServiceImpl implements DockerService {
     @Autowired
     private DockerClient dockerClient;
 
-    @Value("${project.packageName}")
+    @Value("${harbor.host}")
+    private String harborHost;
+
+    @Value("${harbor.projectName}")
     private String projectName;
 
-    public void makeDockerImage(String modId, String usrCode, AlgModuleVersion algModuleVersion) throws AlgException{
+    public String bulidDockerImage(String modId, String usrCode, String version) throws AlgException{
+        // 结果举例 192.168.1.92:9443/algmarket/erniu3_testjava:0.0.3
+        String tag = harborHost + "/" +projectName+"/" + usrCode + "_" + modId.toLowerCase() + ":" + version;
+        log.debug("build image tag :{}",tag);
         Set tags = new HashSet<String>();
-        String tag = projectName+"/" + usrCode + modId.toLowerCase() ;
         tags.add(tag);
         String imageId = dockerClient.buildImageCmd(new File("/work/docker_images", "Dockerfile")).withTags(tags).withNoCache(true).exec(new BuildImageResultCallback()).awaitImageId();
-        log.debug("create image id:{}",imageId);
-        log.info("create image id:{}",imageId);
+        log.debug("build image id:{}",imageId);
+        return imageId;
     }
 
 

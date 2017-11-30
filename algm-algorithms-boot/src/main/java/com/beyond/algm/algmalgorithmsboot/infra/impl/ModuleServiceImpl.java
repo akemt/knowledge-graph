@@ -1,7 +1,10 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.adapter.infra.ModuleAdapter;
-import com.beyond.algm.algmalgorithmsboot.infra.*;
+import com.beyond.algm.algmalgorithmsboot.infra.GitLibService;
+import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
+import com.beyond.algm.algmalgorithmsboot.infra.ModuleService;
+import com.beyond.algm.algmalgorithmsboot.infra.ShowProjectFileService;
 import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
@@ -11,7 +14,6 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.*;
 import com.beyond.algm.model.*;
 import com.beyond.algm.vo.AlgModuleEditVo;
-import com.beyond.algm.vo.AlgModuleVo;
 import com.beyond.algm.vo.AlgorithmDetailVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +59,6 @@ public class ModuleServiceImpl implements ModuleService {
     private ShowProjectFileService showProjectFileService;
     @Autowired
     private AlgAlgoCategoryMapper algAlgoCategoryMapper;
-    @Autowired
-    private DockerService dockerService;
 
     @Value("${spring.profiles.active}")
     private String active;
@@ -244,7 +244,7 @@ public class ModuleServiceImpl implements ModuleService {
         algorithmDetailVo.setUsrSn(algUser.getUsrSn());
         algorithmDetailVo.setModId(modId);
         //获取最新的版本
-        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(usrCode,modId);
+        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(),modId);
         AlgModuleVersion algModuleVersion = algModuleVersionMapper.queryLatestVersion(algModule.getModSn());
         log.info("获取最新的版本:current verSn: {} ", algModuleVersion.getVerSn());
         //插入新的版本号
@@ -274,12 +274,5 @@ public class ModuleServiceImpl implements ModuleService {
      */
     public List<AlgAlgoCategory> category()throws AlgException{
         return algAlgoCategoryMapper.selectAll();
-    }
-
-    @Transactional(rollbackFor = AlgException.class)
-    public void publishModule(String modId,String usrCode,String verMark)throws AlgException{
-        AlgModuleVersion algModuleVersion = addVersion(usrCode, modId, verMark);
-        dockerService.makeDockerImage(modId,usrCode,algModuleVersion);
-
     }
 }

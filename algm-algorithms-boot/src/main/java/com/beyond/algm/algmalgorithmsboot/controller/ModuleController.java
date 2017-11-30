@@ -49,6 +49,8 @@ public class ModuleController extends BaseController {
     private ReadFileService readFileService;
     @Autowired
     private WriteFileService writeFileService;
+    @Autowired
+    private PublishService publishService;
 
 
     //初始化、和返回上一级的目录
@@ -194,8 +196,7 @@ public class ModuleController extends BaseController {
      */
     @RequestMapping(value = "/{usrCode}/{modId}/publish", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode,String verMark) throws AlgException {
-
-
+        publishService.publishModule(modId,usrCode,verMark);
         return Result.successResponse();
     }
 

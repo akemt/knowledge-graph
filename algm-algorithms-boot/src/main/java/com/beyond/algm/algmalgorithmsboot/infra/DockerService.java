@@ -13,8 +13,9 @@ public interface DockerService {
      * 远程操作docker制作镜像
      * @param modId 算法英文名称
      * @param usrCode 用户英文名称
-     * @param algModuleVersion 主要用版本号
+     * @param version 发布的版本号
+     * @return 镜像Id
      * @throws AlgException
      */
-    void makeDockerImage(String modId, String usrCode, AlgModuleVersion algModuleVersion) throws AlgException;
+    String bulidDockerImage(String modId, String usrCode, String version) throws AlgException;
 }

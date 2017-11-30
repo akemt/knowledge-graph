@@ -77,7 +77,7 @@ public class JavaPublishAdapter implements PublishAdapter {
             String testJavaPath = testPath + File.separator + "java";
             FileUtil.createDir(testJavaPath);
 
-            String mainPath = projectPath + File.separator + "main";
+            String mainPath = srcPath + File.separator + "main";
             FileUtil.createDir(mainPath);
             String mainResourcePath = mainPath + File.separator + "resources";
             FileUtil.createDir(mainResourcePath);
