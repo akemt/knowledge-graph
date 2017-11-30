@@ -11,6 +11,7 @@ import com.beyond.algm.constant.Constant;
 import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tools.ant.*;
+import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.taskdefs.Zip;
 import org.apache.tools.ant.types.FileSet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,13 +105,8 @@ public class JavaPublishAdapter implements PublishAdapter {
         }
         //生成jar包到dist文件夹
         makeDistJar(modPath,publishConfigModel.getPackageName());
-        //TODO：将项目中的zip压缩包直接解压缩到dist文件夹下
-
-        //TODO：调用mvnService编译工程
-
-        //TODO：调用dockerApi封装docker镜像，并推送到harbor上
-
-        //TODO：启动k8s
+        //将项目中的zip压缩包直接解压缩到dist文件夹下
+        unzipPublishMod(modPath + File.separator + publishConfigModel.getPackageName() + Constant.ZIP_SUFFIX ,publishPath + File.separator + publishConfigModel.getDistFolder());
     }
 
 
@@ -135,13 +131,16 @@ public class JavaPublishAdapter implements PublishAdapter {
             task.getRuntimeConfigurableWrapper().setAttribute("fork","true");
 
             project.executeTarget("stage");
-
+            File zipFile = new File(path + File.separator + packageName + Constant.ZIP_SUFFIX);
+            if(zipFile.exists()){
+                zipFile.delete();
+            }
             Zip zip = new Zip();
             zip.setProject(project);
-            zip.setDestFile(new File(path + File.separator + packageName + ".zip"));
+            zip.setDestFile(zipFile);
             FileSet fileSet = new FileSet();
             fileSet.setProject(project);
-            fileSet.setDir(new File(path));
+            fileSet.setDir(new File(path + File.separator + "dist"));
             zip.addFileset(fileSet);
             zip.execute();
 
@@ -154,5 +153,15 @@ public class JavaPublishAdapter implements PublishAdapter {
             project.fireBuildFinished(e);  //构建抛出异常
             throw new AlgException(e);
         }
+    }
+
+    private void unzipPublishMod(String zipPath ,String publishDistPath){
+        Project project=new Project();
+        Expand expand = new Expand();
+        expand.setProject(project);
+        expand.setSrc(new File(zipPath));
+        expand.setOverwrite(true);
+        expand.setDest(new File(publishDistPath));
+        expand.execute();
     }
 }
