@@ -3,6 +3,7 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 import com.beyond.algm.algmalgorithmsboot.adapter.infra.PublishAdapter;
 import com.beyond.algm.algmalgorithmsboot.infra.DockerService;
 import com.beyond.algm.algmalgorithmsboot.infra.ModuleService;
+import com.beyond.algm.algmalgorithmsboot.infra.PathService;
 import com.beyond.algm.algmalgorithmsboot.infra.PublishService;
 import com.beyond.algm.algmalgorithmsboot.model.PublishConfigModel;
 import com.beyond.algm.common.AdapterUtil;
@@ -36,12 +37,15 @@ public class PublishServiceImpl implements PublishService {
     private AlgModuleMapper algModuleMapper;
     @Value("${spring.profiles.active}")
     private String active;
+    @Autowired
+    private PathService pathService;
 
     @Override
     public void initBootProject(String lanSn, String userCode, String modId, String modDesc, String version) throws AlgException {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
         PublishAdapter publishAdapter =(PublishAdapter) AdapterUtil.publishAdapter(algProgramLang.getLanName());
-        publishAdapter.initBootProject(userCode, modId, modDesc, version, publishConfigModel, active);
+
+        publishAdapter.initBootProject(userCode, modId, modDesc, version, publishConfigModel, active,"");
     }
 
 
