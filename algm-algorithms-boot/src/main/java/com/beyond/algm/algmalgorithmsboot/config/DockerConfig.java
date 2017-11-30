@@ -30,6 +30,10 @@ public class DockerConfig {
         DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
                 .withDockerHost(dockerHost)
                 .withDockerTlsVerify(dockerTlsVerify)
+                /*.withRegistryUrl("http://192.168.1.94:2375/v1/")
+                .withRegistryUsername("admin")
+                .withRegistryPassword("Harbor12345")
+                .withRegistryEmail("admin@example.com")*/
                 .build();
 
         DockerCmdExecFactory dockerCmdExecFactory = new JerseyDockerCmdExecFactory()

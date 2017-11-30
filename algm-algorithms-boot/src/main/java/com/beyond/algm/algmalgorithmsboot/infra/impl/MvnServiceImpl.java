@@ -1,8 +1,10 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.infra.MvnService;
+import com.beyond.algm.algmalgorithmsboot.infra.PathService;
 import com.beyond.algm.algmalgorithmsboot.model.PublishConfigModel;
 import com.beyond.algm.common.Assert;
+import com.beyond.algm.constant.Constant;
 import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.maven.shared.invoker.*;
@@ -24,7 +26,11 @@ public class MvnServiceImpl implements MvnService {
     @Autowired
     private PublishConfigModel publishConfigModel;
 
+    @Autowired
+    private PathService pathService;
     private static String mavenHomePath;
+
+
 
     static {
         mavenHomePath = System.getenv("MAVEN_HOME");
@@ -41,7 +47,7 @@ public class MvnServiceImpl implements MvnService {
             throw new AlgException("发布项目失败，获取不到 maven 路径！");
         }
         InvocationRequest request = new DefaultInvocationRequest();
-        String path = publishConfigModel.getLocalBasePath() + File.separator + userCode + File.separator + modId + File.separator + "pom.xml";
+        String path = pathService.getPublishPath(userCode,modId)+ File.separator + Constant.POM_XML;
         request.setPomFile(new File(path));
         request.setGoals(Arrays.asList("clean", "package -Dmaven.test.skip=true"));
 
