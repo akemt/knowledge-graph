@@ -3,7 +3,6 @@ package com.beyond.algm.algmalgorithmsboot.controller;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.common.ResultEnum;
-import com.beyond.algm.algmalgorithmsboot.infra.BuildAntProjectService;
 
 import com.beyond.algm.algmalgorithmsboot.infra.GitLibService;
 import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
@@ -34,8 +33,6 @@ public class GitLibController {
     private GitLibService gitLibService;
     @Autowired
     private JGitService jGitService;
-    @Autowired
-    private BuildAntProjectService buildAntProjectService;
 
     /**
      * @author ：zhangchuanzhi
@@ -156,42 +153,4 @@ public class GitLibController {
         }
         return Result.successResponse();
     }
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:ant项目进行编译打包同时解压到指定目录并且代码上传git上
-     * @param：User
-     * @Modify By :zhangchuanzhi
-     * @date ：13:12 2017/9/28
-     */
-    @RequestMapping(value = "/buildProject", method = RequestMethod.POST)
-    public @ResponseBody
-    Result buildAndUpLoadProject(GitUser gitUser) {
-        try {
-            buildAntProjectService.buildAndUpLoadProject(gitUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
-        return Result.successResponse();
-    }
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:展示文件tree
-     * @param：User
-     * @Modify By :zhangchuanzhi
-     * @date ：9:33 2017/10/9
-     */
-/*    @RequestMapping(value="/showFileTree", method=RequestMethod.POST)
-    public @ResponseBody Result showFileTree(String path){
-        logger.info("文件tree路径：{}",path);
-        try {
-            List<FileDir> FileDirTree= fileViewService.showFileTree(path);
-            return  Result.ok(FileDirTree);
-
-        } catch (Exception e) {
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
-    }*/
 }
