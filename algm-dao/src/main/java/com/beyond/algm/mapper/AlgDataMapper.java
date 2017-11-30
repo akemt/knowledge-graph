@@ -2,6 +2,7 @@ package com.beyond.algm.mapper;
 
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.vo.AlgDifDataListVo;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 
@@ -26,5 +27,5 @@ public interface AlgDataMapper {
     List<AlgDifDataListVo> findDifDataList(Integer id);
 
     //数据商城
-    List<AlgData> findAlgDataMall(String dataContent);
+    Page<AlgData> findAlgDataMall(String dataContent);
 }

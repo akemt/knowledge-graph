@@ -10,6 +10,8 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,22 +156,13 @@ public class DataSetController extends BaseController {
      * @Description: 数据商城
      */
     @RequestMapping(value = "/datamall", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result dataMall(String dataContent,Integer numPage,Integer numRows) throws AlgException {
+    public Result dataMall(String dataContent,Integer pageNum,Integer pageSize) throws AlgException {
         logger.info("数据搜索名：{}",dataContent);
-        try{
-            if(Assert.isEmpty(numPage)){
-                numPage = 1;
-            }
-            if(Assert.isEmpty(numRows)){
-                numRows = 100;
-            }
-            Result result=dataSetService.algDataMall(dataContent,numPage,numRows);
-            return result;
-        }catch(Exception e)
-        {
-            logger.info("查看数据集失败",e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        pageNum = pageNum == null ? 1 : pageNum;
+        pageSize = pageSize == null ? 10 : pageSize;
+        Page<AlgData> page = dataSetService.algDataMall(dataContent,pageNum,pageSize);
+        PageInfo pageInfo = new PageInfo(page);
+        return Result.ok(pageInfo);
     }
 
     /**

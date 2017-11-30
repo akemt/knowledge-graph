@@ -5,6 +5,7 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public interface DataSetService {
      * @author ：lindewei
      * @Description: 数据商城
      */
-    Result algDataMall(String dataContent,Integer numPage,Integer numRows) throws AlgException;
+    Page<AlgData> algDataMall(String dataContent, Integer numPage, Integer numRows) throws AlgException;
 
     /**
      * @author ：ZhangJiayue

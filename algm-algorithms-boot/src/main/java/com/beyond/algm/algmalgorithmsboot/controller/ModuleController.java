@@ -9,7 +9,10 @@ import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.common.ResultEnum;
 import com.beyond.algm.exception.AlgException;
-import com.beyond.algm.model.*;
+import com.beyond.algm.model.AlgAlgoCategory;
+import com.beyond.algm.model.AlgModule;
+import com.beyond.algm.model.AlgProgramLang;
+import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgFileReadWriteVo;
 import com.beyond.algm.vo.AlgModuleEditVo;
 import lombok.extern.slf4j.Slf4j;
@@ -46,8 +49,7 @@ public class ModuleController extends BaseController {
     private ReadFileService readFileService;
     @Autowired
     private WriteFileService writeFileService;
-    @Autowired
-    private ShowProjectFileService showProjectFileService;
+
 
     //初始化、和返回上一级的目录
     @GetMapping(value = "/{usrCode}/{modId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -124,8 +126,14 @@ public class ModuleController extends BaseController {
         AlgUser algUser = getUserInfo();
         algModule.setUsrSn(algUser.getUsrSn());
         //先保存到数据库
-        moduleService.addAlgModule(algModule, algUser);
-        return Result.successResponse();
+        if(moduleService.isRepeat(algModule.getModId(),algUser.getUsrSn())){
+            //无算法重名，可以插入。
+            moduleService.addAlgModule(algModule, algUser);
+            return Result.successResponse();
+        }else {
+            //有重名存在。
+            return Result.failureResponse();
+        }
     }
 
     /**
@@ -192,7 +200,8 @@ public class ModuleController extends BaseController {
      */
     @RequestMapping(value = "/{usrCode}/{modId}/publish", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode,String verMark) throws AlgException {
-        moduleService.addVer(usrCode, modId, verMark);
+
+
         return Result.successResponse();
     }
 

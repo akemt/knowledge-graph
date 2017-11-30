@@ -24,7 +24,7 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
     public AlgModuleVo getAlgorithmDetail(AlgorithmDetailVo algorithmDetailVo)throws AlgException {
         AlgModuleVo algModuleVo=algModuleMapper.getAlgorithmDetail(algorithmDetailVo);
         if(Assert.isNotNULL(algModuleVo)) {
-            algModuleVo.setUrl(algorithmDetailVo.getUsrCode() + File.separator + algorithmDetailVo.getModId() + File.separator + "edit");
+            algModuleVo.setUrl("algo"+File.separator +algorithmDetailVo.getUsrCode() + File.separator + algorithmDetailVo.getModId() + File.separator + "edit");
             algModuleVo.setDataUrl(algorithmDetailVo.getUsrCode() + File.separator + algorithmDetailVo.getModId());
             algModuleVo.setUsrCode(algorithmDetailVo.getUsrCode());
         }
