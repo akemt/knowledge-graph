@@ -128,7 +128,7 @@ public class ModuleController extends BaseController {
         AlgUser algUser = getUserInfo();
         algModule.setUsrSn(algUser.getUsrSn());
         //先保存到数据库
-        if(moduleService.isRepeat(algModule.getModId(),algUser.getUsrSn())){
+        if(!moduleService.isRepeat(algModule.getModId(),algUser.getUsrSn())){
             //无算法重名，可以插入。
             moduleService.addAlgModule(algModule, algUser);
             return Result.successResponse();
