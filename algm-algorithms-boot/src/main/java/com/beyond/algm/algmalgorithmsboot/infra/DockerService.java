@@ -29,4 +29,22 @@ public interface DockerService {
      * @throws AlgException
      */
     void makeDockerfile(String active,String lanName,String targetPath,String jarFileName) throws AlgException;
+
+    /**
+     * 推送镜像到harbor上
+     * @param modId 算法Id
+     * @param usrCode 用户Code
+     * @param version 版本 0.0.2
+     * @throws AlgException
+     */
+    void pullDockerImageToHarbor(String modId, String usrCode, String version) throws AlgException;
+
+    /**
+     * 获取 docker image tag
+     * @param modId
+     * @param usrCode
+     * @param version
+     * @return
+     */
+    String getDockerTag(String modId, String usrCode, String version);
 }

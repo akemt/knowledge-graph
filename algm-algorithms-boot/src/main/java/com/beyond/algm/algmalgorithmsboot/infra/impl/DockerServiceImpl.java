@@ -10,6 +10,7 @@ import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.command.BuildImageResultCallback;
+import com.github.dockerjava.core.command.PullImageResultCallback;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,10 +18,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author: qihe
@@ -41,7 +39,7 @@ public class DockerServiceImpl implements DockerService {
 
     public String bulidDockerImage(String modId, String usrCode, String version,String targetPath) throws AlgException{
         // 结果举例 192.168.1.92:9443/algmarket/erniu3_testjava:0.0.3
-        String tag = harborHost + "/" +projectName+"/" + usrCode + "_" + modId.toLowerCase() + ":" + version;
+        String tag = getDockerTag(modId,usrCode,version);
         log.debug("build image tag :{}",tag);
         Set tags = new HashSet<String>();
         tags.add(tag);
@@ -51,8 +49,14 @@ public class DockerServiceImpl implements DockerService {
     }
 
 
-    public void pullDockerImage() throws AlgException{
-
+    public void pullDockerImageToHarbor(String modId, String usrCode, String version) throws AlgException{
+        String tag = getDockerTag(modId,usrCode,version);
+        try{
+            dockerClient.pullImageCmd(tag).exec(new PullImageResultCallback()).awaitSuccess();
+        }catch (Exception e){
+            log.error("推送镜像失败:",e);
+            new AlgException("BEYOND.ALG.MODILE.PUBLISH.0000001", Arrays.asList(""));
+        }
     }
 
     public void makeDockerfile(String active,String lanName,String targetPath,String jarFileName) throws AlgException{
@@ -76,5 +80,9 @@ public class DockerServiceImpl implements DockerService {
            } catch (Exception e) {
             throw new AlgException(e);
         }
+    }
+
+    public String getDockerTag(String modId, String usrCode, String version){
+        return harborHost + "/" +projectName+"/" + usrCode + "_" + modId.toLowerCase() + ":" + version;
     }
 }

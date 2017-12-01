@@ -202,6 +202,9 @@ public class ModuleController extends BaseController {
      */
     @RequestMapping(value = "/{usrCode}/{modId}/publish", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode,String verMark) throws AlgException {
+        //权限验证
+        AlgUser algUser = getUserInfo();
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
         publishService.publishModule(modId,usrCode,verMark);
         return Result.successResponse();
     }

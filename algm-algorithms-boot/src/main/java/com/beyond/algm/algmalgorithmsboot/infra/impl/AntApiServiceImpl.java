@@ -80,33 +80,6 @@ public class AntApiServiceImpl implements AntApiService {
     public AlgModule findByUsrSnAndModId(String usrSn, String modId) throws AlgException{
         return algModuleMapper.selectByUsrSnAndModId(usrSn,modId);
     }
-    public boolean moduleAntZip(String path)  throws  AlgException{
-        Project project = new Project();
-        Zip zip = new Zip();
-        zip.setProject(project);
-        zip.setDestFile(new File("E:\\repo\\qihe\\TestJava2\\beyondalgo.zip"));
-        FileSet fileSet = new FileSet();
-        fileSet.setProject(project);
-        fileSet.setDir(new File(path));
-        zip.addFileset(fileSet);
-        zip.execute();
-        return true;
-    }
-
-    public boolean moduleAntClassJar(String path){
-        Project project=new Project();
-        Jar jar=new Jar();
-        jar.setProject(project);
-        jar.setDestFile(new File("E:\\repo\\qihe\\TestJava2"));
-        FileSet fileSet=new FileSet();
-        fileSet.setProject(project);
-        fileSet.setDir(new File("d:javaprjprj1bin"));
-        fileSet.setIncludes("**/*.class,**/*.properties");
-        jar.addFileset(fileSet);
-        jar.execute();
-
-        return true;
-    }
 
     public void moduleAntZip(String usrCode,String modId) throws AlgException{
         File buildFile = new File("E:/repo/erniu4/TestJavaK1/build.xml");

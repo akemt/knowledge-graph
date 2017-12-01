@@ -13,6 +13,7 @@ import com.beyond.algm.model.AlgModule;
 import com.beyond.algm.model.AlgModuleVersion;
 import com.beyond.algm.model.AlgProgramLang;
 import com.beyond.algm.model.AlgUser;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 
 @Service
+@Slf4j
 public class PublishServiceImpl implements PublishService {
 
     @Autowired
@@ -63,20 +65,25 @@ public class PublishServiceImpl implements PublishService {
         AlgModuleVersion algModuleVersion = moduleService.addVersion(usrCode, modId, verMark);
         String version = getVersionStr(algModuleVersion);
         //创建 发布包
+        log.debug("come in module init boot ...");
         initBootProject(algProgramLang.getLanName(),usrCode,modId,algModule.getModDesc(),version);
 
-        //TODO：调用mvnService编译工程
+        //调用mvnService编译工程
+        log.debug("come in module mvn package ...");
         mvnService.mvnPackageMod(usrCode,modId);
         // 制作Dockerfile
         String publishPath = pathService.getPublishPath(usrCode, modId);
         String jarFileName = usrCode + "-" + modId + "-" + version + Constant.JAR_SUFFIX;
+        log.debug("come in module docker file make ...");
         dockerService.makeDockerfile(active,algProgramLang.getLanName(),publishPath + File.separator + Constant.TARGET,jarFileName);
         //调用dockerApi封装docker镜像
+        log.debug("come in module bulid image ...");
         dockerService.bulidDockerImage(modId,usrCode,version,publishPath + File.separator + Constant.TARGET);
+        //推送到harbor上
+        log.debug("come in module pull image ...");
+        dockerService.pullDockerImageToHarbor(modId,usrCode,version);
 
-        //TODO：推送到harbor上
-
-        //TODO：启动k8s
+        //TODO：启动k8slog.info("pull docker image success,image tag is :{}",dockerService.getDockerTag(modId,usrCode,version));
     }
 
     private String getVersionStr(AlgModuleVersion algModuleVersion){
