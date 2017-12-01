@@ -37,7 +37,7 @@ public interface DockerService {
      * @param version 版本 0.0.2
      * @throws AlgException
      */
-    void pullDockerImageToHarbor(String modId, String usrCode, String version) throws AlgException;
+    void pushDockerImageToHarbor(String modId, String usrCode, String version) throws AlgException;
 
     /**
      * 获取 docker image tag

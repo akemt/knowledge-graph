@@ -80,8 +80,8 @@ public class PublishServiceImpl implements PublishService {
         log.debug("come in module bulid image ...");
         dockerService.bulidDockerImage(modId,usrCode,version,publishPath + File.separator + Constant.TARGET);
         //推送到harbor上
-        log.debug("come in module pull image ...");
-        dockerService.pullDockerImageToHarbor(modId,usrCode,version);
+        log.debug("come in module push image ...");
+        dockerService.pushDockerImageToHarbor(modId,usrCode,version);
 
         //TODO：启动k8slog.info("pull docker image success,image tag is :{}",dockerService.getDockerTag(modId,usrCode,version));
     }

@@ -3,14 +3,10 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 import com.beyond.algm.algmalgorithmsboot.infra.DockerService;
 import com.beyond.algm.algmalgorithmsboot.util.FreemarkerUtil;
 import com.beyond.algm.common.Assert;
-import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.exception.AlgException;
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.command.BuildImageResultCallback;
-import com.github.dockerjava.core.command.PullImageResultCallback;
+import com.github.dockerjava.core.command.PushImageResultCallback;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,10 +45,10 @@ public class DockerServiceImpl implements DockerService {
     }
 
 
-    public void pullDockerImageToHarbor(String modId, String usrCode, String version) throws AlgException{
+    public void pushDockerImageToHarbor(String modId, String usrCode, String version) throws AlgException{
         String tag = getDockerTag(modId,usrCode,version);
         try{
-            dockerClient.pullImageCmd(tag).exec(new PullImageResultCallback()).awaitSuccess();
+            dockerClient.pushImageCmd(tag).exec(new PushImageResultCallback()).awaitSuccess();
         }catch (Exception e){
             log.error("推送镜像失败:",e);
             new AlgException("BEYOND.ALG.MODILE.PUBLISH.0000001", Arrays.asList(""));
