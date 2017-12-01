@@ -41,7 +41,7 @@ public class AddAlgorithmControllerTest {
     //算法新增
     @Test
     public void showFile() throws Exception{
-        String result = this.mockMvc.perform(post("/addAlgorithm").contentType(MediaType.APPLICATION_JSON)
+        String result = this.mockMvc.perform(post("/module/add").contentType(MediaType.APPLICATION_JSON)
                 .param("catName","计算机视觉")
                 .param("envType","2")
                 .param("isColony","1")
