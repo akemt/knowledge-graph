@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.beyond.algm.common.StringConstant.src;
-
 @Service
 @Slf4j
 public class ModuleServiceImpl implements ModuleService {
@@ -45,7 +43,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Autowired
     private ProjectConfigEntity projectConfigEntity;
     @Autowired
-    private GitLibService gitLibService;
+    private GitLabService gitLabService;
     @Autowired
     private AlgDicMapper algDicMapper;
     @Autowired
@@ -135,7 +133,7 @@ public class ModuleServiceImpl implements ModuleService {
             gitUser.setUsrCode(algUser.getUsrCode());
             gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
             //在git上创建项目
-            gitLibService.createGitLibProject(gitUser);
+            gitLabService.createGitLabProject(gitUser);
             //在服务器本地创建项目
             initProject(algUser,algModule.getModId(),algModule.getLanSn());
             //commit and push 代码

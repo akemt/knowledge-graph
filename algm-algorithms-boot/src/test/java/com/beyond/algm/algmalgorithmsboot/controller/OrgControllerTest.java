@@ -9,9 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -21,37 +21,70 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 @SpringBootTest
 public class OrgControllerTest {
 
-	@Autowired
-	protected WebApplicationContext wac;
-	private MockMvc mockMvc;
+    @Autowired
+    protected WebApplicationContext wac;
+    private MockMvc mockMvc;
 
-	@Before
-	public void setup() throws Exception {
-		this.mockMvc = webAppContextSetup(this.wac).alwaysExpect(status().isOk()).build();
-	}
-	@Test
-	public void contextLoads() {
-	}
+    @Before
+    public void setup() throws Exception {
+        this.mockMvc = webAppContextSetup(this.wac).alwaysExpect(status().isOk()).build();
+    }
 
-	@Test
-	@Transactional
-	public void createOrgTest() throws Exception {
-		String result = this.mockMvc.perform(post("/org/create").contentType(MediaType.APPLICATION_JSON)
-				.param("usrCode", "testOrg0")
-				.param("usrName", "测试组织0")
-				.param("email", "test@qq.com")
-				.param("ownerId", "37bf2269ee4845da8e86861bbde2438a"))
-				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-		log.info(result);
-	}
+    @Test
+    public void contextLoads() {
+    }
 
-	@Test
-	@Transactional
-	public void deleteOrgTest() throws Exception {
-		String result = this.mockMvc.perform(post("/org/del").contentType(MediaType.APPLICATION_JSON)
-				.param("orgSn", "f0a18cf334f34671b0468c6b7ba72beb"))
-				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
-		log.info(result);
-	}
+    @Test
+    public void createOrgTest() throws Exception {
+        String result = this.mockMvc.perform(post("/org/create").contentType(MediaType.APPLICATION_JSON)
+                .param("usrCode", "testOrg0")
+                .param("usrName", "测试组织0")
+                .param("email", "test@qq.com")
+                .param("ownerId", "37bf2269ee4845da8e86861bbde2438a"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        log.info(result);
+    }
 
+    @Test
+    public void deleteOrgTest() throws Exception {
+        String result = this.mockMvc.perform(post("/org/del").contentType(MediaType.APPLICATION_JSON)
+                .param("orgSn", "f0a18cf334f34671b0468c6b7ba72beb"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        log.info(result);
+    }
+
+    @Test
+    public void getOrgListTest() throws Exception {
+        String result = this.mockMvc.perform(get("/org/list").contentType(MediaType.APPLICATION_JSON)
+                .param("pageNumber", "1")
+                .param("pageSize", "10"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        log.info(result);
+    }
+
+    @Test
+    public void getOrgDetailTest() throws Exception {
+        String result = this.mockMvc.perform(get("/org/detail").contentType(MediaType.APPLICATION_JSON)
+                .param("orgSn", "1ab380d8078d414f8edc4dcc33a65348"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        log.info(result);
+    }
+
+    @Test
+    public void addMemberTest() throws Exception {
+        String result = this.mockMvc.perform(post("/org/addMember").contentType(MediaType.APPLICATION_JSON)
+                .param("orgSn", "1ab380d8078d414f8edc4dcc33a65348")
+                .param("memberSn", "64bd0e5ee1a6409f97d12c271bb8fa68"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        log.info(result);
+    }
+
+    @Test
+    public void removeMemberTest() throws Exception {
+        String result = this.mockMvc.perform(post("/org/removeMember").contentType(MediaType.APPLICATION_JSON)
+                .param("orgSn", "1ab380d8078d414f8edc4dcc33a65348")
+                .param("memberSn", "64bd0e5ee1a6409f97d12c271bb8fa68"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        log.info(result);
+    }
 }

@@ -6,14 +6,15 @@ import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.OrgVo;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -33,8 +34,7 @@ public class OrgController extends BaseController {
     @ResponseBody
     public Result<AlgUser> createOrg(AlgUser org) throws AlgException {
         log.info("创建组织：组织账户名:{},组织全名:{},用户ID:{}", org.getUsrCode(), org.getUsrName(), org.getOwnerId());
-        AlgUser algUser = getUserInfo();
-        org = orgService.createOrg(org, algUser.getUsrCode(), algUser.getPasswd());
+        org = orgService.createOrg(org, getUserInfo());
         return Result.ok(org);
     }
 
@@ -52,15 +52,28 @@ public class OrgController extends BaseController {
     }
 
     /**
-     * 根据用户串号获取
-     * @param usrSn 用户串号
+     * 获取当前登录用户组织列表
+     *
      * @return 组织列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public Result<List<OrgVo>> getOrgList(String usrSn) throws AlgException {
-        List<OrgVo> orgList = orgService.getOrgList(usrSn);
+    public Result<PageInfo<OrgVo>> getOrgList(@PageableDefault Pageable pageable) throws AlgException {
+        AlgUser currentUser = getUserInfo();
+        PageInfo<OrgVo> orgList = orgService.getOrgList(currentUser.getUsrSn(), pageable);
         return Result.ok(orgList);
+    }
+
+    /**
+     * 根据组织串号获取组织详情
+     *
+     * @return 组织详情
+     */
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    @ResponseBody
+    public Result<OrgVo> getOrgDetail(String orgSn) throws AlgException {
+        OrgVo org = orgService.getOrgDetail(orgSn);
+        return Result.ok(org);
     }
 
     /**
@@ -70,8 +83,24 @@ public class OrgController extends BaseController {
      * @param memberSn 添加进组织的用户串号
      * @return 是否成功
      */
+    @RequestMapping(value = "/addMember", method = RequestMethod.POST)
+    @ResponseBody
     public Result<Boolean> addMember(String orgSn, String memberSn) throws AlgException {
         orgService.addMember(orgSn, memberSn);
+        return Result.ok(true);
+    }
+
+    /**
+     * 将用户从组织中移除
+     *
+     * @param orgSn    组织串号
+     * @param memberSn 从组织中移除的用户串号
+     * @return 是否成功
+     */
+    @RequestMapping(value = "/removeMember", method = RequestMethod.POST)
+    @ResponseBody
+    public Result<Boolean> removeMember(String orgSn, String memberSn) throws AlgException {
+        orgService.removeMember(orgSn, memberSn);
         return Result.ok(true);
     }
 }
