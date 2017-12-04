@@ -18,7 +18,7 @@ public class GitUser {
     private String email;
     // 项目名称
     private String projectName;
-    // gitlib 路径地址
+    // gitlab 路径地址
     private String projectRepoURI;
     // 文件路径
     private String filePath;
