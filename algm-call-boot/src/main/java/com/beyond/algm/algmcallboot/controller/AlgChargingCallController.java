@@ -13,7 +13,7 @@ import java.util.Date;
 
 @RestController
 @Slf4j
-@RequestMapping("/algo")
+@RequestMapping
 public class AlgChargingCallController {
 
     @Autowired
@@ -24,7 +24,7 @@ public class AlgChargingCallController {
      * @Description: API调用计费
      * @date ：9:30 2017/11/29
      */
-    @RequestMapping(value = "/{usrCode}/{modId}/{version}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/{usrCode}/{modId}/{version:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result algChargingCall(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId,
                                   @PathVariable("version") String version, String keyValue) throws AlgException{
         AlgResult algResult = algChargingCallService.addChargingCall(usrCode,modId,version,keyValue);
