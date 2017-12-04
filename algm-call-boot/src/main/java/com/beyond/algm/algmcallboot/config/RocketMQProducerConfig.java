@@ -22,7 +22,6 @@ public class RocketMQProducerConfig {
     private int maxMessageSize ;
     @Value("${rocketmq.producer.sendMsgTimeout}")
     private int sendMsgTimeout ;
-
     @Bean
     public DefaultMQProducer getRocketMQProducer() throws AlgException {
         if (Assert.isEmpty(this.groupName)) {
@@ -37,7 +36,7 @@ public class RocketMQProducerConfig {
         DefaultMQProducer producer;
         producer = new DefaultMQProducer(this.groupName);
         producer.setNamesrvAddr(this.namesrvAddr);
-        producer.setInstanceName(instanceName);
+        producer.setInstanceName(this.instanceName);
         producer.setMaxMessageSize(this.maxMessageSize);
         producer.setSendMsgTimeout(this.sendMsgTimeout);
         try {
