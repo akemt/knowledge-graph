@@ -1,15 +1,17 @@
 package com.beyond.algm.algmalgorithmsboot.adapter;
 
 import com.beyond.algm.algmalgorithmsboot.adapter.infra.PublishAdapter;
-import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
-import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.PublishConfigModel;
 import com.beyond.algm.algmalgorithmsboot.util.FreemarkerUtil;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.FileUtil;
+import com.beyond.algm.constant.Constant;
 import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.tools.ant.*;
+import org.apache.tools.ant.taskdefs.Expand;
+import org.apache.tools.ant.taskdefs.Zip;
+import org.apache.tools.ant.types.FileSet;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
@@ -25,7 +27,7 @@ import java.util.Map;
 public class JavaPublishAdapter implements PublishAdapter {
 
     @Override
-    public void initBootProject(String userCode, String projectName, String projectDescription, String algoVersion, PublishConfigModel publishConfigModel, String active) throws AlgException {
+    public void initBootProject(String userCode, String projectName, String projectDescription, String algoVersion, PublishConfigModel publishConfigModel, String active,String modPath,String publishPath) throws AlgException {
 
         //TODO：先判断有没有项目，项目下有没有压缩包
 
@@ -77,7 +79,7 @@ public class JavaPublishAdapter implements PublishAdapter {
             String testJavaPath = testPath + File.separator + "java";
             FileUtil.createDir(testJavaPath);
 
-            String mainPath = projectPath + File.separator + "main";
+            String mainPath = srcPath + File.separator + "main";
             FileUtil.createDir(mainPath);
             String mainResourcePath = mainPath + File.separator + "resources";
             FileUtil.createDir(mainResourcePath);
@@ -98,13 +100,65 @@ public class JavaPublishAdapter implements PublishAdapter {
         } catch (Exception e) {
             throw new AlgException(e);
         }
+        //生成jar包到dist文件夹
+        makeDistJar(modPath,publishConfigModel.getPackageName());
+        //将项目中的zip压缩包直接解压缩到dist文件夹下
+        unzipPublishMod(modPath + File.separator + publishConfigModel.getPackageName() + Constant.ZIP_SUFFIX ,publishPath + File.separator + publishConfigModel.getDistFolder());
+    }
 
-        //TODO：将项目中的zip压缩包直接解压缩到dist文件夹下
 
-        //TODO：调用mvnService编译工程
 
-        //TODO：调用dockerApi封装docker镜像，并推送到harbor上
 
-        //TODO：启动k8s
+    private void makeDistJar(String path,String packageName) throws AlgException{
+        File buildFile = new File(path + File.separator + Constant.map.get("Java"));
+        Project project = new Project();
+        DefaultLogger consoleLogger = new DefaultLogger();
+        consoleLogger.setErrorPrintStream(System.err);
+        consoleLogger.setOutputPrintStream(System.out);
+        consoleLogger.setMessageOutputLevel(Project.MSG_INFO);
+        project.addBuildListener(consoleLogger);
+
+        try {
+            project.fireBuildStarted();  //项目开始构建
+            project.init();
+
+            ProjectHelper helper = ProjectHelper.getProjectHelper();
+            helper.parse(project, buildFile);
+            Task task = project.getTargets().get("compile").getTasks()[1];
+            task.getRuntimeConfigurableWrapper().setAttribute("fork","true");
+
+            project.executeTarget("stage");
+            File zipFile = new File(path + File.separator + packageName + Constant.ZIP_SUFFIX);
+            if(zipFile.exists()){
+                zipFile.delete();
+            }
+            Zip zip = new Zip();
+            zip.setProject(project);
+            zip.setDestFile(zipFile);
+            FileSet fileSet = new FileSet();
+            fileSet.setProject(project);
+            fileSet.setDir(new File(path + File.separator + "dist"));
+            zip.addFileset(fileSet);
+            zip.execute();
+
+            project.executeTarget("clean");
+
+            project.fireBuildFinished(null);  //构建结束
+
+        } catch (BuildException e) {
+            log.error("构建错误", e);
+            project.fireBuildFinished(e);  //构建抛出异常
+            throw new AlgException(e);
+        }
+    }
+
+    private void unzipPublishMod(String zipPath ,String publishDistPath){
+        Project project=new Project();
+        Expand expand = new Expand();
+        expand.setProject(project);
+        expand.setSrc(new File(zipPath));
+        expand.setOverwrite(true);
+        expand.setDest(new File(publishDistPath));
+        expand.execute();
     }
 }

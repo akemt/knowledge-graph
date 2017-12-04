@@ -18,8 +18,10 @@ public class OrgVo extends AlgUser {
     private BigDecimal cashBal;
     // 收益
     private BigDecimal earnBal;
-    // 创建人
-    private AlgUser owner;
+    // 创建人用户编码
+    private String ownerUsrCode;
+    // 创建人中文名称
+    private String ownerUsrName;
     // 算法集合
     private List<AlgModuleListVo> moduleList;
     // 组织下用户集合

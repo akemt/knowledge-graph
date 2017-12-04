@@ -2,6 +2,7 @@ package com.beyond.algm.mapper;
 
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.OrgVo;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 
@@ -37,4 +38,18 @@ public interface AlgUserMapper {
      * @param orgSn 组织串号
      */
     OrgVo selectOrgVoByPrimaryKey(String orgSn);
+
+    /**
+     * 获取当前用户所在组织列表
+     *
+     * @param usrSn 当前用户串号
+     */
+    Page<OrgVo> selectOrgVoListByUsrSn(String usrSn);
+
+    /**
+     * 获取组织下成员列表
+     *
+     * @param orgSn 组织串号
+     */
+    List<AlgUser> selectOrgMemberList(String orgSn);
 }

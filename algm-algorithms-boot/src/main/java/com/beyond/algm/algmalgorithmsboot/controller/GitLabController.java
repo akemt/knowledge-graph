@@ -1,12 +1,10 @@
 package com.beyond.algm.algmalgorithmsboot.controller;
 
+import com.beyond.algm.algmalgorithmsboot.infra.GitLabService;
+import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.common.ResultEnum;
-import com.beyond.algm.algmalgorithmsboot.infra.BuildAntProjectService;
-
-import com.beyond.algm.algmalgorithmsboot.infra.GitLibService;
-import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
 import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.gitlab.api.models.GitlabProject;
@@ -22,34 +20,32 @@ import java.io.File;
 
 /**
  * @author ：zhangchuanzhi
- * @Description:gitlib操作
+ * @Description:gitlab操作
  * @date ：8:51 2017/9/28
  */
 @Slf4j
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("/git")
-public class GitLibController {
+public class GitLabController {
     @Autowired
-    private GitLibService gitLibService;
+    private GitLabService gitLabService;
     @Autowired
     private JGitService jGitService;
-    @Autowired
-    private BuildAntProjectService buildAntProjectService;
 
     /**
      * @author ：zhangchuanzhi
-     * @Description:实现gitlib上创建用户
+     * @Description:实现gitlab上创建用户
      * @param：User
      * @Modify By :zhangchuanzhi
      * @date ：9:00 2017/9/28
      */
-    @RequestMapping(value = "/addGitLibUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/addGitLabUser", method = RequestMethod.POST)
     public @ResponseBody
-    Result addGitLibUser(GitUser gitUser) {
+    Result addGitLabUser(GitUser gitUser) {
         log.info("用户名：{}用户全称：{} 用户密码：{} 用户邮箱：{}", gitUser.getUsername(), gitUser.getFullName(), gitUser.getPassword(), gitUser.getEmail());
         try {
-            GitlabUser gitlabUser = gitLibService.addGitLibUser(gitUser);
+            GitlabUser gitlabUser = gitLabService.addGitLabUser(gitUser);
             if (gitlabUser != null) {
                 return Result.successResponse();
             }
@@ -62,7 +58,7 @@ public class GitLibController {
 
     /**
      * @author ：zhangchuanzhi
-     * @Description:在gitlib上创建项目
+     * @Description:在gitlab上创建项目
      * @param：GitUser
      * @Modify By :zhangchuanzhi
      * @date ：9:31 2017/9/28
@@ -72,7 +68,7 @@ public class GitLibController {
     Result createGitLibProject(GitUser gitUser) {
         log.info("用户名：{} 用户密码：{} 项目名称：{}", gitUser.getUsername(), gitUser.getPassword(), gitUser.getProjectName());
         try {
-            GitlabProject gitlabProject = gitLibService.createGitLibProject(gitUser);
+            GitlabProject gitlabProject = gitLabService.createGitLabProject(gitUser);
             if (gitlabProject != null) {
                 return Result.successResponse();
             }
@@ -156,42 +152,4 @@ public class GitLibController {
         }
         return Result.successResponse();
     }
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:ant项目进行编译打包同时解压到指定目录并且代码上传git上
-     * @param：User
-     * @Modify By :zhangchuanzhi
-     * @date ：13:12 2017/9/28
-     */
-    @RequestMapping(value = "/buildProject", method = RequestMethod.POST)
-    public @ResponseBody
-    Result buildAndUpLoadProject(GitUser gitUser) {
-        try {
-            buildAntProjectService.buildAndUpLoadProject(gitUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
-        return Result.successResponse();
-    }
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:展示文件tree
-     * @param：User
-     * @Modify By :zhangchuanzhi
-     * @date ：9:33 2017/10/9
-     */
-/*    @RequestMapping(value="/showFileTree", method=RequestMethod.POST)
-    public @ResponseBody Result showFileTree(String path){
-        logger.info("文件tree路径：{}",path);
-        try {
-            List<FileDir> FileDirTree= fileViewService.showFileTree(path);
-            return  Result.ok(FileDirTree);
-
-        } catch (Exception e) {
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
-    }*/
 }

@@ -1,14 +1,14 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
+import com.beyond.algm.algmalgorithmsboot.infra.PathService;
 import com.beyond.algm.algmalgorithmsboot.infra.ShowProjectFileService;
-import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
-import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigModel;
 import com.beyond.algm.common.FileNode;
 import com.beyond.algm.common.FileNodes;
 import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,26 +17,14 @@ import java.util.List;
 @Slf4j
 public class ShowProjectFileServiceImpl implements ShowProjectFileService{
     @Autowired
-    private GitConfigModel gitConfigModel;
-    @Autowired
-    private ProjectConfigModel projectConfigModel;
+    private PathService pathService;
 
-    public String getModuleBasePath(String usrCode, String modId) throws AlgException {
-        //项目名称初始化Tree
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(gitConfigModel.getLocalBasePath());
-        stringBuilder.append(File.separator);
-        stringBuilder.append(usrCode);
-        stringBuilder.append(File.separator);
-        stringBuilder.append(modId);
-        return stringBuilder.toString();
-    }
     @Override
     public FileNodes ShowProjectFile(String currentPath,String usrCode,String modId) throws AlgException{
 
         log.info("ShowProjectFile currentPath :{}",currentPath);
         // 获取用户下项目根路径
-        String splitPath = getModuleBasePath(usrCode,modId);
+        String splitPath = pathService.getModuleBasePath(usrCode,modId);
         //转换标注路径
         File file = new File(currentPath);
         currentPath = file.getPath();

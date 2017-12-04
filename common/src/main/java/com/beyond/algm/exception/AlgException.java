@@ -3,6 +3,8 @@ package com.beyond.algm.exception;
 import com.beyond.algm.constant.Constant;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.List;
+
 public class AlgException extends Exception {
 
     public AlgException(String message) {
@@ -14,6 +16,14 @@ public class AlgException extends Exception {
      * @param params  占位符使用的参数
      */
     public AlgException(String message, Object[] params) {
+        super(message + Constant.SCRIPT_DELIMIT + toJson(params));
+    }
+
+    /**
+     * @param message 错误信息/错误编码
+     * @param params  占位符使用的参数
+     */
+    public AlgException(String message, List<String> params) {
         super(message + Constant.SCRIPT_DELIMIT + toJson(params));
     }
 

@@ -22,7 +22,7 @@ public class DockerServiceImplTest {
     private DockerService dockerService;
     @Test
     public void makeDockerImage() throws Exception {
-        dockerService.makeDockerImage();
+        dockerService.bulidDockerImage("TestJava4","erniu4","0.0.1","");
     }
 
 }

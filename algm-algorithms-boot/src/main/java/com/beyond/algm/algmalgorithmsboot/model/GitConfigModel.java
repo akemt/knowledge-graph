@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix="gitlib")
+@ConfigurationProperties(prefix="gitlab")
 @Data
 public class GitConfigModel {
     private String baseUrl;

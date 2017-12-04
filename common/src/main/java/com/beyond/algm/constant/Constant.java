@@ -15,6 +15,18 @@ public class Constant {
 
     public static final int FILE_READ_SIZE = 8192;
 
+    //java发布ant构建生成zip文件的后缀
+    public static final String ZIP_SUFFIX = ".zip";
+
+    //java jar 包后缀
+    public static final String JAR_SUFFIX = ".jar";
+
+    //java发布ant构建生成zip文件的后缀
+    public static final String POM_XML = "pom.xml";
+
+    //maven 打包后生成的target目录
+    public static final String TARGET = "target";
+
     public final static Map map = new HashMap();
     static {
         map.put("Java", "build.xml");

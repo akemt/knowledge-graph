@@ -16,8 +16,6 @@ public interface ModuleService {
 
     AlgModule findByUsrSnAndModId(String usrSn,String modId) throws AlgException;
 
-    String getModuleMainFilePath(String usrCode,String modId,String lanSn) throws AlgException;
-
     /**
      *
      * @param usrCode
@@ -61,16 +59,6 @@ public interface ModuleService {
      * 分类接口
      */
     List<AlgAlgoCategory> category() throws AlgException;
-
-    /**
-     * 算法发布统一入口
-     * @param modId 算法英文名称
-     * @param usrCode 用户英文名称
-     * @param verMark H,L,M 对应高、中、低
-     * @throws AlgException
-     */
-    void publishModule(String modId,String usrCode,String verMark) throws AlgException;
-
 
     /**
      * @author ：lindewei

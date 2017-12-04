@@ -17,6 +17,8 @@
   </resultMap>
 
   <resultMap id="OrgVoMap" type="com.beyond.algm.vo.OrgVo" extends="BaseResultMap">
+    <result column="owner_usr_name" property="ownerUsrName" jdbcType="VARCHAR" />
+    <result column="owner_usr_code" property="ownerUsrCode" jdbcType="VARCHAR" />
     <result column="mod_call_cnt" property="modCallCnt" jdbcType="BIGINT" />
     <result column="cash_bal" property="cashBal" jdbcType="BIGINT" />
     <result column="earn_bal" property="earnBal" jdbcType="BIGINT" />
@@ -133,12 +135,27 @@
         </where>
     </sql>
 
+    <!-- 获取当前用户所在组织列表，积分和收益暂时为0 -->
+    <select id="selectOrgVoListByUsrSn" resultMap="OrgVoMap" parameterType="java.lang.String" >
+        select org.usr_sn, org.owner_id, org.usr_name, org.usr_code, org.usr_url, org.is_org, org.email, org.passwd, org.telephone, org.need_notify,
+        org.create_date, org.update_date, '0' as cash_bal, '0' as earn_bal, usr.usr_code as owner_usr_code, usr.usr_name as owner_usr_name
+        from alg_user org left join alg_user usr on org.owner_id = usr.usr_sn
+        where org.usr_sn in (select r.org_sn from alg_r_user_org_invite r where r.usr_sn = #{usrSn,jdbcType=VARCHAR})
+    </select>
+
     <!-- 获取组织详情，积分和收益暂时为0 -->
     <select id="selectOrgVoByPrimaryKey" resultMap="OrgVoMap" parameterType="java.lang.String" >
-        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
-        create_date, update_date, '0' as cash_bal, '0' as earn_bal
-        from alg_user
-        where usr_sn = #{usrSn,jdbcType=VARCHAR}
+        select org.usr_sn, org.owner_id, org.usr_name, org.usr_code, org.usr_url, org.is_org, org.email, org.passwd, org.telephone, org.need_notify,
+          org.create_date, org.update_date, '0' as cash_bal, '0' as earn_bal, usr.usr_code as owner_usr_code, usr.usr_name as owner_usr_name
+        from alg_user org left join alg_user usr on org.owner_id = usr.usr_sn
+        where org.usr_sn = #{orgSn,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 获取组织成员列表 -->
+    <select id="selectOrgMemberList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select u.usr_sn, u.owner_id, u.usr_name, u.usr_code, u.usr_url, u.is_org, u.email, u.passwd, u.telephone, u.need_notify, u.create_date, u.update_date
+        from alg_user u
+        where u.usr_sn in (select r.usr_sn from alg_r_user_org_invite r where r.org_sn = #{orgSn,jdbcType=VARCHAR})
     </select>
 
 </mapper>

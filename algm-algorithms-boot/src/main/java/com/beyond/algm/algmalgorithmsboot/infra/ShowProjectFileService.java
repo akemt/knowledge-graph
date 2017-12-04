@@ -14,12 +14,5 @@ public interface ShowProjectFileService {
      */
     FileNodes ShowProjectFile(String currentPath, String usrCode, String modId) throws AlgException;
 
-    /**
-     * 获取当前用户项目为modId的服务器项目根路径
-     * @param usrCode
-     * @param modId
-     * @return
-     * @throws Exception
-     */
-    String getModuleBasePath(String usrCode, String modId) throws AlgException ;
+
 }

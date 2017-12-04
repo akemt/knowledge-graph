@@ -1,7 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
-import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.algmalgorithmsboot.infra.AuthCodeService;
+import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgAuthCodeDomainMapper;
 import com.beyond.algm.mapper.AlgAuthCodeMapper;
@@ -28,7 +28,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public void generateKey(AlgAuthCode algAuthCode,String[] addUrl) {
+    public void generateKey(AlgAuthCode algAuthCode, String[] addUrl) {
         //主键插入
         String acdSn = UUIDUtil.createUUID();
         algAuthCode.setAcdSn(acdSn);
@@ -49,17 +49,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
         algAuthCodeDomainMapper.insert(algAuthCodeDomainDefault);*/
 
         //插入全部允许调用算法Url的路径
-        if(addUrl != null){
-            for (String anAddUrl : addUrl) {
-                AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
-                String addSn = UUIDUtil.createUUID();
-                algAuthCodeDomain.setAddSn(addSn);
-                algAuthCodeDomain.setAcdSn(algAuthCode.getAcdSn());
-                algAuthCodeDomain.setAddUrl(anAddUrl);
-                //Result resultDomain = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomain);
-                algAuthCodeDomainMapper.insert(algAuthCodeDomain);
-            }
-        }
+        addUrl(algAuthCode, addUrl);
     }
 
     @Override
@@ -68,8 +58,7 @@ public class AuthCodeServiceImpl implements AuthCodeService {
         algAuthCodeMapper.deleteByPrimaryKey(acdSn);
         //List<AlgAuthCodeDomain> resultAuthDomain = authCodeDomainService.listAcdSnUrl(acdSn);
         List<AlgAuthCodeDomain> resultAuthDomain = algAuthCodeDomainMapper.listAcdSnUrl(acdSn);
-        if (resultAuthDomain != null)
-        {   //删除authCodeDomain表中内容
+        if (resultAuthDomain != null) {   //删除authCodeDomain表中内容
             //Result result = authCodeDomainService.deleteByAcdSn(acdSn);
             algAuthCodeDomainMapper.deleteByAcdSn(acdSn);
         }
@@ -77,9 +66,9 @@ public class AuthCodeServiceImpl implements AuthCodeService {
 
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public void updateAuthCode(AlgAuthCode algAuthCode,String[] addUrl) {
+    public void updateAuthCode(AlgAuthCode algAuthCode, String[] addUrl) {
         //首先更新AuthCode表
-        algAuthCodeMapper.updateByPrimaryKey(algAuthCode);
+        algAuthCodeMapper.updateByPrimaryKeySelective(algAuthCode);
 
         //更新authcodeDomain表之前先将表中这个key下Url全部删除
         //authCodeDomainService.deleteByAcdSn(algAuthCode.getAcdSn());
@@ -97,22 +86,26 @@ public class AuthCodeServiceImpl implements AuthCodeService {
             return Result.failureResponse();
         }*/
         //插入传入自定义的Url
-        if(addUrl != null){
+        addUrl(algAuthCode, addUrl);
+    }
+
+    @Override
+    public List<AlgAuthCode> listUserAuthCode(String usrSn) {
+        List<AlgAuthCode> userAllAuthCode = algAuthCodeMapper.selectByUsrSnKey(usrSn);
+        return userAllAuthCode;
+    }
+
+    private void addUrl(AlgAuthCode algAuthCode, String[] addUrl) {
+        if (addUrl != null) {
             for (String anAddUrl : addUrl) {
                 AlgAuthCodeDomain algAuthCodeDomain = new AlgAuthCodeDomain();
                 String addSn = UUIDUtil.createUUID();
                 algAuthCodeDomain.setAddSn(addSn);
                 algAuthCodeDomain.setAcdSn(algAuthCode.getAcdSn());
                 algAuthCodeDomain.setAddUrl(anAddUrl);
-                //Result resultDomain = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomain);
                 algAuthCodeDomainMapper.insert(algAuthCodeDomain);
             }
         }
-    }
-    @Override
-    public List<AlgAuthCode> listUserAuthCode(String usrSn) {
-        List<AlgAuthCode> userAllAuthCode = algAuthCodeMapper.selectByUsrSnKey(usrSn);
-        return userAllAuthCode;
     }
 
 }

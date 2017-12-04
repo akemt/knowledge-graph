@@ -10,5 +10,7 @@ import com.beyond.algm.exception.AlgException;
  */
 public interface AntApiService {
 
-    void moduleAntBuild(GitUser gitUser) throws AlgException,Exception;
+    void moduleAntBuild(GitUser gitUser) throws AlgException;
+
+    void moduleAntZip(String usrCode,String modId) throws AlgException;
 }

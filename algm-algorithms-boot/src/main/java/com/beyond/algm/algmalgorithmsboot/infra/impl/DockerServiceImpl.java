@@ -1,26 +1,20 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.infra.DockerService;
+import com.beyond.algm.algmalgorithmsboot.util.FreemarkerUtil;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.exception.AlgException;
-import com.beyond.algm.model.AlgModuleVersion;
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.command.DockerCmdExecFactory;
-import com.github.dockerjava.api.model.Info;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.command.BuildImageResultCallback;
-import com.github.dockerjava.jaxrs.JerseyDockerCmdExecFactory;
+import com.github.dockerjava.core.command.PushImageResultCallback;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author: qihe
@@ -33,35 +27,58 @@ public class DockerServiceImpl implements DockerService {
     @Autowired
     private DockerClient dockerClient;
 
-    @Value("${project.packageName}")
+    @Value("${harbor.host}")
+    private String harborHost;
+
+    @Value("${harbor.projectName}")
     private String projectName;
 
-    public void makeDockerImage(String modId, String usrCode, AlgModuleVersion algModuleVersion) throws AlgException{
+    public String bulidDockerImage(String modId, String usrCode, String version,String targetPath) throws AlgException{
+        // 结果举例 192.168.1.92:9443/algmarket/erniu3_testjava:0.0.3
+        String tag = getDockerTag(modId,usrCode,version);
+        log.debug("build image tag :{}",tag);
         Set tags = new HashSet<String>();
-        String tag = projectName+"/" + usrCode + modId.toLowerCase() ;
         tags.add(tag);
-        String imageId = dockerClient.buildImageCmd(new File("/work/docker_images", "Dockerfile")).withTags(tags).withNoCache(true).exec(new BuildImageResultCallback()).awaitImageId();
-        log.debug("create image id:{}",imageId);
-        log.info("create image id:{}",imageId);
+        String imageId = dockerClient.buildImageCmd(new File(targetPath, "Dockerfile")).withTags(tags).withNoCache(true).exec(new BuildImageResultCallback()).awaitImageId();
+        log.debug("build image id:{}",imageId);
+        return imageId;
     }
 
 
-    public void pullDockerImage() throws AlgException{
-        DockerClient dockerClient = DockerClientBuilder.getInstance().build();
-        DockerClientConfig config = DefaultDockerClientConfig.createDefaultConfigBuilder()
-                //主机URL，例如tcp://localhost:2376或unix:///var/run/docker.sock
-                .withDockerHost("tcp://192.168.1.94:2375")
-                //启用/禁用TLS验证（切换http和https协议）
-                .withDockerTlsVerify(false)
-                //.withDockerCertPath("/home/user/.docker/certs")
-                //额外的docker配置文件路径
-                //.withDockerConfig("/home/user/.docker")
-                .withApiVersion("1.23")
-                /*.withRegistryUrl("http://192.168.1.94:2375/v1/")
-                .withRegistryUsername("admin")
-                .withRegistryPassword("Harbor12345")
-                .withRegistryEmail("admin@example.com")*/
-                .build();
+    public void pushDockerImageToHarbor(String modId, String usrCode, String version) throws AlgException{
+        String tag = getDockerTag(modId,usrCode,version);
+        try{
+            dockerClient.pushImageCmd(tag).exec(new PushImageResultCallback()).awaitSuccess();
+        }catch (Exception e){
+            log.error("推送镜像失败:",e);
+            new AlgException("BEYOND.ALG.MODILE.PUBLISH.0000001", Arrays.asList(""));
+        }
+    }
 
+    public void makeDockerfile(String active,String lanName,String targetPath,String jarFileName) throws AlgException{
+        // 拼装参数
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("jarFileName", jarFileName);
+        try {
+
+            String templatePath = null;
+            if (Assert.isNotEmpty(active) && active.equals("dev")) {
+                try {
+                    templatePath = "file:" + new ClassPathResource("/templates/dockerfile").getFile().getPath() + File.separator;
+                } catch (Exception e) {
+                    log.debug("调试Spring Boot发布取模板失败,错误:{}", e.getMessage());
+                }
+            } else {
+                templatePath = "jar:" + this.getClass().getClassLoader().getResource("/templates/dockerfile/").getPath();
+            }
+            // 生成pom.xml文件
+            FreemarkerUtil.createFile(templatePath, lanName+"-"+"Dockerfile.ftl", targetPath, "Dockerfile", paramMap);
+           } catch (Exception e) {
+            throw new AlgException(e);
+        }
+    }
+
+    public String getDockerTag(String modId, String usrCode, String version){
+        return harborHost + "/" +projectName+"/" + usrCode + "_" + modId.toLowerCase() + ":" + version;
     }
 }

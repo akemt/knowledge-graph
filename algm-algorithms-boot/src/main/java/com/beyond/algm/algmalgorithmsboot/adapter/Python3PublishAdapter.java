@@ -23,7 +23,7 @@ import java.util.Map;
 public class Python3PublishAdapter implements PublishAdapter {
 
     @Override
-    public void initBootProject(String userCode, String projectName, String projectDescription, String algoVersion, PublishConfigModel publishConfigModel, String active) throws AlgException {
+    public void initBootProject(String userCode, String projectName, String projectDescription, String algoVersion, PublishConfigModel publishConfigModel, String active,String modPath,String publishPath) throws AlgException {
         //TODO:Python3 Spring Boot发布实现
     }
 }
