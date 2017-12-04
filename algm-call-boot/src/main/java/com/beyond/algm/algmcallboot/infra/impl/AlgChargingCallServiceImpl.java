@@ -28,6 +28,8 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
     private AlgAccountRepository algAccountRepository;
     @Autowired
     private RocketMQServiceImpl rocketMQService;
+    @Autowired
+    private AlgAuthCodeRepository algAuthCodeRepository;
 
     /**
      * lindewei
@@ -38,6 +40,8 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
         AlgResult algResult =new AlgResult();
         //获取用户信息
         AlgUser algUser =algUserRepository.findByUsrCode(usrCode);
+        //获取调用者的串号
+        String usrSn = algAuthCodeRepository.findByAcdId(keyValue);
         //权限验证
         if(!isPower(algUser,modId,version,keyValue)){
              algResult.setResult("没有权限。");
@@ -90,9 +94,9 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
             //定义json、赋值。
             JSONObject algUserCall = new JSONObject();
             algUserCall.put("umcSn", UUIDUtil.createUUID());//调用串号
-            algUserCall.put("algSn", "2");//未知
+            algUserCall.put("algSn", UUIDUtil.createUUID());//未知
             algUserCall.put("callPayAmount", total);//调用总费用
-            algUserCall.put("callUsrSn", "");//调用用户
+            algUserCall.put("callUsrSn", usrSn);//调用用户
             algUserCall.put("duration", timeDif);//调用持续时间
             algUserCall.put("ownerUsrSn", algUser.getUsrSn());//方法拥有者
             algUserCall.put("startTime", startTime);//调用开始时间
