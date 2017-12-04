@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AlgmCallBootApplication.class)
-public class AlgUserCallServiceImplTest {
+public class AlgChargingCallServiceImplTest {
 
     @Autowired
     private AlgUserService algUserService;
