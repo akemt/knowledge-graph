@@ -18,11 +18,18 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AlgmAlgorithmsBootApplication.class)
 public class KubernetesServiceImplTest {
-    @Autowired
-    private KubernetesService kubernetesService;
+    @Test
+    public void makeK8sService() throws Exception {
+        kubernetesService.makeK8sService("TestJavaO1","erniu4","0.0.3");
+    }
+
+
     @Test
     public void makeK8sPod() throws Exception {
-        kubernetesService.makeK8sPod();
+        kubernetesService.makeK8sPod("TestJavaO1","erniu4","0.0.3");
     }
+
+    @Autowired
+    private KubernetesService kubernetesService;
 
 }

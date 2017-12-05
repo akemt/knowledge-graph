@@ -41,6 +41,8 @@ public class PublishServiceImpl implements PublishService {
     private PathService pathService;
     @Autowired
     private MvnService mvnService;
+    @Autowired
+    KubernetesService kubernetesService;
     @Value("${spring.profiles.active}")
     private String active;
 
@@ -84,6 +86,7 @@ public class PublishServiceImpl implements PublishService {
         dockerService.pushDockerImageToHarbor(modId,usrCode,version);
 
         //TODO：启动k8slog.info("pull docker image success,image tag is :{}",dockerService.getDockerTag(modId,usrCode,version));
+        kubernetesService.makeK8sPod(modId,usrCode,version);
     }
 
     private String getVersionStr(AlgModuleVersion algModuleVersion){
