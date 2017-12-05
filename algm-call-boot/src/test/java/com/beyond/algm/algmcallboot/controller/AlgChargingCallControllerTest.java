@@ -1,5 +1,6 @@
 package com.beyond.algm.algmcallboot.controller;
 
+import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -39,7 +41,7 @@ public class AlgChargingCallControllerTest {
     @Test
     public void algChargingCall() throws Exception{
 
-        String result = this.mockMvc.perform(post("/algo/lindw/TestJava/1.3.8/").contentType(MediaType.APPLICATION_JSON)
+        String result = this.mockMvc.perform(get("/lindw/TestJava/1.3.8").contentType(MediaType.APPLICATION_JSON)
                 .param("keyValue","9a98142cbff747b38461259d5638ebf2"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
