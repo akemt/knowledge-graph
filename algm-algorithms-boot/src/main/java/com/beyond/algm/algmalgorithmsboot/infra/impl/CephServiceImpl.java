@@ -5,25 +5,17 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.beyond.algm.algmalgorithmsboot.infra.CephService;
-import com.beyond.algm.algmalgorithmsboot.model.CephConfigModel;
+
 import com.beyond.algm.algmalgorithmsboot.util.CephUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgUserMapper;
 import com.beyond.algm.model.AlgUser;
-import com.ceph.rados.IoCTX;
-import com.ceph.rados.Rados;
-import com.ceph.rbd.Rbd;
-import com.ceph.rbd.RbdException;
-import com.ceph.rbd.RbdImage;
-import com.ceph.rbd.jna.RbdImageInfo;
-import com.ceph.rbd.jna.RbdSnapInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -46,8 +38,6 @@ public class CephServiceImpl implements CephService {
     private  String path;
     @Autowired
     private AlgUserMapper algUserMapper;
-    @Autowired
-    private CephConfigModel cephConfigModel;
     // 图片上传
     @Override
     public void upload(MultipartFile file, String usrCode) throws AlgException{
