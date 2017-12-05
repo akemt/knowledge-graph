@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.beyond.algm.common.StringConstant.src;
-
 @Service
 @Slf4j
 public class ModuleServiceImpl implements ModuleService {
@@ -45,7 +43,7 @@ public class ModuleServiceImpl implements ModuleService {
     @Autowired
     private ProjectConfigEntity projectConfigEntity;
     @Autowired
-    private GitLibService gitLibService;
+    private GitLabService gitLabService;
     @Autowired
     private AlgDicMapper algDicMapper;
     @Autowired
@@ -135,7 +133,7 @@ public class ModuleServiceImpl implements ModuleService {
             gitUser.setUsrCode(algUser.getUsrCode());
             gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
             //在git上创建项目
-            gitLibService.createGitLibProject(gitUser);
+            gitLabService.createGitLabProject(gitUser);
             //在服务器本地创建项目
             initProject(algUser,algModule.getModId(),algModule.getLanSn());
             //commit and push 代码
@@ -219,7 +217,7 @@ public class ModuleServiceImpl implements ModuleService {
         algorithmDetailVo.setUsrSn(algUser.getUsrSn());
         algorithmDetailVo.setModId(modId);
         //获取最新的版本
-        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(usrCode,modId);
+        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(),modId);
         AlgModuleVersion algModuleVersion = algModuleVersionMapper.queryLatestVersion(algModule.getModSn());
         log.info("获取最新的版本:current verSn: {} ", algModuleVersion.getVerSn());
         //插入新的版本号
@@ -259,13 +257,7 @@ public class ModuleServiceImpl implements ModuleService {
         //项目modId大写转换小写。
         String strModId = modId.toLowerCase();
         //校验
-        AlgModule algModule = algModuleMapper.selectIsRepeat(strModId,usrSn);
-        if(Assert.isEmpty(algModule)){
-            //有重名存在
-            return false;
-        }else {
-            //无重名存在
-            return true;
-        }
+        int count = algModuleMapper.selectIsRepeat(strModId,usrSn);
+        return count>0?true:false;
     }
 }

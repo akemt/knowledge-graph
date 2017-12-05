@@ -134,7 +134,8 @@ public class ModuleController extends BaseController {
             return Result.successResponse();
         }else {
             //有重名存在。
-            return Result.failureResponse();
+            String msg = "项目名已经存在，请重新输入！";
+            return Result.failure(msg);
         }
     }
 
@@ -202,6 +203,9 @@ public class ModuleController extends BaseController {
      */
     @RequestMapping(value = "/{usrCode}/{modId}/publish", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode,String verMark) throws AlgException {
+        //权限验证
+        AlgUser algUser = getUserInfo();
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
         publishService.publishModule(modId,usrCode,verMark);
         return Result.successResponse();
     }

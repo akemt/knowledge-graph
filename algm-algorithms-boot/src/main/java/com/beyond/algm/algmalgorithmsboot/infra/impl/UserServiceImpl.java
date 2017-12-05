@@ -6,18 +6,21 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
  * @date ：13:26 2017/9/25
  */
 
-import com.beyond.algm.algmalgorithmsboot.infra.GitLibService;
+import com.beyond.algm.algmalgorithmsboot.infra.GitLabService;
+import com.beyond.algm.algmalgorithmsboot.infra.UserService;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
-import com.beyond.algm.common.*;
+import com.beyond.algm.common.AESUtil;
+import com.beyond.algm.common.Assert;
+import com.beyond.algm.common.NumCheckUtil;
+import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgAccountMapper;
 import com.beyond.algm.mapper.AlgCashHisMapper;
 import com.beyond.algm.mapper.AlgUserMapper;
-import com.beyond.algm.model.*;
-
-import com.beyond.algm.algmalgorithmsboot.infra.UserService;
-
+import com.beyond.algm.model.AlgAccount;
+import com.beyond.algm.model.AlgCashHis;
+import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.UserAccountVo;
 import com.beyond.algm.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +28,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
 
 import java.util.Date;
 
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService {
     private AlgCashHisMapper algCashHisMapper;
 
     @Autowired
-    private GitLibService gitLibService;
+    private GitLabService gitLabService;
 /**
  * @author ：zhangchuanzhi
  * @Description:实现用户注册功能
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
             String passWord= AESUtil.encryptAES(user.getPasswd(),projectConfigEntity.getKeyAES());
             user.setPasswd(passWord);
             algUserMapper.insert(user);
-            gitLibService.addGitLibUser(gitUser);
+            gitLabService.addGitLabUser(gitUser);
 
         }
     }
