@@ -26,17 +26,26 @@ public interface OrgService {
     void deleteOrg(String orgSn) throws AlgException;
 
     /**
+     * 编辑组织
+     *
+     * @param org 组织信息
+     * @return 创建后组织对象
+     */
+    AlgUser updateOrg(AlgUser org) throws AlgException;
+
+    /**
      * 获取组织详情
      *
-     * @param orgSn 组织串号
+     * @param orgCode 组织编码
      * @return 组织详情
      */
-    OrgVo getOrgDetail(String orgSn) throws AlgException;
+    OrgVo getOrgDetail(String orgCode) throws AlgException;
 
     /**
      * 获取组织列表
      *
-     * @param usrSn 用户串号
+     * @param usrSn    用户串号
+     * @param pageable 分页信息
      * @return 组织列表
      */
     PageInfo<OrgVo> getOrgList(String usrSn, Pageable pageable);

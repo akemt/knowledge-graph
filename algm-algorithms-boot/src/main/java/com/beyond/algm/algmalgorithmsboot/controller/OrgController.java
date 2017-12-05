@@ -30,10 +30,10 @@ public class OrgController extends BaseController {
      * @param org 组织
      * @return 创建后组织对象
      */
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     @ResponseBody
     public Result<AlgUser> createOrg(AlgUser org) throws AlgException {
-        log.info("创建组织：组织账户名:{},组织全名:{},用户ID:{}", org.getUsrCode(), org.getUsrName(), org.getOwnerId());
+        log.info("创建组织：组织账户名:{},组织全名:{}", org.getUsrCode(), org.getUsrName());
         org = orgService.createOrg(org, getUserInfo());
         return Result.ok(org);
     }
@@ -44,7 +44,7 @@ public class OrgController extends BaseController {
      * @param orgSn 组织串号
      * @return 是否成功
      */
-    @RequestMapping(value = "/del", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseBody
     public Result<Boolean> deleteOrg(String orgSn) throws AlgException {
         orgService.deleteOrg(orgSn);
@@ -52,8 +52,23 @@ public class OrgController extends BaseController {
     }
 
     /**
+     * 编辑组织
+     *
+     * @param org 组织
+     * @return 创建后组织对象
+     */
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @ResponseBody
+    public Result<AlgUser> updateOrg(AlgUser org) throws AlgException {
+        log.info("编辑组织：组织账户名:{},组织全名:{}", org.getUsrCode(), org.getUsrName());
+        org = orgService.updateOrg(org);
+        return Result.ok(org);
+    }
+
+    /**
      * 获取当前登录用户组织列表
      *
+     * @param pageable 分页信息
      * @return 组织列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -67,12 +82,13 @@ public class OrgController extends BaseController {
     /**
      * 根据组织串号获取组织详情
      *
+     * @param orgCode 组织编码
      * @return 组织详情
      */
-    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     @ResponseBody
-    public Result<OrgVo> getOrgDetail(String orgSn) throws AlgException {
-        OrgVo org = orgService.getOrgDetail(orgSn);
+    public Result<OrgVo> getOrgDetail(String orgCode) throws AlgException {
+        OrgVo org = orgService.getOrgDetail(orgCode);
         return Result.ok(org);
     }
 

@@ -29,6 +29,13 @@ public interface GitLabService {
      */
     void deleteGitLabGroup(String orgCode) throws Exception;
 
+    /**
+     * 在gitlab中更新组织
+     *
+     * @param orgCode        组织编码
+     * @param orgName        组织名称
+     */
+    GitlabGroup updateGitLabGroup(String orgCode, String orgName) throws Exception;
 
     /**
      * 为组织添加新成员

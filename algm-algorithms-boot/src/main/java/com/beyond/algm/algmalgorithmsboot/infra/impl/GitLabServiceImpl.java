@@ -6,6 +6,7 @@ import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import lombok.extern.slf4j.Slf4j;
 import org.gitlab.api.GitlabAPI;
+import org.gitlab.api.http.Query;
 import org.gitlab.api.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,17 @@ public class GitLabServiceImpl implements GitLabService {
         GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitConfigModel.getPrivateToken());
         GitlabGroup gitlabGroup = gitlabAPI.getGroup(orgCode);
         gitlabAPI.deleteGroup(gitlabGroup.getId());
+    }
+
+    @Override
+    public GitlabGroup updateGitLabGroup(String orgCode, String orgName) throws Exception {
+        log.info("updateGitLabGroup方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitConfigModel.getPrivateToken());
+        GitlabGroup gitlabGroup = gitlabAPI.getGroup(orgCode);
+
+        Query query = (new Query()).append("name", orgName);
+        String tailUrl = "/groups/" + gitlabGroup.getId() + query.toString();
+        return gitlabAPI.retrieve().method("PUT").to(tailUrl, GitlabGroup.class);
     }
 
     @Override

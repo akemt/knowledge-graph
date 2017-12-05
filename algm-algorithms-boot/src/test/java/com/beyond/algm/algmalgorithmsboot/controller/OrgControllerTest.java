@@ -11,8 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -36,19 +35,29 @@ public class OrgControllerTest {
 
     @Test
     public void createOrgTest() throws Exception {
-        String result = this.mockMvc.perform(post("/org/create").contentType(MediaType.APPLICATION_JSON)
+        String result = this.mockMvc.perform(post("/org/").contentType(MediaType.APPLICATION_JSON)
                 .param("usrCode", "testOrg0")
                 .param("usrName", "测试组织0")
-                .param("email", "test@qq.com")
-                .param("ownerId", "37bf2269ee4845da8e86861bbde2438a"))
+                .param("email", "test@qq.com"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         log.info(result);
     }
 
     @Test
     public void deleteOrgTest() throws Exception {
-        String result = this.mockMvc.perform(post("/org/del").contentType(MediaType.APPLICATION_JSON)
+        String result = this.mockMvc.perform(delete("/org/").contentType(MediaType.APPLICATION_JSON)
                 .param("orgSn", "f0a18cf334f34671b0468c6b7ba72beb"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        log.info(result);
+    }
+
+    @Test
+    public void updateOrgTest() throws Exception {
+        String result = this.mockMvc.perform(put("/org/").contentType(MediaType.APPLICATION_JSON)
+                .param("usrCode", "testOrg0")
+                .param("usrName", "测试组织00")
+                .param("email", "test@qq.com")
+                .param("usrUrl", "www.baidu.com"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         log.info(result);
     }
@@ -64,8 +73,8 @@ public class OrgControllerTest {
 
     @Test
     public void getOrgDetailTest() throws Exception {
-        String result = this.mockMvc.perform(get("/org/detail").contentType(MediaType.APPLICATION_JSON)
-                .param("orgSn", "1ab380d8078d414f8edc4dcc33a65348"))
+        String result = this.mockMvc.perform(get("/org/").contentType(MediaType.APPLICATION_JSON)
+                .param("orgCode", "testOrg2"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         log.info(result);
     }

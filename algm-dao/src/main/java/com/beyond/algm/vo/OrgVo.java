@@ -26,4 +26,6 @@ public class OrgVo extends AlgUser {
     private List<AlgModuleListVo> moduleList;
     // 组织下用户集合
     private List<AlgUser> memberList;
+    // 详情页url
+
 }

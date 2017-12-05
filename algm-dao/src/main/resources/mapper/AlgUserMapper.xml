@@ -138,17 +138,18 @@
     <!-- 获取当前用户所在组织列表，积分和收益暂时为0 -->
     <select id="selectOrgVoListByUsrSn" resultMap="OrgVoMap" parameterType="java.lang.String" >
         select org.usr_sn, org.owner_id, org.usr_name, org.usr_code, org.usr_url, org.is_org, org.email, org.passwd, org.telephone, org.need_notify,
-        org.create_date, org.update_date, '0' as cash_bal, '0' as earn_bal, usr.usr_code as owner_usr_code, usr.usr_name as owner_usr_name
+          org.create_date, org.update_date, '0' as cash_bal, '0' as earn_bal, usr.usr_code as owner_usr_code, usr.usr_name as owner_usr_name,
+          concat('/algo/org/', org.usr_code) as url
         from alg_user org left join alg_user usr on org.owner_id = usr.usr_sn
         where org.usr_sn in (select r.org_sn from alg_r_user_org_invite r where r.usr_sn = #{usrSn,jdbcType=VARCHAR})
     </select>
 
     <!-- 获取组织详情，积分和收益暂时为0 -->
-    <select id="selectOrgVoByPrimaryKey" resultMap="OrgVoMap" parameterType="java.lang.String" >
+    <select id="selectOrgVoByOrgCode" resultMap="OrgVoMap" parameterType="java.lang.String" >
         select org.usr_sn, org.owner_id, org.usr_name, org.usr_code, org.usr_url, org.is_org, org.email, org.passwd, org.telephone, org.need_notify,
           org.create_date, org.update_date, '0' as cash_bal, '0' as earn_bal, usr.usr_code as owner_usr_code, usr.usr_name as owner_usr_name
         from alg_user org left join alg_user usr on org.owner_id = usr.usr_sn
-        where org.usr_sn = #{orgSn,jdbcType=VARCHAR}
+        where org.usr_code = #{orgCode,jdbcType=VARCHAR}
     </select>
 
     <!-- 获取组织成员列表 -->

@@ -28,7 +28,6 @@ public class OrgServiceImplTest {
         org.setUsrCode("testOrg2");
         org.setUsrName("测试组织2");
         org.setEmail("test@qq.com");
-        org.setOwnerId("64bd0e5ee1a6409f97d12c271bb8fa68");
 
         AlgUser owner = new AlgUser();
         owner.setUsrSn("64bd0e5ee1a6409f97d12c271bb8fa68");
@@ -44,8 +43,18 @@ public class OrgServiceImplTest {
     }
 
     @Test
+    public void updateOrgTest() throws AlgException {
+        AlgUser org = new AlgUser();
+        org.setUsrCode("testOrg2");
+        org.setUsrName("测试组织2");
+        org.setEmail("test@qq.com");
+        org.setUsrUrl("www.baidu.com");
+        orgService.updateOrg(org);
+    }
+
+    @Test
     public void getOrgDetailTest() throws AlgException {
-        OrgVo orgVo = orgService.getOrgDetail("1ab380d8078d414f8edc4dcc33a65348");
+        OrgVo orgVo = orgService.getOrgDetail("testOrg2");
         System.out.println(JSONObject.toJSONString(orgVo));
     }
 

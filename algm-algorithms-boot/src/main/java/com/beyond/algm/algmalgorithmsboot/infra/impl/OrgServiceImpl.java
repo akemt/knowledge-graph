@@ -28,13 +28,13 @@ import java.util.List;
 @Service
 public class OrgServiceImpl implements OrgService {
 
-    @Autowired
+    @Autowired(required = false)
     private AlgUserMapper algUserMapper;
-    @Autowired
+    @Autowired(required = false)
     private AlgRUserOrgInviteMapper algRUserOrgInviteMapper;
     @Autowired
     private GitLabService gitLabService;
-    @Autowired
+    @Autowired(required = false)
     private AlgModuleMapper algModuleMapper;
 
     @Override
@@ -99,10 +99,27 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public OrgVo getOrgDetail(String orgSn) throws AlgException {
-        OrgVo orgVo = algUserMapper.selectOrgVoByPrimaryKey(orgSn);
+    @Transactional(rollbackFor = AlgException.class)
+    public AlgUser updateOrg(AlgUser org) throws AlgException {
+        // 用户表中更新组织记录
+        org.setUpdateDate(new Date());
+        algUserMapper.update(org);
+
+        // 在gitlab中创建组织
+        try {
+            gitLabService.updateGitLabGroup(org.getUsrCode(), org.getUsrName());
+        } catch (Exception e) {
+            log.error("gitlab更新组织失败.", e);
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000002", new String[]{"更新组织", org.getUsrCode()}, e);
+        }
+        return org;
+    }
+
+    @Override
+    public OrgVo getOrgDetail(String orgCode) throws AlgException {
+        OrgVo orgVo = algUserMapper.selectOrgVoByOrgCode(orgCode);
         if (orgVo == null) {
-            log.error("gitlab获取组织详情失败，组织不存在：" + orgSn);
+            log.error("gitlab获取组织详情失败，组织不存在：" + orgCode);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"获取组织详情", "组织不存在"});
         }
 
@@ -110,7 +127,7 @@ public class OrgServiceImpl implements OrgService {
         setModuleInfo(orgVo);
 
         // 获取组织成员
-        List<AlgUser> memberList = algUserMapper.selectOrgMemberList(orgSn);
+        List<AlgUser> memberList = algUserMapper.selectOrgMemberList(orgVo.getUsrSn());
         orgVo.setMemberList(memberList);
         return orgVo;
     }

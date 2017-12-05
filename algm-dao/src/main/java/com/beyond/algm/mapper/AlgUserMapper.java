@@ -35,9 +35,9 @@ public interface AlgUserMapper {
     /**
      * 获取组织详情
      *
-     * @param orgSn 组织串号
+     * @param orgCode 组织编码
      */
-    OrgVo selectOrgVoByPrimaryKey(String orgSn);
+    OrgVo selectOrgVoByOrgCode(String orgCode);
 
     /**
      * 获取当前用户所在组织列表

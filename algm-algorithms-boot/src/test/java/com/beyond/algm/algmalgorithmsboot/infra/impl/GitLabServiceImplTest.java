@@ -52,6 +52,11 @@ public class GitLabServiceImplTest {
     }
 
     @Test
+    public void updateGitLabGroupTest() throws Exception {
+        gitLabService.updateGitLabGroup("testOrg2", "测试组织2");
+    }
+
+    @Test
     public void addGroupMemberTest() throws Exception {
         gitLabService.addGroupMember("testOrg2", "gaohaijun");
     }
