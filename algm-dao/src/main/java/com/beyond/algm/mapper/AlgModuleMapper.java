@@ -46,5 +46,5 @@ public interface AlgModuleMapper {
     /**
      *  校验算法是否有重复
      */
-    AlgModule selectIsRepeat(@Param("usrSn") String usrSn, @Param("modId")String modId);
+    int selectIsRepeat(@Param("usrSn") String usrSn, @Param("modId")String modId);
 }

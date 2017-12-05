@@ -1,5 +1,6 @@
-package com.beyond.algm.algmalgorithmsboot.controller;
+package com.beyond.algm.algmcallboot.controller;
 
+import com.sun.org.apache.bcel.internal.generic.GETFIELD;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,24 +11,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
- * @author ：Lindewei
- * @Description:算法新增
+ * @author ：lindewei
+ * @Description: API调用计费
+ * @date ：9:30 2017/11/29
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AddAlgorithmControllerTest {
+public class AlgChargingCallControllerTest {
     @Autowired
     protected WebApplicationContext wac;
     private MockMvc mockMvc;
-
-    @Autowired
-    private ModuleController moduleController;
 
     @Before
     public void setup() throws Exception {
@@ -38,21 +37,12 @@ public class AddAlgorithmControllerTest {
 
     }
 
-    //算法新增
+    //API调用计费
     @Test
-    public void showFile() throws Exception{
-        String result = this.mockMvc.perform(post("/module/add").contentType(MediaType.APPLICATION_JSON)
-                .param("catName","计算机视觉")
-                .param("envType","2")
-                .param("isColony","1")
-                .param("isOpenSrc","1")
-                .param("isTrain","1")
-                .param("lanName","Java")
-                .param("licName","Algmarket platform Licese")
-                .param("modDesc","123")
-                .param("modId","java123")
-                .param("modName","测试")
-                .param("needWeb","1"))
+    public void algChargingCall() throws Exception{
+
+        String result = this.mockMvc.perform(get("/lindw/TestJava/1.3.8").contentType(MediaType.APPLICATION_JSON)
+                .param("keyValue","9a98142cbff747b38461259d5638ebf2"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }

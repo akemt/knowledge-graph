@@ -6,7 +6,7 @@ MAINTAINER  beyond "beyond@foxmail.com"
 VOLUME /tmp
 # 创建目录并添加jar包
 RUN mkdir -p /work/server
-ADD algmarket-publish-0.0.1-SNAPSHOT.jar /work/server/app.jar
+ADD ${jarFileName} /work/server/app.jar
 
 #ENTRYPOINT表示容器运行后默认执行的命令
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/work/server/app.jar"]

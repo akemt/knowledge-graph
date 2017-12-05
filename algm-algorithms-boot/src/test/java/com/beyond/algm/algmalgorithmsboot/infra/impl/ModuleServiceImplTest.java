@@ -42,13 +42,6 @@ public class ModuleServiceImplTest {
     }
 
     @Test
-    public void getModuleMainFilePathTest() throws Exception {
-        String algModule = moduleService.getModuleMainFilePath("1","1","1");
-
-        System.out.println(algModule.toString());
-    }
-
-    @Test
     public void test() throws Exception {
 
       /*  AlgUser algModule = userService.findByUsrCode("zhang1");*/

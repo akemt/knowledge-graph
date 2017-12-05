@@ -1,7 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.AlgmAlgorithmsBootApplication;
-import com.beyond.algm.algmalgorithmsboot.infra.GitLibService;
+import com.beyond.algm.algmalgorithmsboot.infra.GitLabService;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import org.gitlab.api.models.GitlabGroup;
 import org.gitlab.api.models.GitlabProject;
@@ -15,10 +15,10 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AlgmAlgorithmsBootApplication.class)
-public class GitLibServiceImplTest {
+public class GitLabServiceImplTest {
 
     @Autowired
-    private GitLibService gitLibService;
+    private GitLabService gitLabService;
 
     @Test
     public void addGitUserAndPasswordTest() throws Exception {
@@ -28,27 +28,37 @@ public class GitLibServiceImplTest {
         gitUser.setUsername("zhang");
         gitUser.setFullName("zhang");
         gitUser.setProjectName("TestJavaZhang");
-        gitLibService.addGitLibUser(gitUser);
+        gitLabService.addGitLabUser(gitUser);
     }
 
     @Test
-    public void createGitLibProjectTest() throws Exception {
+    public void createGitLabProjectTest() throws Exception {
         GitUser gitUser=new GitUser();
         gitUser.setProjectName("TestJavaZhang");
         gitUser.setUsername("zhang");
         gitUser.setPassword("12345678");
-        GitlabProject result = gitLibService.createGitLibProject(gitUser);
+        GitlabProject result = gitLabService.createGitLabProject(gitUser);
     }
 
     @Test
-    public void createGitLibGroupTest() throws Exception {
-        GitlabGroup gitlabGroup = gitLibService.createGitLibGroup("testOrg1", "测试组织1", "qihe", "12345678");
+    public void createGitLabGroupTest() throws Exception {
+        GitlabGroup gitlabGroup = gitLabService.createGitLabGroup("testOrg1", "测试组织1", "qihe", "12345678");
         assertTrue(gitlabGroup != null);
     }
 
     @Test
-    public void deleteGitLibGroupTest() throws Exception {
-        gitLibService.deleteGitLibGroup("testOrg1");
+    public void deleteGitLabGroupTest() throws Exception {
+        gitLabService.deleteGitLabGroup("testOrg1");
+    }
+
+    @Test
+    public void addGroupMemberTest() throws Exception {
+        gitLabService.addGroupMember("testOrg2", "gaohaijun");
+    }
+
+    @Test
+    public void deleteGroupMember() throws Exception {
+        gitLabService.deleteGroupMember("testOrg2", "gaohaijun");
     }
 
 }

@@ -1,7 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.AlgmAlgorithmsBootApplication;
-import com.beyond.algm.algmalgorithmsboot.infra.DockerService;
+import com.beyond.algm.algmalgorithmsboot.infra.KubernetesService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +13,23 @@ import static org.junit.Assert.*;
 /**
  * @Author: qihe
  * @Description:
- * @Date: create in 2017/11/24 8:52
+ * @Date: create in 2017/12/1 16:20
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AlgmAlgorithmsBootApplication.class)
-public class DockerServiceImplTest {
-    @Autowired
-    private DockerService dockerService;
+public class KubernetesServiceImplTest {
     @Test
-    public void makeDockerImage() throws Exception {
-        dockerService.bulidDockerImage("TestJava4","erniu4","0.0.1","");
+    public void makeK8sService() throws Exception {
+        kubernetesService.makeK8sService("TestJavaO1","erniu4","0.0.3");
     }
+
+
+    @Test
+    public void makeK8sPod() throws Exception {
+        kubernetesService.makeK8sPod("TestJavaO1","erniu4","0.0.3");
+    }
+
+    @Autowired
+    private KubernetesService kubernetesService;
 
 }

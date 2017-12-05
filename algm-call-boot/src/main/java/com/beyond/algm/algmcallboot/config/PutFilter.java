@@ -10,5 +10,4 @@ import org.springframework.web.filter.HttpPutFormContentFilter;
  */
 @Configuration
 public class PutFilter extends HttpPutFormContentFilter {
-
 }
