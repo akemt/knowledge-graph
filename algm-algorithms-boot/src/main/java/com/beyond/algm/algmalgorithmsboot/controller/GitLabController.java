@@ -65,7 +65,7 @@ public class GitLabController {
      */
     @RequestMapping(value = "/createProject", method = RequestMethod.POST)
     public @ResponseBody
-    Result createGitLibProject(GitUser gitUser) {
+    Result createGitLabProject(GitUser gitUser) {
         log.info("用户名：{} 用户密码：{} 项目名称：{}", gitUser.getUsername(), gitUser.getPassword(), gitUser.getProjectName());
         try {
             GitlabProject gitlabProject = gitLabService.createGitLabProject(gitUser);
