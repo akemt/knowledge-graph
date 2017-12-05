@@ -62,8 +62,13 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
             return algResult;
         }
 
-        //获取算法的单价
-        Float verLoyaltyFee = algModuleVersionRepository.verLoyaltyFee(algModule.getModSn(),verCodeL1,verCodeL2,verCodeL3);
+        //获取版本信息
+        AlgModuleVersion algModuleVersion = algModuleVersionRepository.verLoyaltyFee(algModule.getModSn(),verCodeL1,verCodeL2,verCodeL3);
+
+        if("0".equals(algModuleVersion.getIsOwn())){
+            algResult.setResult("该算法不公开，不可调用。");
+            return algResult;
+        }
 
         //查询平台收费单价
         String unitPrice = algDicRepository.findByDicSn("price","price_default");
@@ -88,7 +93,7 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
         AlgAccount algAccount = algAccountRepository.findByUsrSn(algUser.getUsrSn());
 
         //计算调用总价钱
-        Float total = Float.valueOf(unitPrice).floatValue() * timeDif + verLoyaltyFee;
+        Float total = Float.valueOf(unitPrice).floatValue() * timeDif + algModuleVersion.getVerLoyaltyFee();
 
         if(algAccount.getCashBal() >= total){
             //定义json、赋值。

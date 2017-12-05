@@ -24,6 +24,8 @@ public class AlgModuleVersion {
 
     private float verLoyaltyFee;
 
+    private String isOwn;
+
     public String getVerSn() {
         return verSn;
     }
@@ -70,5 +72,13 @@ public class AlgModuleVersion {
 
     public void setVerLoyaltyFee(float verLoyaltyFee) {
         this.verLoyaltyFee = verLoyaltyFee;
+    }
+
+    public String getIsOwn() {
+        return isOwn;
+    }
+
+    public void setIsOwn(String isOwn) {
+        this.isOwn = isOwn;
     }
 }

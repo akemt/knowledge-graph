@@ -13,8 +13,8 @@ public interface AlgModuleVersionRepository extends JpaRepository<AlgModuleVersi
     public Long findByVerSnCount(@Param("modSn")String modSn, @Param("ver_code_l1") Integer ver_code_l1,
                                  @Param("ver_code_l2") Integer ver_code_l2, @Param("ver_code_l3") Integer ver_code_l3);
 
-    @Query("select t.verLoyaltyFee from AlgModuleVersion t where t.modSn = :modSn " +
+    @Query("select t from AlgModuleVersion t where t.modSn = :modSn " +
             "and t.ver_code_l1 = :ver_code_l1 and t.ver_code_l2 = :ver_code_l2 and t.ver_code_l3 = :ver_code_l3")
-    public Float verLoyaltyFee(@Param("modSn")String modSn, @Param("ver_code_l1") Integer ver_code_l1,
+    public AlgModuleVersion verLoyaltyFee(@Param("modSn")String modSn, @Param("ver_code_l1") Integer ver_code_l1,
                             @Param("ver_code_l2") Integer ver_code_l2, @Param("ver_code_l3") Integer ver_code_l3);
 }
