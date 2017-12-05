@@ -30,5 +30,4 @@ public class MvcWebConfig extends WebMvcConfigurerAdapter {
         }
         return messageSource;
     }
-
 }
