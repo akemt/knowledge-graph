@@ -17,4 +17,6 @@ public interface AlgDicMapper {
     int updateByPrimaryKey(AlgDic record);
 
     AlgDic selectKeyAll(String dicValue);
+
+    String selectDicValue(String dicCode,String dicKey);
 }

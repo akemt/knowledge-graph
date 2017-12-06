@@ -17,4 +17,6 @@ public interface AlgAccountMapper {
     AlgAccount selectAccount(String usrSn);
 
     int presentCash(String usrSn);
+
+    int updateByFreeBal(Float freeBal);
 }
