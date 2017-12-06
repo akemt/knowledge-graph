@@ -113,4 +113,22 @@
       </if>
     </where>
   </select>
+
+  <select id="checkFileName" resultType="java.lang.Integer"  parameterType="com.beyond.algm.model.AlgData"  >
+    select count(*)
+    from alg_data
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
+    and data_en_name=#{dataEnName,jdbcType=VARCHAR}
+  </select>
+
+  <update id="update" parameterType="com.beyond.algm.model.AlgData" >
+    update alg_data
+    set
+      creat_time = NOW(),
+      data_size = #{dataSize,jdbcType=VARCHAR},
+      data_addr = #{dataAddr,jdbcType=VARCHAR}
+    where data_sn = #{dataSn,jdbcType=VARCHAR}
+  </update>
+
+
 </mapper>

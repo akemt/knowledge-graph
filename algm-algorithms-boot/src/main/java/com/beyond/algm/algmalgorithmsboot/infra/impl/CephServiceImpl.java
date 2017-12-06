@@ -65,7 +65,7 @@ public class CephServiceImpl implements CephService {
             conn.deleteObject(bucket.getName(), file.getName());
             conn.putObject("image", targetFile.getName(),targetFile);
         }*/
-        // 注意之前上传图片还在
+        // 注意之前上传图片还在需要优化
         bucket=conn.createBucket(usrCode);
         conn.putObject(usrCode, cephKey,targetFile);
         conn.setObjectAcl(bucket.getName(), cephKey, CannedAccessControlList.PublicRead);
