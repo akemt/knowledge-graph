@@ -27,6 +27,16 @@ public class AlgUser {
 
     private Date updateDate;
 
+    private String privateToken;
+
+    public String getPrivateToken() {
+        return privateToken;
+    }
+
+    public void setPrivateToken(String privateToken) {
+        this.privateToken = privateToken;
+    }
+
     public String getUsrSn() {
         return usrSn;
     }
