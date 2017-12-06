@@ -1,10 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.infra;
 
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
-import org.gitlab.api.models.GitlabGroup;
-import org.gitlab.api.models.GitlabGroupMember;
-import org.gitlab.api.models.GitlabProject;
-import org.gitlab.api.models.GitlabUser;
+import org.gitlab.api.models.*;
 
 public interface GitLabService {
 
@@ -52,4 +49,13 @@ public interface GitLabService {
      * @param userCode 用户编码
      */
     void deleteGroupMember(String orgCode, String userCode) throws Exception;
+
+    /**
+     * 通过用户ID删除git用户信息
+     *
+     * @param id
+     * @throws Exception
+     */
+    void deleteUserByGitUserId(Integer id) throws Exception;
+
 }

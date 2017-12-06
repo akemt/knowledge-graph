@@ -43,7 +43,7 @@ public class GitLabController {
     @RequestMapping(value = "/addGitLabUser", method = RequestMethod.POST)
     public @ResponseBody
     Result addGitLabUser(GitUser gitUser) {
-        log.info("用户名：{}用户全称：{} 用户密码：{} 用户邮箱：{}", gitUser.getUsername(), gitUser.getFullName(), gitUser.getPassword(), gitUser.getEmail());
+        log.info("用户名：{}用户全称：{} 用户密码：{} 用户邮箱：{}", gitUser.getUsrCode(), gitUser.getFullName(), gitUser.getPassword(), gitUser.getEmail());
         try {
             GitlabUser gitlabUser = gitLabService.addGitLabUser(gitUser);
             if (gitlabUser != null) {
@@ -66,7 +66,7 @@ public class GitLabController {
     @RequestMapping(value = "/createProject", method = RequestMethod.POST)
     public @ResponseBody
     Result createGitLabProject(GitUser gitUser) {
-        log.info("用户名：{} 用户密码：{} 项目名称：{}", gitUser.getUsername(), gitUser.getPassword(), gitUser.getProjectName());
+        log.info("用户名：{} 用户密码：{} 项目名称：{}", gitUser.getUsrCode(), gitUser.getPassword(), gitUser.getProjectName());
         try {
             GitlabProject gitlabProject = gitLabService.createGitLabProject(gitUser);
             if (gitlabProject != null) {
@@ -89,7 +89,7 @@ public class GitLabController {
     @RequestMapping(value = "/cloneProject", method = RequestMethod.POST)
     public @ResponseBody
     Result gitCloneProject(GitUser gitUser) {
-        log.info("gitCloneProject方法用户名：{} 用户密码{} 项目名称：{}", gitUser.getUsername(), gitUser.getPassword(), gitUser.getProjectName());
+        log.info("gitCloneProject方法用户名：{} 用户密码{} 项目名称：{}", gitUser.getUsrCode(), gitUser.getPassword(), gitUser.getProjectName());
         try {
             jGitService.gitCloneProject(gitUser);
         } catch (Exception e) {

@@ -24,6 +24,8 @@ import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.UserAccountVo;
 import com.beyond.algm.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
+import org.gitlab.api.models.GitlabSession;
+import org.gitlab.api.models.GitlabUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,12 +78,24 @@ public class UserServiceImpl implements UserService {
             GitUser gitUser=new GitUser();
             gitUser.setPassword(user.getPasswd());
             gitUser.setFullName(user.getUsrCode());
-            gitUser.setUsername(user.getUsrCode());
+            gitUser.setUsrCode(user.getUsrCode());
             gitUser.setEmail(user.getEmail());
             String passWord= AESUtil.encryptAES(user.getPasswd(),projectConfigEntity.getKeyAES());
             user.setPasswd(passWord);
-            algUserMapper.insert(user);
-            gitLabService.addGitLabUser(gitUser);
+            //xialf 20171205 update
+            GitlabUser gitlabUser = null;
+            try {
+                gitlabUser = gitLabService.addGitLabUser(gitUser);
+                user.setPrivateToken(gitlabUser.getPrivateToken());
+                algUserMapper.insert(user);
+            } catch (Exception e) {
+                //插入数据失败，则删除gitlib中的用户
+                if(Assert.isNotNULL(gitlabUser)){
+                    gitLabService.deleteUserByGitUserId(gitlabUser.getId());
+                }
+                log.error("algUser insert false.", e.getMessage());
+                throw new AlgException("BEYOND.ALG.PLATFORM.ADDUSR.0000001", new String[]{"注册用户", user.getUsrCode(), user.getUsrCode()}, e);
+            }
 
         }
     }

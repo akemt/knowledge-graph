@@ -84,8 +84,8 @@ public class UserController  extends BaseController {
      */
     @RequestMapping(value = "/updateUserInformation", method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result updateUserInformation(AlgUser user)throws AlgException {
-        AlgUser algUser = getUserInfo();
-        user.setUsrCode(algUser.getUsrCode());
+//        AlgUser algUser = getUserInfo();
+//        user.setUsrCode(algUser.getUsrCode());
         log.info("用户全名:{},用户编码:{},用户邮箱:{},用户电话:{},用户主页{},用户是短信还是邮箱发送{},用户唯一主键", user.getUsrName(), user.getUsrCode(), user.getEmail(), user.getTelephone(), user.getUsrUrl(), user.getNeedNotify(), user.getUsrSn());
         userService.updateUserInformation(user);
         return Result.successResponse();

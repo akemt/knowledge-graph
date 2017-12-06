@@ -14,6 +14,7 @@
     <result column="need_notify" property="needNotify" jdbcType="VARCHAR" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+      <result column="private_token" property="privateToken" jdbcType="VARCHAR" />
   </resultMap>
 
   <resultMap id="OrgVoMap" type="com.beyond.algm.vo.OrgVo" extends="BaseResultMap">
@@ -32,11 +33,11 @@
     insert into alg_user (usr_sn, owner_id, usr_name, 
       usr_code, usr_url, is_org, 
       email, passwd,telephone, need_notify,
-      create_date, update_date)
+      create_date, update_date,private_token)
     values (#{usrSn,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{usrName,jdbcType=VARCHAR}, 
       #{usrCode,jdbcType=VARCHAR}, #{usrUrl,jdbcType=VARCHAR}, #{isOrg,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR}, #{needNotify,jdbcType=VARCHAR},
-      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP})
+      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP},#{privateToken,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgUser" >
     update alg_user
@@ -49,24 +50,25 @@
       passwd = #{passwd,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
       need_notify = #{needNotify,jdbcType=VARCHAR},
+      private_token = #{privateToken,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,private_token,
     create_date, update_date
     from alg_user
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,private_token,
     create_date, update_date
     from alg_user
   </select>
 
   <select id="selectUsrname" resultMap="BaseResultMap" >
-    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+    select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,private_token,
     create_date, update_date
     from alg_user
     where usr_name = #{usrName,jdbcType=VARCHAR}
@@ -99,6 +101,9 @@
             <if test="needNotify != null" >
                need_notify = #{needNotify,jdbcType=VARCHAR},
             </if>
+            <if test="privateToken != null" >
+                private_token = #{privateToken,jdbcType=VARCHAR},
+            </if>
             <if test="createDate != null" >
               create_date = #{createDate,jdbcType=TIMESTAMP},
             </if>
@@ -116,13 +121,13 @@
     </select>
 
     <select id="selectUsrCode" resultMap="BaseResultMap" >
-        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,private_token,
         create_date, update_date
         from alg_user
         where usr_code = #{usrCode,jdbcType=VARCHAR}
     </select>
     <sql id="alg_user">
-        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,
+        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,private_token,
         create_date, update_date
         from alg_user
     </sql>
@@ -137,7 +142,7 @@
 
     <!-- 获取当前用户所在组织列表，积分和收益暂时为0 -->
     <select id="selectOrgVoListByUsrSn" resultMap="OrgVoMap" parameterType="java.lang.String" >
-        select org.usr_sn, org.owner_id, org.usr_name, org.usr_code, org.usr_url, org.is_org, org.email, org.passwd, org.telephone, org.need_notify,
+        select org.usr_sn, org.owner_id, org.usr_name, org.usr_code, org.usr_url, org.is_org, org.email, org.passwd, org.telephone, org.need_notify,org.private_token,
           org.create_date, org.update_date, '0' as cash_bal, '0' as earn_bal, usr.usr_code as owner_usr_code, usr.usr_name as owner_usr_name,
           concat('/algo/org/', org.usr_code) as url
         from alg_user org left join alg_user usr on org.owner_id = usr.usr_sn
@@ -146,7 +151,7 @@
 
     <!-- 获取组织详情，积分和收益暂时为0 -->
     <select id="selectOrgVoByOrgCode" resultMap="OrgVoMap" parameterType="java.lang.String" >
-        select org.usr_sn, org.owner_id, org.usr_name, org.usr_code, org.usr_url, org.is_org, org.email, org.passwd, org.telephone, org.need_notify,
+        select org.usr_sn, org.owner_id, org.usr_name, org.usr_code, org.usr_url, org.is_org, org.email, org.passwd, org.telephone, org.need_notify,org.private_token,
           org.create_date, org.update_date, '0' as cash_bal, '0' as earn_bal, usr.usr_code as owner_usr_code, usr.usr_name as owner_usr_name
         from alg_user org left join alg_user usr on org.owner_id = usr.usr_sn
         where org.usr_code = #{orgCode,jdbcType=VARCHAR}
@@ -154,7 +159,7 @@
 
     <!-- 获取组织成员列表 -->
     <select id="selectOrgMemberList" resultMap="BaseResultMap" parameterType="java.lang.String" >
-        select u.usr_sn, u.owner_id, u.usr_name, u.usr_code, u.usr_url, u.is_org, u.email, u.passwd, u.telephone, u.need_notify, u.create_date, u.update_date
+        select u.usr_sn, u.owner_id, u.usr_name, u.usr_code, u.usr_url, u.is_org, u.email, u.passwd, u.telephone, u.need_notify,u.private_token,  u.create_date, u.update_date
         from alg_user u
         where u.usr_sn in (select r.usr_sn from alg_r_user_org_invite r where r.org_sn = #{orgSn,jdbcType=VARCHAR})
     </select>

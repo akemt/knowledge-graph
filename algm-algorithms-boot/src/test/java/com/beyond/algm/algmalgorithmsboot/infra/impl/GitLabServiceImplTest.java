@@ -3,8 +3,10 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 import com.beyond.algm.algmalgorithmsboot.AlgmAlgorithmsBootApplication;
 import com.beyond.algm.algmalgorithmsboot.infra.GitLabService;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
+import com.beyond.algm.exception.AlgException;
 import org.gitlab.api.models.GitlabGroup;
 import org.gitlab.api.models.GitlabProject;
+import org.gitlab.api.models.GitlabUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,10 @@ public class GitLabServiceImplTest {
     @Test
     public void addGitUserAndPasswordTest() throws Exception {
         GitUser gitUser = new GitUser();
-        gitUser.setEmail("qihea1163@163.com");
+        gitUser.setEmail("592427777@qq.com");
         gitUser.setPassword("12345678");
-        gitUser.setUsername("zhang");
-        gitUser.setFullName("zhang");
-        gitUser.setProjectName("TestJavaZhang");
+        gitUser.setUsrCode("xialf");
+        gitUser.setFullName("xia");
         gitLabService.addGitLabUser(gitUser);
     }
 
@@ -35,7 +36,7 @@ public class GitLabServiceImplTest {
     public void createGitLabProjectTest() throws Exception {
         GitUser gitUser=new GitUser();
         gitUser.setProjectName("TestJavaZhang");
-        gitUser.setUsername("zhang");
+        gitUser.setUsrCode("zhang");
         gitUser.setPassword("12345678");
         GitlabProject result = gitLabService.createGitLabProject(gitUser);
     }
@@ -64,6 +65,17 @@ public class GitLabServiceImplTest {
     @Test
     public void deleteGroupMember() throws Exception {
         gitLabService.deleteGroupMember("testOrg2", "gaohaijun");
+    }
+
+    @Test
+    public void  deleteUserByGitUserId() throws AlgException {
+        try {
+            gitLabService.deleteUserByGitUserId(57);
+
+        }catch ( Exception e){
+            new AlgException("BEYOND.ALG.GITLAB.DELETE.0000001");
+        }
+
     }
 
 }

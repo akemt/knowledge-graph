@@ -4,6 +4,7 @@ import com.beyond.algm.algmalgorithmsboot.infra.GitLabService;
 import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
 import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
+import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.http.Query;
@@ -21,12 +22,21 @@ public class GitLabServiceImpl implements GitLabService {
     private JGitService jGitService;
 
     @Override
-    public GitlabUser addGitLabUser(GitUser gitUser) throws Exception {
+    public GitlabUser addGitLabUser(GitUser gitUser) throws AlgException {
         log.info("addGitLabUser方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
-        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitConfigModel.getPrivateToken());
-        return gitlabAPI.createUser(gitUser.getEmail(), gitUser.getPassword(), gitUser.getUsername(), gitUser.getFullName(),
-                null, null, null, null, 100000, null,
-                null, null, false, true, true);
+        GitlabUser gitlabUser = null;
+        try {
+            GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitConfigModel.getPrivateToken());
+            gitlabUser = gitlabAPI.createUser(gitUser.getEmail(), gitUser.getPassword(), gitUser.getUsrCode(), gitUser.getFullName(),
+                    null, null, null, null, 100000, null,
+                    null, null, false, true, true);
+            GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitUser.getUsrCode(), gitUser.getPassword());
+            gitlabUser.setPrivateToken(gitlabSession.getPrivateToken());
+        }catch ( Exception e){
+            log.error(e.getMessage(),e);
+            new AlgException("BEYOND.ALG.GITLAB.ADDUSR.0000001");
+        }
+        return gitlabUser;
     }
 
     @Override
@@ -81,5 +91,18 @@ public class GitLabServiceImpl implements GitLabService {
         GitlabGroup gitlabGroup = gitlabAPI.getGroup(orgCode);
         GitlabUser gitlabUser = gitlabAPI.getUserViaSudo(userCode);
         gitlabAPI.deleteGroupMember(gitlabGroup, gitlabUser);
+    }
+
+    @Override
+    public void  deleteUserByGitUserId(Integer id) throws AlgException {
+        log.info("deleteUserByGitUserId方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitConfigModel.getPrivateToken());
+        try {
+            gitlabAPI.deleteUser(id);
+        }catch ( Exception e){
+            log.error(e.getMessage(),e);
+            new AlgException("BEYOND.ALG.GITLAB.DELETE.0000001");
+        }
+
     }
 }
