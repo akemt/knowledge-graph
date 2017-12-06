@@ -7,7 +7,9 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
  */
 
 import com.beyond.algm.algmalgorithmsboot.infra.PayCashService;
+import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.mapper.AlgAccountMapper;
 import com.beyond.algm.mapper.AlgCashTransMapper;
 
 import com.beyond.algm.model.*;
@@ -19,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -27,6 +30,8 @@ public class PayCashServiceImpl implements PayCashService {
     private final static Logger logger = LoggerFactory.getLogger(PayCashServiceImpl.class);
     @Autowired
     private AlgCashTransMapper algCashTransMapper;
+    @Autowired
+    private AlgAccountMapper algAccountMapper;
 
     /**
      * @author ：zhangchuanzhi
@@ -41,6 +46,29 @@ public class PayCashServiceImpl implements PayCashService {
         PageHelper.startPage(payRecordVo.getPage(), payRecordVo.getRows());
         List<AlgCashTrans> algCashTransList=algCashTransMapper.payRecord(payRecordVo.getUsrSn());
         return algCashTransList;
+    }
+
+    /**
+     * @author :lindw
+     * @Description:用户注册时，赠送积分
+     * @date ：11:32 2017/12/5
+     */
+    @Override
+    public int presentCash(String usrSn, float freeBal)throws AlgException{
+        //查询该用户是否在积分表存在。
+        if(algAccountMapper.presentCash(usrSn) > 0){
+            return 0;
+        }
+        //积分表对象赋值。
+        AlgAccount algAccount = new AlgAccount();
+        algAccount.setAccSn(UUIDUtil.createUUID());
+        algAccount.setUsrSn(usrSn);
+        algAccount.setFreeBal(freeBal);
+        algAccount.setFreeSetTime(new Date());
+        //往积分表插入该用户，并赠送积分。
+        logger.info("注册用户时，积分赠送，积分串号setAccSn ：{}",algAccount.getAccSn());
+        int result = algAccountMapper.insert(algAccount);
+        return result;
     }
 
     /**

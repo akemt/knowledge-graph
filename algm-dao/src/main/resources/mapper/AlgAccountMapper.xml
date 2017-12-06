@@ -45,4 +45,10 @@
     from alg_account
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </select>
+
+  <select id="presentCash" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select count(*)
+    from alg_account
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
+  </select>
 </mapper>

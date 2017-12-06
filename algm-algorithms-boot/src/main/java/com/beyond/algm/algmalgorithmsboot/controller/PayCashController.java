@@ -45,6 +45,22 @@ public class PayCashController extends BaseController {
     }
 
     /**
+     * @author ：lindw
+     * @Description:用户注册，赠送积分
+     */
+    @RequestMapping(value="/presentcash", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result payRecord(float freeBal) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        //注册新用户，赠送积分。
+        int result = payCashService.presentCash(algUser.getUsrSn(),freeBal);
+        if(result == 1){
+            return Result.successResponse();
+        }else {
+            return Result.failure("用户注册，赠送积分");
+        }
+    }
+
+    /**
      * @author ：zhangchuanzhi
      * @Description: 购买积分
      * @param：PayVo

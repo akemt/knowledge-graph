@@ -14,6 +14,7 @@ public interface AlgAccountMapper {
 
     int updateByPrimaryKey(AlgAccount record);
 
-
     AlgAccount selectAccount(String usrSn);
+
+    int presentCash(String usrSn);
 }

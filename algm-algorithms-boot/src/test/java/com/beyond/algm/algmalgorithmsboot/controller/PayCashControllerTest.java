@@ -47,4 +47,17 @@ public class PayCashControllerTest {
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
+
+
+    /**
+     * @author ：lindw
+     * @Description:用户注册，赠送积分
+     */
+    @Test
+    public void payCash() throws Exception{
+        String result = this.mockMvc.perform(post("/presentcash").contentType(MediaType.APPLICATION_JSON)
+                .param("freeBal","5.2f"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 }
