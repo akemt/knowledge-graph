@@ -3,6 +3,7 @@ package com.beyond.algm.common;
 
 
 import java.io.*;
+import java.math.BigDecimal;
 
 public class FileUtil {
 
@@ -99,4 +100,15 @@ public class FileUtil {
             fileDirList.add(fileDir);
         }
     }*/
+    /**
+     * 将文件大小格式转为MB格式
+     * @param bytes
+     * @return
+     */
+    public static float bytes2kb(long bytes) {
+        BigDecimal filesize = new BigDecimal(bytes);
+        BigDecimal megabyte = new BigDecimal(1024 * 1024);
+        float returnValue = filesize.divide(megabyte, 2, BigDecimal.ROUND_UP).floatValue();
+        return returnValue;
+    }
 }

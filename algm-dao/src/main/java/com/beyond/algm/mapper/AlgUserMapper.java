@@ -52,4 +52,18 @@ public interface AlgUserMapper {
      * @param orgSn 组织串号
      */
     List<AlgUser> selectOrgMemberList(String orgSn);
+
+    /**
+     * 获取用户剩余空间
+     *
+     * @param usrSn 当前用户串号
+     */
+    Float  selectCountSpace(String usrSn);
+    /**
+     * 更新用户占用空间
+     *
+     * @param record
+     */
+    int updateSpace(AlgUser record);
+
 }

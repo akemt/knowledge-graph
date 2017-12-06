@@ -28,4 +28,9 @@ public interface AlgDataMapper {
 
     //数据商城
     Page<AlgData> findAlgDataMall(String dataContent);
+
+    int checkFileName(AlgData data);
+
+    int update(AlgData record);
+
 }

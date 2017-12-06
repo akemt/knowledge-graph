@@ -2,8 +2,9 @@ package com.beyond.algm.algmdataboot.controller;
 
 
 import com.beyond.algm.algmdataboot.base.BaseController;
+
 import com.beyond.algm.algmdataboot.infra.DataSetService;
-import com.beyond.algm.common.Assert;
+
 import com.beyond.algm.common.Result;
 import com.beyond.algm.common.ResultEnum;
 import com.beyond.algm.exception.AlgException;
@@ -20,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +41,6 @@ public class DataSetController extends BaseController {
 
     @Autowired
     private DataSetService dataSetService;
-
     /**
      * @author ：Lindewei
      * @Description: 我的数据初始化
@@ -183,4 +184,20 @@ public class DataSetController extends BaseController {
             return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
         }
     }*/
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 数据文件增加
+     */
+    @RequestMapping(value = "/dataModuleUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result dataFileUpload(MultipartFile file,String dataSetName ,String dataUuid) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        AlgData algData =new AlgData();
+        algData.setDataEnName(file.getOriginalFilename());
+        algData.setUsrSn(algUser.getUsrSn());
+        // 留存权限接口
+        int count =dataSetService.checkFileName(algData);
+        dataSetService.uploadDateSet(file,algUser.getUsrCode(),dataSetName,dataUuid);
+        return Result.successResponse();
+    }
 }

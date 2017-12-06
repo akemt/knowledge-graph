@@ -6,6 +6,7 @@ import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
 import com.github.pagehelper.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -70,4 +71,21 @@ public interface DataSetService {
      * @date ： 2017-10-22 21:54:06
      */
     //Result modifyData(AlgData algData) throws Exception;
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 个人数据图片上传
+     * @param： String dataSn
+     * @date ： 2017-10-22 21:54:06
+     */
+    void uploadDateSet(MultipartFile file, String usrCode,String dataSetName,String dataUuid) throws AlgException;
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:检查文件上传名字
+     * @param： String dataSn
+     * @date ： 2017-12-06 21:54:06
+     */
+    int checkFileName(AlgData algData) throws AlgException;
+
 }
