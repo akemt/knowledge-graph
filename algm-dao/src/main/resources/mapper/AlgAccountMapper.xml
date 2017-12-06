@@ -52,10 +52,10 @@
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </select>
 
-  <update id="updateByFreeBal" parameterType="java.lang.Float">
+  <update id="updateByFreeBal" parameterType="com.beyond.algm.vo.AlgAccountVo">
     update alg_account t
     set t.free_bal = #{freeBal,jdbcType=REAL},
     t.free_set_time = now()
-    where (now() - t.free_set_time) >= 7000000
+    where (now() - t.free_set_time) >= #{cycle,jdbcType=VARCHAR}
   </update>
 </mapper>
