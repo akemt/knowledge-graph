@@ -13,6 +13,12 @@ public class BaseController {
 
     @Autowired
     private UserService userService;
+
+    /**
+     * 获取当前登录用户
+     * @return
+     * @throws AlgException
+     */
     public AlgUser getUserInfo() throws AlgException {
         SecurityContext ctx = SecurityContextHolder.getContext();
         if(Assert.isEmpty(ctx)) {
