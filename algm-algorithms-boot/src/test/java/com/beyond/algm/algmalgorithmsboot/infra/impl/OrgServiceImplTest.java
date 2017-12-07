@@ -33,13 +33,20 @@ public class OrgServiceImplTest {
         owner.setUsrSn("64bd0e5ee1a6409f97d12c271bb8fa68");
         owner.setUsrCode("gaohaijun");
         owner.setPasswd("47c668187ec1fc010443a9372266d304");
+        owner.setPrivateToken("mHN8exdYzNja1eZkXPxc");
 
         orgService.createOrg(org, owner);
     }
 
     @Test
     public void deleteOrgTest() throws AlgException {
-        orgService.deleteOrg("8e70e57b5e104f1b9d4d4dc0b141d83b");
+        AlgUser owner = new AlgUser();
+        owner.setUsrSn("64bd0e5ee1a6409f97d12c271bb8fa68");
+        owner.setUsrCode("gaohaijun");
+        owner.setPasswd("47c668187ec1fc010443a9372266d304");
+        owner.setPrivateToken("mHN8exdYzNja1eZkXPxc");
+
+        orgService.deleteOrg("8e70e57b5e104f1b9d4d4dc0b141d83b", owner);
     }
 
     @Test
@@ -49,7 +56,14 @@ public class OrgServiceImplTest {
         org.setUsrName("测试组织2");
         org.setEmail("test@qq.com");
         org.setUsrUrl("www.baidu.com");
-        orgService.updateOrg(org);
+
+        AlgUser owner = new AlgUser();
+        owner.setUsrSn("64bd0e5ee1a6409f97d12c271bb8fa68");
+        owner.setUsrCode("gaohaijun");
+        owner.setPasswd("47c668187ec1fc010443a9372266d304");
+        owner.setPrivateToken("mHN8exdYzNja1eZkXPxc");
+
+        orgService.updateOrg(org, owner);
     }
 
     @Test
@@ -67,11 +81,23 @@ public class OrgServiceImplTest {
 
     @Test
     public void addMemberTest() throws AlgException {
-        orgService.addMember("1ab380d8078d414f8edc4dcc33a65348","64bd0e5ee1a6409f97d12c271bb8fa68");
+        AlgUser owner = new AlgUser();
+        owner.setUsrSn("64bd0e5ee1a6409f97d12c271bb8fa68");
+        owner.setUsrCode("gaohaijun");
+        owner.setPasswd("47c668187ec1fc010443a9372266d304");
+        owner.setPrivateToken("mHN8exdYzNja1eZkXPxc");
+
+        orgService.addMember("1ab380d8078d414f8edc4dcc33a65348","64bd0e5ee1a6409f97d12c271bb8fa68", owner);
     }
 
     @Test
     public void removeMemberTest() throws AlgException {
-        orgService.removeMember("1ab380d8078d414f8edc4dcc33a65348","64bd0e5ee1a6409f97d12c271bb8fa68");
+        AlgUser owner = new AlgUser();
+        owner.setUsrSn("64bd0e5ee1a6409f97d12c271bb8fa68");
+        owner.setUsrCode("gaohaijun");
+        owner.setPasswd("47c668187ec1fc010443a9372266d304");
+        owner.setPrivateToken("mHN8exdYzNja1eZkXPxc");
+
+        orgService.removeMember("1ab380d8078d414f8edc4dcc33a65348","64bd0e5ee1a6409f97d12c271bb8fa68", owner);
     }
 }

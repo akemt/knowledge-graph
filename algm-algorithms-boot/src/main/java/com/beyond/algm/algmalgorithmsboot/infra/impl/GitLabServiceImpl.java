@@ -32,8 +32,8 @@ public class GitLabServiceImpl implements GitLabService {
                     null, null, false, true, true);
             GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitUser.getUsrCode(), gitUser.getPassword());
             gitlabUser.setPrivateToken(gitlabSession.getPrivateToken());
-        }catch ( Exception e){
-            log.error(e.getMessage(),e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
             new AlgException("BEYOND.ALG.GITLAB.ADDUSR.0000001");
         }
         return gitlabUser;
@@ -50,17 +50,16 @@ public class GitLabServiceImpl implements GitLabService {
     }
 
     @Override
-    public GitlabGroup createGitLabGroup(String orgCode, String orgName, String createUserCode, String password, String privateToken) throws Exception {
+    public GitlabGroup createGitLabGroup(String orgCode, String orgName, String privateToken) throws Exception {
         log.info("createGitLabGroup方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
-//        GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getBaseUrl(), createUserCode, password);
         GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), privateToken);
         return gitlabAPI.createGroup(orgName, orgCode);
     }
 
     @Override
-    public void deleteGitLabGroup(String orgCode) throws Exception {
+    public void deleteGitLabGroup(String orgCode, String privateToken) throws Exception {
         log.info("deleteGitLabGroup方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
-        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(),gitConfigModel.getPrivateToken());
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), privateToken);
         GitlabGroup gitlabGroup = gitlabAPI.getGroup(orgCode);
         gitlabAPI.deleteGroup(gitlabGroup.getId());
     }
@@ -77,29 +76,35 @@ public class GitLabServiceImpl implements GitLabService {
     }
 
     @Override
-    public GitlabGroupMember addGroupMember(String orgCode, String userCode) throws Exception {
-        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitConfigModel.getPrivateToken());
+    public GitlabGroupMember addGroupMember(String orgCode, String userCode, String ownerPrivateToken, String memberPrivateToken) throws Exception {
+        // 先获取成员对象
+        GitlabAPI mGitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), memberPrivateToken);
+        GitlabUser gitlabUser = mGitlabAPI.getUser();
+
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), ownerPrivateToken);
         GitlabGroup gitlabGroup = gitlabAPI.getGroup(orgCode);
-        GitlabUser gitlabUser = gitlabAPI.getUserViaSudo(userCode);
         return gitlabAPI.addGroupMember(gitlabGroup, gitlabUser, GitlabAccessLevel.Developer);
     }
 
     @Override
-    public void deleteGroupMember(String orgCode, String userCode) throws Exception {
-        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitConfigModel.getPrivateToken());
+    public void deleteGroupMember(String orgCode, String userCode, String ownerPrivateToken, String memberPrivateToken) throws Exception {
+        // 先获取成员对象
+        GitlabAPI mGitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), memberPrivateToken);
+        GitlabUser gitlabUser = mGitlabAPI.getUser();
+
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), ownerPrivateToken);
         GitlabGroup gitlabGroup = gitlabAPI.getGroup(orgCode);
-        GitlabUser gitlabUser = gitlabAPI.getUserViaSudo(userCode);
         gitlabAPI.deleteGroupMember(gitlabGroup, gitlabUser);
     }
 
     @Override
-    public void  deleteUserByGitUserId(Integer id) throws AlgException {
+    public void deleteUserByGitUserId(Integer id) throws AlgException {
         log.info("deleteUserByGitUserId方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
         GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitConfigModel.getPrivateToken());
         try {
             gitlabAPI.deleteUser(id);
-        }catch ( Exception e){
-            log.info(e.getMessage(),e);
+        } catch (Exception e) {
+            log.info(e.getMessage(), e);
         }
 
     }
