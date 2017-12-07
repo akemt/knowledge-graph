@@ -1,15 +1,23 @@
 package com.beyond.algm.algmdataboot.infra.impl;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.beyond.algm.algmdataboot.infra.ModelSetService;
+import com.beyond.algm.algmdataboot.util.CephUtil;
 import com.beyond.algm.common.Assert;
+import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgUserMapper;
+import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgModelSetVo;
 import com.beyond.algm.vo.ModelDataVo;
 import com.github.pagehelper.PageHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.beyond.algm.common.Result;
@@ -17,7 +25,10 @@ import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.model.AlgModel;
 import com.beyond.algm.mapper.AlgModelSetMapper;
 import com.beyond.algm.mapper.AlgModelMapper;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -29,8 +40,16 @@ import java.util.UUID;
  */
 
 @Service
+@Slf4j
 public class ModelSetServiceImpl implements ModelSetService {
-
+    @Value("${ceph.host}")
+    private  String host;
+    @Value("${ceph.accessKey}")
+    private   String accessKey;
+    @Value("${ceph.secretKey}")
+    private  String secretKey;
+    @Value("${ceph.path}")
+    private  String path;
     @Autowired
     private AlgModelSetMapper algModelSetMapper;
 
@@ -154,4 +173,71 @@ public class ModelSetServiceImpl implements ModelSetService {
         List<ModelDataVo> modelDataVoList = algModelMapper.queryModelDataSet(modelDataVo);
         return modelDataVoList;
     }
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:检查文件上传名字
+     * @param： String dataSn
+     * @date ： 2017-12-06 21:54:06
+     */
+    @Override
+    public int checkFileName(AlgModel algModel) throws AlgException{
+        int count= algModelMapper.checkFileName(algModel);
+        if(count>0){
+            String[] checkMessage = {" 文件名字重复",""};
+            throw new AlgException("BEYOND.ALG.DATA.FILE.NAME.0000006",checkMessage);
+        }
+        return  count;
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 上传个人数据文件
+     * @param：
+     * @date ： 2017-10-22 21:54:06
+     */
+    @Override
+    @Transactional(rollbackFor = AlgException.class)
+    public void uploadModelSet(MultipartFile file, String usrCode, String modelName, String dataUuid) throws AlgException{
+        Float count=algUserMapper.selectCountSpace(usrCode);
+        Float fileSize= FileUtil.bytes2kb(file.getSize());
+        // 上传文件大于用户所剩存储空间
+        if(fileSize>count){
+            String[] checkMessage = {" 空间不足",""};
+            throw new AlgException("BEYOND.ALG.DATA.FILE.SPACE.0000007",checkMessage);
+
+        }
+        log.info("文件名:{},用户code:{},accessKey:{},secretKey:{},path:{},数据集合名称",file.getOriginalFilename(),usrCode,accessKey,secretKey,path,modelName);
+        File targetFile = new File(path+file.getOriginalFilename());
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+        try {
+            // 文件转存到硬盘
+            file.transferTo(targetFile);
+        } catch (Exception e) {
+            log.info("文件转存错误",e);
+        }
+        String key=modelName+"/"+file.getOriginalFilename();
+        String bucketName=usrCode;
+        AmazonS3 conn= CephUtil.connectCeph(accessKey,secretKey,host);
+        Bucket bucket=null;
+        if(!conn.doesBucketExistV2(bucketName)){
+            bucket=conn.createBucket(bucketName);
+        }
+        conn.putObject(bucketName,key,targetFile);
+        conn.setObjectAcl(bucketName,key, CannedAccessControlList.PublicRead);
+        String pathUrl=  conn.getUrl(bucketName,key).toString();
+        log.info("保存路径：{}",pathUrl);
+        AlgUser user=new AlgUser();
+        user.setUsrCode(usrCode);
+        user.setUsrUsedSpace(fileSize);
+        algUserMapper.updateSpace(user);
+        AlgModel algModel=new AlgModel();
+        algModel.setModelSn(dataUuid);
+        algModel.setModelAddress(pathUrl);
+        algModel.setModelSize(count.toString());
+        algModelMapper.update(algModel);
+        targetFile.delete();
+    }
+
 }

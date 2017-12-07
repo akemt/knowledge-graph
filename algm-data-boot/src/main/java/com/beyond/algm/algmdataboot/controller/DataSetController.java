@@ -5,6 +5,8 @@ import com.beyond.algm.algmdataboot.base.BaseController;
 
 import com.beyond.algm.algmdataboot.infra.DataSetService;
 
+import com.beyond.algm.common.Assert;
+import com.beyond.algm.common.NumCheckUtil;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.common.ResultEnum;
 import com.beyond.algm.exception.AlgException;
@@ -18,11 +20,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -188,16 +192,31 @@ public class DataSetController extends BaseController {
     /**
      * @author ：zhangchuanzhi
      * @Description: 数据文件增加
+     * @param ：数据集名称：dataSetName，
      */
     @RequestMapping(value = "/dataModuleUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result dataFileUpload(MultipartFile file,String dataSetName ,String dataUuid) throws AlgException {
+    public Result dataFileUpload(MultipartFile file,String dataSetName ,String dataSetUuid) throws AlgException {
         AlgUser algUser = getUserInfo();
         AlgData algData =new AlgData();
         algData.setDataEnName(file.getOriginalFilename());
         algData.setUsrSn(algUser.getUsrSn());
+        algData.setDataSn(dataSetUuid);
         // 留存权限接口
         int count =dataSetService.checkFileName(algData);
-        dataSetService.uploadDateSet(file,algUser.getUsrCode(),dataSetName,dataUuid);
+        dataSetService.uploadDateSet(file,algUser.getUsrCode(),dataSetName,dataSetUuid,algUser.getUsrSn());
+        return Result.successResponse();
+    }
+
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 数据下载
+     */
+    @RequestMapping(value = "/{usrCode}/{dataSet}/{fileName}/downUpload", method = RequestMethod.GET)
+    public Result dataDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("dataSet") String dataSet,@PathVariable("fileName") String fileName,HttpServletResponse response) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        dataSetService.downDataUrl(algUser.getUsrSn(), dataSet, fileName,usrCode,response);
+        // 权限控制预留接口
         return Result.successResponse();
     }
 }

@@ -2,11 +2,13 @@ package com.beyond.algm.algmdataboot.infra;
 
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.model.AlgModel;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgModelSetVo;
 import com.beyond.algm.vo.ModelDataVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -87,4 +89,20 @@ public interface ModelSetService {
      AlgUser findByUsrCode(String usrCode);
 
     List<ModelDataVo>  queryModelDataSet(ModelDataVo modelDataVo) throws AlgException;
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:检查模型上传名字
+     * @param： AlgData
+     * @date ： 2017-12-06 21:54:06
+     */
+    int checkFileName(AlgModel algData) throws AlgException;
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 个人模型文件上传
+     * @param： String dataSn
+     * @date ： 2017-10-22 21:54:06
+     */
+    void uploadModelSet(MultipartFile file, String usrCode, String modelName, String dataUuid) throws AlgException;
 }

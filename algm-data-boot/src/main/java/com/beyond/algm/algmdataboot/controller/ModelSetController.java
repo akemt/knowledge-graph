@@ -6,6 +6,7 @@ import com.beyond.algm.algmdataboot.base.BaseController;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgModelSetVo;
 import com.beyond.algm.vo.ModelDataVo;
@@ -230,5 +231,19 @@ public class ModelSetController  extends BaseController {
         List<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo);
         return  Result.ok(mdelDataVoList);
     }
-
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 数据文件增加
+     */
+    @RequestMapping(value = "/modelUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result dataFileUpload(MultipartFile file,String modelName ,String dataUuid) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        AlgModel algData =new AlgModel();
+        algData.setModelEnName(file.getOriginalFilename());
+        algData.setUsrSn(algUser.getUsrSn());
+        // 留存权限接口
+        int count =modelSetService.checkFileName(algData);
+        modelSetService.uploadModelSet(file,algUser.getUsrCode(),modelName,dataUuid);
+        return Result.successResponse();
+    }
 }
