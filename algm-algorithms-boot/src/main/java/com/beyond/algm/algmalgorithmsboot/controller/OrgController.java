@@ -47,7 +47,7 @@ public class OrgController extends BaseController {
     @RequestMapping(value = "/", method = RequestMethod.DELETE)
     @ResponseBody
     public Result<Boolean> deleteOrg(String orgSn) throws AlgException {
-        orgService.deleteOrg(orgSn);
+        orgService.deleteOrg(orgSn, getUserInfo());
         return Result.ok(true);
     }
 
@@ -61,7 +61,7 @@ public class OrgController extends BaseController {
     @ResponseBody
     public Result<AlgUser> updateOrg(AlgUser org) throws AlgException {
         log.info("编辑组织：组织账户名:{},组织全名:{}", org.getUsrCode(), org.getUsrName());
-        org = orgService.updateOrg(org);
+        org = orgService.updateOrg(org, getUserInfo());
         return Result.ok(org);
     }
 
@@ -102,7 +102,7 @@ public class OrgController extends BaseController {
     @RequestMapping(value = "/addMember", method = RequestMethod.POST)
     @ResponseBody
     public Result<Boolean> addMember(String orgSn, String memberSn) throws AlgException {
-        orgService.addMember(orgSn, memberSn);
+        orgService.addMember(orgSn, memberSn, getUserInfo());
         return Result.ok(true);
     }
 
@@ -116,7 +116,7 @@ public class OrgController extends BaseController {
     @RequestMapping(value = "/removeMember", method = RequestMethod.POST)
     @ResponseBody
     public Result<Boolean> removeMember(String orgSn, String memberSn) throws AlgException {
-        orgService.removeMember(orgSn, memberSn);
+        orgService.removeMember(orgSn, memberSn, getUserInfo());
         return Result.ok(true);
     }
 }

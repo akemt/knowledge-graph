@@ -67,7 +67,7 @@ public class OrgServiceImpl implements OrgService {
 
         // 在gitlab中创建组织
         try {
-            gitLabService.createGitLabGroup(org.getUsrCode(), org.getUsrName(), owner.getUsrCode(), owner.getPasswd());
+            gitLabService.createGitLabGroup(org.getUsrCode(), org.getUsrName(), owner.getPrivateToken());
         } catch (Exception e) {
             log.error("gitlab创建组织失败.", e);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000001", new String[]{"创建组织", org.getUsrCode(), owner.getUsrCode()}, e);
@@ -77,11 +77,14 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public void deleteOrg(String orgSn) throws AlgException {
+    public void deleteOrg(String orgSn, AlgUser owner) throws AlgException {
         AlgUser org = algUserMapper.selectByPrimaryKey(orgSn);
         if (org == null) {
-            log.error("gitlab删除组织失败，组织不存在：" + orgSn);
+            log.error("删除组织失败，组织不存在：" + orgSn);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"删除组织", "组织不存在"});
+        }
+        if (!owner.getUsrSn().equals(org.getOwnerId())) {
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"删除组织", "当前用户不是组织创建者"});
         }
 
         // 先删除组织用户关系表，再删除用户表中的组织数据
@@ -90,27 +93,35 @@ public class OrgServiceImpl implements OrgService {
 
         // 在gitlab中删除组织
         try {
-            //TODO:gitlab中使用管理员账户进行操作，调用前需要做权限验证
-            gitLabService.deleteGitLabGroup(org.getUsrCode());
+            gitLabService.deleteGitLabGroup(org.getUsrCode(), owner.getPrivateToken());
         } catch (Exception e) {
             log.error("gitlab删除组织失败.", e);
-            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000002", new String[]{"删除组织", org.getUsrCode()}, e);
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000001", new String[]{"删除组织", org.getUsrCode(), owner.getUsrCode()}, e);
         }
     }
 
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public AlgUser updateOrg(AlgUser org) throws AlgException {
+    public AlgUser updateOrg(AlgUser org, AlgUser owner) throws AlgException {
+        AlgUser tOrg = algUserMapper.selectByPrimaryKey(org.getUsrSn());
+        if (tOrg == null) {
+            log.error("更新组织失败，组织不存在：" + org.getUsrSn());
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"更新组织", "组织不存在"});
+        }
+        if (!owner.getUsrSn().equals(org.getOwnerId())) {
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"更新组织", "当前用户不是组织创建者"});
+        }
+
         // 用户表中更新组织记录
         org.setUpdateDate(new Date());
         algUserMapper.update(org);
 
         // 在gitlab中创建组织
         try {
-            gitLabService.updateGitLabGroup(org.getUsrCode(), org.getUsrName());
+            gitLabService.updateGitLabGroup(org.getUsrCode(), org.getUsrName(), owner.getPrivateToken());
         } catch (Exception e) {
             log.error("gitlab更新组织失败.", e);
-            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000002", new String[]{"更新组织", org.getUsrCode()}, e);
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000001", new String[]{"更新组织", org.getUsrCode(), owner.getUsrCode()}, e);
         }
         return org;
     }
@@ -164,21 +175,24 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public void addMember(String orgSn, String memberSn) throws AlgException {
-        AlgRUserOrgInvite invite = algRUserOrgInviteMapper.selectByOrgSnAndUsrSn(orgSn, memberSn);
-        if (invite != null) {
-            log.error("gitlab添加组织成员失败，该成员已经在组织中，组织串号：" + orgSn + "，用户串号：" + memberSn);
-            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"添加组织成员", "该成员已经在组织中"});
-        }
+    public void addMember(String orgSn, String memberSn, AlgUser owner) throws AlgException {
         AlgUser org = algUserMapper.selectByPrimaryKey(orgSn);
         if (org == null) {
-            log.error("gitlab添加组织成员失败，组织不存在：" + orgSn);
+            log.error("添加组织成员失败，组织不存在：" + orgSn);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"添加组织成员", "组织不存在"});
+        }
+        if (!owner.getUsrSn().equals(org.getOwnerId())) {
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"添加组织成员", "当前用户不是组织创建者"});
         }
         AlgUser member = algUserMapper.selectByPrimaryKey(memberSn);
         if (member == null) {
-            log.error("gitlab添加组织成员失败，成员不存在：" + memberSn);
+            log.error("添加组织成员失败，成员不存在：" + memberSn);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"添加组织成员", "成员不存在"});
+        }
+        AlgRUserOrgInvite invite = algRUserOrgInviteMapper.selectByOrgSnAndUsrSn(orgSn, memberSn);
+        if (invite != null) {
+            log.error("添加组织成员失败，该成员已经在组织中，组织串号：" + orgSn + "，用户串号：" + memberSn);
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"添加组织成员", "该成员已经在组织中"});
         }
 
         // 在关系表中添加关联记录
@@ -194,8 +208,7 @@ public class OrgServiceImpl implements OrgService {
 
         // 在gitlab中添加组织成员
         try {
-            //TODO:gitlab中使用管理员账户进行操作，调用前需要做权限验证
-            gitLabService.addGroupMember(org.getUsrCode(), member.getUsrCode());
+            gitLabService.addGroupMember(org.getUsrCode(), member.getUsrCode(), owner.getPrivateToken(), member.getPrivateToken());
         } catch (Exception e) {
             log.error("gitlab添加组织成员失败.", e);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000003", new String[]{"添加组织成员"}, e);
@@ -204,21 +217,24 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public void removeMember(String orgSn, String memberSn) throws AlgException {
-        AlgRUserOrgInvite invite = algRUserOrgInviteMapper.selectByOrgSnAndUsrSn(orgSn, memberSn);
-        if (invite == null) {
-            log.error("gitlab删除组织成员失败，该成员不在组织中，组织串号：" + orgSn + "，用户串号：" + memberSn);
-            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"删除组织成员", "该成员不在组织中"});
-        }
+    public void removeMember(String orgSn, String memberSn, AlgUser owner) throws AlgException {
         AlgUser org = algUserMapper.selectByPrimaryKey(orgSn);
         if (org == null) {
-            log.error("gitlab删除组织成员失败，组织不存在：" + orgSn);
+            log.error("删除组织成员失败，组织不存在：" + orgSn);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"删除组织成员", "组织不存在"});
+        }
+        if (!owner.getUsrSn().equals(org.getOwnerId())) {
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"删除组织成员", "当前用户不是组织创建者"});
         }
         AlgUser member = algUserMapper.selectByPrimaryKey(memberSn);
         if (member == null) {
-            log.error("gitlab删除组织成员失败，成员不存在：" + memberSn);
+            log.error("删除组织成员失败，成员不存在：" + memberSn);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"删除组织成员", "成员不存在"});
+        }
+        AlgRUserOrgInvite invite = algRUserOrgInviteMapper.selectByOrgSnAndUsrSn(orgSn, memberSn);
+        if (invite == null) {
+            log.error("删除组织成员失败，该成员不在组织中，组织串号：" + orgSn + "，用户串号：" + memberSn);
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000004", new String[]{"删除组织成员", "该成员不在组织中"});
         }
 
         // 删除组织用户关系表
@@ -226,8 +242,7 @@ public class OrgServiceImpl implements OrgService {
 
         // 在gitlab中删除组织成员
         try {
-            //TODO:gitlab中使用管理员账户进行操作，调用前需要做权限验证
-            gitLabService.deleteGroupMember(org.getUsrCode(), member.getUsrCode());
+            gitLabService.deleteGroupMember(org.getUsrCode(), member.getUsrCode(), owner.getPrivateToken(), member.getPrivateToken());
         } catch (Exception e) {
             log.error("gitlab删除组织成员失败.", e);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000003", new String[]{"删除组织成员"}, e);

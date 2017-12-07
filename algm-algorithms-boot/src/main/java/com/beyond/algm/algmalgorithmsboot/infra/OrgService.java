@@ -21,17 +21,19 @@ public interface OrgService {
      * 删除组织
      *
      * @param orgSn 组织串号
+     * @param owner 创建者
      * @return 是否删除成功
      */
-    void deleteOrg(String orgSn) throws AlgException;
+    void deleteOrg(String orgSn, AlgUser owner) throws AlgException;
 
     /**
      * 编辑组织
      *
-     * @param org 组织信息
+     * @param org   组织信息
+     * @param owner 创建者
      * @return 创建后组织对象
      */
-    AlgUser updateOrg(AlgUser org) throws AlgException;
+    AlgUser updateOrg(AlgUser org, AlgUser owner) throws AlgException;
 
     /**
      * 获取组织详情
@@ -55,14 +57,16 @@ public interface OrgService {
      *
      * @param orgSn    组织串号
      * @param memberSn 成员用户串号
+     * @param owner    创建者
      */
-    void addMember(String orgSn, String memberSn) throws AlgException;
+    void addMember(String orgSn, String memberSn, AlgUser owner) throws AlgException;
 
     /**
      * 为组织删除成员
      *
      * @param orgSn    组织串号
      * @param memberSn 成员用户串号
+     * @param owner    创建者
      */
-    void removeMember(String orgSn, String memberSn) throws AlgException;
+    void removeMember(String orgSn, String memberSn, AlgUser owner) throws AlgException;
 }

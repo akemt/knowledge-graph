@@ -6,7 +6,6 @@ import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.exception.AlgException;
 import org.gitlab.api.models.GitlabGroup;
 import org.gitlab.api.models.GitlabProject;
-import org.gitlab.api.models.GitlabUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,7 @@ public class GitLabServiceImplTest {
 
     @Test
     public void createGitLabProjectTest() throws Exception {
-        GitUser gitUser=new GitUser();
+        GitUser gitUser = new GitUser();
         gitUser.setProjectName("TestJavaZhang");
         gitUser.setUsrCode("zhang");
         gitUser.setPassword("12345678");
@@ -43,36 +42,36 @@ public class GitLabServiceImplTest {
 
     @Test
     public void createGitLabGroupTest() throws Exception {
-        GitlabGroup gitlabGroup = gitLabService.createGitLabGroup("testOrg1", "测试组织1", "qihe", "12345678");
+        GitlabGroup gitlabGroup = gitLabService.createGitLabGroup("testOrg3", "测试组织3", "mHN8exdYzNja1eZkXPxc");
         assertTrue(gitlabGroup != null);
     }
 
     @Test
     public void deleteGitLabGroupTest() throws Exception {
-        gitLabService.deleteGitLabGroup("testOrg1");
+        gitLabService.deleteGitLabGroup("testOrg3", "mHN8exdYzNja1eZkXPxc");
     }
 
     @Test
     public void updateGitLabGroupTest() throws Exception {
-        gitLabService.updateGitLabGroup("testOrg2", "测试组织2");
+        gitLabService.updateGitLabGroup("testOrg2", "测试组织2", "jjzSdMo912X4kKhR1-dx");
     }
 
     @Test
     public void addGroupMemberTest() throws Exception {
-        gitLabService.addGroupMember("testOrg2", "gaohaijun");
+        gitLabService.addGroupMember("testOrg2", "gaohaijun", "jjzSdMo912X4kKhR1-dx", "mHN8exdYzNja1eZkXPxc");
     }
 
     @Test
     public void deleteGroupMember() throws Exception {
-        gitLabService.deleteGroupMember("testOrg2", "gaohaijun");
+        gitLabService.deleteGroupMember("testOrg2", "gaohaijun", "jjzSdMo912X4kKhR1-dx", "mHN8exdYzNja1eZkXPxc");
     }
 
     @Test
-    public void  deleteUserByGitUserId() throws AlgException {
+    public void deleteUserByGitUserId() throws AlgException {
         try {
             gitLabService.deleteUserByGitUserId(57);
 
-        }catch ( Exception e){
+        } catch (Exception e) {
             new AlgException("BEYOND.ALG.GITLAB.DELETE.0000001");
         }
 
