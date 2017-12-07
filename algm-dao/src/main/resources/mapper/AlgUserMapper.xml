@@ -12,6 +12,9 @@
     <result column="passwd" property="passwd" jdbcType="VARCHAR" />
     <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
     <result column="need_notify" property="needNotify" jdbcType="VARCHAR" />
+      <result column="usr_space" property="usrSpace" jdbcType="REAL"/>
+      <result column="usr_add_space" property="usrAddSpace" jdbcType="REAL" />
+      <result column="usr_used_apace" property="usr_used_apace" jdbcType="REAL" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
       <result column="private_token" property="privateToken" jdbcType="VARCHAR" />
@@ -121,7 +124,7 @@
     </select>
 
     <select id="selectUsrCode" resultMap="BaseResultMap" >
-        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,private_token,
+        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,usr_space,usr_add_space,usr_used_space,private_token,
         create_date, update_date
         from alg_user
         where usr_code = #{usrCode,jdbcType=VARCHAR}
@@ -164,4 +167,16 @@
         where u.usr_sn in (select r.usr_sn from alg_r_user_org_invite r where r.org_sn = #{orgSn,jdbcType=VARCHAR})
     </select>
 
+    <!-- 获取空间用户空间-->
+    <select id="selectCountSpace" resultType="java.lang.Float"  parameterType="java.lang.String" >
+        select usr_space+usr_add_space-usr_used_space
+        from alg_user
+        where usr_code= #{usr_code,jdbcType=VARCHAR}
+    </select>
+    <update id="updateSpace" parameterType="com.beyond.algm.model.AlgUser" >
+        update alg_user
+        set
+          usr_used_space = usr_used_space+#{usrUsedSpace,jdbcType=REAL}
+        where usr_code = #{usrCode,jdbcType=VARCHAR}
+    </update>
 </mapper>

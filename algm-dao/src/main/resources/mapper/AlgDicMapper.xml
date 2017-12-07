@@ -53,4 +53,10 @@
     from alg_dic
     where dic_value = #{dicValue,jdbcType=VARCHAR}
   </select>
+  <select id="selectDicValue" resultType="java.lang.String" parameterType="java.lang.String" >
+    select dic_value
+    from alg_dic
+    where dic_code = #{arg0,jdbcType=VARCHAR}
+    and dic_key = #{arg1,jdbcType=VARCHAR}
+  </select>
 </mapper>

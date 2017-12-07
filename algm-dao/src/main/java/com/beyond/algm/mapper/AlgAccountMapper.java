@@ -1,6 +1,8 @@
 package com.beyond.algm.mapper;
 
 import com.beyond.algm.model.AlgAccount;
+import com.beyond.algm.vo.AlgAccountVo;
+
 import java.util.List;
 
 public interface AlgAccountMapper {
@@ -17,4 +19,6 @@ public interface AlgAccountMapper {
     AlgAccount selectAccount(String usrSn);
 
     int presentCash(String usrSn);
+
+    int updateByFreeBal(AlgAccountVo recordVo);
 }

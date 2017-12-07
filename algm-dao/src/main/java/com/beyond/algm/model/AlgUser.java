@@ -23,6 +23,12 @@ public class AlgUser {
 
     private String needNotify;
 
+    private Float usrSpace;
+
+    private Float usrAddSpace;
+
+    private Float usrUsedSpace;
+
     private Date createDate;
 
     private Date updateDate;
@@ -131,5 +137,29 @@ public class AlgUser {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public Float getUsrSpace() {
+        return usrSpace;
+    }
+
+    public void setUsrSpace(Float usrSpace) {
+        this.usrSpace = usrSpace;
+    }
+
+    public Float getUsrAddSpace() {
+        return usrAddSpace;
+    }
+
+    public void setUsrAddSpace(Float usrAddSpace) {
+        this.usrAddSpace = usrAddSpace;
+    }
+
+    public Float getUsrUsedSpace() {
+        return usrUsedSpace;
+    }
+
+    public void setUsrUsedSpace(Float usrUsedSpace) {
+        this.usrUsedSpace = usrUsedSpace;
     }
 }
