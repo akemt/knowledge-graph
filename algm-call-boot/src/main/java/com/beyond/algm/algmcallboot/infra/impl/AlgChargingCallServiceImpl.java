@@ -65,6 +65,8 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
         //获取版本信息
         AlgModuleVersion algModuleVersion = algModuleVersionRepository.verLoyaltyFee(algModule.getModSn(),verCodeL1,verCodeL2,verCodeL3);
 
+
+        //判断public还是private；
         if("0".equals(algModuleVersion.getIsOwn())){
             algResult.setResult("该算法不公开，不可调用。");
             return algResult;
@@ -75,7 +77,7 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
 
         //开始调用
         Long startTime =  new Date().getTime();
-        //TODO 1、判断public还是private；
+
         //TODO 用户调用方法，去执行的接口。
         try {
             Thread.sleep(1000);
