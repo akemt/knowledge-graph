@@ -18,4 +18,5 @@ public interface AlgDataSetMapper {
 
     String getMaxDataOrderBy(String usrSn);
 
+    List<AlgDataSet>   dataSetId(String usr_sn,String dataSetName );
 }

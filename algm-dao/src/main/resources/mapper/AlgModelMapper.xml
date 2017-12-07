@@ -95,4 +95,20 @@
       model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
     </if>
   </select>
+
+  <select id="checkFileName" resultType="java.lang.Integer"  parameterType="com.beyond.algm.model.AlgModel"  >
+    select count(*)
+    from AlgModel
+    where usr_sn = #{usrSn,jdbcType=VARCHAR}
+    and model_en_name=#{modelEnName,jdbcType=VARCHAR}
+  </select>
+
+  <update id="update" parameterType="com.beyond.algm.model.AlgModel" >
+    update AlgModel
+    set
+    creat_time = NOW(),
+    model_size = #{dataSize,jdbcType=VARCHAR},
+    model_address = #{dataAddr,jdbcType=VARCHAR}
+    where model_sn = #{dataSn,jdbcType=VARCHAR}
+  </update>
 </mapper>
