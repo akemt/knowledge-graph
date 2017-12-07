@@ -22,4 +22,10 @@ public interface PayCashService {
        * @date ：11:32 2017/12/5
        */
       int presentCash(String usrSn, float freeBal)throws AlgException;
+      /**
+       * @author :lindw
+       * @Description:积分充值
+       * @date ：11:32 2017/12/5
+       */
+      void recharge(AlgCashTrans algCashTrans,AlgUser algUser)throws AlgException;
 }

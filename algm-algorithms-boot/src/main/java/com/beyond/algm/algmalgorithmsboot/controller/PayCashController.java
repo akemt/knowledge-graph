@@ -61,6 +61,17 @@ public class PayCashController extends BaseController {
     }
 
     /**
+     * @author ：lindw
+     * @Description:积分充值
+     */
+    @RequestMapping(value="/recharge", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result recharge(AlgCashTrans algCashTrans) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        payCashService.recharge(algCashTrans,algUser);
+        return Result.successResponse();
+    }
+
+    /**
      * @author ：zhangchuanzhi
      * @Description: 购买积分
      * @param：PayVo
