@@ -5,8 +5,24 @@ import org.gitlab.api.models.*;
 
 public interface GitLabService {
 
+    /**
+     * 实现gitlab上创建用户
+     *
+     * @param gitUser
+     * @return
+     * @throws Exception
+     * @author xialf
+     */
     GitlabUser addGitLabUser(GitUser gitUser) throws Exception;
 
+    /**
+     * 在gitlab上创建项目
+     *
+     * @param gitUser
+     * @return
+     * @throws Exception
+     * @author xialf
+     */
     GitlabProject createGitLabProject(GitUser gitUser) throws Exception;
 
     /**
@@ -16,8 +32,10 @@ public interface GitLabService {
      * @param orgName        组织名称
      * @param createUserCode 创建人gitlab用户名
      * @param password       创建人密码
+      * @param privateToken       秘钥
+     * @author xialf
      */
-    GitlabGroup createGitLabGroup(String orgCode, String orgName, String createUserCode, String password) throws Exception;
+    GitlabGroup createGitLabGroup(String orgCode, String orgName, String createUserCode, String password, String privateToken) throws Exception;
 
     /**
      * 在gitlab中删除组织
@@ -31,8 +49,10 @@ public interface GitLabService {
      *
      * @param orgCode        组织编码
      * @param orgName        组织名称
+     * @param privateToken       秘钥
+     * @author xialf
      */
-    GitlabGroup updateGitLabGroup(String orgCode, String orgName) throws Exception;
+    GitlabGroup updateGitLabGroup(String orgCode, String orgName, String privateToken) throws Exception;
 
     /**
      * 为组织添加新成员

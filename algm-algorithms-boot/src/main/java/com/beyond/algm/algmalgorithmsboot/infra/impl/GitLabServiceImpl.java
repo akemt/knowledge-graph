@@ -42,8 +42,7 @@ public class GitLabServiceImpl implements GitLabService {
     @Override
     public GitlabProject createGitLabProject(GitUser gitUser) throws Exception {
         log.info("createGitLabProject方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
-        GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitUser.getUsrCode(), gitUser.getPassword());
-        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitlabSession.getPrivateToken());
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitUser.getPrivateToken());
         GitlabProject gitlabProject = gitlabAPI.createProject(gitUser.getModId());
         gitUser.setProjectRepoURI(gitlabProject.getHttpUrl());
         jGitService.gitCloneProject(gitUser);
@@ -51,25 +50,25 @@ public class GitLabServiceImpl implements GitLabService {
     }
 
     @Override
-    public GitlabGroup createGitLabGroup(String orgCode, String orgName, String createUserCode, String password) throws Exception {
+    public GitlabGroup createGitLabGroup(String orgCode, String orgName, String createUserCode, String password, String privateToken) throws Exception {
         log.info("createGitLabGroup方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
-        GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getBaseUrl(), createUserCode, password);
-        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitlabSession.getPrivateToken());
+//        GitlabSession gitlabSession = GitlabAPI.connect(gitConfigModel.getBaseUrl(), createUserCode, password);
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), privateToken);
         return gitlabAPI.createGroup(orgName, orgCode);
     }
 
     @Override
     public void deleteGitLabGroup(String orgCode) throws Exception {
         log.info("deleteGitLabGroup方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
-        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitConfigModel.getPrivateToken());
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(),gitConfigModel.getPrivateToken());
         GitlabGroup gitlabGroup = gitlabAPI.getGroup(orgCode);
         gitlabAPI.deleteGroup(gitlabGroup.getId());
     }
 
     @Override
-    public GitlabGroup updateGitLabGroup(String orgCode, String orgName) throws Exception {
+    public GitlabGroup updateGitLabGroup(String orgCode, String orgName, String privateToken) throws Exception {
         log.info("updateGitLabGroup方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
-        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitConfigModel.getPrivateToken());
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), privateToken);
         GitlabGroup gitlabGroup = gitlabAPI.getGroup(orgCode);
 
         Query query = (new Query()).append("name", orgName);
@@ -100,8 +99,7 @@ public class GitLabServiceImpl implements GitLabService {
         try {
             gitlabAPI.deleteUser(id);
         }catch ( Exception e){
-            log.error(e.getMessage(),e);
-            new AlgException("BEYOND.ALG.GITLAB.DELETE.0000001");
+            log.info(e.getMessage(),e);
         }
 
     }

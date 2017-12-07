@@ -26,5 +26,7 @@ public class GitUser {
     private String  fileName;
     private String  usrCode;
     private String  usrSn;
+    // 模拟令牌
+    private String privateToken;
 
 }
