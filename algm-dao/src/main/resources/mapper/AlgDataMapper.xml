@@ -138,4 +138,12 @@
         and data_name = #{dataName,jdbcType=VARCHAR}
   </select>
 
+
+  <select id="dataSn" resultType="java.lang.String" parameterType="com.beyond.algm.vo.AlgDataVo" >
+    select data_sn from alg_data
+    where
+    data_set_sn =(select data_set_sn from alg_data_set where usr_sn=#{usrSn,jdbcType=VARCHAR} AND data_set_name=#{dataSetName,jdbcType=VARCHAR})
+    and data_name=#{dataName,jdbcType=VARCHAR}
+  </select>
+
 </mapper>
