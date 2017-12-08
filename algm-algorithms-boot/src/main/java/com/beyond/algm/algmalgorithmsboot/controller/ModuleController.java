@@ -219,4 +219,24 @@ public class ModuleController extends BaseController {
         List<AlgAlgoCategory> AlgAlgoCategory = moduleService.category();
         return Result.ok(AlgAlgoCategory);
     }
+
+
+    /**
+     * 发布接口-发布版本号、计算版权费用
+     *
+     * @param modId
+     * @param usrCode
+     * @param verMark
+     * @return
+     * @throws AlgException
+     * @author xialf
+     */
+    @GetMapping(value = "/{usrCode}/{modId}/publish", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result getAlgModuleVersion(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String verMark) throws AlgException {
+        //权限验证
+        AlgUser algUser = getUserInfo();
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        Map<String, Object> algModuleVersionMap = publishService.getAlgModuleVersion(modId, usrCode, verMark);
+        return Result.ok(algModuleVersionMap);
+    }
 }

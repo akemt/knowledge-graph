@@ -2,6 +2,8 @@ package com.beyond.algm.algmalgorithmsboot.infra;
 
 import com.beyond.algm.exception.AlgException;
 
+import java.util.Map;
+
 public interface PublishService {
 
     /**
@@ -24,5 +26,17 @@ public interface PublishService {
      * @throws AlgException
      */
     void publishModule(String modId,String usrCode,String verMark) throws AlgException;
+
+    /**
+     * 通过参数获取版本号和版权费用
+     *
+     * @param modId
+     * @param usrCode
+     * @param verMark
+     * @return
+     * @throws AlgException
+     * @author xialf
+     */
+    Map<String, Object> getAlgModuleVersion(String modId, String usrCode, String verMark) throws AlgException;
 
 }
