@@ -200,7 +200,7 @@ public class DataSetController extends BaseController {
         AlgData algData =new AlgData();
         algData.setDataEnName(file.getOriginalFilename());
         algData.setUsrSn(algUser.getUsrSn());
-        algData.setDataSn(dataSetUuid);
+        algData.setDataSetSn(dataSetUuid);
         // 留存权限接口
         int count =dataSetService.checkFileName(algData);
         dataSetService.uploadDateSet(file,algUser.getUsrCode(),dataSetName,dataSetUuid,algUser.getUsrSn());

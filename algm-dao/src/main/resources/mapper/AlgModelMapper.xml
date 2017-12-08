@@ -98,13 +98,14 @@
 
   <select id="checkFileName" resultType="java.lang.Integer"  parameterType="com.beyond.algm.model.AlgModel"  >
     select count(*)
-    from AlgModel
+    from alg_model
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
-    and model_en_name=#{modelEnName,jdbcType=VARCHAR}
+    and model_name=#{modelName,jdbcType=VARCHAR}
+    and model_set_sn=#{modelSetSn,jdbcType=VARCHAR}
   </select>
 
   <update id="update" parameterType="com.beyond.algm.model.AlgModel" >
-    update AlgModel
+    update alg_model
     set
     creat_time = NOW(),
     model_size = #{dataSize,jdbcType=VARCHAR},

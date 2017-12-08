@@ -25,6 +25,7 @@ import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.model.AlgModel;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -234,16 +235,31 @@ public class ModelSetController  extends BaseController {
     /**
      * @author ：zhangchuanzhi
      * @Description: 数据文件增加
+     * @param：modelName模型名称，modelUuid模型主键
      */
     @RequestMapping(value = "/modelUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result dataFileUpload(MultipartFile file,String modelName ,String dataUuid) throws AlgException {
+    public Result dataFileUpload(MultipartFile file,String modelName ,String modelUuid) throws AlgException {
         AlgUser algUser = getUserInfo();
-        AlgModel algData =new AlgModel();
-        algData.setModelEnName(file.getOriginalFilename());
-        algData.setUsrSn(algUser.getUsrSn());
+        AlgModel algModel =new AlgModel();
+        algModel.setModelEnName(file.getOriginalFilename());
+        algModel.setUsrSn(algUser.getUsrSn());
+        algModel.setModelSetSn(modelUuid);
         // 留存权限接口
-        int count =modelSetService.checkFileName(algData);
-        modelSetService.uploadModelSet(file,algUser.getUsrCode(),modelName,dataUuid);
+        int count =modelSetService.checkFileName(algModel);
+        modelSetService.uploadModelSet(file,algUser.getUsrCode(),modelName,modelUuid,algUser.getUsrSn());
         return Result.successResponse();
     }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 模型下载
+     */
+    @RequestMapping(value = "/{usrCode}/{modelSet}/{fileName}/modelDownUpload", method = RequestMethod.GET)
+    public Result modelDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet,@PathVariable("fileName") String fileName,HttpServletResponse response) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        modelSetService.downModelUrl(algUser.getUsrSn(), modelSet, fileName,usrCode,response);
+        // 权限控制预留接口
+        return Result.successResponse();
+    }
+
 }

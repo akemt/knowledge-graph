@@ -311,6 +311,13 @@ public class DataSetServiceImpl implements DataSetService {
         String url= algDataMapper.dataUrl(algData);
         return url;
     }
+    /**
+     * @author ：zhangchuanzhii
+     * @Description:数据文件下载
+     * @param：
+     * @date ： 2017-12-06 21:54:06
+     */
+
     @Override
     public  void  downDataUrl(String  usrSn,String dataSet,String fileName,String usrCode,HttpServletResponse response)throws AlgException{
 /*        log.info("用户usrSn:{},用户数据集:{},accessKey:{},secretKey:{},path:{},用户usrCode{},文件名称：{}",usrSn,dataSet,accessKey,secretKey,path,usrCode,fileName);
