@@ -232,11 +232,11 @@ public class ModuleController extends BaseController {
      * @author xialf
      */
     @GetMapping(value = "/{usrCode}/{modId}/publish", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result getAlgModuleVersion(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String verMark) throws AlgException {
+    public Result getAlgModuleVersion(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode) throws AlgException {
         //权限验证
         AlgUser algUser = getUserInfo();
         authService.isModuleByUser(algUser.getUsrCode(), modId);
-        Map<String, Object> algModuleVersionMap = publishService.getAlgModuleVersion(modId, usrCode, verMark);
+        Map<String, Object> algModuleVersionMap = publishService.getAlgModuleVersion(modId, usrCode);
         return Result.ok(algModuleVersionMap);
     }
 }

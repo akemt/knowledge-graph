@@ -96,18 +96,18 @@ public class PublishServiceImpl implements PublishService {
     }
 
     @Override
-    public Map<String, Object> getAlgModuleVersion(String modId, String usrCode, String verMark) throws AlgException {
+    public Map<String, Object> getAlgModuleVersion(String modId, String usrCode) throws AlgException {
         log.info("获取最新的版本 getAlgModuleVersion:ModId:" + modId + ",usrCode:" + usrCode);
         AlgUser algUser = algUserMapper.selectUsrCode(usrCode);
         if ((Assert.isNULL(algUser))) {
             log.warn("获取最新的版本getAlgModuleVersion-selectUsrCodeByUsrCode is null");
-            throw new AlgException("获取最新的版本 getAlgModuleVersion-selectUsrCodeByUsrCode is null");
+            throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
         }
         //获取最新的版本
         AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(), modId);
         if ((Assert.isNULL(algModule))) {
             log.warn("获取最新的版本getAlgModuleVersion-selectByUsrSnAndModId  is null");
-            throw new AlgException("获取最新的版本 getAlgModuleVersion-selectByUsrSnAndModId is null");
+            throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
         }
         AlgModuleVersion algModuleVersion = algModuleVersionMapper.queryLatestVersion(algModule.getModSn());
         //组装版本号
@@ -125,7 +125,7 @@ public class PublishServiceImpl implements PublishService {
 
         } else {
             log.warn("获取最新的版本getAlgModuleVersion-queryLatestVersion is null");
-            throw new AlgException("获取最新的版本 getAlgModuleVersion-queryLatestVersion is null");
+            throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
         }
         return map;
     }

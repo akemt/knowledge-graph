@@ -32,11 +32,10 @@ public interface PublishService {
      *
      * @param modId
      * @param usrCode
-     * @param verMark
      * @return
      * @throws AlgException
      * @author xialf
      */
-    Map<String, Object> getAlgModuleVersion(String modId, String usrCode, String verMark) throws AlgException;
+    Map<String, Object> getAlgModuleVersion(String modId, String usrCode) throws AlgException;
 
 }
