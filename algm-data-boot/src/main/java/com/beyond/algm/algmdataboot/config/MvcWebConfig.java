@@ -41,4 +41,6 @@ public class MvcWebConfig extends WebMvcConfigurerAdapter {
         resolver.setMaxUploadSize(50*1024*1024);//上传文件大小 50M 50*1024*1024
         return resolver;
     }
+
+
 }

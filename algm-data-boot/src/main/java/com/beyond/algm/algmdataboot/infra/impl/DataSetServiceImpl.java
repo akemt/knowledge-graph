@@ -3,10 +3,9 @@ package com.beyond.algm.algmdataboot.infra.impl;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.beyond.algm.algmdataboot.util.CephUtil;
-import com.beyond.algm.common.Assert;
-import com.beyond.algm.common.FileUtil;
-import com.beyond.algm.common.Result;
+import com.beyond.algm.common.*;
 import com.beyond.algm.algmdataboot.infra.DataSetService;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgDataMapper;
@@ -24,8 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.io.File;
-import java.math.BigDecimal;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -217,7 +217,7 @@ public class DataSetServiceImpl implements DataSetService {
      */
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public void uploadDateSet(MultipartFile file, String usrCode,String dataSetName,String dataUuid) throws AlgException{
+    public void uploadDateSet(MultipartFile file, String usrCode,String dataSetName,String dataSetUuid,String usrSn) throws AlgException{
         Float count=algUserMapper.selectCountSpace(usrCode);
         Float fileSize= FileUtil.bytes2kb(file.getSize());
           // 上传文件大于用户所剩存储空间
@@ -226,7 +226,7 @@ public class DataSetServiceImpl implements DataSetService {
              throw new AlgException("BEYOND.ALG.DATA.FILE.SPACE.0000007",checkMessage);
 
          }
-        log.info("文件名:{},用户code:{},accessKey:{},secretKey:{},path:{},数据集合名称",file.getOriginalFilename(),usrCode,accessKey,secretKey,path,dataSetName);
+        log.info("文件名:{},用户code:{},accessKey:{},secretKey:{},path:{},数据集合名称:{},数据集id:{},用户ID",file.getOriginalFilename(),usrCode,accessKey,secretKey,path,dataSetName,dataSetUuid,usrSn);
         File targetFile = new File(path+file.getOriginalFilename());
         if (!targetFile.exists()) {
             targetFile.mkdirs();
@@ -247,35 +247,26 @@ public class DataSetServiceImpl implements DataSetService {
         conn.putObject(bucketName,key,targetFile);
         conn.setObjectAcl(bucketName,key, CannedAccessControlList.PublicRead);
         String pathUrl=  conn.getUrl(bucketName,key).toString();
+        pathUrl= pathUrl.replace("http","data");
+        // 替换
         log.info("保存路径：{}",pathUrl);
         AlgUser user=new AlgUser();
+         // 增加占用空间
         user.setUsrCode(usrCode);
         user.setUsrUsedSpace(fileSize);
         algUserMapper.updateSpace(user);
         AlgData algData=new AlgData();
-        algData.setDataSn(dataUuid);
+        String uuid= UUIDUtil.createUUID();
+        log.info("生成数据主键:{}",uuid);
+        algData.setDataSn(uuid);
+        algData.setCreatTime(new Date());
+        algData.setDataName(file.getOriginalFilename());
+        algData.setUsrSn(usrSn);
+        algData.setDataSetSn(dataSetUuid);
         algData.setDataAddr(pathUrl);
-        algData.setDataSize(count.toString());
-        algDataMapper.update(algData);
+        algData.setDataSize(fileSize.toString());
+        algDataMapper.insert(algData);
         targetFile.delete();
-    }
-
-    private File saveFile(MultipartFile file) {
-        // 判断文件是否为空
-        if (!file.isEmpty()) {
-            try {
-                // 文件保存路径
-                String filePath = path+file.getOriginalFilename();
-                File targetFile = new File(filePath);
-                // 转存文件
-                file.transferTo(new File(filePath));
-                return targetFile;
-            } catch (Exception e) {
-                log.info("文件转存错误",e);
-
-            }
-        }
-        return null;
     }
     /**
      * @author ：zhangchuanzhi
@@ -293,5 +284,91 @@ public class DataSetServiceImpl implements DataSetService {
       return  count;
     }
 
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:获取数据集主键
+     * @param： String dataSn
+     * @date ： 2017-12-06 21:54:06
+     */
+    @Override
+    public List<AlgDataSet>  dataSetId(String usrSn,String dataSetName ) throws AlgException{
+        List<AlgDataSet> algDataSetList=algDataSetMapper.dataSetId(usrSn,dataSetName);
+        if(Assert.isEmpty(algDataSetList)){
+            String[] checkMessage = {" 查询结果为空",""};
+            throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);
+        }
+        return algDataSetList;
+    }
 
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:获取数据url
+     * @param： String algData
+     * @date ： 2017-12-06 21:54:06
+     */
+    @Override
+    public String  dataUrl(AlgData algData)throws AlgException{
+        String url= algDataMapper.dataUrl(algData);
+        return url;
+    }
+    /**
+     * @author ：zhangchuanzhii
+     * @Description:数据文件下载
+     * @param：
+     * @date ： 2017-12-06 21:54:06
+     */
+
+    @Override
+    public  void  downDataUrl(String  usrSn,String dataSet,String fileName,String usrCode,HttpServletResponse response)throws AlgException{
+/*        log.info("用户usrSn:{},用户数据集:{},accessKey:{},secretKey:{},path:{},用户usrCode{},文件名称：{}",usrSn,dataSet,accessKey,secretKey,path,usrCode,fileName);
+        List<AlgDataSet> algDataList =dataSetId(usrSn,dataSet);
+        AlgData algData=new AlgData();
+        algData.setUsrSn(usrSn);
+        algData.setDataName(fileName);
+        String url="";
+        for(AlgDataSet algDataSet:algDataList){
+            algData.setDataSn(algDataSet.getDataSetSn());
+            url=dataUrl(algData);
+            if(Assert.isNotEmpty(url)){
+                break;
+            }
+        }*/
+        String url=host+"/"+usrCode+"/"+dataSet+"/"+fileName;
+        log.info("生成url:{}",url);
+        if(Assert.isNotEmpty(url)){
+            AmazonS3 conn= CephUtil.connectCeph(accessKey,secretKey,host);
+            // 数据集+文件名
+            String key=dataSet+"/"+fileName;
+            File downloadFile=new File(path+fileName);
+            conn.getObject(
+                    new GetObjectRequest(usrCode, key),
+                    downloadFile
+            );
+            //设置响应头和客户端保存文件名
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("multipart/form-data");
+            response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
+            try {
+                //打开本地文件流
+                InputStream inputStream = new FileInputStream(downloadFile);
+                //激活下载操作
+                OutputStream os = response.getOutputStream();
+
+                //循环写入输出流
+                byte[] b = new byte[2048];
+                int length;
+                while ((length = inputStream.read(b)) > 0) {
+                    os.write(b, 0, length);
+                }
+
+                // 这里主要关闭。
+                os.close();
+                inputStream.close();
+            } catch (Exception e){
+            }
+        }else{
+            String[] checkMessage = {" 查询结果为空",""};
+            throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);
+        }
+    }
 }

@@ -118,7 +118,8 @@
     select count(*)
     from alg_data
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
-    and data_en_name=#{dataEnName,jdbcType=VARCHAR}
+    and data_set_sn=#{dataSetSn,jdbcType=VARCHAR}
+    and data_name=#{dataName,jdbcType=VARCHAR}
   </select>
 
   <update id="update" parameterType="com.beyond.algm.model.AlgData" >
@@ -129,6 +130,12 @@
       data_addr = #{dataAddr,jdbcType=VARCHAR}
     where data_sn = #{dataSn,jdbcType=VARCHAR}
   </update>
-
+  <select id="dataUrl" resultType="java.lang.String" parameterType="com.beyond.algm.model.AlgData" >
+    select data_addr
+    from alg_data
+    where
+         usr_sn = #{usrSn,jdbcType=VARCHAR}
+        and data_name = #{dataName,jdbcType=VARCHAR}
+  </select>
 
 </mapper>

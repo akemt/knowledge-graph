@@ -46,4 +46,11 @@
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
     group by usr_sn
   </select>
+
+
+ <select id="dataSetId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select data_set_sn
+    from alg_data_set
+    where usr_sn = #{arg0,jdbcType=VARCHAR} and data_set_name = #{arg1,jdbcType=VARCHAR}
+  </select>
 </mapper>

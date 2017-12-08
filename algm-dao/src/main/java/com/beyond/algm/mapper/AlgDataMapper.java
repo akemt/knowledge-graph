@@ -32,5 +32,6 @@ public interface AlgDataMapper {
     int checkFileName(AlgData data);
 
     int update(AlgData record);
+     String  dataUrl(AlgData record);
 
 }
