@@ -96,36 +96,38 @@ public class PublishServiceImpl implements PublishService {
     }
 
     @Override
-    public Map<String, Object> getAlgModuleVersion(String modId, String usrCode, String verMark) throws AlgException {
+    public Map<String, Object> getAlgModuleVersion(String modId, String usrCode) throws AlgException {
         log.info("获取最新的版本 getAlgModuleVersion:ModId:" + modId + ",usrCode:" + usrCode);
         AlgUser algUser = algUserMapper.selectUsrCode(usrCode);
         if ((Assert.isNULL(algUser))) {
             log.warn("获取最新的版本getAlgModuleVersion-selectUsrCodeByUsrCode is null");
-            throw new AlgException("获取最新的版本 getAlgModuleVersion-selectUsrCodeByUsrCode is null");
+            throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
         }
         //获取最新的版本
         AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(), modId);
         if ((Assert.isNULL(algModule))) {
             log.warn("获取最新的版本getAlgModuleVersion-selectByUsrSnAndModId  is null");
-            throw new AlgException("获取最新的版本 getAlgModuleVersion-selectByUsrSnAndModId is null");
+            throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
         }
         AlgModuleVersion algModuleVersion = algModuleVersionMapper.queryLatestVersion(algModule.getModSn());
         //组装版本号
+        Map<String, Object> mapVer = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         if ((Assert.isNotNULL(algModuleVersion))) {
             log.info("获取最新的版本getAlgModuleVersion:current verSn: {} ", algModuleVersion.getVerSn());
             //高版本-HighVersion
-            map.put("H", (algModuleVersion.getVerCodeL1() + 1) + ".0.0");
+            mapVer.put("H", (algModuleVersion.getVerCodeL1() + 1) + ".0.0");
             //中版本-MiddleVersion
-            map.put("M", "0." + (algModuleVersion.getVerCodeL2() + 1) + ".0");
+            mapVer.put("M", "0." + (algModuleVersion.getVerCodeL2() + 1) + ".0");
             //低版本-LowVersion
-            map.put("L", "0.0." + (algModuleVersion.getVerCodeL3() + 1));
+            mapVer.put("L", "0.0." + (algModuleVersion.getVerCodeL3() + 1));
+            map.put("VerCode",mapVer);
             //显示版本费用
             map.put("VerLoyaltyFee", algModuleVersion.getVerLoyaltyFee());
 
         } else {
             log.warn("获取最新的版本getAlgModuleVersion-queryLatestVersion is null");
-            throw new AlgException("获取最新的版本 getAlgModuleVersion-queryLatestVersion is null");
+            throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
         }
         return map;
     }
