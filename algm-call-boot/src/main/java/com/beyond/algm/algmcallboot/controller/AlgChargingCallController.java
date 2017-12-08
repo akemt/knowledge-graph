@@ -27,6 +27,7 @@ public class AlgChargingCallController {
     @RequestMapping(value = "/{usrCode}/{modId}/{version:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result algChargingCall(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId,
                                   @PathVariable("version") String version, String keyValue) throws AlgException{
+        log.info("用户名:{},项目ID:{},版本:{},key:{}", usrCode, modId, version, keyValue);
         AlgResult algResult = algChargingCallService.addChargingCall(usrCode,modId,version,keyValue);
         return Result.ok(algResult);
     }

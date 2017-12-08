@@ -4,9 +4,11 @@ import com.beyond.algm.algmalgorithmsboot.adapter.infra.PublishAdapter;
 import com.beyond.algm.algmalgorithmsboot.infra.*;
 import com.beyond.algm.algmalgorithmsboot.model.PublishConfigModel;
 import com.beyond.algm.common.AdapterUtil;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.constant.Constant;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgModuleMapper;
+import com.beyond.algm.mapper.AlgModuleVersionMapper;
 import com.beyond.algm.mapper.AlgProgramLangMapper;
 import com.beyond.algm.mapper.AlgUserMapper;
 import com.beyond.algm.model.AlgModule;
@@ -20,6 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -41,6 +45,8 @@ public class PublishServiceImpl implements PublishService {
     private PathService pathService;
     @Autowired
     private MvnService mvnService;
+    @Autowired
+    private AlgModuleVersionMapper algModuleVersionMapper;
     @Autowired
     KubernetesService kubernetesService;
     @Value("${spring.profiles.active}")
@@ -85,8 +91,48 @@ public class PublishServiceImpl implements PublishService {
         log.debug("come in module push image ...");
         dockerService.pushDockerImageToHarbor(modId,usrCode,version);
 
-        //TODO：启动k8slog.info("pull docker image success,image tag is :{}",dockerService.getDockerTag(modId,usrCode,version));
+        log.info("pull docker image success,image tag is :{}",dockerService.getDockerTag(modId,usrCode,version));
+        //创建pod
         kubernetesService.makeK8sPod(modId,usrCode,version);
+        //创建service
+        kubernetesService.makeK8sService(modId,usrCode,version);
+    }
+
+    @Override
+    public Map<String, Object> getAlgModuleVersion(String modId, String usrCode) throws AlgException {
+        log.info("获取最新的版本 getAlgModuleVersion:ModId:" + modId + ",usrCode:" + usrCode);
+        AlgUser algUser = algUserMapper.selectUsrCode(usrCode);
+        if ((Assert.isNULL(algUser))) {
+            log.warn("获取最新的版本getAlgModuleVersion-selectUsrCodeByUsrCode is null");
+            throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
+        }
+        //获取最新的版本
+        AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(), modId);
+        if ((Assert.isNULL(algModule))) {
+            log.warn("获取最新的版本getAlgModuleVersion-selectByUsrSnAndModId  is null");
+            throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
+        }
+        AlgModuleVersion algModuleVersion = algModuleVersionMapper.queryLatestVersion(algModule.getModSn());
+        //组装版本号
+        Map<String, Object> mapVer = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        if ((Assert.isNotNULL(algModuleVersion))) {
+            log.info("获取最新的版本getAlgModuleVersion:current verSn: {} ", algModuleVersion.getVerSn());
+            //高版本-HighVersion
+            mapVer.put("H", (algModuleVersion.getVerCodeL1() + 1) + ".0.0");
+            //中版本-MiddleVersion
+            mapVer.put("M", "0." + (algModuleVersion.getVerCodeL2() + 1) + ".0");
+            //低版本-LowVersion
+            mapVer.put("L", "0.0." + (algModuleVersion.getVerCodeL3() + 1));
+            map.put("VerCode",mapVer);
+            //显示版本费用
+            map.put("VerLoyaltyFee", algModuleVersion.getVerLoyaltyFee());
+
+        } else {
+            log.warn("获取最新的版本getAlgModuleVersion-queryLatestVersion is null");
+            throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
+        }
+        return map;
     }
 
     private String getVersionStr(AlgModuleVersion algModuleVersion){

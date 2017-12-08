@@ -7,12 +7,14 @@ import com.beyond.algm.algmcallboot.repository.*;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 public class AlgChargingCallServiceImpl implements AlgChargingCallService {
     @Autowired
     private AlgUserRepository algUserRepository;
@@ -40,37 +42,45 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
         AlgResult algResult =new AlgResult();
         //获取用户信息
         AlgUser algUser =algUserRepository.findByUsrCode(usrCode);
+        log.info("获取用户信息，用户名:{},中文名:{}", algUser.getUsrCode(), algUser.getUsrName());
         //获取调用者的串号
         String usrSn = algAuthCodeRepository.findByAcdId(keyValue);
+        log.info("获取调用者的串号:{}", usrSn);
         //权限验证
         if(!isPower(algUser,modId,version,keyValue)){
              algResult.setResult("没有权限。");
             return algResult;
         }
+        log.info("权限验证通过");
 
         //获取该项目的algModule对象
         AlgModule algModule =algModuleRepository.findByModSn(algUser.getUsrSn(),modId);
+        log.info("获取该项目的algModule对象，modId:{}", algModule.getModId());
+
         //分解版本
         Integer verCodeL1 = Integer.valueOf(version.substring(0,version.indexOf(".")));
         Integer verCodeL2 = Integer.valueOf(version.substring(version.indexOf(".")+1,version.indexOf(".",
                 version.lastIndexOf("."))));
         Integer verCodeL3 = Integer.valueOf(version.substring(version.lastIndexOf(".")+1,version.length()));
+        log.info("分解版本，verCodeL1:{},verCodeL2:{},verCodeL3:{}", verCodeL1, verCodeL2, verCodeL3);
 
         //判断调用的方法是否存在。
         if(!isVersion(algModule.getModSn(),verCodeL1,verCodeL2,verCodeL3)){
             algResult.setResult("该调用的方法不存在。");
             return algResult;
         }
+        log.info("调用的方法存在");
 
         //获取版本信息
         AlgModuleVersion algModuleVersion = algModuleVersionRepository.verLoyaltyFee(algModule.getModSn(),verCodeL1,verCodeL2,verCodeL3);
-
+        log.info("分解版本，verCodeL1:{},verCodeL2:{},verCodeL3:{}", verCodeL1, verCodeL2, verCodeL3);
 
         //判断public还是private；
         if("0".equals(algModuleVersion.getIsOwn())){
             algResult.setResult("该算法不公开，不可调用。");
             return algResult;
         }
+        log.info("判断是public");
 
         //查询平台收费单价
         String unitPrice = algDicRepository.findByDicSn("price","price_default");
@@ -93,6 +103,7 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
 
         //查询用户当前积分信息。
         AlgAccount algAccount = algAccountRepository.findByUsrSn(algUser.getUsrSn());
+        log.info("查询用户当前积分信息,积分串号:{}", algAccount.getAccSn());
 
         //计算调用总价钱
         Float total = Float.valueOf(unitPrice).floatValue() * timeDif + algModuleVersion.getVerLoyaltyFee();
@@ -112,7 +123,9 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
 
             //rocketMq发送一条信息
             try {
+                log.info("rocketMQ开始发送数据");
                 rocketMQService.modCallProducer(algUserCall);
+                log.info("rocketMQ发送数据成功");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -123,7 +136,7 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
             //todo 加对象锁，防止用户账户损失
             //更新用户账户余额
             int flg = algAccountRepository.updateUsrSnByCashBal(remainingCost,algUser.getUsrSn());
-
+            log.info("更新用户账户余额是否成功:{}", flg);
             if( flg < 0){
                 algResult.setResult("余额扣除失败，调用失败。");
                 return algResult;

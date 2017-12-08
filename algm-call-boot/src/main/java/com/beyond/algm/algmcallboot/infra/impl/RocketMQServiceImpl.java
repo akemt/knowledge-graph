@@ -19,6 +19,7 @@ public class RocketMQServiceImpl implements RocketMQService {
     private DefaultMQProducer defaultMQProducer;
 
     public void modCallProducer(JSONObject algUserCall) throws Exception{
+        log.info("rocketMQ：开始准备数据");
         Message msg = new Message("Topic_no1",// topic
                 "TEST",// tag
                 "KKK",//key用于标识业务的唯一性
@@ -27,6 +28,7 @@ public class RocketMQServiceImpl implements RocketMQService {
         SendResult result = null;
         try {
             result = defaultMQProducer.send(msg);
+            log.info("rocketMQ：发送完毕");
         } catch (MQClientException e) {
             e.printStackTrace();
         } catch (RemotingException e) {

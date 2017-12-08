@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
@@ -66,5 +67,19 @@ public class ModuleControllerTest {
                 .param("password","12345678"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
+    }
+
+    /**
+     * 发布接口-发布版本号、计算版权费用
+     * @throws Exception
+     */
+   @Test
+    public void getAlgModuleVersion() throws Exception {
+       String result = this.mockMvc.perform(get("/erniu4/11111/publish").contentType(MediaType.APPLICATION_JSON)
+//               .param("modId","TestJavaO1")
+//               .param("usrCode","erniu4")
+       )
+               .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+       System.out.println(result);
     }
 }
