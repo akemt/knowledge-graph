@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algm.mapper.AlgRUserDataCallTransMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algm.model.AlgRUserDataCallTrans" >
+    <id column="umc_sn" property="umcSn" jdbcType="VARCHAR" />
+    <result column="data_sn" property="dataSn" jdbcType="VARCHAR" />
+    <result column="call_usr_sn" property="callUsrSn" jdbcType="VARCHAR" />
+    <result column="owner_usr_sn" property="ownerUsrSn" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="duration" property="duration" jdbcType="BIGINT" />
+    <result column="call_pay_amount" property="callPayAmount" jdbcType="REAL" />
+    <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_r_user_data_call_trans
+    where umc_sn = #{umcSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algm.model.AlgRUserDataCallTrans" >
+    insert into alg_r_user_data_call_trans (umc_sn, data_sn, call_usr_sn, 
+      owner_usr_sn, start_time, end_time, 
+      duration, call_pay_amount, creat_time
+      )
+    values (#{umcSn,jdbcType=VARCHAR}, #{dataSn,jdbcType=VARCHAR}, #{callUsrSn,jdbcType=VARCHAR}, 
+      #{ownerUsrSn,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{duration,jdbcType=BIGINT}, #{callPayAmount,jdbcType=REAL}, #{creatTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgRUserDataCallTrans" >
+    update alg_r_user_data_call_trans
+    set data_sn = #{dataSn,jdbcType=VARCHAR},
+      call_usr_sn = #{callUsrSn,jdbcType=VARCHAR},
+      owner_usr_sn = #{ownerUsrSn,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      duration = #{duration,jdbcType=BIGINT},
+      call_pay_amount = #{callPayAmount,jdbcType=REAL},
+      creat_time = #{creatTime,jdbcType=TIMESTAMP}
+    where umc_sn = #{umcSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select umc_sn, data_sn, call_usr_sn, owner_usr_sn, start_time, end_time, duration, 
+    call_pay_amount, creat_time
+    from alg_r_user_data_call_trans
+    where umc_sn = #{umcSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select umc_sn, data_sn, call_usr_sn, owner_usr_sn, start_time, end_time, duration, 
+    call_pay_amount, creat_time
+    from alg_r_user_data_call_trans
+  </select>
+</mapper>
