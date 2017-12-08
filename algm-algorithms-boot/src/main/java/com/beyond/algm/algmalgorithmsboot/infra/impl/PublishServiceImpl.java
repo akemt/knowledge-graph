@@ -114,15 +114,17 @@ public class PublishServiceImpl implements PublishService {
         }
         AlgModuleVersion algModuleVersion = algModuleVersionMapper.queryLatestVersion(algModule.getModSn());
         //组装版本号
+        Map<String, Object> mapVer = new HashMap<String, Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         if ((Assert.isNotNULL(algModuleVersion))) {
             log.info("获取最新的版本getAlgModuleVersion:current verSn: {} ", algModuleVersion.getVerSn());
             //高版本-HighVersion
-            map.put("H", (algModuleVersion.getVerCodeL1() + 1) + ".0.0");
+            mapVer.put("H", (algModuleVersion.getVerCodeL1() + 1) + ".0.0");
             //中版本-MiddleVersion
-            map.put("M", "0." + (algModuleVersion.getVerCodeL2() + 1) + ".0");
+            mapVer.put("M", "0." + (algModuleVersion.getVerCodeL2() + 1) + ".0");
             //低版本-LowVersion
-            map.put("L", "0.0." + (algModuleVersion.getVerCodeL3() + 1));
+            mapVer.put("L", "0.0." + (algModuleVersion.getVerCodeL3() + 1));
+            map.put("VerCode",mapVer);
             //显示版本费用
             map.put("VerLoyaltyFee", algModuleVersion.getVerLoyaltyFee());
 

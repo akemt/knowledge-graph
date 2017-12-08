@@ -1,5 +1,7 @@
 package com.beyond.algm.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class AlgData {
@@ -13,6 +15,7 @@ public class AlgData {
 
     private String dataEnName;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date creatTime;
 
     private String dataSize;
