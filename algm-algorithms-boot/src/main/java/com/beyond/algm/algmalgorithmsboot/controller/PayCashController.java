@@ -7,6 +7,7 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgCashTrans;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.PayRecordVo;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.util.List;
  * @date ：16:00 2017/10/11
  */
 @RestController
+@Slf4j
 public class PayCashController extends BaseController {
     private final static Logger logger = LoggerFactory.getLogger(PayCashController.class);
 
@@ -67,6 +69,7 @@ public class PayCashController extends BaseController {
     @RequestMapping(value="/recharge", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result recharge(AlgCashTrans algCashTrans) throws AlgException {
         AlgUser algUser = getUserInfo();
+        log.info("充值的现金： {} ", algCashTrans.getCashPayAmount());
         payCashService.recharge(algCashTrans,algUser);
         return Result.successResponse();
     }

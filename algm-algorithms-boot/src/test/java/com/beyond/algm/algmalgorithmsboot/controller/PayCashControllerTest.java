@@ -67,7 +67,7 @@ public class PayCashControllerTest {
     @Test
     public void recharge() throws Exception{
         String result = this.mockMvc.perform(post("/recharge").contentType(MediaType.APPLICATION_JSON)
-                .param("freeBal","5.2f"))
+                .param("cashPayAmount","5.2f"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
