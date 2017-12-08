@@ -4,12 +4,10 @@ import com.beyond.algm.algmalgorithmsboot.infra.DockerService;
 import com.beyond.algm.algmalgorithmsboot.infra.KubernetesService;
 import com.beyond.algm.exception.AlgException;
 import io.fabric8.kubernetes.api.model.*;
-import io.fabric8.kubernetes.client.*;
-import io.fabric8.kubernetes.client.Config;
-import io.fabric8.kubernetes.client.ConfigBuilder;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -23,18 +21,17 @@ import java.util.Map;
 @Slf4j
 @Service
 public class KubernetesServiceImpl implements KubernetesService {
-    @Value("${k8s.host}")
-    private String k8sHost;
+
+    @Autowired
+    KubernetesClient client;
 
     @Autowired
     private DockerService dockerService;
 
     public void makeK8sPod(String modId, String usrCode, String version) throws AlgException{
 
-        Config config = new ConfigBuilder().withMasterUrl(k8sHost).build();
-
         try{
-            KubernetesClient client = new DefaultKubernetesClient(config);
+
             //创建命名空间
             Namespace namespace = new NamespaceBuilder().withNewMetadata().withName(usrCode.toLowerCase()).and().build();
             client.namespaces().createOrReplace(namespace);
@@ -83,17 +80,14 @@ public class KubernetesServiceImpl implements KubernetesService {
     public void makeK8sService(String modId, String usrCode, String version) throws AlgException{
         Map<String,String> map = new HashMap<String,String>();
         map.put("app",getUsrCodeModIdVersion(modId, usrCode, version));
-        Config config = new ConfigBuilder().withMasterUrl(k8sHost).build();
-
         try {
-            KubernetesClient client = new DefaultKubernetesClient(config);
             io.fabric8.kubernetes.api.model.Service service = new ServiceBuilder()
                     .withKind("Service")
                     .withApiVersion("v1")
                     .withNewMetadata()
                         .withLabels(map)
-                        .withName(usrCode.toLowerCase())
-                        .withNamespace(getUsrCodeModIdVersion(modId, usrCode, version))
+                        .withName(getServiceName(modId, usrCode, version))
+                        .withNamespace(usrCode.toLowerCase())
                     .endMetadata()
                     .withNewSpec()
                         .withType("NodePort")
@@ -111,7 +105,19 @@ public class KubernetesServiceImpl implements KubernetesService {
     }
 
     private String getUsrCodeModIdVersion(String modId, String usrCode, String version){
-        return modId.toLowerCase()+usrCode.toLowerCase()+version;
+        return usrCode.toLowerCase()+"-"+modId.toLowerCase()+"-"+version;
+    }
+
+    /**
+     *  因为 k8s service 命名规则不允许 . 此处把 . 替换成 -
+     * @param modId
+     * @param usrCode
+     * @param version
+     * @return
+     */
+    private String getServiceName(String modId, String usrCode, String version){
+        String args [] = version.split("\\.");
+        return usrCode.toLowerCase()+"-"+modId.toLowerCase()+"-"+args[0]+"-"+args[1]+"-"+args[2];
     }
 
 }

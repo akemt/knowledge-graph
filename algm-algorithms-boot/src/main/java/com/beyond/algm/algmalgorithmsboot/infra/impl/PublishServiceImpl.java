@@ -91,8 +91,11 @@ public class PublishServiceImpl implements PublishService {
         log.debug("come in module push image ...");
         dockerService.pushDockerImageToHarbor(modId,usrCode,version);
 
-        //TODO：启动k8slog.info("pull docker image success,image tag is :{}",dockerService.getDockerTag(modId,usrCode,version));
+        log.info("pull docker image success,image tag is :{}",dockerService.getDockerTag(modId,usrCode,version));
+        //创建pod
         kubernetesService.makeK8sPod(modId,usrCode,version);
+        //创建service
+        kubernetesService.makeK8sService(modId,usrCode,version);
     }
 
     @Override
