@@ -48,7 +48,6 @@ public class PayCashControllerTest {
         System.out.println(result);
     }
 
-
     /**
      * @author ：lindw
      * @Description:用户注册，赠送积分
@@ -56,6 +55,18 @@ public class PayCashControllerTest {
     @Test
     public void payCash() throws Exception{
         String result = this.mockMvc.perform(post("/presentcash").contentType(MediaType.APPLICATION_JSON)
+                .param("freeBal","5.2f"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+    /**
+     * @author ：lindw
+     * @Description:积分充值
+     */
+    @Test
+    public void recharge() throws Exception{
+        String result = this.mockMvc.perform(post("/recharge").contentType(MediaType.APPLICATION_JSON)
                 .param("freeBal","5.2f"))
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
