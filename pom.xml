@@ -14,6 +14,7 @@
         <module>algm-algorithms-boot</module>
         <module>algm-data-boot</module>
         <module>algm-call-boot</module>
+        <module>algm-quartz-boot</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

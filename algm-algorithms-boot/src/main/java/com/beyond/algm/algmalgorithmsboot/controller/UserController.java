@@ -49,21 +49,6 @@ public class UserController  extends BaseController {
 
     /**
      * @author ：zhangchuanzhi
-     * @Description:用户登录处理
-     * @param：User
-     * @Modify By :zhangchuanzhi
-     * @date ：8:49 2017/9/27
-     */
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result userLogin(AlgUser user)throws AlgException,Exception {
-        log.info("用户编码:{},用户密码:{}", user.getUsrCode(), user.getPasswd());
-        userService.userLogin(user);
-        return  Result.successResponse();
-
-    }
-
-    /**
-     * @author ：zhangchuanzhi
      * @Description:用户修改密码
      * @param：User
      * @Modify By :zhangchuanzhi
@@ -135,7 +120,7 @@ public class UserController  extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/11/24
      */
-    @RequestMapping(value = "/getUserLogInfor", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/user", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result getUserLogInfor() throws AlgException{
         AlgUser algUser = getUserInfo();
         if(Assert.isNotNULL(algUser)){
