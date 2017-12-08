@@ -36,21 +36,21 @@ public class KubernetesServiceImpl implements KubernetesService {
         try{
             KubernetesClient client = new DefaultKubernetesClient(config);
             //创建命名空间
-            Namespace namespace = new NamespaceBuilder().withNewMetadata().withName(usrCode).and().build();
+            Namespace namespace = new NamespaceBuilder().withNewMetadata().withName(usrCode.toLowerCase()).and().build();
             client.namespaces().createOrReplace(namespace);
 
             log.info("k8s namespaces : {}",client.namespaces().list().toString());
 
             Map<String,String> map = new HashMap<String,String>();
-            map.put("app",usrCode + "" + modId + "-" + version);
+            map.put("app",getUsrCodeModIdVersion(modId, usrCode, version));
 
             ReplicationController replicationController = new ReplicationControllerBuilder()
                     .withApiVersion("v1")
                     .withKind("ReplicationController")
                     .withNewMetadata()
                         .withLabels(map)
-                        .withName(usrCode)
-                        .withNamespace(usrCode)
+                        .withName(getUsrCodeModIdVersion(modId, usrCode, version))
+                        .withNamespace(usrCode.toLowerCase())
                         .endMetadata()
                     .withNewSpec()
                         .withReplicas(1)
@@ -61,11 +61,12 @@ public class KubernetesServiceImpl implements KubernetesService {
                             .endMetadata()
                             .withNewSpec()
                                 .addNewContainer()
-                                    .withName(usrCode)
+                                    .withName(usrCode.toLowerCase())
                                     .withImage(dockerService.getDockerTag(modId,usrCode,version))
                                     .withImagePullPolicy("Always")
                                     .withPorts(new ContainerPortBuilder().withContainerPort(8080).build())
                                 .endContainer()
+                                .addNewImagePullSecret("myregistrykey")
                                 .addToImagePullSecrets(new LocalObjectReferenceBuilder().withName("myregistrykey").build())
                             .endSpec()
                         .endTemplate()
@@ -81,7 +82,7 @@ public class KubernetesServiceImpl implements KubernetesService {
 
     public void makeK8sService(String modId, String usrCode, String version) throws AlgException{
         Map<String,String> map = new HashMap<String,String>();
-        map.put("app",usrCode + "" + modId + "-" + version);
+        map.put("app",getUsrCodeModIdVersion(modId, usrCode, version));
         Config config = new ConfigBuilder().withMasterUrl(k8sHost).build();
 
         try {
@@ -91,8 +92,8 @@ public class KubernetesServiceImpl implements KubernetesService {
                     .withApiVersion("v1")
                     .withNewMetadata()
                         .withLabels(map)
-                        .withName(usrCode)
-                        .withNamespace(usrCode)
+                        .withName(usrCode.toLowerCase())
+                        .withNamespace(getUsrCodeModIdVersion(modId, usrCode, version))
                     .endMetadata()
                     .withNewSpec()
                         .withType("NodePort")
@@ -100,12 +101,17 @@ public class KubernetesServiceImpl implements KubernetesService {
                         .withSelector(map)
                     .endSpec()
                     .build();
+            client.services().delete(service);
             client.services().createOrReplace(service);
         }catch (Exception e){
             log.error(e.getMessage(),e);
             e.printStackTrace();
         }
 
+    }
+
+    private String getUsrCodeModIdVersion(String modId, String usrCode, String version){
+        return modId.toLowerCase()+usrCode.toLowerCase()+version;
     }
 
 }
