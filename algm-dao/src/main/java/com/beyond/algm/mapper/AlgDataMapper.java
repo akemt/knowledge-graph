@@ -1,6 +1,7 @@
 package com.beyond.algm.mapper;
 
 import com.beyond.algm.model.AlgData;
+import com.beyond.algm.vo.AlgDataVo;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.github.pagehelper.Page;
 
@@ -32,6 +33,6 @@ public interface AlgDataMapper {
     int checkFileName(AlgData data);
 
     int update(AlgData record);
-     String  dataUrl(AlgData record);
-
+    String  dataUrl(AlgData record);
+    String dataSn(AlgDataVo algDataVo);
 }
