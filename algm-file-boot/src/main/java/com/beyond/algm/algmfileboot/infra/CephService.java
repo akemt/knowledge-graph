@@ -9,7 +9,12 @@ import org.springframework.web.multipart.MultipartFile;
  * @date ：13:14 2017/11/27
  */
 public interface CephService {
-  // 图片上传
+  /**
+   *
+   * @param file
+   * @param usrCode
+   * @throws AlgException
+   */
   void upload(MultipartFile file, String usrCode) throws AlgException;
 
 }

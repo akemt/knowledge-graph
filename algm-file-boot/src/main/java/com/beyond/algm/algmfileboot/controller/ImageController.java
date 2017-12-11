@@ -28,7 +28,7 @@ public class ImageController extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/11/24
      */
-    @RequestMapping(value = "/upLoadImage", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/image/upload", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result uploadImage(MultipartFile file) throws AlgException {
         AlgUser algUser = getUserInfo();
         cephService.upload(file,algUser.getUsrCode());
