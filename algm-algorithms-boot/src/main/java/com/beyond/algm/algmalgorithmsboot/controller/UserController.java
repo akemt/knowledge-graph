@@ -1,11 +1,10 @@
 package com.beyond.algm.algmalgorithmsboot.controller;
 
 import com.beyond.algm.algmalgorithmsboot.base.BaseController;
-import com.beyond.algm.algmalgorithmsboot.infra.CephService;
+import com.beyond.algm.algmalgorithmsboot.infra.UserService;
 import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
-import com.beyond.algm.algmalgorithmsboot.infra.UserService;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.UserAccountVo;
@@ -16,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author ：zhangchuanzhi
@@ -31,8 +29,7 @@ public class UserController  extends BaseController {
     private UserService userService;
     @Autowired
     private ProjectConfigEntity projectConfigEntity;
-    @Autowired
-    private CephService cephService;
+
     /**
      * @author ：zhangchuanzhi
      * @Description:实现用户注册功能
@@ -132,18 +129,6 @@ public class UserController  extends BaseController {
             return Result.ok(0);
         }
     }
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:个人用户图片上传
-     * @param：accSn
-     * @Modify By :zhangchuanzhi
-     * @date ：9:14 2017/11/24
-     */
-    @RequestMapping(value = "/upLoadImage", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result uploadImage(MultipartFile file) throws AlgException{
-        AlgUser algUser = getUserInfo();
-        cephService.upload(file,algUser.getUsrCode());
-        return Result.successResponse();
-    }
+
 
 }
