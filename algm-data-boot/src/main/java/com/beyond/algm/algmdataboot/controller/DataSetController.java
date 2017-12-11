@@ -218,7 +218,6 @@ public class DataSetController extends BaseController {
         // 权限控制预留接口
         authService.isDataByUser(usrCode,algUser.getUsrCode(),algUser.getUsrSn(),dataSet,fileName);
         dataSetService.downDataUrl(algUser.getUsrSn(), dataSet, fileName,usrCode,response);
-
         return Result.successResponse();
     }
 }
