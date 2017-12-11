@@ -4,9 +4,12 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.beyond.algm.algmdataboot.util.CephUtil;
-import com.beyond.algm.common.*;
 import com.beyond.algm.algmdataboot.infra.DataSetService;
+import com.beyond.algm.algmdataboot.util.CephUtil;
+import com.beyond.algm.common.Assert;
+import com.beyond.algm.common.FileUtil;
+import com.beyond.algm.common.Result;
+import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgDataMapper;
 import com.beyond.algm.mapper.AlgDataSetMapper;
@@ -14,18 +17,21 @@ import com.beyond.algm.mapper.AlgUserMapper;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
+import com.beyond.algm.vo.AlgDifDataListVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.beans.factory.annotation.Value;
-
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -186,10 +192,10 @@ public class DataSetServiceImpl implements DataSetService {
 
     //数据商城
     @Override
-    public Page<AlgData> algDataMall(String dataContent,Integer pageNum,Integer pageSize) throws AlgException {
+    public Page<AlgDifDataListVo> algDataMall(String dataContent, Integer pageNum, Integer pageSize) throws AlgException {
         //初步设定用数据库进行排序查询
         PageHelper.startPage(pageNum,pageSize);
-        Page<AlgData> allAlgData = algDataMapper.findAlgDataMall(dataContent);
+        Page<AlgDifDataListVo> allAlgData = algDataMapper.findAlgDataMall(dataContent);
         return allAlgData;
     }
 

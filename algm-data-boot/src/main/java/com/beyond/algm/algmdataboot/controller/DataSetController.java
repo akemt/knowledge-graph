@@ -2,17 +2,14 @@ package com.beyond.algm.algmdataboot.controller;
 
 
 import com.beyond.algm.algmdataboot.base.BaseController;
-
 import com.beyond.algm.algmdataboot.infra.DataSetService;
-
-import com.beyond.algm.common.Assert;
-import com.beyond.algm.common.NumCheckUtil;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.common.ResultEnum;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
+import com.beyond.algm.vo.AlgDifDataListVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -165,7 +162,7 @@ public class DataSetController extends BaseController {
         logger.info("数据搜索名：{}",dataContent);
         pageNum = pageNum == null ? 1 : pageNum;
         pageSize = pageSize == null ? 10 : pageSize;
-        Page<AlgData> page = dataSetService.algDataMall(dataContent,pageNum,pageSize);
+        Page<AlgDifDataListVo> page = dataSetService.algDataMall(dataContent,pageNum,pageSize);
         PageInfo pageInfo = new PageInfo(page);
         return Result.ok(pageInfo);
     }
