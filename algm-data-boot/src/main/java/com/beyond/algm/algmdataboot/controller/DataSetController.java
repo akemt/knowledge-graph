@@ -3,16 +3,16 @@ package com.beyond.algm.algmdataboot.controller;
 
 import com.beyond.algm.algmdataboot.base.BaseController;
 
+import com.beyond.algm.algmdataboot.infra.AuthService;
 import com.beyond.algm.algmdataboot.infra.DataSetService;
 
-import com.beyond.algm.common.Assert;
-import com.beyond.algm.common.NumCheckUtil;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.common.ResultEnum;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
+import com.beyond.algm.vo.AlgDifDataListVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +45,8 @@ public class DataSetController extends BaseController {
 
     @Autowired
     private DataSetService dataSetService;
+    @Autowired
+    private AuthService authService;
     /**
      * @author ：Lindewei
      * @Description: 我的数据初始化
@@ -165,7 +167,7 @@ public class DataSetController extends BaseController {
         logger.info("数据搜索名：{}",dataContent);
         pageNum = pageNum == null ? 1 : pageNum;
         pageSize = pageSize == null ? 10 : pageSize;
-        Page<AlgData> page = dataSetService.algDataMall(dataContent,pageNum,pageSize);
+        Page<AlgDifDataListVo> page = dataSetService.algDataMall(dataContent,pageNum,pageSize);
         PageInfo pageInfo = new PageInfo(page);
         return Result.ok(pageInfo);
     }
@@ -215,8 +217,10 @@ public class DataSetController extends BaseController {
     @RequestMapping(value = "/{usrCode}/{dataSet}/{fileName}/downUpload", method = RequestMethod.GET)
     public Result dataDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("dataSet") String dataSet,@PathVariable("fileName") String fileName,HttpServletResponse response) throws AlgException {
         AlgUser algUser = getUserInfo();
-        dataSetService.downDataUrl(algUser.getUsrSn(), dataSet, fileName,usrCode,response);
         // 权限控制预留接口
+        authService.isDataByUser(usrCode,algUser.getUsrCode(),algUser.getUsrSn(),dataSet,fileName);
+        dataSetService.downDataUrl(algUser.getUsrSn(), dataSet, fileName,usrCode,response);
+
         return Result.successResponse();
     }
 }

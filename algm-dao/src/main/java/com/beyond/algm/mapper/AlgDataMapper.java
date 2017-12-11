@@ -28,7 +28,7 @@ public interface AlgDataMapper {
     List<AlgDifDataListVo> findDifDataList(Integer id);
 
     //数据商城
-    Page<AlgData> findAlgDataMall(String dataContent);
+    Page<AlgDifDataListVo> findAlgDataMall(String dataContent);
 
     int checkFileName(AlgData data);
 

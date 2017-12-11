@@ -3,6 +3,7 @@ package com.beyond.algm.algmdataboot.controller;
 
 
 import com.beyond.algm.algmdataboot.base.BaseController;
+import com.beyond.algm.algmdataboot.infra.AuthService;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
@@ -44,6 +45,9 @@ public class ModelSetController  extends BaseController {
 
     @Autowired
     private ModelSetService modelSetService;
+
+    @Autowired
+    private AuthService authService;
 
     @Value("${model.upload-path}")
     private String modelUploadPath;
@@ -257,9 +261,11 @@ public class ModelSetController  extends BaseController {
     @RequestMapping(value = "/{usrCode}/{modelSet}/{fileName}/modelDownUpload", method = RequestMethod.GET)
     public Result modelDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet,@PathVariable("fileName") String fileName,HttpServletResponse response) throws AlgException {
         AlgUser algUser = getUserInfo();
+        // 权限控制
+        authService.isModelByUser( usrCode, algUser.getUsrCode(), algUser.getUsrSn(), modelSet, fileName);
         modelSetService.downModelUrl(algUser.getUsrSn(), modelSet, fileName,usrCode,response);
-        // 权限控制预留接口
         return Result.successResponse();
     }
+
 
 }

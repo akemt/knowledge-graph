@@ -244,6 +244,7 @@ public class ModelSetServiceImpl implements ModelSetService {
         algModel.setModelSn(uuid);
         algModel.setUsrSn(usrSn);
         algModel.setModelSetSn(modelUuid);
+        algModel.setModelName(file.getOriginalFilename());
         algModel.setCreateTime(new Date());
         algModel.setModelAddress(pathUrl);
         algModel.setModelSize(fileSize.toString());
