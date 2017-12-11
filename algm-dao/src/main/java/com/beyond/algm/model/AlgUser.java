@@ -1,5 +1,7 @@
 package com.beyond.algm.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class AlgUser {
@@ -29,8 +31,10 @@ public class AlgUser {
 
     private Float usrUsedSpace;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date createDate;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date updateDate;
 
     private String privateToken;

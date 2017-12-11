@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/org")
 public class OrgController extends BaseController {
 
     @Autowired
@@ -30,7 +29,7 @@ public class OrgController extends BaseController {
      * @param org 组织
      * @return 创建后组织对象
      */
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/org", method = RequestMethod.POST)
     @ResponseBody
     public Result<AlgUser> createOrg(AlgUser org) throws AlgException {
         log.info("创建组织：组织账户名:{},组织全名:{}", org.getUsrCode(), org.getUsrName());
@@ -44,7 +43,7 @@ public class OrgController extends BaseController {
      * @param orgSn 组织串号
      * @return 是否成功
      */
-    @RequestMapping(value = "/", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/org", method = RequestMethod.DELETE)
     @ResponseBody
     public Result<Boolean> deleteOrg(String orgSn) throws AlgException {
         orgService.deleteOrg(orgSn, getUserInfo());
@@ -57,7 +56,7 @@ public class OrgController extends BaseController {
      * @param org 组织
      * @return 创建后组织对象
      */
-    @RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/org", method = RequestMethod.PUT)
     @ResponseBody
     public Result<AlgUser> updateOrg(AlgUser org) throws AlgException {
         log.info("编辑组织：组织账户名:{},组织全名:{}", org.getUsrCode(), org.getUsrName());
@@ -71,7 +70,7 @@ public class OrgController extends BaseController {
      * @param pageable 分页信息
      * @return 组织列表
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/org/list", method = RequestMethod.GET)
     @ResponseBody
     public Result<PageInfo<OrgVo>> getOrgList(@PageableDefault Pageable pageable) throws AlgException {
         AlgUser currentUser = getUserInfo();
@@ -85,7 +84,7 @@ public class OrgController extends BaseController {
      * @param orgCode 组织编码
      * @return 组织详情
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/org", method = RequestMethod.GET)
     @ResponseBody
     public Result<OrgVo> getOrgDetail(String orgCode) throws AlgException {
         OrgVo org = orgService.getOrgDetail(orgCode);
@@ -99,7 +98,7 @@ public class OrgController extends BaseController {
      * @param memberSn 添加进组织的用户串号
      * @return 是否成功
      */
-    @RequestMapping(value = "/addMember", method = RequestMethod.POST)
+    @RequestMapping(value = "/org/addMember", method = RequestMethod.POST)
     @ResponseBody
     public Result<Boolean> addMember(String orgSn, String memberSn) throws AlgException {
         orgService.addMember(orgSn, memberSn, getUserInfo());
@@ -113,7 +112,7 @@ public class OrgController extends BaseController {
      * @param memberSn 从组织中移除的用户串号
      * @return 是否成功
      */
-    @RequestMapping(value = "/removeMember", method = RequestMethod.POST)
+    @RequestMapping(value = "/org/removeMember", method = RequestMethod.POST)
     @ResponseBody
     public Result<Boolean> removeMember(String orgSn, String memberSn) throws AlgException {
         orgService.removeMember(orgSn, memberSn, getUserInfo());
