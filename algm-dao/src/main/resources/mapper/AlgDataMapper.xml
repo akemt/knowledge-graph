@@ -16,11 +16,13 @@
     <result column="data_content" property="dataContent" jdbcType="VARCHAR" />
     <result column="data_credit" property="dataCredit" jdbcType="INTEGER" />
   </resultMap>
-  <resultMap id="DifDataResultMap" type="com.beyond.algm.vo.AlgDifDataListVo" extends="BaseResultMap">
+  <resultMap id="DifDataResultMap" type="com.beyond.algm.vo.AlgDifDataListVo">
     <result column="data_name" property="dataName" jdbcType="VARCHAR" />
     <result column="data_addr" property="dataAddr" jdbcType="VARCHAR" />
     <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
     <result column="usr_name" property="usrName" jdbcType="VARCHAR"/>
+  </resultMap>
+  <resultMap id="DownLoadResultMap" type="com.beyond.algm.vo.AlgDataDownLoadVo" extends="BaseResultMap">
     <result column="down_load" property="downLoad" jdbcType="INTEGER" />
   </resultMap>
 
@@ -101,7 +103,7 @@
      left join alg_user us on se.usr_sn = us.usr_sn
     where  art.id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="findAlgDataMall" resultMap="DifDataResultMap">
+  <select id="findAlgDataMall" resultMap="DownLoadResultMap">
     select a.data_sn as data_sn, a.data_set_sn as data_set_sn, a.usr_sn as usr_sn, a.data_name as data_name,
     a.data_en_name as data_en_name, a.creat_time as creat_time, a.data_size as data_size,a.data_addr as data_addr,
     a.data_loc as data_loc, a.is_open_src as is_open_src, a.data_abs as data_abs, a.data_content as data_content,

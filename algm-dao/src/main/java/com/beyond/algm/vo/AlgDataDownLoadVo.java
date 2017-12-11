@@ -7,9 +7,6 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class AlgDifDataListVo extends AlgData {
-    private String dataName;
-    private String dataAddr;
-    private Date creatTime;
-    private String usrName;
+public class AlgDataDownLoadVo extends AlgData {
+    private Integer downLoad;
 }
