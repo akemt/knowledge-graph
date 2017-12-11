@@ -29,6 +29,7 @@ public class ConsumerCallInfo {
         HBaseUtils hbaseUtils = new HBaseUtils();
 
         // create PushConsumer instance
+
         DefaultMQPushConsumer pushConsumer = new DefaultMQPushConsumer(SiteAndParameter.rocketMQGroup1);
         // Specify which nameServer to connect
         pushConsumer.setNamesrvAddr(SiteAndParameter.rocketMQNameSrvAddr);
