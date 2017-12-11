@@ -49,4 +49,25 @@
     call_pay_amount, creat_time
     from alg_r_user_data_call_trans
   </select>
+
+  <select id="selectPayStatus" resultMap="BaseResultMap" parameterType="com.beyond.algm.model.AlgRUserDataCallTrans">
+    select
+    umc_sn,
+    data_sn,
+    call_usr_sn,
+    owner_usr_sn,
+    start_time,
+    end_time ,
+    duration,
+    call_pay_amount,
+    creat_time
+    from alg_r_user_data_call_trans
+    where creat_time=(select max(creat_time) from alg_r_user_data_call_trans
+    where   data_sn=#{dataSn,jdbcType=VARCHAR} and
+    call_usr_sn= #{callUsrSn,jdbcType=VARCHAR} and
+    owner_usr_sn=#{ownerUsrSn,jdbcType=VARCHAR})
+    and  data_sn=#{dataSn,jdbcType=VARCHAR} and
+    call_usr_sn= #{callUsrSn,jdbcType=VARCHAR} and
+    owner_usr_sn=#{ownerUsrSn,jdbcType=VARCHAR}
+  </select>
 </mapper>
