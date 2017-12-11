@@ -13,9 +13,9 @@ import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -24,7 +24,7 @@ import java.util.List;
 
 @SpringBootConfiguration
 @Slf4j
-public class ConsumerCall {
+public class ConsumerRunner implements ApplicationRunner {
 
     @Autowired
     private HBaseService hBaseService;
@@ -38,7 +38,9 @@ public class ConsumerCall {
     @Value("${hbase.tableName1}")
     private String tableName1;
 
-    public void run() {
+
+    @Override
+    public void run(ApplicationArguments var1) throws Exception{
 
         // create PushConsumer instance
         DefaultMQPushConsumer pushConsumer = new DefaultMQPushConsumer(rocketMQGroup1);
