@@ -1,12 +1,13 @@
 package com.beyond.algm.mapper;
 
+import com.beyond.algm.model.AlgModel;
 import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.vo.AlgModelSetVo;
 
 import java.util.List;
 
 public interface AlgModelSetMapper {
-    int deleteByPrimaryKey(String modelSetSn);
+    int deleteByPrimaryKey(AlgModel algModel);
 
     int insert(AlgModelSet record);
 

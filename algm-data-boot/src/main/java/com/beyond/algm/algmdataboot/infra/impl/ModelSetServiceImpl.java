@@ -90,7 +90,7 @@ public class ModelSetServiceImpl implements ModelSetService {
     public int deleteModelSet(AlgModel algModel) throws AlgException {
             int count= algModelMapper.checkData(algModel);
             if(count==0) {
-                algModelSetMapper.deleteByPrimaryKey(algModel.getModelSetSn());
+                algModelSetMapper.deleteByPrimaryKey(algModel);
                 return  1;
             }
             return 0;
@@ -113,8 +113,8 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public int deleteModel(String modelSn) throws AlgException {
-           int count= algModelMapper.deleteByPrimaryKey(modelSn);
+    public int deleteModel( AlgModel algModel ) throws AlgException {
+           int count= algModelMapper.deleteModel(algModel);
            return count;
     }
 

@@ -98,6 +98,7 @@ public class DataSetController extends BaseController {
     public Result deleteData(String dataSn) throws AlgException {
         logger.info("数据集串号：{}",dataSn);
         try{
+            AlgUser algUser = getUserInfo();
             Result result=dataSetService.deleteData(dataSn);
             return result;
         }catch(Exception e)
@@ -115,6 +116,7 @@ public class DataSetController extends BaseController {
     public Result deleteDataSet(String dataSetSn) throws AlgException {
         logger.info("数据集串号：{}",dataSetSn);
         try{
+            AlgUser algUser = getUserInfo();
             Result result=dataSetService.deleteDataSet(dataSetSn);
             return result;
         }catch(Exception e)
@@ -132,6 +134,7 @@ public class DataSetController extends BaseController {
     public Result showData(String dataSetSn) throws AlgException {
         logger.info("数据集串号：{}",dataSetSn);
         try{
+            AlgUser algUser = getUserInfo();
             Result result=dataSetService.queryAlgDatabySet(dataSetSn);
             return result;
         }catch(Exception e)
