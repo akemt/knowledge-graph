@@ -13,4 +13,6 @@ public interface AlgRUserModelCallTransMapper {
     List<AlgRUserModelCallTrans> selectAll();
 
     int updateByPrimaryKey(AlgRUserModelCallTrans record);
+
+    AlgRUserModelCallTrans  selectPayStatus(AlgRUserModelCallTrans record);
 }

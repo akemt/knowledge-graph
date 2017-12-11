@@ -41,7 +41,7 @@ public class CephServiceImpl implements CephService {
     // 图片上传
     @Override
     public void upload(MultipartFile file, String usrCode) throws AlgException{
-        String cephKey=""+System.currentTimeMillis();
+        String cephKey=""+file.getOriginalFilename();
         log.info("文件名:{},用户code:{},accessKey:{},secretKey:{},path:{}",file.getOriginalFilename(),usrCode,accessKey,secretKey,path);
         File targetFile = new File(path+file.getOriginalFilename());
         if (!targetFile.exists()) {
@@ -69,7 +69,7 @@ public class CephServiceImpl implements CephService {
         bucket=conn.createBucket(usrCode);
         conn.putObject(usrCode, cephKey,targetFile);
         conn.setObjectAcl(bucket.getName(), cephKey, CannedAccessControlList.PublicRead);
-        String pathUrl=  conn.getUrl(bucket.getName(),cephKey).toString();
+        String pathUrl=  conn.getUrl(bucket.getName(),cephKey).getPath();
         log.info("ceph的url的存储:{}",pathUrl);
         AlgUser user=new AlgUser();
         user.setUsrCode(usrCode);
