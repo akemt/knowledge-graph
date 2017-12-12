@@ -27,4 +27,12 @@ public interface CephService {
    */
   void  userHeadImgDownload(String path,HttpServletResponse response)throws AlgException;
 
+  /**
+   *
+   * @param
+   * @param
+   * @throws AlgException
+   */
+  String uploadEditorImage(MultipartFile file, String usrCode) throws AlgException;
+
 }
