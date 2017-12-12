@@ -46,23 +46,14 @@ public class CephServiceImpl implements CephService {
 
     @Override
     public void userHeadImgUpload(MultipartFile file, String usrCode) throws AlgException{
-        String UUID = UUIDUtil.createUUID();
-        String cephKey = "algmarket" + File.separator + UUIDUtil.createUUID();
+        String cephKey = UUIDUtil.createUUID();;
         log.info("文件名:{},用户code:{},path:{}",file.getOriginalFilename(),usrCode,path);
-        File targetFile = new File(path+file.getOriginalFilename());
-        if (!targetFile.exists()) {
-            targetFile.mkdirs();
-        }
-        try {
-           file.transferTo(targetFile);
-       } catch (Exception e) {
-            log.info("文件转存错误",e);
-       }
+        File targetFile=targetFile(file);
         // 注意之前上传图片还在需要优化
         Bucket bucket=amazonS3.createBucket("algmarket");
         amazonS3.putObject(bucket.getName(), cephKey,targetFile);
         amazonS3.setObjectAcl(bucket.getName(), cephKey, CannedAccessControlList.PublicRead);
-        String pathUrl=  amazonS3.getUrl(bucket.getName(),UUID).getPath();
+        String pathUrl=  amazonS3.getUrl(bucket.getName(),cephKey).getPath();
         log.info("ceph的url的存储:{}",pathUrl);
         AlgUser user=new AlgUser();
         user.setUsrCode(usrCode);
@@ -108,5 +99,38 @@ public class CephServiceImpl implements CephService {
             throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);
         }
     }
+
+    @Override
+    public String uploadEditorImage(MultipartFile file, String usrCode) throws AlgException{
+        File targetFile=targetFile(file);
+        String pathUrl=path(targetFile,usrCode);
+        return pathUrl;
+    }
+    public String path(File file, String usrCode){
+        String cephKey=UUIDUtil.createUUID();
+        log.info("用户code:{},path:{}",usrCode,path);
+
+        // 注意之前上传图片还在需要优化
+        Bucket bucket=amazonS3.createBucket("algmarket");
+        amazonS3.putObject(bucket.getName(), cephKey,file);
+        amazonS3.setObjectAcl(bucket.getName(), cephKey, CannedAccessControlList.PublicRead);
+        String pathUrl=  amazonS3.getUrl(bucket.getName(),cephKey).toString();
+        file.delete();
+        return pathUrl;
+    }
+    public File targetFile(MultipartFile file){
+        File targetFile = new File(path+file.getOriginalFilename());
+        log.info("文件名:{}",file.getOriginalFilename());
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+        try {
+            file.transferTo(targetFile);
+        } catch (Exception e) {
+            log.info("文件转存错误",e);
+        }
+        return targetFile;
+    };
+
 
 }
