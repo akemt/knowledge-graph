@@ -3,6 +3,8 @@ package com.beyond.algm.algmfileboot.infra;
 import com.beyond.algm.exception.AlgException;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author ：zhangchuanzhi
  * @Description:ceph调用
@@ -15,6 +17,14 @@ public interface CephService {
    * @param usrCode
    * @throws AlgException
    */
-  void upload(MultipartFile file, String usrCode) throws AlgException;
+  void userHeadImgUpload(MultipartFile file, String usrCode) throws AlgException;
+
+  /**
+   *
+   * @param path
+   * @param response
+   * @throws AlgException
+   */
+  void  userHeadImgDownload(String path,HttpServletResponse response)throws AlgException;
 
 }
