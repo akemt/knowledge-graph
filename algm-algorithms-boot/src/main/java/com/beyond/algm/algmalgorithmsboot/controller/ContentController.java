@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import java.util.List;
 
 /**
@@ -59,12 +61,12 @@ public class ContentController extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：17:07 2017/10/12
      */
-    @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) throws AlgException{
+    @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result<PageInfo<AlgRUserModuleCallTransVo>> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,@PageableDefault Pageable pageable) throws AlgException{
         AlgUser algUser = getUserInfo();
         algRUserModuleCallTransVo.setOwnerUsrSn(algUser.getUsrSn());
         log.info("算法创建者id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getOwnerUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo);
+        PageInfo<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo, pageable);
         return Result.ok(algRUserModuleCallTransList);
 
     }

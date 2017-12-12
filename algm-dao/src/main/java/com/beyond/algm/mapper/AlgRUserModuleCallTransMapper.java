@@ -2,7 +2,7 @@ package com.beyond.algm.mapper;
 
 import com.beyond.algm.model.AlgRUserModuleCallTrans;
 import com.beyond.algm.vo.AlgRUserModuleCallTransVo;
-
+import com.github.pagehelper.Page;
 import java.util.List;
 
 public interface AlgRUserModuleCallTransMapper {
@@ -16,5 +16,5 @@ public interface AlgRUserModuleCallTransMapper {
 
     int updateByPrimaryKey(AlgRUserModuleCallTrans record);
 
-    List<AlgRUserModuleCallTransVo> selectAlgorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo);
+    Page<AlgRUserModuleCallTransVo> selectAlgorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo);
 }
