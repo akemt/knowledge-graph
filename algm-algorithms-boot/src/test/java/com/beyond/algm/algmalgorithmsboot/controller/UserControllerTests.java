@@ -103,5 +103,15 @@ public class UserControllerTests {
 				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
 		System.out.println(result);
 	}
+	/**
+	 * 查询一个用户都有哪些组织
+	 */
+	@Test
+	public void getOwnOrganize() throws Exception{
+		String result = this.mockMvc.perform(get("/ownorganize").contentType(MediaType.APPLICATION_JSON)
+		)
+				.andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+		System.out.println(result.toString());
+	}
 
 }
