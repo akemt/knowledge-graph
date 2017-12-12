@@ -1,12 +1,11 @@
-package com.beyond.algm.algmalgorithmsboot.infra.impl;
+package com.beyond.algm.algmfileboot.infra.impl;
 
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.beyond.algm.algmalgorithmsboot.infra.CephService;
-
-import com.beyond.algm.algmalgorithmsboot.util.CephUtil;
+import com.beyond.algm.algmfileboot.infra.CephService;
+import com.beyond.algm.algmfileboot.util.CephUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgUserMapper;
 import com.beyond.algm.model.AlgUser;
@@ -17,8 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author ：
