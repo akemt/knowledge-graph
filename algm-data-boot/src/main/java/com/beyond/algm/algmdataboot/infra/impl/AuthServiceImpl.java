@@ -125,4 +125,20 @@ public class AuthServiceImpl  implements AuthService {
         }
     }
 
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 用户名在用户上，通过路径查看权限,
+     * @param：usrCode：登录用户session，sessionUsrCode:
+     * @date ： 2017-12-08 21:54:06
+     */
+    @Override
+    public void isPathByUser(String usrCode,String sessionUsrCode)throws AlgException{
+        log.info("路径用户:{},登录用户:{}",usrCode,sessionUsrCode);
+        if(!usrCode.equals(sessionUsrCode)){
+            String[] checkMessage = {"对不起您没有权限！", ""};
+            throw new AlgException("BEYOND.ALG.DATA.PAY.STATUS.0000010", checkMessage);
+        }
+    }
+
 }

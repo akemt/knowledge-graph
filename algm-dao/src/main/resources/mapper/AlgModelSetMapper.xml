@@ -9,9 +9,10 @@
     </resultMap>
     <resultMap id="queryForListMap" type="com.beyond.algm.vo.AlgModelSetVo" extends="BaseResultMap">
     </resultMap>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="com.beyond.algm.model.AlgModel">
     delete from alg_model_set
     where model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
+          and usr_sn=#{usrSn,jdbcType=VARCHAR}
   </delete>
     <insert id="insert" parameterType="com.beyond.algm.model.AlgModelSet">
     insert into alg_model_set (model_set_sn, usr_sn, model_set_name, model_orderby
