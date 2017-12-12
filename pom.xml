@@ -16,6 +16,7 @@
         <module>algm-call-boot</module>
         <module>algm-quartz-boot</module>
         <module>algm-hbase-boot</module>
+        <module>algm-file-boot</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
