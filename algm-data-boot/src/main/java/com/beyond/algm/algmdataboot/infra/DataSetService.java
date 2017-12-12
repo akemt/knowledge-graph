@@ -82,35 +82,4 @@ public interface DataSetService {
      */
     List<AlgDataSet>  dataSetId(String usrSn,String dataSetName )throws AlgException;
 
-    /**
-     * @author ：zhangchuanzhi
-     * @Description: 个人数据文件上传
-     * @param： String dataSn
-     * @date ： 2017-10-22 21:54:06
-     */
-    void uploadDateSet(MultipartFile file, String usrCode,String dataSetName,String dataUuid,String usrSn) throws AlgException;
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:检查文件上传名字
-     * @param： String dataSn
-     * @date ： 2017-12-06 21:54:06
-     */
-    int checkFileName(AlgData algData) throws AlgException;
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:查找数据url
-     * @param： String usrSn，dataSetName
-     * @date ： 2017-12-06 21:54:06
-     */
-    String  dataUrl(AlgData algData)throws AlgException;
-
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:用户下载数据
-     * @param： String usrSn，dataSetName
-     * @date ： 2017-12-06 21:54:06
-     */
-    void  downDataUrl(String  usrSn,String dataSet,String fileName,String usrCode,HttpServletResponse response)throws AlgException;
 }

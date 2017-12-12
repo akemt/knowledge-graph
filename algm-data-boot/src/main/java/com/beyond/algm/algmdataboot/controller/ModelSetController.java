@@ -240,36 +240,5 @@ public class ModelSetController  extends BaseController {
         List<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo);
         return  Result.ok(mdelDataVoList);
     }
-    /**
-     * @author ：zhangchuanzhi
-     * @Description: 数据文件增加
-     * @param：modelName模型名称，modelUuid模型主键
-     */
-    @RequestMapping(value = "/modelUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result dataFileUpload(MultipartFile file,String modelName ,String modelUuid) throws AlgException {
-        AlgUser algUser = getUserInfo();
-        AlgModel algModel =new AlgModel();
-        algModel.setModelEnName(file.getOriginalFilename());
-        algModel.setUsrSn(algUser.getUsrSn());
-        algModel.setModelSetSn(modelUuid);
-        // 留存权限接口
-        int count =modelSetService.checkFileName(algModel);
-        modelSetService.uploadModelSet(file,algUser.getUsrCode(),modelName,modelUuid,algUser.getUsrSn());
-        return Result.successResponse();
-    }
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description: 模型下载
-     */
-    @RequestMapping(value = "/{usrCode}/{modelSet}/{fileName}/modelDownUpload", method = RequestMethod.GET)
-    public Result modelDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet,@PathVariable("fileName") String fileName,HttpServletResponse response) throws AlgException {
-        AlgUser algUser = getUserInfo();
-        // 权限控制
-        authService.isModelByUser( usrCode, algUser.getUsrCode(), algUser.getUsrSn(), modelSet, fileName);
-        modelSetService.downModelUrl(algUser.getUsrSn(), modelSet, fileName,usrCode,response);
-        return Result.successResponse();
-    }
-
 
 }
