@@ -60,7 +60,7 @@ public class ConsumerRunner implements ApplicationRunner {
         pushConsumer.setConsumeTimestamp(dateFormat.format(currentDate));
         // Number of threads on the consumer
         pushConsumer.setConsumeThreadMin(1);
-        pushConsumer.setConsumeThreadMax(1);
+        pushConsumer.setConsumeThreadMax(10);
 
         // Register Message Listener
         pushConsumer.registerMessageListener(new MessageListenerConcurrently() {

@@ -29,5 +29,7 @@ public interface AlgModelMapper {
     int update(AlgModel record);
     String modelSn(AlgModelVo algModelVo);
 
+    int deleteModel(AlgModel algModel);
+
 
 }

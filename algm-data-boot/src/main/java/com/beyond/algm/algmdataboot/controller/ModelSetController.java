@@ -98,6 +98,7 @@ public class ModelSetController  extends BaseController {
     public Result<Object> addAlgModel(AlgModel algModel) {
         logger.info("模型串号：{}");
         try {
+            AlgUser algUser = getUserInfo();
             Result result = modelSetService.addAlgModel(algModel);
             return result;
         } catch (Exception e) {
@@ -117,7 +118,10 @@ public class ModelSetController  extends BaseController {
         AlgUser algUser = getUserInfo();
         // 预留方法判断是否是本人
         logger.info("模型串号：{}", modelSn);
-        int count= modelSetService.deleteModel(modelSn);
+        AlgModel algModel =new AlgModel();
+        algModel.setUsrSn(algUser.getUsrSn());
+        algModel.setModelSn(modelSn);
+        int count= modelSetService.deleteModel(algModel);
         return  Result.ok(count);
 
     }

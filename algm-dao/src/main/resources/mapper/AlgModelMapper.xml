@@ -119,4 +119,10 @@
     model_set_sn =(select model_set_sn from alg_model_set where usr_sn=#{usrSn,jdbcType=VARCHAR} AND model_set_name=#{modelSetName,jdbcType=VARCHAR})
     and model_name=#{modelName,jdbcType=VARCHAR}
   </select>
+
+  <delete id="deleteModel" parameterType="com.beyond.algm.model.AlgModel" >
+    delete from alg_model
+    where model_sn = #{modelSn,jdbcType=VARCHAR}
+          and usr_sn= #{usrSn,jdbcType=VARCHAR}
+  </delete>
 </mapper>
