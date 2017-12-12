@@ -258,6 +258,6 @@ public class ModuleServiceImpl implements ModuleService {
         String strModId = modId.toLowerCase();
         //校验
         int count = algModuleMapper.selectIsRepeat(strModId,usrSn);
-        return count>0?true:false;
+        return count>0?false:true;
     }
 }
