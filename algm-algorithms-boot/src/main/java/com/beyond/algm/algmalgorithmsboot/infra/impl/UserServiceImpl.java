@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -235,5 +236,13 @@ public class UserServiceImpl implements UserService {
         return algUserMapper.selectUsrCode(usrCode);
     }
 
+    /**
+     * 查询一个用户都有哪些组织
+     * @param usrCode
+     * @return
+     */
+    public List<AlgUser> ownOrganize(String usrCode) throws AlgException{
+        return algUserMapper.selectOwnOrganize(usrCode);
+    }
 }
 

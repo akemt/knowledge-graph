@@ -17,7 +17,7 @@ import com.beyond.algm.mapper.AlgUserMapper;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
-import com.beyond.algm.vo.AlgDifDataListVo;
+import com.beyond.algm.vo.AlgDataDownLoadVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
@@ -192,10 +192,10 @@ public class DataSetServiceImpl implements DataSetService {
 
     //数据商城
     @Override
-    public Page<AlgDifDataListVo> algDataMall(String dataContent, Integer pageNum, Integer pageSize) throws AlgException {
+    public Page<AlgDataDownLoadVo> algDataMall(String dataContent, Integer pageNum, Integer pageSize) throws AlgException {
         //初步设定用数据库进行排序查询
         PageHelper.startPage(pageNum,pageSize);
-        Page<AlgDifDataListVo> allAlgData = algDataMapper.findAlgDataMall(dataContent);
+        Page<AlgDataDownLoadVo> allAlgData = algDataMapper.findAlgDataMall(dataContent);
         return allAlgData;
     }
 

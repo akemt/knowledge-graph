@@ -66,4 +66,10 @@ public interface AlgUserMapper {
      */
     int updateSpace(AlgUser record);
 
+    /**
+     * 查询一个用户都有哪些组织
+     *
+     * @param usrCode
+     */
+    List<AlgUser> selectOwnOrganize(String usrCode);
 }

@@ -179,4 +179,13 @@
           usr_used_space = usr_used_space+#{usrUsedSpace,jdbcType=REAL}
         where usr_code = #{usrCode,jdbcType=VARCHAR}
     </update>
+
+    <!-- 查询一个用户都有哪些组织-->
+    <select id="selectOwnOrganize" resultMap="BaseResultMap" >
+        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,private_token,
+        create_date, update_date
+        from alg_user u
+        where u.usr_sn in (select a.org_sn from alg_r_user_org_invite a where usr_sn = (
+        select usr_sn from alg_user where usr_code = #{usrCode,jdbcType=VARCHAR}))
+    </select>
 </mapper>

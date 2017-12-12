@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author ：zhangchuanzhi
  * @Description:实现用户登录注册功能
@@ -130,5 +132,17 @@ public class UserController  extends BaseController {
         }
     }
 
-
+    /**
+     * @author ：lindw
+     * @Description:查询一个用户都有哪些组织
+     * @param：usrCode
+     * @date ：9:14 2017/12/12
+     */
+    @RequestMapping(value = "/ownorganize", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result getOwnOrganize() throws AlgException{
+        AlgUser algUser = getUserInfo();
+        log.info("用户名字:{}", algUser.getUsrCode());
+        List<AlgUser> algUsers = userService.ownOrganize(algUser.getUsrCode());
+        return Result.ok(algUsers);
+    }
 }
