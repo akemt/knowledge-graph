@@ -12,6 +12,6 @@ import java.util.List;
  * @date ：12:56 2017/10/12
  */
 public interface UseAlgorithmService {
-   List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo)throws AlgException;
+   PageInfo<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo, Pageable pageable)throws AlgException;
    PageInfo<AlgRUserModuleCallTransVo> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo, Pageable pageable)throws AlgException;
 }

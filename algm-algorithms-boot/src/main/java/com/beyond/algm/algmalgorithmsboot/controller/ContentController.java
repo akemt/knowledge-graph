@@ -46,12 +46,12 @@ public class ContentController extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：14:07 2017/10/11
      */
-    @RequestMapping(value="/algorithmRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) throws AlgException{
+    @RequestMapping(value="/algorithmRecord", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result<PageInfo<AlgRUserModuleCallTransVo>> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,@PageableDefault Pageable pageable) throws AlgException{
         AlgUser algUser = getUserInfo();
         algRUserModuleCallTransVo.setCallUsrSn(algUser.getUsrSn());
         log.info("调用用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo);
+        PageInfo<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo, pageable);
         return Result.ok(algRUserModuleCallTransList);
     }
     /**

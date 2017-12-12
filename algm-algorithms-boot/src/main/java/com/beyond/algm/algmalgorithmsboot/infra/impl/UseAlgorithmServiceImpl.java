@@ -39,12 +39,12 @@ public class UseAlgorithmServiceImpl implements UseAlgorithmService {
      * @date ：13:16 2017/10/12
      */
     @Override
-    public List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo)throws AlgException{
+    public PageInfo<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo, Pageable pageable)throws AlgException{
         //分页处理
-        PageHelper.startPage(algRUserModuleCallTransVo.getPage(), algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        Page<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
 
-        return lgRUserModuleCallTransList;
+        return new PageInfo<>(lgRUserModuleCallTransList);
     }
 
     /**
