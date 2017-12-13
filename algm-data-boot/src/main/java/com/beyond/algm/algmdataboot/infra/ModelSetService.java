@@ -9,7 +9,8 @@ import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgModelSetVo;
 import com.beyond.algm.vo.ModelDataVo;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -85,7 +86,7 @@ public interface ModelSetService {
      * @param： algModelSet
      * @date ：13：46 2017/10/21
      */
-    List<ModelDataVo> queryAlgModel(AlgModel algModel) throws AlgException;
+    PageInfo<ModelDataVo> queryAlgModel(AlgModel algModel, Pageable pageable) throws AlgException;
 
      AlgUser findByUsrCode(String usrCode);
 
