@@ -8,6 +8,7 @@ import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -28,16 +29,19 @@ public class KubernetesServiceImpl implements KubernetesService {
     @Autowired
     private DockerService dockerService;
 
+    @Value("${k8s.secretKey}")
+    private String secretKey;
+
+    public void makeK8sNamespace(String usrCode){
+        //创建命名空间
+        Namespace namespace = new NamespaceBuilder().withNewMetadata().withName(usrCode.toLowerCase()).and().build();
+        client.namespaces().createOrReplace(namespace);
+        log.debug("k8s namespaces : {}",client.namespaces().list().toString());
+    }
+
     public void makeK8sPod(String modId, String usrCode, String version) throws AlgException{
 
         try{
-
-            //创建命名空间
-            Namespace namespace = new NamespaceBuilder().withNewMetadata().withName(usrCode.toLowerCase()).and().build();
-            client.namespaces().createOrReplace(namespace);
-
-            log.info("k8s namespaces : {}",client.namespaces().list().toString());
-
             Map<String,String> map = new HashMap<String,String>();
             map.put("app",getUsrCodeModIdVersion(modId, usrCode, version));
 
@@ -63,8 +67,8 @@ public class KubernetesServiceImpl implements KubernetesService {
                     .withImagePullPolicy("Always")
                     .withPorts(new ContainerPortBuilder().withContainerPort(8080).build())
                     .endContainer()
-                    .addNewImagePullSecret("myregistrykey")
-                    .addToImagePullSecrets(new LocalObjectReferenceBuilder().withName("myregistrykey").build())
+                    .addNewImagePullSecret(secretKey)
+                    .addToImagePullSecrets(new LocalObjectReferenceBuilder().withName(secretKey).build())
                     .endSpec()
                     .endTemplate()
                     .endSpec()
@@ -102,6 +106,22 @@ public class KubernetesServiceImpl implements KubernetesService {
             e.printStackTrace();
         }
 
+    }
+
+    public void makeK8sSecretForNamespace(String usrCode) throws AlgException{
+        Map<String,String> data = new HashMap<String,String>();
+        data.put(".dockerconfigjson","ewoJImF1dGhzIjogewoJCSIxOTIuMTY4LjEuOTI6OTQ0MyI6IHsKCQkJImF1dGgiOiAiWVdSdGFXNDZTR0Z5WW05eU1USXpORFU9IiwKCQkJImVtYWlsIjogIiIKCQl9Cgl9Cn0K");
+        Secret secret = new SecretBuilder()
+                .withApiVersion("v1")
+                .withKind("Secret")
+                .withNewMetadata()
+                .withName(secretKey)
+                .withNamespace(usrCode.toLowerCase())
+                .endMetadata()
+                .withData(data)
+                .withType("kubernetes.io/dockerconfigjson")
+                .build();
+        client.secrets().createOrReplace(secret);
     }
 
     private String getUsrCodeModIdVersion(String modId, String usrCode, String version){
