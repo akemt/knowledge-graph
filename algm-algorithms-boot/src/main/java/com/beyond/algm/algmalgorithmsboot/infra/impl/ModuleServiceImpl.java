@@ -137,28 +137,17 @@ public class ModuleServiceImpl implements ModuleService {
             gitUser.setUsrCode(algUser.getUsrCode());
             gitUser.setPrivateToken(algUser.getPrivateToken());
             gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
+            gitUser.setIsOrg(algUser.getIsOrg());
             String strUserName = "";
             if("1".equals(algUser.getIsOrg())){//组所有者-下面的组织创建项目
-                //项目编号-模块编号
-                gitUser.setModId(algModule.getModId());
                 //组织编号
                 gitUser.setOrgUsrCode(algModule.getOrgUsrCode());
-                //当前登录用户下的用户编号和密码
-                gitUser.setUsrCode(algUser.getUsrCode());
-                gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
-                gitUser.setPrivateToken(algUser.getPrivateToken());
-                gitUser.setIsOrg(algUser.getIsOrg());
 
                 //在git上组织创建项目
                 gitLabService.createGitLabGroupProject(gitUser);
                 strUserName = algModule.getOrgUsrCode();
 
             }else{ //当前用户-下创建项目
-                gitUser.setModId(algModule.getModId());
-                gitUser.setUsrCode(algUser.getUsrCode());
-                gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
-                gitUser.setIsOrg("0");
-
                 //在git上创建项目
                 gitLabService.createGitLabProject(gitUser);
                 strUserName = algUser.getUsrCode();
