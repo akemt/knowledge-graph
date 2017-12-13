@@ -17,7 +17,10 @@ import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -40,14 +43,18 @@ public class DataSetServiceImpl implements DataSetService {
 
     //我的数据集tree
     @Override
-    public List<AlgDataSet> getDataSet(String usrSn) throws AlgException{
-        return algDataSetMapper.selectAll(usrSn);
+    public PageInfo<AlgDataSet> getDataSet(String usrSn, Pageable pageable) throws AlgException{
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        Page<AlgDataSet> algDataSets = algDataSetMapper.selectAll(usrSn);
+        return new PageInfo<>(algDataSets);
     }
 
     //我的数据List
     @Override
-    public List<AlgData> getData(String usrSn) throws AlgException{
-        return algDataMapper.findDataList(usrSn);
+    public PageInfo<AlgData> getData(String usrSn, Pageable pageable) throws AlgException{
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        Page<AlgData> algData = algDataMapper.findDataList(usrSn);
+        return new PageInfo<>(algData);
     }
 
     //添加数据集
