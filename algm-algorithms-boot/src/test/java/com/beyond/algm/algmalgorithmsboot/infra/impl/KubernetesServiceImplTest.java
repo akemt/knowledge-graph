@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 public class KubernetesServiceImplTest {
     @Test
     public void makeK8sSecretForNamespace() throws Exception {
-        kubernetesService.makeK8sSecretForNamespace("erniu");
+        kubernetesService.makeK8sSecretForNamespace("qihe");
     }
 
     @Test
