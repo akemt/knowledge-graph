@@ -6,7 +6,7 @@ import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.beyond.algm.algmfileboot.infra.CephService;
-import com.beyond.algm.algmfileboot.util.CephUtil;
+import com.beyond.algm.algmfileboot.util.FileDownLoad;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
@@ -20,9 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * @author ：
@@ -76,24 +73,7 @@ public class CephServiceImpl implements CephService {
             response.setCharacterEncoding("utf-8");
             response.setContentType("multipart/form-data");
             response.setHeader("Content-Disposition", "attachment;fileName=" + downloadFile.getName());
-            try {
-                //打开本地文件流
-                InputStream inputStream = new FileInputStream(downloadFile);
-                //激活下载操作
-                OutputStream os = response.getOutputStream();
-
-                //循环写入输出流
-                byte[] b = new byte[2048];
-                int length;
-                while ((length = inputStream.read(b)) > 0) {
-                    os.write(b, 0, length);
-                }
-
-                // 这里主要关闭。
-                os.close();
-                inputStream.close();
-            } catch (Exception e){
-            }
+            FileDownLoad.fileDownLoad(response,downloadFile,downloadFile.getName());
         }else{
             String[] checkMessage = {" 查询结果为空",""};
             throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);

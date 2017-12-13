@@ -5,7 +5,7 @@ import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.beyond.algm.algmfileboot.infra.ModelSetService;
-import com.beyond.algm.algmfileboot.util.CephUtil;
+import com.beyond.algm.algmfileboot.util.FileDownLoad;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.common.UUIDUtil;
@@ -29,8 +29,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author huangjinqing
@@ -57,6 +55,8 @@ public class ModelSetServiceImpl implements ModelSetService {
 
     @Autowired
     private AlgUserMapper algUserMapper;
+    @Autowired
+    AmazonS3 conn;
 
     /**
      * @author ：zhangchuanzhi
@@ -104,7 +104,6 @@ public class ModelSetServiceImpl implements ModelSetService {
         }
         String key=modelName+"/"+file.getOriginalFilename();
         String bucketName=usrCode;
-        AmazonS3 conn= CephUtil.connectCeph(accessKey,secretKey,host);
         Bucket bucket=null;
         if(!conn.doesBucketExistV2(bucketName)){
             bucket=conn.createBucket(bucketName);
@@ -142,7 +141,6 @@ public class ModelSetServiceImpl implements ModelSetService {
         String url=host+"/"+usrCode+"/"+modelSet+"/"+fileName;
         log.info("生成url:{}",url);
         if(Assert.isNotEmpty(url)){
-            AmazonS3 conn= CephUtil.connectCeph(accessKey,secretKey,host);
             // 数据集+文件名
             String key=modelSet+"/"+fileName;
             File downloadFile=new File(path+fileName);
@@ -150,28 +148,7 @@ public class ModelSetServiceImpl implements ModelSetService {
                     new GetObjectRequest(usrCode, key),
                     downloadFile
             );
-            //设置响应头和客户端保存文件名
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("multipart/form-data");
-            response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
-            try {
-                //打开本地文件流
-                InputStream inputStream = new FileInputStream(downloadFile);
-                //激活下载操作
-                OutputStream os = response.getOutputStream();
-
-                //循环写入输出流
-                byte[] b = new byte[2048];
-                int length;
-                while ((length = inputStream.read(b)) > 0) {
-                    os.write(b, 0, length);
-                }
-
-                // 这里主要关闭。
-                os.close();
-                inputStream.close();
-            } catch (Exception e){
-            }
+            FileDownLoad.fileDownLoad(response,downloadFile,fileName);
         }else{
             String[] checkMessage = {" 查询结果为空",""};
             throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);
