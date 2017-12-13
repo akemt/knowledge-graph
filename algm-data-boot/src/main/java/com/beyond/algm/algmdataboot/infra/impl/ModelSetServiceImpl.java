@@ -128,18 +128,19 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public  List<AlgModelSetVo> queryAlgModelSet(String usrSn) throws AlgException {
-            List<AlgModelSetVo> algModelSetVoList = algModelSetMapper.queryModelSet(usrSn);
-            if(Assert.isNotEmpty(algModelSetVoList)){
-                String modelSetSn= algModelSetVoList.get(0).getModelSetSn();
-                AlgModel algModel=new AlgModel();
-                algModel.setUsrSn(usrSn);
-                algModel.setModelSetSn(modelSetSn);
-                List<ModelDataVo> algModelList=algModelMapper.queryModel(algModel);
-                algModelSetVoList.get(0).setAlgModelVolist(algModelList);
-                return algModelSetVoList;
-            }
-            return null;
+    public  PageInfo<AlgModelSetVo> queryAlgModelSet(String usrSn, Pageable pageable) throws AlgException {
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        Page<AlgModelSetVo> algModelSetVoList = algModelSetMapper.queryModelSet(usrSn);
+        if(Assert.isNotEmpty(algModelSetVoList)){
+            String modelSetSn= algModelSetVoList.get(0).getModelSetSn();
+            AlgModel algModel=new AlgModel();
+            algModel.setUsrSn(usrSn);
+            algModel.setModelSetSn(modelSetSn);
+            List<ModelDataVo> algModelList=algModelMapper.queryModel(algModel);
+            algModelSetVoList.get(0).setAlgModelVolist(algModelList);
+            return new PageInfo<>(algModelSetVoList);
+        }
+        return null;
     }
 
     @Override

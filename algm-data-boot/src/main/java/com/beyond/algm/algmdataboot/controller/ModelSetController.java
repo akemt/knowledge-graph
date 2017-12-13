@@ -151,10 +151,10 @@ public class ModelSetController  extends BaseController {
      * @date : 14:15 2017/10/21
      */
     @RequestMapping(value = "/queryModelSet", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result queryModelSet() throws AlgException{
+    public Result<PageInfo<AlgModelSetVo>> queryModelSet(@PageableDefault Pageable pageable) throws AlgException{
         logger.info("查询用户的模型集");
         AlgUser algUser = getUserInfo();
-        List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet(algUser.getUsrSn());
+        PageInfo<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet(algUser.getUsrSn(), pageable);
        // List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet("8ec99d9819744a8aa0db947a6be6db4c");
         return Result.ok(AlgModelSetVoList);
     }

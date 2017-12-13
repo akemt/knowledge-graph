@@ -77,7 +77,7 @@ public interface ModelSetService {
      * @param： String usrSn
      * @date ：13：46 2017/10/21
      */
-    List<AlgModelSetVo> queryAlgModelSet(String usrSn) throws AlgException;
+    PageInfo<AlgModelSetVo> queryAlgModelSet(String usrSn, Pageable pageable) throws AlgException;
 
 
     /**
