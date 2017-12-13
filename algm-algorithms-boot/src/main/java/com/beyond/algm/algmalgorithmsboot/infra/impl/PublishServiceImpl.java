@@ -121,9 +121,9 @@ public class PublishServiceImpl implements PublishService {
             //高版本-HighVersion
             mapVer.put("H", (algModuleVersion.getVerCodeL1() + 1) + ".0.0");
             //中版本-MiddleVersion
-            mapVer.put("M", "0." + (algModuleVersion.getVerCodeL2() + 1) + ".0");
+            mapVer.put("M", algModuleVersion.getVerCodeL1() + "." + (algModuleVersion.getVerCodeL2() + 1) + ".0");
             //低版本-LowVersion
-            mapVer.put("L", "0.0." + (algModuleVersion.getVerCodeL3() + 1));
+            mapVer.put("L", algModuleVersion.getVerCodeL1() +  "." + algModuleVersion.getVerCodeL2() +  "."  + (algModuleVersion.getVerCodeL3() + 1));
             map.put("VerCode",mapVer);
             //显示版本费用
             map.put("VerLoyaltyFee", algModuleVersion.getVerLoyaltyFee());
