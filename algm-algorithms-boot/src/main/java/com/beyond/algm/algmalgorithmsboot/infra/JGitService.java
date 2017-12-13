@@ -7,6 +7,12 @@ import java.io.File;
 
 public interface JGitService {
 
+    /**
+     * 添加Git 到clone项目
+     *
+     * @param gitUser
+     * @throws AlgException
+     */
     void gitCloneProject(GitUser gitUser) throws AlgException;
 
     String  commitAndPushAllFiles(GitUser gitUser)throws AlgException;

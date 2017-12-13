@@ -4,10 +4,19 @@ import lombok.Data;
 
 @Data
 public class GitUser {
-    // 本地仓库路径
-    private String  path;
-    // 用户密码
+    /**
+     * 当前登录用户Code
+     */
+    private String usrCode;
+    /**
+     * 当前登录用户密码
+     */
     private String password;
+    private String usrSn;
+    // 模拟令牌
+    private String privateToken;
+    // 本地仓库路径
+    private String path;
     // 用户zip解压目标路径
     private String descDir;
     // 用户全名
@@ -20,13 +29,17 @@ public class GitUser {
     private String projectRepoURI;
     // 文件路径
     private String filePath;
-
-    private String  modId;
-    private String  currentPath;
-    private String  fileName;
-    private String  usrCode;
-    private String  usrSn;
-    // 模拟令牌
-    private String privateToken;
+    // 组织下的项目编号-模块编号
+    private String modId;
+    /**
+     * 当前登录用户下的组织编号
+     */
+    private String orgUsrCode;
+    private String currentPath;
+    private String fileName;
+    /**
+     * 是否为组织：1-是；默认0-不是
+     */
+    private String isOrg;
 
 }

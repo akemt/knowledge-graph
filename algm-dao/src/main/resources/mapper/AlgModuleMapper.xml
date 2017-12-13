@@ -5,6 +5,7 @@
         <id column="mod_sn" property="modSn" jdbcType="VARCHAR"/>
         <result column="usr_sn" property="usrSn" jdbcType="VARCHAR"/>
         <result column="lan_sn" property="lanSn" jdbcType="VARCHAR"/>
+        <result column="create_sn" property="createSn" jdbcType="VARCHAR"/>
         <result column="cat_sn" property="catSn" jdbcType="VARCHAR"/>
         <result column="lic_sn" property="licSn" jdbcType="VARCHAR"/>
         <result column="atl_sn" property="atlSn" jdbcType="VARCHAR"/>
@@ -50,14 +51,14 @@
     insert into alg_module (mod_sn, usr_sn, lan_sn, 
       cat_sn, lic_sn, atl_sn, 
       mod_name, mod_id, is_open_src, 
-      need_web, need_call_other, env_type, is_train, is_colony, colony_plan_id,mod_desc
+      need_web, need_call_other, env_type, is_train, is_colony, colony_plan_id,mod_desc,create_sn
       )
     values (#{modSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, #{lanSn,jdbcType=VARCHAR}, 
       #{catSn,jdbcType=VARCHAR}, #{licSn,jdbcType=VARCHAR}, #{atlSn,jdbcType=VARCHAR}, 
       #{modName,jdbcType=VARCHAR}, #{modId,jdbcType=VARCHAR}, #{isOpenSrc,jdbcType=VARCHAR}, 
       #{needWeb,jdbcType=VARCHAR}, #{needCallOther,jdbcType=VARCHAR}, #{envType,jdbcType=VARCHAR},
       #{isTrain,jdbcType=VARCHAR}, #{isColony,jdbcType=VARCHAR}, #{colonyPlanId,jdbcType=VARCHAR},
-      #{modDesc,jdbcType=VARCHAR}
+      #{modDesc,jdbcType=VARCHAR},#{createSn,jdbcType=VARCHAR}
       )
   </insert>
     <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgModule">
@@ -76,7 +77,8 @@
       is_train = #{isTrain,jdbcType=VARCHAR},
       is_colony = #{isColony,jdbcType=VARCHAR},
       colony_plan_id = #{colonyPlanId,jdbcType=VARCHAR},
-      mod_desc = #{modDesc,jdbcType=VARCHAR}
+      mod_desc = #{modDesc,jdbcType=VARCHAR},
+      create_sn = #{createSn,jdbcType=VARCHAR}
     where mod_sn = #{modSn,jdbcType=VARCHAR}
   </update>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">

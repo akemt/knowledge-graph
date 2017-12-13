@@ -77,4 +77,17 @@ public class GitLabServiceImplTest {
 
     }
 
+    @Test
+    public void createGitLabGroupProjectTest() throws Exception {
+        GitUser gitUser = new GitUser();
+        gitUser.setUsrCode("gaohaijun");
+        gitUser.setPassword("12345678");
+        gitUser.setModId("project04");
+        gitUser.setOrgUsrCode("testGroup2");
+        gitUser.setPrivateToken("mHN8exdYzNja1eZkXPxc");
+        gitUser.setIsOrg("1");
+        GitlabProject result = gitLabService.createGitLabGroupProject(gitUser);
+    }
+
+
 }

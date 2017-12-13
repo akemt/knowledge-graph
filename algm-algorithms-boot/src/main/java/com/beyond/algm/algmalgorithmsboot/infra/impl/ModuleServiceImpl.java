@@ -2,10 +2,7 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.adapter.infra.ModuleAdapter;
 import com.beyond.algm.algmalgorithmsboot.infra.*;
-import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
-import com.beyond.algm.algmalgorithmsboot.model.GitUser;
-import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
-import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigModel;
+import com.beyond.algm.algmalgorithmsboot.model.*;
 import com.beyond.algm.common.*;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.*;
@@ -60,14 +57,22 @@ public class ModuleServiceImpl implements ModuleService {
     @Value("${spring.profiles.active}")
     private String active;
 
+    //update xialf,20171213
     @Override
-    public void initProject(AlgUser algUser, String projectName,String lanSn) throws Exception {
+    public void initProject(String strPath, String username,String projectName,String lanSn) throws Exception {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
         //适配器模式 调用创建算法项目适配器
         ModuleAdapter createModuleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
-        createModuleAdapter.createModule(algUser.getUsrCode(), projectName, gitConfigModel, projectConfigModel,active);
+        createModuleAdapter.createModule(strPath, username,projectName, gitConfigModel, projectConfigModel,active);
 
     }
+//    public void initProject(AlgUser algUser, String projectName,String lanSn) throws Exception {
+//        AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
+//        //适配器模式 调用创建算法项目适配器
+//        ModuleAdapter createModuleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
+//        createModuleAdapter.createModule(algUser.getUsrCode(), projectName, gitConfigModel, projectConfigModel,active);
+//
+//    }
 
     public AlgModule findByUsrSnAndModId(String usrSn, String modId) throws AlgException {
         return algModuleMapper.selectByUsrSnAndModId(usrSn, modId);
@@ -127,15 +132,33 @@ public class ModuleServiceImpl implements ModuleService {
         // 新增算法
         try {
             algModuleMapper.insert(algModule);
-
             GitUser gitUser = new GitUser();
-            gitUser.setModId(algModule.getModId());
-            gitUser.setUsrCode(algUser.getUsrCode());
-            gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
-            //在git上创建项目
-            gitLabService.createGitLabProject(gitUser);
-            //在服务器本地创建项目
-            initProject(algUser,algModule.getModId(),algModule.getLanSn());
+            String strUserName = "";
+            if(algUser.getIsOrg().equals("1")){//组所有者-下面的组织创建项目
+                //项目编号-模块编号
+                gitUser.setModId(algModule.getModId());
+                //组织编号
+                gitUser.setOrgUsrCode(algModule.getOrgUsrCode());
+                //当前登录用户下的用户编号和密码
+                gitUser.setUsrCode(algUser.getUsrCode());
+                gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
+                gitUser.setPrivateToken(algUser.getPrivateToken());
+                gitUser.setIsOrg(algUser.getIsOrg());
+
+                strUserName = algModule.getOrgUsrCode();
+
+            }else{ //当前用户-下创建项目
+                gitUser.setModId(algModule.getModId());
+                gitUser.setUsrCode(algUser.getUsrCode());
+                gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
+                gitUser.setIsOrg("0");
+
+                strUserName = algUser.getUsrCode();
+            }
+            //在git上组织创建项目
+            gitLabService.createGitLabGroupProject(gitUser);
+            //在服务器本地创建项目 update xialf 20171213
+            initProject(gitUser.getFilePath(),strUserName,algModule.getModId(),algModule.getLanSn());
             //commit and push 代码
             String version = jGitService.commitAndPushAllFiles(gitUser);
 
@@ -151,6 +174,8 @@ public class ModuleServiceImpl implements ModuleService {
             algModuleVersionMapper.insert(algModuleVersion);
 
         } catch (Exception e) {
+            //当组织新增算法失败时，同时删除此组织下的项目
+
             log.error("算法新增增加失败。用户串号：{},语言串号：{},分类串号：{},协议串号：{}",algModule.getUsrSn(),algModule.getLanSn(),algModule.getCatSn(),algModule.getLicSn(),e);
             throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002",new String[]{});
         }
@@ -258,6 +283,6 @@ public class ModuleServiceImpl implements ModuleService {
         String strModId = modId.toLowerCase();
         //校验
         int count = algModuleMapper.selectIsRepeat(strModId,usrSn);
-        return count>0?true:false;
+        return count>0?false:true;
     }
 }

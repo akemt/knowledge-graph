@@ -24,4 +24,15 @@ public interface UserService {
      */
     AlgUser findByUsrCode(String usrCode) throws AlgException;
 
+    /**
+     * 验证是组所有者，还是普通用户
+     *
+     * @param orgUsrCode
+     * @param curUsrSn
+     * @return
+     * @throws AlgException
+     * @author xialf
+     */
+    AlgUser isOwnerByUsrCode(String orgUsrCode, String curUsrSn) throws AlgException;
+
 }
