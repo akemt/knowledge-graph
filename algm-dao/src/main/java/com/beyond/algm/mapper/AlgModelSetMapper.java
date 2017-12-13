@@ -3,6 +3,7 @@ package com.beyond.algm.mapper;
 import com.beyond.algm.model.AlgModel;
 import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.vo.AlgModelSetVo;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface AlgModelSetMapper {
 
     int updateByPrimaryKey(AlgModelSet record);
 
-    List<AlgModelSetVo> queryModelSet(String usrSn);
+    Page<AlgModelSetVo> queryModelSet(String usrSn);
 
     int checkData(AlgModelSet algModelSet);
 

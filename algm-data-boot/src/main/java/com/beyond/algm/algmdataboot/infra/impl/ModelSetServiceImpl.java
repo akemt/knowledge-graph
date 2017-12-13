@@ -19,7 +19,10 @@ import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.model.AlgModel;
 import com.beyond.algm.mapper.AlgModelSetMapper;
 import com.beyond.algm.mapper.AlgModelMapper;
-
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -125,24 +128,26 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public  List<AlgModelSetVo> queryAlgModelSet(String usrSn) throws AlgException {
-            List<AlgModelSetVo> algModelSetVoList = algModelSetMapper.queryModelSet(usrSn);
-            if(Assert.isNotEmpty(algModelSetVoList)){
-                String modelSetSn= algModelSetVoList.get(0).getModelSetSn();
-                AlgModel algModel=new AlgModel();
-                algModel.setUsrSn(usrSn);
-                algModel.setModelSetSn(modelSetSn);
-                List<ModelDataVo> algModelList=algModelMapper.queryModel(algModel);
-                algModelSetVoList.get(0).setAlgModelVolist(algModelList);
-                return algModelSetVoList;
-            }
-            return null;
+    public  PageInfo<AlgModelSetVo> queryAlgModelSet(String usrSn, Pageable pageable) throws AlgException {
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        Page<AlgModelSetVo> algModelSetVoList = algModelSetMapper.queryModelSet(usrSn);
+        if(Assert.isNotEmpty(algModelSetVoList)){
+            String modelSetSn= algModelSetVoList.get(0).getModelSetSn();
+            AlgModel algModel=new AlgModel();
+            algModel.setUsrSn(usrSn);
+            algModel.setModelSetSn(modelSetSn);
+            List<ModelDataVo> algModelList=algModelMapper.queryModel(algModel);
+            algModelSetVoList.get(0).setAlgModelVolist(algModelList);
+            return new PageInfo<>(algModelSetVoList);
+        }
+        return null;
     }
 
     @Override
-    public List<ModelDataVo> queryAlgModel( AlgModel algModel) throws AlgException {
-            List<ModelDataVo> allAlgModel = algModelMapper.queryModel(algModel);
-            return allAlgModel;
+    public PageInfo<ModelDataVo> queryAlgModel( AlgModel algModel, Pageable pageable) throws AlgException {
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        Page<ModelDataVo> allAlgModel = algModelMapper.queryModelPage(algModel);
+        return new PageInfo<>(allAlgModel);
     }
     @Override
     public AlgUser findByUsrCode(String usrCode){

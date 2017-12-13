@@ -25,7 +25,9 @@ import com.beyond.algm.algmdataboot.infra.ModelSetService;
 import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.model.AlgModel;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -149,10 +151,10 @@ public class ModelSetController  extends BaseController {
      * @date : 14:15 2017/10/21
      */
     @RequestMapping(value = "/queryModelSet", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result queryModelSet() throws AlgException{
+    public Result<PageInfo<AlgModelSetVo>> queryModelSet(@PageableDefault Pageable pageable) throws AlgException{
         logger.info("查询用户的模型集");
         AlgUser algUser = getUserInfo();
-        List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet(algUser.getUsrSn());
+        PageInfo<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet(algUser.getUsrSn(), pageable);
        // List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet("8ec99d9819744a8aa0db947a6be6db4c");
         return Result.ok(AlgModelSetVoList);
     }
@@ -163,7 +165,7 @@ public class ModelSetController  extends BaseController {
      * @date : 14:18 2017/10/21
      */
     @RequestMapping(value = "/queryModel", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result<Object> queryModel(String modelSetSn)throws AlgException{
+    public Result<PageInfo<ModelDataVo>> queryModel(String modelSetSn,@PageableDefault Pageable pageable)throws AlgException{
         AlgUser algUser = getUserInfo();
         // 预留方法判断是否是本人
         logger.info("模型集串号：{},用户ID:{}",modelSetSn,algUser.getUsrSn());
@@ -171,7 +173,7 @@ public class ModelSetController  extends BaseController {
        algModelSet.setUsrSn(algUser.getUsrSn());
        //  algModelSet.setUsrSn("8ec99d9819744a8aa0db947a6be6db4c");
         algModelSet.setModelSetSn(modelSetSn);
-        List<ModelDataVo> mdelDataVoList=modelSetService.queryAlgModel(algModelSet);
+        PageInfo<ModelDataVo> mdelDataVoList=modelSetService.queryAlgModel(algModelSet, pageable);
         return Result.ok(mdelDataVoList);
     }
 
