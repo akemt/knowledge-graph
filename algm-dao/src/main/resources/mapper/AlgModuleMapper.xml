@@ -104,6 +104,7 @@
         </foreach>
     </select>
     <sql id="findModuleListColumn">
+        mo.mod_sn as mod_sn,
         mo.mod_id as mod_id,
         mo.mod_name as mod_name,
         mo.mod_desc as mod_desc,
