@@ -5,8 +5,14 @@ import com.beyond.algm.exception.AlgException;
 
 public interface AlgChargingCallService {
     /**
-     * lindewei
-     * API调用计费
+     *
+     * @param usrCode
+     * @param modId
+     * @param version
+     * @param keyValue
+     * @param jsonStr
+     * @return
+     * @throws AlgException
      */
-    AlgResult addChargingCall(String usrCode, String modId, String version, String keyValue) throws AlgException;
+    AlgResult addChargingCall(String usrCode, String modId, String version, String keyValue,String jsonStr) throws AlgException;
 }
