@@ -131,6 +131,7 @@ public class ModuleServiceImpl implements ModuleService {
             GitUser gitUser = new GitUser();
             gitUser.setModId(algModule.getModId());
             gitUser.setUsrCode(algUser.getUsrCode());
+            gitUser.setPrivateToken(algUser.getPrivateToken());
             gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
             //在git上创建项目
             gitLabService.createGitLabProject(gitUser);
