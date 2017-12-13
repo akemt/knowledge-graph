@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.beyond.algm.mapper.AlgDataVerMapper" >
+  <resultMap id="BaseResultMap" type="com.beyond.algm.model.AlgDataVer" >
+    <id column="data_ver_sn" property="dataVerSn" jdbcType="VARCHAR" />
+    <result column="data_sn" property="dataSn" jdbcType="VARCHAR" />
+    <result column="ver_sn" property="verSn" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from alg_data_ver
+    where data_ver_sn = #{dataVerSn,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.beyond.algm.model.AlgDataVer" >
+    insert into alg_data_ver (data_ver_sn, data_sn, ver_sn
+      )
+    values (#{dataVerSn,jdbcType=VARCHAR}, #{dataSn,jdbcType=VARCHAR}, #{verSn,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgDataVer" >
+    update alg_data_ver
+    set data_sn = #{dataSn,jdbcType=VARCHAR},
+      ver_sn = #{verSn,jdbcType=VARCHAR}
+    where data_ver_sn = #{dataVerSn,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select data_ver_sn, data_sn, ver_sn
+    from alg_data_ver
+    where data_ver_sn = #{dataVerSn,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select data_ver_sn, data_sn, ver_sn
+    from alg_data_ver
+  </select>
+</mapper>
