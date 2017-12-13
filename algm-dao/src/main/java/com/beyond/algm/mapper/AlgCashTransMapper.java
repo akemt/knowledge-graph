@@ -2,6 +2,7 @@ package com.beyond.algm.mapper;
 
 import com.beyond.algm.model.AlgCashTrans;
 import java.util.List;
+import com.github.pagehelper.Page;
 
 public interface AlgCashTransMapper {
     int deleteByPrimaryKey(String traSn);
@@ -14,5 +15,5 @@ public interface AlgCashTransMapper {
 
     int updateByPrimaryKey(AlgCashTrans record);
 
-    List<AlgCashTrans>  payRecord(String usrSn );
+    Page<AlgCashTrans>  payRecord(String usrSn );
 }

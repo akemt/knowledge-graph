@@ -18,13 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,54 +171,4 @@ public class DataSetController extends BaseController {
         return Result.ok(pageInfo);
     }
 
-    /**
-     * @auther: ZhangJiayue
-     * @Description: 修改数据
-     * @param : AlgData
-     * @date: 2017-10-22 19:24:26
-     */
-    /*@RequestMapping(value = "/modifyData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody
-    Result<Object> modifyData(AlgData algData) {
-        logger.info("修改数据信息");
-        try {
-            Result result = dataSetService.modifyData(algData);
-            return result;
-        } catch (Exception e) {
-            logger.info("修改数据失败", e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
-    }*/
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description: 数据文件增加
-     * @param ：数据集名称：dataSetName，
-     */
-    @RequestMapping(value = "/dataModuleUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result dataFileUpload(MultipartFile file,String dataSetName ,String dataSetUuid) throws AlgException {
-        AlgUser algUser = getUserInfo();
-        AlgData algData =new AlgData();
-        algData.setDataEnName(file.getOriginalFilename());
-        algData.setUsrSn(algUser.getUsrSn());
-        algData.setDataSetSn(dataSetUuid);
-        // 留存权限接口
-        int count =dataSetService.checkFileName(algData);
-        dataSetService.uploadDateSet(file,algUser.getUsrCode(),dataSetName,dataSetUuid,algUser.getUsrSn());
-        return Result.successResponse();
-    }
-
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description: 数据下载
-     */
-    @RequestMapping(value = "/{usrCode}/{dataSet}/{fileName}/downUpload", method = RequestMethod.GET)
-    public Result dataDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("dataSet") String dataSet,@PathVariable("fileName") String fileName,HttpServletResponse response) throws AlgException {
-        AlgUser algUser = getUserInfo();
-        // 权限控制预留接口
-        authService.isDataByUser(usrCode,algUser.getUsrCode(),algUser.getUsrSn(),dataSet,fileName);
-        dataSetService.downDataUrl(algUser.getUsrSn(), dataSet, fileName,usrCode,response);
-        return Result.successResponse();
-    }
 }

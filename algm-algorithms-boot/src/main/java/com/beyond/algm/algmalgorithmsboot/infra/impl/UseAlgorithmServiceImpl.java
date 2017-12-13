@@ -18,7 +18,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -36,12 +39,12 @@ public class UseAlgorithmServiceImpl implements UseAlgorithmService {
      * @date ：13:16 2017/10/12
      */
     @Override
-    public List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo)throws AlgException{
+    public PageInfo<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo, Pageable pageable)throws AlgException{
         //分页处理
-        PageHelper.startPage(algRUserModuleCallTransVo.getPage(), algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        Page<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
 
-        return lgRUserModuleCallTransList;
+        return new PageInfo<>(lgRUserModuleCallTransList);
     }
 
     /**
@@ -52,11 +55,11 @@ public class UseAlgorithmServiceImpl implements UseAlgorithmService {
      * @date ：17:34 2017/10/12
      */
    @Override
-    public List<AlgRUserModuleCallTransVo> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo)throws AlgException {
+    public PageInfo<AlgRUserModuleCallTransVo> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo, Pageable pageable)throws AlgException {
         //分页处理
-        PageHelper.startPage(algRUserModuleCallTransVo.getPage(), algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
-        return lgRUserModuleCallTransList;
+       PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+       Page<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
+        return new PageInfo<>(lgRUserModuleCallTransList);
     }
 }
 

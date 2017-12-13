@@ -16,6 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 import java.util.List;
 
@@ -35,9 +38,9 @@ public class AuthCodeController extends BaseController {
     private AuthCodeDomainService authCodeDomainService;
 
     @RequestMapping(value = "/listAuthCode", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result listAuthCode() throws AlgException {
+    public Result<PageInfo<AlgAuthCode>> listAuthCode(@PageableDefault Pageable pageable) throws AlgException {
         AlgUser algUser = getUserInfo();
-        List<AlgAuthCode> result = authCodeService.listUserAuthCode(algUser.getUsrSn());
+        PageInfo<AlgAuthCode> result = authCodeService.listUserAuthCode(algUser.getUsrSn(),pageable);
         return Result.ok(result);
     }
 
