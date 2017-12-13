@@ -5,21 +5,15 @@ import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.beyond.algm.algmfileboot.infra.DataSetService;
-import com.beyond.algm.algmfileboot.util.CephUtil;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.FileUtil;
-import com.beyond.algm.common.Result;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgDataMapper;
 import com.beyond.algm.mapper.AlgDataSetMapper;
 import com.beyond.algm.mapper.AlgUserMapper;
 import com.beyond.algm.model.AlgData;
-import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
-import com.beyond.algm.vo.AlgDifDataListVo;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,6 +53,8 @@ public class DataSetServiceImpl implements DataSetService {
     private AlgDataMapper algDataMapper;
     @Autowired
     private AlgUserMapper algUserMapper;
+    @Autowired
+    AmazonS3 conn;
 
     /**
      * @author ：zhangchuanzhi
@@ -90,7 +86,6 @@ public class DataSetServiceImpl implements DataSetService {
         }
         String key=dataSetName+"/"+file.getOriginalFilename();
         String bucketName=usrCode;
-        AmazonS3 conn= CephUtil.connectCeph(accessKey,secretKey,host);
         Bucket bucket=null;
         if(!conn.doesBucketExistV2(bucketName)){
             bucket=conn.createBucket(bucketName);
@@ -157,7 +152,6 @@ public class DataSetServiceImpl implements DataSetService {
         String url=host+"/"+usrCode+"/"+dataSet+"/"+fileName;
         log.info("生成url:{}",url);
         if(Assert.isNotEmpty(url)){
-            AmazonS3 conn= CephUtil.connectCeph(accessKey,secretKey,host);
             // 数据集+文件名
             String key=dataSet+"/"+fileName;
             File downloadFile=new File(path+fileName);

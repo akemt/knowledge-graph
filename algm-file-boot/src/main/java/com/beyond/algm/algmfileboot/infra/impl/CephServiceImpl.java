@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.beyond.algm.algmfileboot.infra.CephService;
-import com.beyond.algm.algmfileboot.util.CephUtil;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
