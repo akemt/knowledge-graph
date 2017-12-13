@@ -12,7 +12,7 @@ public interface ModuleService {
     /**
      * 初始化算法工程.
      */
-    void initProject(AlgUser algUser, String projectName,String lanSn) throws Exception;
+    void initProject(String strPath, String username,String projectName,String lanSn) throws Exception;
 
     AlgModule findByUsrSnAndModId(String usrSn,String modId) throws AlgException;
 

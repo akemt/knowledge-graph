@@ -15,6 +15,9 @@ import com.beyond.algm.model.AlgProgramLang;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgFileReadWriteVo;
 import com.beyond.algm.vo.AlgModuleEditVo;
+import com.beyond.algm.vo.AlgModuleListVo;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -127,6 +130,8 @@ public class ModuleController extends BaseController {
     public Result AddAlgorithm(AlgModule algModule) throws AlgException {
         AlgUser algUser = getUserInfo();
         algModule.setUsrSn(algUser.getUsrSn());
+        algModule.setCreateSn(algUser.getUsrSn());
+        algUser.setIsOrg("0");
         //先保存到数据库
         if(moduleService.isRepeat(algModule.getModId(),algUser.getUsrSn())){
             //无算法重名，可以插入。
@@ -226,7 +231,6 @@ public class ModuleController extends BaseController {
      *
      * @param modId
      * @param usrCode
-     * @param verMark
      * @return
      * @throws AlgException
      * @author xialf
@@ -239,4 +243,44 @@ public class ModuleController extends BaseController {
         Map<String, Object> algModuleVersionMap = publishService.getAlgModuleVersion(modId, usrCode);
         return Result.ok(algModuleVersionMap);
     }
+
+
+    /**
+     * 新增组织算法
+     * @param algModule
+     * @param orgUsrCode
+     * @return
+     * @throws AlgException
+     * @author xialf
+     */
+    @RequestMapping(value = "/module/addOrgAlg", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result AddOrgAlgorithm(AlgModule algModule,String orgUsrCode) throws AlgException {
+        log.info("新增组织算法 -Controller(/module/addOrgAlg) : orgUsrCode:{}", orgUsrCode);
+        //查询当前登录用户信息
+        AlgUser curAlgUser = getUserInfo();
+        //验证组所有者，还是普通用户
+        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
+        AlgUser algUser = userService.isOwnerByUsrCode(orgUsrCode,curAlgUser.getUsrSn());
+        if(Assert.isNULL(algUser)) {
+            String msg = "普通用户不可以创建算法，请重新输入！";
+            return Result.failure(msg);
+        }
+        algModule.setUsrSn(algUser.getUsrSn());
+        algModule.setCreateSn(curAlgUser.getUsrSn());
+        //把组织编号，封装到AlgModule实体中
+        algModule.setOrgUsrCode(orgUsrCode);
+        curAlgUser.setIsOrg(algUser.getIsOrg());
+        //先保存到数据库
+        if (moduleService.isRepeat(algModule.getModId(), algUser.getUsrSn())) {
+            //algModule-算法实体信息，curAlgUser-当前登录用户实体信息。
+            moduleService.addAlgModule(algModule, curAlgUser);
+            return Result.successResponse();
+        } else {
+            //有重名存在。
+            String msg = "组织算法已经存在，请重新输入！";
+            return Result.failure(msg);
+        }
+    }
+
+
 }

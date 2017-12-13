@@ -28,20 +28,42 @@ public class JGitServiceImpl implements JGitService {
 
     @Override
     public void gitCloneProject(GitUser gitUser) throws AlgException {
-        log.info("增加git的clone项目");
+        log.info("gitCloneProject 增加git的clone项目");
         //Git git = Git.cloneRepository().setURI(projectRepoURI).setDirectory(new File("E:/repo")).call();
         CloneCommand cloneCommand = Git.cloneRepository();
         cloneCommand.setURI(gitUser.getProjectRepoURI());
         cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword()));
-        cloneCommand.setDirectory(new File(pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())));
+
+        StringBuffer  strUrlUsrCodeAndModId= new StringBuffer();
+        String strPath = null;
+        if(gitUser.getIsOrg().equals("1")) {//组所有者-下面的组织
+            strUrlUsrCodeAndModId.append(gitUser.getOrgUsrCode());
+            strUrlUsrCodeAndModId.append(File.separator);
+            strUrlUsrCodeAndModId.append(gitUser.getModId());
+            //E:\repo\组织编号\项目名\当前用户编号\src\algmarket\TestJavaK1 如：E:\repo\testGroup1\Project01\gaohaijun\src\algmarket\TestJavaK1
+            strPath = pathService.getModuleBasePath(strUrlUsrCodeAndModId.toString(),gitUser.getUsrCode());
+        }else{
+            //E:\repo\当前登录用户\项目名\src\algmarket\TestJavaK1 如：E:\repo\erniu4\Project01\src\algmarket\TestJavaK1
+            strPath = pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId());
+        }
+
+
+        cloneCommand.setDirectory(new File(strPath));
         try {
             cloneCommand.call();
         } catch (Exception e) {
+            log.error("gitCloneProject 增加git的clone项目");
             log.error(e.toString());
-            throw new AlgException("此处需要添加编码");
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002");
         }
 
-        gitUser.setPath(pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+".git");
+        if(gitUser.getIsOrg().equals("1")) {//组所有者-下面的组织
+            gitUser.setPath(pathService.getModuleBasePath(strUrlUsrCodeAndModId.toString(),gitUser.getUsrCode())+File.separator+".git");
+            gitUser.setFilePath(pathService.getModuleBasePath(strUrlUsrCodeAndModId.toString(),gitUser.getUsrCode()));
+        }else{
+            gitUser.setPath(pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+".git");
+            gitUser.setFilePath(pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId()));
+        }
     }
 
     /**
@@ -50,7 +72,7 @@ public class JGitServiceImpl implements JGitService {
      * @return
      */
     public String commitAndPushAllFiles(GitUser gitUser)throws AlgException  {
-        logger.info("initCommit方法传入本地仓库路径：{}用户名：{} 用户密码",gitUser.getPath(),gitUser.getUsrCode(),gitUser.getPassword());
+        logger.info("initCommit方法传入本地仓库路径:{};用户名:{} ;用户密码:{};",gitUser.getPath(),gitUser.getUsrCode(),gitUser.getPassword());
         String version="";
         try {
             FileRepository localRepo = new FileRepository( gitUser.getPath());

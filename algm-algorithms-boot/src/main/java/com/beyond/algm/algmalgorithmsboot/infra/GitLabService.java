@@ -84,4 +84,15 @@ public interface GitLabService {
      */
     void deleteUserByGitUserId(Integer id) throws Exception;
 
+
+    /**
+     * 组织创建项目
+     *
+     * @param gitUser
+     * @return
+     * @throws Exception
+     * @author xialf
+     */
+    GitlabProject createGitLabGroupProject(GitUser gitUser) throws Exception;
+
 }

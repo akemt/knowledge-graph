@@ -4,6 +4,7 @@ import com.beyond.algm.algmalgorithmsboot.infra.GitLabService;
 import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
 import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.gitlab.api.GitlabAPI;
@@ -107,5 +108,27 @@ public class GitLabServiceImpl implements GitLabService {
             log.info(e.getMessage(), e);
         }
 
+    }
+
+    @Override
+    public GitlabProject createGitLabGroupProject(GitUser gitUser) throws Exception {
+        log.info("createGitLabGroupProject方法调用时候gitlab的地址:" + gitConfigModel.getBaseUrl());
+        GitlabAPI gitlabAPI = GitlabAPI.connect(gitConfigModel.getBaseUrl(), gitUser.getPrivateToken());
+        //通过组织编号，获取组织ID
+        GitlabGroup gitlabGroup = gitlabAPI.getGroup(gitUser.getOrgUsrCode());
+        GitlabProject gitlabProject = null;
+        try {
+            // http://127.0.0.1/组织编号/项目编号
+            Query query = (new Query()).append("name", gitUser.getModId()).appendIf("path", gitUser.getModId()).appendIf("namespace_id", gitlabGroup.getId());
+            String tailUrl = "/projects" + query.toString();
+            gitlabProject = (GitlabProject) gitlabAPI.dispatch().to(tailUrl, GitlabProject.class);
+
+            gitUser.setProjectRepoURI(gitlabProject.getHttpUrl());
+            jGitService.gitCloneProject(gitUser);
+        } catch (Exception e) {
+            log.error("createGitLabGroupProject false ,because of group's project", e.getMessage(), e);
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002");
+        }
+        return gitlabProject;
     }
 }

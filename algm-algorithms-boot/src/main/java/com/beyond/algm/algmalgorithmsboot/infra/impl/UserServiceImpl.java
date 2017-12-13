@@ -256,5 +256,19 @@ public class UserServiceImpl implements UserService {
     public List<AlgUser> ownOrganize(String usrCode) throws AlgException {
         return algUserMapper.selectOwnOrganize(usrCode);
     }
+
+    public AlgUser isOwnerByUsrCode(String orgUsrCode, String curUsrSn) throws AlgException {
+
+        //根据OrgCode，查询该用户信息
+        AlgUser algUser = this.findByUsrCode(orgUsrCode);
+        //验证是组所有者，还是普通用户
+        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者 。如果返回false,则是普通用户
+        if (algUser.getOwnerId().equals(curUsrSn)) {
+            return algUser;
+        } else {
+            return null;
+        }
+    }
+
 }
 

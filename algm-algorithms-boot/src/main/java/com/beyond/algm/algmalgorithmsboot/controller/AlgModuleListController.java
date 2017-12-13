@@ -2,6 +2,7 @@ package com.beyond.algm.algmalgorithmsboot.controller;
 
 import com.beyond.algm.algmalgorithmsboot.base.BaseController;
 import com.beyond.algm.algmalgorithmsboot.infra.AlgModuleListService;
+import com.beyond.algm.algmalgorithmsboot.infra.UserService;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.common.ResultEnum;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -32,6 +34,9 @@ import java.util.Map;
 @Slf4j
 @RestController
 public class AlgModuleListController extends BaseController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private AlgModuleListService algModuleListService;
@@ -136,5 +141,37 @@ public class AlgModuleListController extends BaseController {
         AlgUser algUser = getUserInfo();
         algModuleListService.modStar(modSn,algUser.getUsrSn());
         return Result.successResponse();
+    }
+
+
+
+    /**
+     * 查询组织算法
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param orgUsrCode
+     * @return
+     * @throws AlgException
+     * @author xialf
+     */
+    @RequestMapping(value = "/module/queryOrgAlgList",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public  Result myListAlg(@RequestParam("pageNum") Integer pageNum,@RequestParam("pageSize") Integer pageSize,@RequestParam("orgUsrCode") String orgUsrCode) throws AlgException {
+
+        log.info("查询组织算法 -Controller(/module/queryOrgAlgList) : orgUsrCode:{}", orgUsrCode);
+        //查询当前登录用户信息
+        AlgUser curAlgUser = getUserInfo();
+        //验证组所有者，还是普通用户
+        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
+        AlgUser algUser = userService.isOwnerByUsrCode(orgUsrCode,curAlgUser.getUsrSn());
+        if(Assert.isNULL(algUser)) {
+            String msg = "普通用户不可以创建算法，请重新输入！";
+            return Result.failure(msg);
+        }
+        pageNum = pageNum == null ? 1 : pageNum;
+        pageSize = pageSize == null ? 10 : pageSize;
+        Page<AlgModuleListVo> page = algModuleListService.findModulePage(null, null, null, pageNum, pageSize,null,orgUsrCode);
+        PageInfo pageInfo = new PageInfo(page);
+        return Result.ok(pageInfo);
     }
 }
