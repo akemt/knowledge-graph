@@ -2,6 +2,7 @@ package com.beyond.algm.mapper;
 
 import com.beyond.algm.model.AlgDataSet;
 import java.util.List;
+import com.github.pagehelper.Page;
 
 public interface AlgDataSetMapper {
     int deleteByPrimaryKey(String dataSetSn);
@@ -10,7 +11,7 @@ public interface AlgDataSetMapper {
 
     AlgDataSet selectByPrimaryKey(String dataSetSn);
 
-    List<AlgDataSet> selectAll(String usrSn);
+    Page<AlgDataSet> selectAll(String usrSn);
 
     int updateByPrimaryKey(AlgDataSet record);
 

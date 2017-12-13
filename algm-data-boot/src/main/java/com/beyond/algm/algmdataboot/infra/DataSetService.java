@@ -8,7 +8,8 @@ import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgDataDownLoadVo;
 import com.github.pagehelper.Page;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -22,13 +23,13 @@ public interface DataSetService {
      * @author ：lindewei
      * @Description: 我的数据集tree
      */
-    List<AlgDataSet> getDataSet(String usrSn) throws AlgException;
+    PageInfo<AlgDataSet> getDataSet(String usrSn, Pageable pageable) throws AlgException;
 
     /**
      * @author ：lindewei
      * @Description: 我的数据List
      */
-    List<AlgData> getData(String usrSn) throws AlgException;
+    PageInfo<AlgData> getData(String usrSn, Pageable pageable) throws AlgException;
 
     /**
      * @author ：lindewei

@@ -23,7 +23,7 @@ public interface AlgDataMapper {
 
     int dataCount(String dataSetSn);
 
-    List<AlgData> findDataList(String usrSn);
+    Page<AlgData> findDataList(String usrSn);
 
     //我的收藏-不同实现-数据列表
     List<AlgDifDataListVo> findDifDataList(Integer id);
