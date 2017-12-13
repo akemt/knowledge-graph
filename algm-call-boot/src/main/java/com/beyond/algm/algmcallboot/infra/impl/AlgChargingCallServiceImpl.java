@@ -1,6 +1,7 @@
 package com.beyond.algm.algmcallboot.infra.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.beyond.algm.algmcallboot.call.AlgmHttpCall;
 import com.beyond.algm.algmcallboot.infra.AlgChargingCallService;
 import com.beyond.algm.algmcallboot.model.*;
 import com.beyond.algm.algmcallboot.repository.*;
@@ -9,6 +10,7 @@ import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
@@ -32,12 +34,14 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
     private RocketMQServiceImpl rocketMQService;
     @Autowired
     private AlgAuthCodeRepository algAuthCodeRepository;
+    @Value("${server.base.url}")
+    private String baseUrl;
 
     /**
      * lindewei
      * API调用计费
      */
-    public AlgResult addChargingCall(String usrCode,String modId,String version,String keyValue) throws AlgException{
+    public AlgResult addChargingCall(String usrCode,String modId,String version,String keyValue,String jsonStr) throws AlgException{
         //定义返回结果对象
         AlgResult algResult =new AlgResult();
         //获取用户信息
@@ -89,13 +93,8 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
         Long startTime =  new Date().getTime();
 
         //TODO 用户调用方法，去执行的接口。
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-        }
-        algResult.setResult("执行结果成功。");//TODO 放入调用方法后的结果
+        String result = new AlgmHttpCall(usrCode,modId,version,baseUrl,jsonStr).send();
+        algResult.setResult(result);
         //结束调用
         Long endTime =  new Date().getTime();
         //计算时间差

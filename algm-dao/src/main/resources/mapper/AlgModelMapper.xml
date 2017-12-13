@@ -119,4 +119,18 @@
     model_set_sn =(select model_set_sn from alg_model_set where usr_sn=#{usrSn,jdbcType=VARCHAR} AND model_set_name=#{modelSetName,jdbcType=VARCHAR})
     and model_name=#{modelName,jdbcType=VARCHAR}
   </select>
+
+  <delete id="deleteModel" parameterType="com.beyond.algm.model.AlgModel" >
+    delete from alg_model
+    where model_sn = #{modelSn,jdbcType=VARCHAR}
+          and usr_sn= #{usrSn,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="queryModelPage" resultMap="queryForListMap" parameterType="com.beyond.algm.model.AlgModel" >
+    select alg_model.model_sn, alg_model.dat_sn, alg_model.usr_sn, alg_model.model_set_sn, alg_model.ver_sn, date_format(alg_model.create_time,'%Y-%c-%d %h:%i:%s') create_time , alg_model.model_address,
+    alg_model.model_name, alg_model.model_en_name, alg_model.model_size, alg_model.is_open_src, alg_model.comment,alg_data.data_name
+    from alg_model left join  alg_data  on alg_data.data_sn =alg_model.dat_sn and alg_model.usr_sn =alg_data.usr_sn
+    where alg_model.model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
+    and  alg_model.usr_sn=#{usrSn,jdbcType=VARCHAR}
+  </select>
 </mapper>

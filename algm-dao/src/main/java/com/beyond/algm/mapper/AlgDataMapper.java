@@ -1,6 +1,7 @@
 package com.beyond.algm.mapper;
 
 import com.beyond.algm.model.AlgData;
+import com.beyond.algm.vo.AlgDataDownLoadVo;
 import com.beyond.algm.vo.AlgDataVo;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.github.pagehelper.Page;
@@ -22,13 +23,13 @@ public interface AlgDataMapper {
 
     int dataCount(String dataSetSn);
 
-    List<AlgData> findDataList(String usrSn);
+    Page<AlgData> findDataList(String usrSn);
 
     //我的收藏-不同实现-数据列表
     List<AlgDifDataListVo> findDifDataList(Integer id);
 
     //数据商城
-    Page<AlgDifDataListVo> findAlgDataMall(String dataContent);
+    Page<AlgDataDownLoadVo> findAlgDataMall(String dataContent);
 
     int checkFileName(AlgData data);
 

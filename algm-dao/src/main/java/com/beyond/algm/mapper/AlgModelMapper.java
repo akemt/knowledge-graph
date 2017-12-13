@@ -4,7 +4,7 @@ import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgModel;
 import com.beyond.algm.vo.AlgModelVo;
 import com.beyond.algm.vo.ModelDataVo;
-
+import com.github.pagehelper.Page;
 import java.util.List;
 
 public interface AlgModelMapper {
@@ -24,10 +24,14 @@ public interface AlgModelMapper {
 
     List<ModelDataVo> queryModel (AlgModel algModel);
 
+    Page<ModelDataVo> queryModelPage (AlgModel algModel);
+
     int checkData (AlgModel algModel);
     int checkFileName(AlgModel data);
     int update(AlgModel record);
     String modelSn(AlgModelVo algModelVo);
+
+    int deleteModel(AlgModel algModel);
 
 
 }

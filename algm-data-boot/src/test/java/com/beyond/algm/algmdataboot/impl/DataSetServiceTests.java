@@ -26,13 +26,13 @@ public class DataSetServiceTests {
     //我的数据集tree
     @Test
     public void getDataSetTest() throws Exception {
-        dataSetService.getDataSet("37bf2269ee4845da8e86861bbde2438a");
+        //dataSetService.getDataSet("37bf2269ee4845da8e86861bbde2438a");
     }
 
     //我的数据集tree
     @Test
     public void getDataTest() throws Exception {
-        dataSetService.getData("37bf2269ee4845da8e86861bbde2438a");
+        //dataSetService.getData("37bf2269ee4845da8e86861bbde2438a");
     }
 
     //添加数据集

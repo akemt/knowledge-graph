@@ -2,6 +2,7 @@ package com.beyond.algm.mapper;
 
 import com.beyond.algm.model.AlgAuthCode;
 import java.util.List;
+import com.github.pagehelper.Page;
 
 public interface AlgAuthCodeMapper {
     int deleteByPrimaryKey(String acdSn);
@@ -12,7 +13,7 @@ public interface AlgAuthCodeMapper {
 
     List<AlgAuthCode> selectAll();
 
-    List<AlgAuthCode> selectByUsrSnKey(String usrSn);
+    Page<AlgAuthCode> selectByUsrSnKey(String usrSn);
 
     int updateByPrimaryKeySelective(AlgAuthCode record);
 }

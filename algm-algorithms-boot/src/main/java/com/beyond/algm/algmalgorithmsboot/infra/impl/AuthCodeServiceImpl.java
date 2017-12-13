@@ -10,7 +10,10 @@ import com.beyond.algm.model.AlgAuthCodeDomain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 import java.util.Date;
 import java.util.List;
 
@@ -90,9 +93,10 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
-    public List<AlgAuthCode> listUserAuthCode(String usrSn) {
-        List<AlgAuthCode> userAllAuthCode = algAuthCodeMapper.selectByUsrSnKey(usrSn);
-        return userAllAuthCode;
+    public PageInfo<AlgAuthCode> listUserAuthCode(String usrSn, Pageable pageable) {
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        Page<AlgAuthCode> userAllAuthCode = algAuthCodeMapper.selectByUsrSnKey(usrSn);
+        return new PageInfo<>(userAllAuthCode);
     }
 
     private void addUrl(AlgAuthCode algAuthCode, String[] addUrl) {

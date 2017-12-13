@@ -9,4 +9,5 @@ public class AlgmHbaseBootApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AlgmHbaseBootApplication.class, args);
 	}
+
 }

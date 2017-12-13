@@ -5,6 +5,8 @@ import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.UserAccountVo;
 import com.beyond.algm.vo.UserVo;
 
+import java.util.List;
+
 /**
  * @author ：zhangchuanzhi
  * @Description:接口定义
@@ -24,6 +26,12 @@ public interface UserService {
      */
     AlgUser findByUsrCode(String usrCode) throws AlgException;
 
+    /**
+     * 查询一个用户都有哪些组织
+     * @param usrCode
+     * @return
+     */
+    List<AlgUser> ownOrganize(String usrCode) throws AlgException;
     /**
      * 验证是组所有者，还是普通用户
      *

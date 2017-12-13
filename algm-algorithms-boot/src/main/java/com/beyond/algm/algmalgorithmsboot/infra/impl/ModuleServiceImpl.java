@@ -133,8 +133,14 @@ public class ModuleServiceImpl implements ModuleService {
         try {
             algModuleMapper.insert(algModule);
             GitUser gitUser = new GitUser();
+            gitUser.setModId(algModule.getModId());
+            gitUser.setUsrCode(algUser.getUsrCode());
+            gitUser.setPrivateToken(algUser.getPrivateToken());
+            gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
             String strUserName = "";
             if(algUser.getIsOrg().equals("1")){//组所有者-下面的组织创建项目
+                //在git上组织创建项目
+                gitLabService.createGitLabGroupProject(gitUser);
                 //项目编号-模块编号
                 gitUser.setModId(algModule.getModId());
                 //组织编号
@@ -148,6 +154,8 @@ public class ModuleServiceImpl implements ModuleService {
                 strUserName = algModule.getOrgUsrCode();
 
             }else{ //当前用户-下创建项目
+                //在git上创建项目
+                gitLabService.createGitLabProject(gitUser);
                 gitUser.setModId(algModule.getModId());
                 gitUser.setUsrCode(algUser.getUsrCode());
                 gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
@@ -155,8 +163,6 @@ public class ModuleServiceImpl implements ModuleService {
 
                 strUserName = algUser.getUsrCode();
             }
-            //在git上组织创建项目
-            gitLabService.createGitLabGroupProject(gitUser);
             //在服务器本地创建项目 update xialf 20171213
             initProject(gitUser.getFilePath(),strUserName,algModule.getModId(),algModule.getLanSn());
             //commit and push 代码
@@ -174,8 +180,6 @@ public class ModuleServiceImpl implements ModuleService {
             algModuleVersionMapper.insert(algModuleVersion);
 
         } catch (Exception e) {
-            //当组织新增算法失败时，同时删除此组织下的项目
-
             log.error("算法新增增加失败。用户串号：{},语言串号：{},分类串号：{},协议串号：{}",algModule.getUsrSn(),algModule.getLanSn(),algModule.getCatSn(),algModule.getLicSn(),e);
             throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002",new String[]{});
         }
