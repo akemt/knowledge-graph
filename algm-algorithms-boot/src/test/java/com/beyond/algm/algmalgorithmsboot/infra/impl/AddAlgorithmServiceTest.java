@@ -1,8 +1,10 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.AlgmAlgorithmsBootApplication;
+import com.beyond.algm.algmalgorithmsboot.infra.AlgModuleListService;
 import com.beyond.algm.algmalgorithmsboot.infra.ModuleService;
 import com.beyond.algm.common.UUIDUtil;
+import com.beyond.algm.exception.AlgException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ public class AddAlgorithmServiceTest {
 
     @Autowired
     private ModuleService moduleService;
+
+    @Autowired
+    private AlgModuleListService algModuleListService;
 
     /**
      * 新增算法测试
@@ -32,5 +37,13 @@ public class AddAlgorithmServiceTest {
         System.out.println(UUIDUtil.createUUID());
         System.out.println(UUIDUtil.createUUID());
         System.out.println(UUIDUtil.createUUID());
+    }
+    @Test
+    public  void modStar (){
+        try {
+            algModuleListService.modStar("aaaa","ss");
+        } catch (AlgException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,19 +1,20 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.infra.AlgModuleListService;
+import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
-import com.beyond.algm.mapper.AlgArticleListMapper;
-import com.beyond.algm.mapper.AlgDataMapper;
-import com.beyond.algm.mapper.AlgModuleMapper;
-import com.beyond.algm.mapper.AlgModuleUsageMapper;
+import com.beyond.algm.mapper.*;
 import com.beyond.algm.model.AlgArticleList;
+import com.beyond.algm.model.AlgStar;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ import java.util.List;
  * @version Created in：2017/10/22 0022 下午 1:16
  */
 @Service
+@Slf4j
 public class AlgModuleListServiceImpl implements AlgModuleListService {
     @Autowired
     AlgModuleMapper algModuleMapper;
@@ -30,6 +32,8 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
     AlgArticleListMapper algArticleListMapper;
     @Autowired
     AlgDataMapper algDataMapper;
+    @Autowired
+    AlgStarMapper algStarMapper;
 
     @Override
     public List<AlgModuleListVo> findModuleList(String catSn, String usage ,String modName,Integer numPage,Integer numRows,String id,String usrCode) throws AlgException {
@@ -68,5 +72,22 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
     public List<AlgDifDataListVo> findDifDataList(Integer id) throws AlgException {
         List<AlgDifDataListVo> resultAlgModule = algDataMapper.findDifDataList(id);
         return resultAlgModule;
+    }
+
+    //收藏算法
+    @Override
+    public void modStar(String modSn,String usrSn) throws AlgException{
+        AlgStar algStar = new AlgStar();
+        algStar.setStarSn(UUIDUtil.createUUID());
+        algStar.setModSn(modSn);
+        algStar.setUsrSn(usrSn);
+        algStar.setCreatTime(new Date());
+        try {
+            algStarMapper.insert(algStar);
+        } catch (Exception e) {
+            log.error("充值失败。收藏串号：{},模块串号：{},用户串号：{}",algStar.getStarSn(),algStar.getModSn(),
+                    algStar.getUsrSn(),e);
+            throw new AlgException("BEYOND.ALG.MODSTAR.INSERT.0000002",new String[]{});
+        }
     }
 }

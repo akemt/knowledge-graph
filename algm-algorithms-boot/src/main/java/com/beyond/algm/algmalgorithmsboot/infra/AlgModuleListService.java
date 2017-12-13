@@ -26,4 +26,7 @@ public interface AlgModuleListService {
 
     //数据列表
     List<AlgDifDataListVo> findDifDataList(Integer id) throws AlgException;
+
+    //收藏算法
+    void modStar(String modSn,String usrSn) throws AlgException;
 }
