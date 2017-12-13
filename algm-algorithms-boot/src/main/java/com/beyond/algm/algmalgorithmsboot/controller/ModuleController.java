@@ -268,6 +268,7 @@ public class ModuleController extends BaseController {
         algModule.setCreateSn(curAlgUser.getUsrSn());
         //把组织编号，封装到AlgModule实体中
         algModule.setOrgUsrCode(orgUsrCode);
+        //当前用户实体的isOrg把0-改成组织的IsOrg=1
         curAlgUser.setIsOrg(algUser.getIsOrg());
         //先保存到数据库
         if (moduleService.isRepeat(algModule.getModId(), algUser.getUsrSn())) {
