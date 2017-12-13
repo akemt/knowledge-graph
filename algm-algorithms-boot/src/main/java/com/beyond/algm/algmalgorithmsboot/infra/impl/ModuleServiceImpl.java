@@ -138,9 +138,7 @@ public class ModuleServiceImpl implements ModuleService {
             gitUser.setPrivateToken(algUser.getPrivateToken());
             gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
             String strUserName = "";
-            if(algUser.getIsOrg().equals("1")){//组所有者-下面的组织创建项目
-                //在git上组织创建项目
-                gitLabService.createGitLabGroupProject(gitUser);
+            if("1".equals(algUser.getIsOrg())){//组所有者-下面的组织创建项目
                 //项目编号-模块编号
                 gitUser.setModId(algModule.getModId());
                 //组织编号
@@ -151,16 +149,18 @@ public class ModuleServiceImpl implements ModuleService {
                 gitUser.setPrivateToken(algUser.getPrivateToken());
                 gitUser.setIsOrg(algUser.getIsOrg());
 
+                //在git上组织创建项目
+                gitLabService.createGitLabGroupProject(gitUser);
                 strUserName = algModule.getOrgUsrCode();
 
             }else{ //当前用户-下创建项目
-                //在git上创建项目
-                gitLabService.createGitLabProject(gitUser);
                 gitUser.setModId(algModule.getModId());
                 gitUser.setUsrCode(algUser.getUsrCode());
                 gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
                 gitUser.setIsOrg("0");
 
+                //在git上创建项目
+                gitLabService.createGitLabProject(gitUser);
                 strUserName = algUser.getUsrCode();
             }
             //在服务器本地创建项目 update xialf 20171213

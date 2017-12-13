@@ -36,7 +36,7 @@ public class JGitServiceImpl implements JGitService {
 
         StringBuffer  strUrlUsrCodeAndModId= new StringBuffer();
         String strPath = null;
-        if(gitUser.getIsOrg().equals("1")) {//组所有者-下面的组织
+        if("1".equals(gitUser.getIsOrg())) {//组所有者-下面的组织
             strUrlUsrCodeAndModId.append(gitUser.getOrgUsrCode());
             strUrlUsrCodeAndModId.append(File.separator);
             strUrlUsrCodeAndModId.append(gitUser.getModId());
@@ -57,7 +57,7 @@ public class JGitServiceImpl implements JGitService {
             throw new AlgException("BEYOND.ALG.MODULE.ADD.0000002");
         }
 
-        if(gitUser.getIsOrg().equals("1")) {//组所有者-下面的组织
+        if("1".equals(gitUser.getIsOrg())) {//组所有者-下面的组织
             gitUser.setPath(pathService.getModuleBasePath(strUrlUsrCodeAndModId.toString(),gitUser.getUsrCode())+File.separator+".git");
             gitUser.setFilePath(pathService.getModuleBasePath(strUrlUsrCodeAndModId.toString(),gitUser.getUsrCode()));
         }else{
