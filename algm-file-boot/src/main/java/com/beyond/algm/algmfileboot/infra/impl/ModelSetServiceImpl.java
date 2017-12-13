@@ -5,7 +5,6 @@ import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.beyond.algm.algmfileboot.infra.ModelSetService;
-import com.beyond.algm.algmfileboot.util.CephUtil;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.common.UUIDUtil;
@@ -57,6 +56,8 @@ public class ModelSetServiceImpl implements ModelSetService {
 
     @Autowired
     private AlgUserMapper algUserMapper;
+    @Autowired
+    AmazonS3 conn;
 
     /**
      * @author ：zhangchuanzhi
@@ -104,7 +105,6 @@ public class ModelSetServiceImpl implements ModelSetService {
         }
         String key=modelName+"/"+file.getOriginalFilename();
         String bucketName=usrCode;
-        AmazonS3 conn= CephUtil.connectCeph(accessKey,secretKey,host);
         Bucket bucket=null;
         if(!conn.doesBucketExistV2(bucketName)){
             bucket=conn.createBucket(bucketName);
@@ -142,7 +142,6 @@ public class ModelSetServiceImpl implements ModelSetService {
         String url=host+"/"+usrCode+"/"+modelSet+"/"+fileName;
         log.info("生成url:{}",url);
         if(Assert.isNotEmpty(url)){
-            AmazonS3 conn= CephUtil.connectCeph(accessKey,secretKey,host);
             // 数据集+文件名
             String key=modelSet+"/"+fileName;
             File downloadFile=new File(path+fileName);
