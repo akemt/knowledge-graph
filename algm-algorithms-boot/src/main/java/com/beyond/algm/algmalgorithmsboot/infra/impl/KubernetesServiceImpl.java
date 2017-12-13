@@ -39,14 +39,14 @@ public class KubernetesServiceImpl implements KubernetesService {
             log.info("k8s namespaces : {}",client.namespaces().list().toString());
 
             Map<String,String> map = new HashMap<String,String>();
-            map.put("app",getUsrCodeModIdVersion(modId, usrCode, version));
+            map.put("app",getUsrCodeModIdVersion(modId, version));
 
             ReplicationController replicationController = new ReplicationControllerBuilder()
                     .withApiVersion("v1")
                     .withKind("ReplicationController")
                     .withNewMetadata()
                         .withLabels(map)
-                        .withName(getUsrCodeModIdVersion(modId, usrCode, version))
+                        .withName(getUsrCodeModIdVersion(modId, version))
                         .withNamespace(usrCode.toLowerCase())
                         .endMetadata()
                     .withNewSpec()
@@ -79,14 +79,14 @@ public class KubernetesServiceImpl implements KubernetesService {
 
     public void makeK8sService(String modId, String usrCode, String version) throws AlgException{
         Map<String,String> map = new HashMap<String,String>();
-        map.put("app",getUsrCodeModIdVersion(modId, usrCode, version));
+        map.put("app",getUsrCodeModIdVersion(modId, version));
         try {
             io.fabric8.kubernetes.api.model.Service service = new ServiceBuilder()
                     .withKind("Service")
                     .withApiVersion("v1")
                     .withNewMetadata()
                         .withLabels(map)
-                        .withName(getServiceName(modId, usrCode, version))
+                        .withName(getServiceName(modId, version))
                         .withNamespace(usrCode.toLowerCase())
                     .endMetadata()
                     .withNewSpec()
@@ -104,19 +104,18 @@ public class KubernetesServiceImpl implements KubernetesService {
 
     }
 
-    private String getUsrCodeModIdVersion(String modId, String usrCode, String version){
-        return usrCode.toLowerCase()+"-"+modId.toLowerCase()+"-"+version;
+    private String getUsrCodeModIdVersion(String modId, String version){
+        return modId.toLowerCase()+"-"+version;
     }
 
     /**
      *  因为 k8s service 命名规则不允许 . 此处把 . 替换成 -
      * @param modId
-     * @param usrCode
      * @param version
      * @return
      */
-    private String getServiceName(String modId, String usrCode, String version){
-        return usrCode.toLowerCase()+"-"+modId.toLowerCase()+"-"+version.replaceAll(".","-");
+    private String getServiceName(String modId, String version){
+        return modId.toLowerCase()+"-"+version.replaceAll(".","-");
     }
 
 }
