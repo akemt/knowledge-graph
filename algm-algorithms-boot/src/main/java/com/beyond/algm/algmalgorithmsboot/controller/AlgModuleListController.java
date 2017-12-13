@@ -7,6 +7,7 @@ import com.beyond.algm.common.Result;
 import com.beyond.algm.common.ResultEnum;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgArticleList;
+import com.beyond.algm.model.AlgModule;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
@@ -122,5 +123,18 @@ public class AlgModuleListController extends BaseController {
             List<AlgDifDataListVo> dataList = algModuleListService.findDifDataList(id);
             difMap.put("dataList",dataList);
             return Result.ok(difMap);
+    }
+
+    /**
+     @Description:收藏算法
+     * @param modSn
+     * @return
+     * @throws AlgException
+     */
+    @RequestMapping(value = "/module/star", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result AddAlgorithm(String modSn) throws AlgException {
+        AlgUser algUser = getUserInfo();
+        algModuleListService.modStar(modSn,algUser.getUsrSn());
+        return Result.successResponse();
     }
 }
