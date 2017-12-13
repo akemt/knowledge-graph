@@ -21,6 +21,7 @@
     </resultMap>
 
     <resultMap id="ModuleListMap" type="com.beyond.algm.vo.AlgModuleListVo">
+        <result column="mod_sn" property="modSn" jdbcType="VARCHAR"/>
         <result column="mod_name" property="modName" jdbcType="VARCHAR"/>
         <result column="mod_id" property="modId" jdbcType="VARCHAR"/>
         <result column="mod_desc" property="modDesc" jdbcType="VARCHAR"/>
