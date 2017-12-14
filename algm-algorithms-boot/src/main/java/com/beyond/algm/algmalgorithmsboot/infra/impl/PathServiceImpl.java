@@ -61,6 +61,15 @@ public class PathServiceImpl implements PathService {
         return stringBuilder.toString();
     }
 
+    @Override
+    public String getOrgAlgBasePath(String orgUsrCode, String modId) throws AlgException {
+        StringBuffer  strUrlUsrCodeAndModId = new StringBuffer();
+        strUrlUsrCodeAndModId.append(orgUsrCode);
+        strUrlUsrCodeAndModId.append(File.separator);
+        strUrlUsrCodeAndModId.append(modId);
+        return strUrlUsrCodeAndModId.toString();
+    }
+
     /**
      * 初始化项目基础目录 例：E:\repo\erniu4\TestJavaK1
      *

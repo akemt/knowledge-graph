@@ -41,4 +41,17 @@ public interface PathService {
      */
     String getPublishPath(String usrCode, String modId);
 
+
+    /**
+     * 获取当前用户项目为modId的服务器项目根路径
+     *
+     * @param orgUsrCode 组织编号
+     * @param modId      项目编号
+     * @return
+     * @throws Exception
+     * @author xialf
+     * @deprecated 当组织时, 则usrCode-\组织编号(名称) \项目名称(编号)
+     */
+    String getOrgAlgBasePath(String orgUsrCode, String modId) throws AlgException;
+
 }

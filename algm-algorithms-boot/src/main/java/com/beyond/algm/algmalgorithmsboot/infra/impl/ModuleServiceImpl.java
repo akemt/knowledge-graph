@@ -93,12 +93,9 @@ public class ModuleServiceImpl implements ModuleService {
             //项目名称初始化Tree
             // path 为空的情况是，是项目主文件路径
             if("1".equals(strIsOrg)){////组所有者-下面的组织算法
-                StringBuffer  strUrlUsrCodeAndModId = new StringBuffer();
-                strUrlUsrCodeAndModId.append(orgUsrCode);
-                strUrlUsrCodeAndModId.append(File.separator);
-                strUrlUsrCodeAndModId.append(modId);
+                String  strUrlUsrCodeAndModId = pathService.getOrgAlgBasePath(orgUsrCode,modId);
 
-                String orgAlgPath = pathService.getModuleBasePath(strUrlUsrCodeAndModId.toString(),usrCode);
+                String orgAlgPath = pathService.getModuleBasePath(strUrlUsrCodeAndModId,usrCode);
                 if (Assert.isEmpty(path)) {
                     path = pathService.getModuleMainFilePath(orgAlgPath,modId, algModule.getLanSn());
                 } else if (path.equals("/")) {
@@ -106,7 +103,7 @@ public class ModuleServiceImpl implements ModuleService {
                 } else {
                     path = orgAlgPath + File.separator + path;
                 }
-                fileNodes = showProjectFileService.ShowProjectFile(path, strUrlUsrCodeAndModId.toString(),usrCode);
+                fileNodes = showProjectFileService.ShowProjectFile(path, strUrlUsrCodeAndModId,usrCode);
             }else{
                 String usrAlgPath = pathService.getModuleBasePath(usrCode, modId);
                 if (Assert.isEmpty(path)) {
