@@ -87,6 +87,6 @@ public interface ModelSetService {
 
      AlgUser findByUsrCode(String usrCode);
 
-    List<ModelDataVo>  queryModelDataSet(ModelDataVo modelDataVo) throws AlgException;
+    List<ModelDataVo>  queryModelDataSet(ModelDataVo modelDataVo,PageInfo pageInfo) throws AlgException;
 
 }

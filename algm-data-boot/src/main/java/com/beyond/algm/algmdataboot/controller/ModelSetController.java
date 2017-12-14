@@ -228,16 +228,19 @@ public class ModelSetController  extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/11/09
      */
-    @RequestMapping(value="/{usrCode}/{modId}/modeldata", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result modeldata(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId,ModelDataVo modelDataVo,PageInfo pageInfo) throws AlgException {
+    @RequestMapping(value="/{usrCode}/{modId}/modeldata", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result modeldata(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId,PageInfo pageInfo) throws AlgException {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
         AlgUser algUser = modelSetService.findByUsrCode(usrCode);
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         if(Assert.isNULL(algUser)){
             String[] checkMessage = {"查询结果为空",""};
             throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);
         }
+        ModelDataVo modelDataVo =new ModelDataVo();
         modelDataVo.setUsrSn(algUser.getUsrSn());
-        List<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo);
+        List<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo,pageInfo);
         return  Result.ok(mdelDataVoList);
     }
 

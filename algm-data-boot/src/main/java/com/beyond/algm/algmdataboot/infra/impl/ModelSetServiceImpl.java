@@ -153,9 +153,9 @@ public class ModelSetServiceImpl implements ModelSetService {
         return algUserMapper.selectUsrCode(usrCode);
     }
     @Override
-    public List<ModelDataVo> queryModelDataSet(ModelDataVo modelDataVo)throws AlgException{
+    public List<ModelDataVo> queryModelDataSet(ModelDataVo modelDataVo,PageInfo pageInfo)throws AlgException{
         //分页处理
-        PageHelper.startPage(modelDataVo.getPage(), modelDataVo.getRows());
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         List<ModelDataVo> modelDataVoList = algModelMapper.queryModelDataSet(modelDataVo);
         return modelDataVoList;
     }
