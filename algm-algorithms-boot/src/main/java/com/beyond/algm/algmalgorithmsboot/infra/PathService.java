@@ -15,8 +15,8 @@ public interface PathService {
      * @param modId
      * @return
      * @throws Exception
-     * @deprecated   当为组织时,则usrCode-\组织编号(名称) \项目名称(编号);modId-用户编号！
-     *                当为组拥有者时,则usrCode-用户编号;modId-项目名称(编号) ！
+     * @deprecated   当组织时,则usrCode-\组织编号(名称) \项目名称(编号);modId-用户编号！
+     *                当用户时,则usrCode-用户编号;modId-项目名称(编号) ！
      * @author xialf
      */
     String getModuleBasePath(String usrCode, String modId) throws AlgException ;
@@ -28,6 +28,8 @@ public interface PathService {
      * @param lanSn
      * @return
      * @throws AlgException
+     * * @deprecated   当组织时,则usrCode-\组织编号(名称) \项目名称(编号);modId-用户编号！
+     *                当用户时,则usrCode-用户编号;modId-项目名称(编号) ！
      */
     String getModuleMainFilePath(String usrCode, String modId, String lanSn) throws AlgException;
 

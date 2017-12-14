@@ -77,7 +77,7 @@ public class ModuleController extends BaseController {
         }
 
         AlgUser paramsUser = userService.findByUsrCode(usrCode);
-        AlgModuleEditVo algModuleEditVo = moduleService.algModule(paramsUser.getUsrCode(), paramsUser.getUsrSn(), modId, path);
+        AlgModuleEditVo algModuleEditVo = moduleService.algModule(paramsUser.getIsOrg(),algUser.getUsrCode() , paramsUser.getUsrCode(), paramsUser.getUsrSn(), modId, path);
         return Result.ok(algModuleEditVo);
     }
 
@@ -261,8 +261,7 @@ public class ModuleController extends BaseController {
         //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
         AlgUser algUser = userService.isOwnerByUsrCode(orgUsrCode,curAlgUser.getUsrSn());
         if(Assert.isNULL(algUser)) {
-            String msg = "普通用户不可以创建算法，请重新输入！";
-            return Result.failure(msg);
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000022");
         }
         algModule.setUsrSn(algUser.getUsrSn());
         algModule.setCreateSn(curAlgUser.getUsrSn());
@@ -276,11 +275,47 @@ public class ModuleController extends BaseController {
             moduleService.addAlgModule(algModule, curAlgUser);
             return Result.successResponse();
         } else {
-            //有重名存在。
-            String msg = "组织算法已经存在，请重新输入！";
-            return Result.failure(msg);
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000023");
         }
     }
 
+    /**
+     * 编辑算法-初始化组织算法左侧树形结构
+     *
+     * @param orgUsrCode
+     * @param modId
+     * @param path
+     * @param fileName
+     * @return
+     * @throws AlgException
+     * @author xialf
+     */
+    @GetMapping(value = "initOrgAlg/{orgUsrCode}/{modId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result initTreeOrgAlgorithm(@PathVariable("orgUsrCode") String orgUsrCode, @PathVariable("modId") String modId, String path, String fileName) throws AlgException {
+
+        log.info("编辑算法-初始化组织算法左侧树形结构 -Controller(/orgUsrCode/addOrgAlg) : orgUsrCode:{} and modId : ", orgUsrCode,modId);
+        //查询当前登录用户信息
+        AlgUser curAlgUser = getUserInfo();
+        //验证组所有者，还是普通用户
+        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
+        AlgUser algUser = userService.isOwnerByUsrCode(orgUsrCode,curAlgUser.getUsrSn());
+        if(Assert.isNULL(algUser)) {
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000022");
+        }
+
+        if(Assert.isEmpty(path) && Assert.isEmpty(fileName)){
+            path = "";
+        }else if(Assert.isNotEmpty(path) && Assert.isEmpty(fileName)){
+            path = path;
+        }else if ("/".equals(path) && Assert.isNotEmpty(fileName)) {
+            // path为"/" 并且 fileName不为空
+            path = path + fileName;
+        }else {
+            // 1、path有目录时候，fileName不为空；2、或者path为"/"，fileName为空
+            path = path + File.separator + fileName;
+        }
+        AlgModuleEditVo algModuleEditVo = moduleService.algModule(algUser.getIsOrg(),curAlgUser.getUsrCode(), orgUsrCode, algUser.getUsrSn(), modId, path);
+        return Result.ok(algModuleEditVo);
+    }
 
 }
