@@ -24,8 +24,19 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
     public AlgModuleVo getAlgorithmDetail(AlgorithmDetailVo algorithmDetailVo)throws AlgException {
         AlgModuleVo algModuleVo=algModuleMapper.getAlgorithmDetail(algorithmDetailVo);
         if(Assert.isNotNULL(algModuleVo)) {
-            algModuleVo.setUrl("algo"+File.separator +algorithmDetailVo.getUsrCode() + File.separator + algorithmDetailVo.getModId() + File.separator + "edit");
-            algModuleVo.setDataUrl(algorithmDetailVo.getUsrCode() + File.separator + algorithmDetailVo.getModId());
+            if(Assert.isNotEmpty( algModuleVo.getVerCode())) {
+                StringBuffer str = new StringBuffer(algModuleVo.getVerCode());
+                str.insert(1, ".");
+                str.insert(3, ".");
+                algModuleVo.setVerCode(str.toString());
+            }
+            String sourceCodeUrl= "/git/"+algorithmDetailVo.getUsrCode()+"/"+algorithmDetailVo.getModId()+".git";
+
+            String callAlgorithmUrl="algm://"+algorithmDetailVo.getUsrCode()+"/"+algorithmDetailVo.getModId()+"/"+algModuleVo.getVerCode();
+            algModuleVo.setSourceCodeUrl(sourceCodeUrl);
+            algModuleVo.setCallAlgorithmUrl(callAlgorithmUrl);
+            algModuleVo.setUrl("algm"+"/"+algorithmDetailVo.getUsrCode() +"/" + algorithmDetailVo.getModId());
+            algModuleVo.setDataUrl(algorithmDetailVo.getUsrCode() + "/" + algorithmDetailVo.getModId()+"/" + "edit");
             algModuleVo.setUsrCode(algorithmDetailVo.getUsrCode());
         }
         return algModuleVo;
