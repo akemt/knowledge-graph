@@ -18,15 +18,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import com.github.pagehelper.PageInfo;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,15 +46,17 @@ public class DataSetController extends BaseController {
      * @Description: 我的数据初始化
      */
     @RequestMapping(value = "/initdata", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result initData(@PageableDefault Pageable pageable) throws AlgException {
+    public Result initData(PageInfo pageInfo) throws AlgException {
         try {
+            pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+            pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
             AlgUser algUser = getUserInfo();
             Map<String,PageInfo> dataMap=new HashMap<String,PageInfo>();
             //我的数据集
-            PageInfo<AlgDataSet> dataSetList = dataSetService.getDataSet(algUser.getUsrSn(), pageable);
+            PageInfo<AlgDataSet> dataSetList = dataSetService.getDataSet(algUser.getUsrSn(), pageInfo);
             dataMap.put("algDataSet",dataSetList);
             //我的数据
-            PageInfo<AlgData> algDataList = dataSetService.getData(algUser.getUsrSn(), pageable);
+            PageInfo<AlgData> algDataList = dataSetService.getData(algUser.getUsrSn(), pageInfo);
             dataMap.put("algData",algDataList);
             return Result.ok(dataMap);
         }catch (Exception e){
