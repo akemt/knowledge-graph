@@ -240,7 +240,7 @@ public class ModelSetController  extends BaseController {
         }
         ModelDataVo modelDataVo =new ModelDataVo();
         modelDataVo.setUsrSn(algUser.getUsrSn());
-        List<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo,pageInfo);
+        PageInfo<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo,pageInfo);
         return  Result.ok(mdelDataVoList);
     }
 
