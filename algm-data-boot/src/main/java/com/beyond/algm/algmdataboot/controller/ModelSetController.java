@@ -229,7 +229,7 @@ public class ModelSetController  extends BaseController {
      * @date ：9:14 2017/11/09
      */
     @RequestMapping(value="/{usrCode}/{modId}/modeldata", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result modeldata(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId,ModelDataVo modelDataVo ) throws AlgException {
+    public Result modeldata(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId,ModelDataVo modelDataVo,PageInfo pageInfo) throws AlgException {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
         AlgUser algUser = modelSetService.findByUsrCode(usrCode);
         if(Assert.isNULL(algUser)){
