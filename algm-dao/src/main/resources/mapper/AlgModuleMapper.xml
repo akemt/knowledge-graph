@@ -221,10 +221,10 @@
         <if test="arg1 == 'creditCnt'"> order by usa.credit_cnt DESC </if>
     </select>
 
-    <select id="selectIsRepeat" resultType="java.lang.Integer">
+    <select id="selectIsRepeat" resultType="java.lang.Integer" parameterType="java.lang.String">
         select count(mod_sn) from alg_module
-        where usr_sn = #{usrSn,jdbcType=VARCHAR}
-        and lower(mod_id) = #{modId,jdbcType=VARCHAR}
+        where usr_sn = #{arg0,jdbcType=VARCHAR}
+        <if test="arg1 != null and arg1 !=''">and lower(mod_id) = #{arg1,jdbcType=VARCHAR}</if>
     </select>
     <!--用户是否收藏了算法标记：star_sn -->
     <select id="findModuleByStar" resultMap="ModuleListMap">
