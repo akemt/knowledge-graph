@@ -75,8 +75,8 @@ public class OrgServiceImplTest {
     @Test
     public void getOrgListTest() {
         PageRequest pageRequest = new PageRequest(0, 10);
-        PageInfo<OrgVo> result = orgService.getOrgList("64bd0e5ee1a6409f97d12c271bb8fa68", pageRequest);
-        System.out.println(JSONObject.toJSONString(result));
+        /*PageInfo<OrgVo> result = orgService.getOrgList("64bd0e5ee1a6409f97d12c271bb8fa68", pageRequest);
+        System.out.println(JSONObject.toJSONString(result));*/
     }
 
     @Test

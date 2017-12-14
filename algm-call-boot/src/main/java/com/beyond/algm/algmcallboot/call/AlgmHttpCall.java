@@ -31,7 +31,7 @@ public class AlgmHttpCall {
         this.usrCode = usrCode;
         this.modId = modId;
         this.version = version;
-        httpPost = new HttpPost(baseUrl + usrCode + "/services/" +getServiceName(modId,version) + File.separator);
+        httpPost = new HttpPost(baseUrl + usrCode + "/services/" +getServiceName(modId,version) + "/");
         //httpPost = new HttpPost("http://192.168.1.60:8080/api/v1/proxy/namespaces/erniu4/services/erniu4-testjavao1-0-0-3/erniu4/TestJavaO1/0.0.3");
         httpPost.setEntity(new StringEntity(jsonStr,APPLICATION_JSON));
     }
@@ -43,7 +43,7 @@ public class AlgmHttpCall {
      * @return
      */
     private String getServiceName(String modId, String version){
-        return modId.toLowerCase()+"-"+version.replaceAll(".","-");
+        return modId.toLowerCase()+"-"+version.replaceAll("\\.","-");
     }
     public String send(){
         // 创建默认的httpClient实例.

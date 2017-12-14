@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,7 +31,7 @@ public class AlgChargingCallServiceImplTest {
     @Test
     public void addChargingCall() throws Exception {
         System.out.println("1111111111111111111111111122222222222999999999999");
-        AlgResult aaa = algChargingCallService.addChargingCall("lindw","TestJava","1.3.8","9a98142cbff747b38461259d5638ebf2");
+        AlgResult aaa = algChargingCallService.addChargingCall("lindw","TestJava","1.3.8","9a98142cbff747b38461259d5638ebf2", "11");
         System.out.println(aaa.toString());
     }
 
