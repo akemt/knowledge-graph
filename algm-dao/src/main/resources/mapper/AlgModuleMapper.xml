@@ -117,7 +117,7 @@
         usa.call_cnt as call_cnt,
         lan.lan_name as lan_name,
         us.usr_name as usr_name,
-        concat('/algo','/',us.usr_code,'/',mo.mod_id) as url,
+        concat('/algm','/',us.usr_code,'/',mo.mod_id) as url,
 	    art.papertext as papertext,
 	    art.id as article_id
     </sql>
