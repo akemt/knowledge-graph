@@ -42,7 +42,7 @@ public interface ModelSetService {
      * @param： AlgModel
      * @date ：19：11 2017/10/18
      */
-    Result addAlgModel(AlgModel algModel) throws Exception;
+    Result addAlgModel(AlgModel algModel,String usrCode) throws AlgException;
 
     /**
      * @author ：huangjinqing

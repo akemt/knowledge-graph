@@ -76,12 +76,26 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public Result addAlgModel(AlgModel algModel) throws Exception {
+    public Result addAlgModel(AlgModel algModel,String usrCode) throws AlgException {
         try {
+            if (Assert.isEmpty(algModel.getModelName())) {
+              throw new Exception("BEYOND.ALG.DATA.PAY.STATUS.0000011");
+            }
+            if (Assert.isNotEmpty(algModel.getModelEnName()) && algModelMapper.checkModelEnName(algModel.getUsrSn(),algModel.getModelEnName()) != 0 ){
+                throw new Exception("BEYOND.ALG.DATA.PAY.STATUS.0000012");
+            }
             //生成模型随机串号
             algModel.setModelSn(UUID.randomUUID().toString().replace("-", ""));
             // new Date()为获取当前系统时间
             algModel.setCreateTime(new Date());
+            //数据地址
+            String modelPath = null;
+            if(Assert.isEmpty(algModel.getModelEnName())){
+                modelPath = "model://" + usrCode + "/" + algModel.getModelSn();
+            }else {
+                modelPath = "model://" + usrCode + "/" + algModel.getModelEnName();
+            }
+            algModel.setModelAddress(modelPath);
             algModelMapper.insert(algModel);
         } catch (Exception e) {
             e.printStackTrace();

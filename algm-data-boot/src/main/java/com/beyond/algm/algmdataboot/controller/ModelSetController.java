@@ -96,7 +96,8 @@ public class ModelSetController  extends BaseController {
         logger.info("模型串号：{}");
         try {
             AlgUser algUser = getUserInfo();
-            Result result = modelSetService.addAlgModel(algModel);
+            algModel.setUsrSn(algUser.getUsrSn());
+            Result result = modelSetService.addAlgModel(algModel,algUser.getUsrCode());
             return result;
         } catch (Exception e) {
             logger.info("添加模型失败", e);

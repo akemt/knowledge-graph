@@ -33,5 +33,7 @@ public interface AlgModelMapper {
 
     int deleteModel(AlgModel algModel);
 
+    int checkModelEnName(String usrSn,String modelEnName);
+
 
 }
