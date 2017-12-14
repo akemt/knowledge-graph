@@ -43,7 +43,7 @@ public class CephServiceImpl implements CephService {
 
     @Override
     public void userHeadImgUpload(MultipartFile file, String usrCode) throws AlgException{
-        String cephKey = UUIDUtil.createUUID();;
+        String cephKey = UUIDUtil.createUUID();
         log.info("文件名:{},用户code:{},path:{}",file.getOriginalFilename(),usrCode,path);
         File targetFile=targetFile(file);
         // 注意之前上传图片还在需要优化
