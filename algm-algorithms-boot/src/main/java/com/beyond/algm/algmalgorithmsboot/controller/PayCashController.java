@@ -41,11 +41,13 @@ public class PayCashController extends BaseController {
      * @date ：14:07 2017/10/11
      */
     @RequestMapping(value="/payRecord", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result<PageInfo<AlgCashTrans>> payRecord(PayRecordVo payRecordVo,@PageableDefault Pageable pageable) throws AlgException {
+    public Result<PageInfo<AlgCashTrans>> payRecord(PayRecordVo payRecordVo,PageInfo pageInfo) throws AlgException {
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser algUser = getUserInfo();
         payRecordVo.setUsrSn(algUser.getUsrSn());
         logger.info("用户id:{},Page:{},Row:{}",payRecordVo.getUsrSn(),payRecordVo.getPage(),payRecordVo.getRows());
-        PageInfo<AlgCashTrans> algCashTransList= payCashService.payRecord(payRecordVo, pageable);
+        PageInfo<AlgCashTrans> algCashTransList= payCashService.payRecord(payRecordVo, pageInfo);
         return Result.ok(algCashTransList);
     }
 

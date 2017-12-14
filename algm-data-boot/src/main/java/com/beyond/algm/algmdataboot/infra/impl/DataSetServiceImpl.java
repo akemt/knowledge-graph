@@ -43,16 +43,16 @@ public class DataSetServiceImpl implements DataSetService {
 
     //我的数据集tree
     @Override
-    public PageInfo<AlgDataSet> getDataSet(String usrSn, Pageable pageable) throws AlgException{
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+    public PageInfo<AlgDataSet> getDataSet(String usrSn, PageInfo pageInfo) throws AlgException{
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<AlgDataSet> algDataSets = algDataSetMapper.selectAll(usrSn);
         return new PageInfo<>(algDataSets);
     }
 
     //我的数据List
     @Override
-    public PageInfo<AlgData> getData(String usrSn, Pageable pageable) throws AlgException{
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+    public PageInfo<AlgData> getData(String usrSn, PageInfo pageInfo) throws AlgException{
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<AlgData> algData = algDataMapper.findDataList(usrSn);
         return new PageInfo<>(algData);
     }

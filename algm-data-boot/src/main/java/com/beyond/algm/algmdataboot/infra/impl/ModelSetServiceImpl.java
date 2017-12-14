@@ -3,26 +3,24 @@ package com.beyond.algm.algmdataboot.infra.impl;
 
 import com.beyond.algm.algmdataboot.infra.ModelSetService;
 import com.beyond.algm.common.Assert;
+import com.beyond.algm.common.Result;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.mapper.AlgModelMapper;
+import com.beyond.algm.mapper.AlgModelSetMapper;
 import com.beyond.algm.mapper.AlgUserMapper;
+import com.beyond.algm.model.AlgModel;
+import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgModelSetVo;
 import com.beyond.algm.vo.ModelDataVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.beyond.algm.common.Result;
-import com.beyond.algm.model.AlgModelSet;
-import com.beyond.algm.model.AlgModel;
-import com.beyond.algm.mapper.AlgModelSetMapper;
-import com.beyond.algm.mapper.AlgModelMapper;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.springframework.data.domain.Pageable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -128,8 +126,8 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public  PageInfo<AlgModelSetVo> queryAlgModelSet(String usrSn, Pageable pageable) throws AlgException {
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+    public  PageInfo<AlgModelSetVo> queryAlgModelSet(String usrSn, PageInfo pageInfo) throws AlgException {
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<AlgModelSetVo> algModelSetVoList = algModelSetMapper.queryModelSet(usrSn);
         if(Assert.isNotEmpty(algModelSetVoList)){
             String modelSetSn= algModelSetVoList.get(0).getModelSetSn();
@@ -144,8 +142,8 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public PageInfo<ModelDataVo> queryAlgModel( AlgModel algModel, Pageable pageable) throws AlgException {
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+    public PageInfo<ModelDataVo> queryAlgModel( AlgModel algModel, PageInfo pageInfo) throws AlgException {
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<ModelDataVo> allAlgModel = algModelMapper.queryModelPage(algModel);
         return new PageInfo<>(allAlgModel);
     }

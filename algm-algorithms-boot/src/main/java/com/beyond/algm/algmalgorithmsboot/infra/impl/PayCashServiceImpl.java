@@ -50,9 +50,9 @@ public class PayCashServiceImpl implements PayCashService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public PageInfo<AlgCashTrans> payRecord(PayRecordVo payRecordVo, Pageable pageable)throws AlgException {
+    public PageInfo<AlgCashTrans> payRecord(PayRecordVo payRecordVo,PageInfo pageInfo)throws AlgException {
        //分页处理
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<AlgCashTrans> algCashTransList=algCashTransMapper.payRecord(payRecordVo.getUsrSn());
         return new PageInfo<>(algCashTransList);
     }
