@@ -159,15 +159,38 @@ public class ModuleController extends BaseController {
     }
 
     /**
-     * @author ：lindewei
-     * @Description: 依赖文件读取
+     *编辑算法-点击组织算法左侧树形结构显示的代码结构
+     *
+     * @param usrCode
+     * @param modId
+     * @return
+     * @throws AlgException*
+     * @author ：lindewei;xialf -update:20171214
      */
     @RequestMapping(value = "/{usrCode}/{modId}/dependRead", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result dependRead(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId) throws AlgException {
         log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
-        AlgUser algUser = getUserInfo();
+        AlgUser curAlgUser = getUserInfo();
         //权限验证
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
+//        authService.isModuleByUser(algUser.getUsrCode(), modId);
+
+        //验证组所有者，还是普通用户
+        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
+        AlgUser algUser = userService.isOwnerByUsrCode(usrCode,curAlgUser.getUsrSn());
+        String algProPath = "";
+        String algModId = "";
+        if(Assert.isNULL(algUser)) {//普通用户
+            algProPath = usrCode;
+            algModId = modId;
+        }else{//拥有者下的组织
+            StringBuffer  strUrlUsrCodeAndModId = new StringBuffer();
+            strUrlUsrCodeAndModId.append(usrCode);
+            strUrlUsrCodeAndModId.append(File.separator);
+            strUrlUsrCodeAndModId.append(modId);
+            algProPath = strUrlUsrCodeAndModId.toString();
+            algModId = curAlgUser.getUsrCode();
+        }
+
         //定义文件名和路径的变量
         String dependFile = null;
         //判断何种的对应的配置文件
@@ -176,7 +199,7 @@ public class ModuleController extends BaseController {
             dependFile = "ivy.xml";
         }
         //读取文件
-        AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(usrCode, modId, null, dependFile);
+        AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(algProPath, algModId, null, dependFile);
         return Result.ok(algFileReadWriteVo);
     }
 
