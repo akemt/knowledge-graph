@@ -39,7 +39,7 @@ public class ImageController extends BaseController {
      * @date ：9:14 2017/11/24
      */
     @ResponseBody
-    @RequestMapping(value = "/head/upload", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/head/upload",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result uploadImage(MultipartFile file) throws AlgException {
         AlgUser algUser = getUserInfo();
         cephService.userHeadImgUpload(file,algUser.getUsrCode());
