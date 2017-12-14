@@ -5,10 +5,8 @@ import com.beyond.algm.algmalgorithmsboot.infra.AlgModuleListService;
 import com.beyond.algm.algmalgorithmsboot.infra.UserService;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
-import com.beyond.algm.common.ResultEnum;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgArticleList;
-import com.beyond.algm.model.AlgModule;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
@@ -47,15 +45,19 @@ public class AlgModuleListController extends BaseController {
      @Description:我的算法列表
      */
     @RequestMapping(value = "/module/list",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result listAlg(String catSn,String usage,String modName,Integer pageNum,Integer pageSize,String id) throws AlgException {
-        //log.info()
-        pageNum = pageNum == null ? 1 : pageNum;
-        pageSize = pageSize == null ? 10 : pageSize;
+    public  Result<PageInfo<AlgModuleListVo>> listAlg(String catSn,String usage,String modName,PageInfo pageInfo,String id) throws AlgException {
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
+        AlgUser algUser = getUserInfo();
+        PageInfo<AlgModuleListVo> algModuleListVo = null;
+        if(Assert.isEmpty(algUser)){
+            //用户未登录时候显示全部信息(收藏+未收藏)
+            algModuleListVo = algModuleListService.findModulePage(catSn, usage, modName, pageInfo,id,null);
+        }else {
+            algModuleListVo = algModuleListService.findModuleByStar(catSn, usage, modName, pageInfo,id,null);
+        }
 
-        Page<AlgModuleListVo> page = algModuleListService.findModulePage(catSn, usage, modName, pageNum, pageSize,id,null);
-        PageInfo pageInfo = new PageInfo(page);
-
-        return Result.ok(pageInfo);
+        return Result.ok(algModuleListVo);
     }
 
     /**
@@ -72,14 +74,12 @@ public class AlgModuleListController extends BaseController {
      @Description:我的算法(无参)
      */
     @RequestMapping(value = "/module/mylist",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result myListAlg(Integer pageNum,Integer pageSize) throws AlgException {
-        //log.info()
-        pageNum = pageNum == null ? 1 : pageNum;
-        pageSize = pageSize == null ? 10 : pageSize;
+    public  Result<PageInfo<AlgModuleListVo>> myListAlg(PageInfo pageInfo) throws AlgException {
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser algUser = getUserInfo();
-        Page<AlgModuleListVo> page = algModuleListService.findModulePage(null, null, null, pageNum, pageSize,null,algUser.getUsrCode());
-        PageInfo pageInfo = new PageInfo(page);
-        return Result.ok(pageInfo);
+        PageInfo<AlgModuleListVo> algModuleListVo = algModuleListService.findModulePage(null, null, null, pageInfo,null,algUser.getUsrCode());
+        return Result.ok(algModuleListVo);
     }
 
     /**
@@ -143,20 +143,17 @@ public class AlgModuleListController extends BaseController {
         return Result.successResponse();
     }
 
-
-
     /**
      * 查询组织算法
      *
-     * @param pageNum
-     * @param pageSize
+     * @param pageInfo
      * @param orgUsrCode
      * @return
      * @throws AlgException
      * @author xialf
      */
     @RequestMapping(value = "/module/queryOrgAlgList",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public  Result myListAlg(@RequestParam("pageNum") Integer pageNum,@RequestParam("pageSize") Integer pageSize,@RequestParam("orgUsrCode") String orgUsrCode) throws AlgException {
+    public  Result<PageInfo<AlgModuleListVo>> myListAlg(PageInfo pageInfo,@RequestParam("orgUsrCode") String orgUsrCode) throws AlgException {
 
         log.info("查询组织算法 -Controller(/module/queryOrgAlgList) : orgUsrCode:{}", orgUsrCode);
         //查询当前登录用户信息
@@ -165,13 +162,11 @@ public class AlgModuleListController extends BaseController {
         //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
         AlgUser algUser = userService.isOwnerByUsrCode(orgUsrCode,curAlgUser.getUsrSn());
         if(Assert.isNULL(algUser)) {
-            String msg = "普通用户不可以创建算法，请重新输入！";
-            return Result.failure(msg);
+            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000005");
         }
-        pageNum = pageNum == null ? 1 : pageNum;
-        pageSize = pageSize == null ? 10 : pageSize;
-        Page<AlgModuleListVo> page = algModuleListService.findModulePage(null, null, null, pageNum, pageSize,null,orgUsrCode);
-        PageInfo pageInfo = new PageInfo(page);
-        return Result.ok(pageInfo);
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
+        PageInfo<AlgModuleListVo> algModuleListVo = algModuleListService.findModulePage(null, null, null, pageInfo,null,orgUsrCode);
+        return Result.ok(algModuleListVo);
     }
 }

@@ -5,7 +5,8 @@ import com.beyond.algm.model.AlgArticleList;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
 import com.github.pagehelper.Page;
-
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 /**
@@ -16,7 +17,10 @@ public interface AlgModuleListService {
     List<AlgModuleListVo> findModuleList(String catSn, String usage, String modName, Integer numPage, Integer numRows,String id,String usrCode) throws AlgException;
 
     //分页的
-    Page<AlgModuleListVo> findModulePage(String catSn, String usage, String modName, Integer pageNum,Integer pageSize, String id, String usrCode) throws AlgException;
+    PageInfo<AlgModuleListVo> findModulePage(String catSn, String usage, String modName, PageInfo pageInfo, String id, String usrCode) throws AlgException;
+
+    //用户是否收藏了算法标记：star_sn
+    PageInfo<AlgModuleListVo> findModuleByStar(String catSn, String usage, String modName, PageInfo pageInfo, String id, String usrCode) throws AlgException;
 
     //为不同实现功能获取文献信息
     AlgArticleList findAlgArticleList(Integer id) throws AlgException;

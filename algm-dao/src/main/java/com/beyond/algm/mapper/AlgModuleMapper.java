@@ -47,4 +47,7 @@ public interface AlgModuleMapper {
      *  校验算法是否有重复
      */
     int selectIsRepeat(@Param("usrSn") String usrSn, @Param("modId")String modId);
+
+    //用户是否收藏了算法标记：star_sn
+    Page<AlgModuleListVo> findModuleByStar(String catSn, String usage, String modName, String id, String usrCode);
 }

@@ -17,5 +17,6 @@ public class AlgModuleListVo {
     private String papertext;
     private String articleId;
     private String modDesc;
+    private String starSn;
 
 }
