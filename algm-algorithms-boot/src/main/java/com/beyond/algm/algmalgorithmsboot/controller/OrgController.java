@@ -9,8 +9,6 @@ import com.beyond.algm.vo.OrgVo;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,14 +65,16 @@ public class OrgController extends BaseController {
     /**
      * 获取当前登录用户组织列表
      *
-     * @param pageable 分页信息
+     * @param pageInfo 分页信息
      * @return 组织列表
      */
     @RequestMapping(value = "/org/list", method = RequestMethod.GET)
     @ResponseBody
-    public Result<PageInfo<OrgVo>> getOrgList(@PageableDefault Pageable pageable) throws AlgException {
+    public Result<PageInfo<OrgVo>> getOrgList(PageInfo pageInfo) throws AlgException {
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser currentUser = getUserInfo();
-        PageInfo<OrgVo> orgList = orgService.getOrgList(currentUser.getUsrSn(), pageable);
+        PageInfo<OrgVo> orgList = orgService.getOrgList(currentUser.getUsrSn(), pageInfo);
         return Result.ok(orgList);
     }
 
