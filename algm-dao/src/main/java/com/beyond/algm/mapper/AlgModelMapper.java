@@ -20,7 +20,7 @@ public interface AlgModelMapper {
 
     int deleteByModelSetSn (String modelSetSn);
 
-    List<ModelDataVo> queryModelDataSet(ModelDataVo modelDataVo);
+    Page<ModelDataVo> queryModelDataSet(ModelDataVo modelDataVo);
 
     List<ModelDataVo> queryModel (AlgModel algModel);
 
@@ -32,6 +32,8 @@ public interface AlgModelMapper {
     String modelSn(AlgModelVo algModelVo);
 
     int deleteModel(AlgModel algModel);
+
+    int checkModelEnName(String usrSn,String modelEnName);
 
 
 }

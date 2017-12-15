@@ -17,4 +17,6 @@ public interface AlgStarMapper {
     int updateByPrimaryKey(AlgStar record);
 
     List<CollectArticlesVo> selectArticles(CollectArticlesVo collectArticlesVo);
+
+    int deleteAlgStar(AlgStar algStar);
 }

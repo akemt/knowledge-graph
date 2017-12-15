@@ -7,13 +7,13 @@ import com.beyond.algm.mapper.AlgAuthCodeDomainMapper;
 import com.beyond.algm.mapper.AlgAuthCodeMapper;
 import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgAuthCodeDomain;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Date;
 import java.util.List;
 
@@ -93,8 +93,8 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
-    public PageInfo<AlgAuthCode> listUserAuthCode(String usrSn, Pageable pageable) {
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+    public PageInfo<AlgAuthCode> listUserAuthCode(String usrSn, PageInfo pageInfo) {
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<AlgAuthCode> userAllAuthCode = algAuthCodeMapper.selectByUsrSnKey(usrSn);
         return new PageInfo<>(userAllAuthCode);
     }

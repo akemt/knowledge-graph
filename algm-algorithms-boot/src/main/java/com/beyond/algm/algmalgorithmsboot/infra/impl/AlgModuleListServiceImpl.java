@@ -10,6 +10,7 @@ import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,11 +45,20 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
     }
     //分页的
     @Override
-    public Page<AlgModuleListVo> findModulePage(String catSn, String usage , String modName, Integer pageNum,Integer pageSize, String id, String usrCode) throws AlgException {
+    public PageInfo<AlgModuleListVo> findModulePage(String catSn, String usage , String modName, PageInfo pageInfo, String id, String usrCode) throws AlgException {
         //初步设定用数据库进行排序查询
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<AlgModuleListVo> resultAlgModule = algModuleMapper.findModulePage(catSn,usage,modName,id,usrCode);
-        return resultAlgModule;
+        return new PageInfo<>(resultAlgModule);
+    }
+
+    //用户是否收藏了算法标记：star_sn
+    @Override
+    public PageInfo<AlgModuleListVo> findModuleByStar(String catSn, String usage , String modName, PageInfo pageInfo, String id, String usrCode) throws AlgException {
+        //初步设定用数据库进行排序查询
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+        Page<AlgModuleListVo> resultAlgModule = algModuleMapper.findModuleByStar(catSn,usage,modName,id,usrCode);
+        return new PageInfo<>(resultAlgModule);
     }
 
     @Override
@@ -83,7 +93,10 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
         algStar.setUsrSn(usrSn);
         algStar.setCreatTime(new Date());
         try {
-            algStarMapper.insert(algStar);
+            int del = algStarMapper.deleteAlgStar(algStar);
+            if (del <= 0){
+                algStarMapper.insert(algStar);
+            }
         } catch (Exception e) {
             log.error("充值失败。收藏串号：{},模块串号：{},用户串号：{}",algStar.getStarSn(),algStar.getModSn(),
                     algStar.getUsrSn(),e);

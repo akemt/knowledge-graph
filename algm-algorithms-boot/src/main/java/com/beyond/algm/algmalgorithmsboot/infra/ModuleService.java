@@ -62,10 +62,4 @@ public interface ModuleService {
      * 分类接口
      */
     List<AlgAlgoCategory> category() throws AlgException;
-
-    /**
-     * @author ：lindewei
-     * @Description: 校验算法是否有重复
-     */
-    Boolean isRepeat(String modId,String UsrSn) throws AlgException;
 }

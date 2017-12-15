@@ -19,5 +19,7 @@ public class AlgModuleVo extends AlgModule {
     private long starCnt;
     private long followCnt;
     private long callCnt;
+    private String sourceCodeUrl;
+    private String callAlgorithmUrl;
 
 }

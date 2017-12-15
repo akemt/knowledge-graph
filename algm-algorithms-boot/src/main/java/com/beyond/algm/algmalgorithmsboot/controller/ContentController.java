@@ -10,17 +10,15 @@ import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.*;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.github.pagehelper.PageInfo;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+
 import java.util.List;
 
 /**
@@ -47,11 +45,13 @@ public class ContentController extends BaseController {
      * @date ：14:07 2017/10/11
      */
     @RequestMapping(value="/algorithmRecord", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result<PageInfo<AlgRUserModuleCallTransVo>> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,@PageableDefault Pageable pageable) throws AlgException{
+    public Result<PageInfo<AlgRUserModuleCallTransVo>> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,PageInfo pageInfo) throws AlgException{
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser algUser = getUserInfo();
         algRUserModuleCallTransVo.setCallUsrSn(algUser.getUsrSn());
         log.info("调用用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
-        PageInfo<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo, pageable);
+        PageInfo<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo, pageInfo);
         return Result.ok(algRUserModuleCallTransList);
     }
     /**
@@ -62,11 +62,13 @@ public class ContentController extends BaseController {
      * @date ：17:07 2017/10/12
      */
     @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result<PageInfo<AlgRUserModuleCallTransVo>> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,@PageableDefault Pageable pageable) throws AlgException{
+    public Result<PageInfo<AlgRUserModuleCallTransVo>> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,PageInfo pageInfo) throws AlgException{
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser algUser = getUserInfo();
         algRUserModuleCallTransVo.setOwnerUsrSn(algUser.getUsrSn());
         log.info("算法创建者id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getOwnerUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
-        PageInfo<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo, pageable);
+        PageInfo<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo, pageInfo);
         return Result.ok(algRUserModuleCallTransList);
 
     }

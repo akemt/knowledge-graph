@@ -143,11 +143,16 @@ public class ModuleServiceImpl implements ModuleService {
     @Override
     @Transactional(rollbackFor = AlgException.class)
     public Boolean addAlgModule(AlgModule algModule,AlgUser algUser) throws AlgException {
+        //校验算法是否有重复
+        if(this.isRepeat(algUser.getUsrSn(),algModule.getModId())){
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.00000011");
+        }
         //模块串号
         algModule.setModSn(UUIDUtil.createUUID());
         // 新增算法
         try {
             algModuleMapper.insert(algModule);
+            log.info("新增算法，向模块表插入成功，项目串号:{}",algModule.getModSn());
             GitUser gitUser = new GitUser();
             gitUser.setModId(algModule.getModId());
             gitUser.setUsrCode(algUser.getUsrCode());
@@ -160,18 +165,23 @@ public class ModuleServiceImpl implements ModuleService {
                 gitUser.setOrgUsrCode(algModule.getOrgUsrCode());
 
                 //在git上组织创建项目
+                log.info("开始在git上组织创建项目，git串号:{}",gitUser.getUsrSn());
                 gitLabService.createGitLabGroupProject(gitUser);
+                log.info("结束在git上组织创建项目，git串号:{}",gitUser.getUsrSn());
                 strUserName = algModule.getOrgUsrCode();
 
             }else{ //当前用户-下创建项目
                 //在git上创建项目
+                log.info("开始在git上创建项目，git串号:{}",gitUser.getUsrSn());
                 gitLabService.createGitLabProject(gitUser);
+                log.info("结束在git上创建项目，git串号:{}",gitUser.getUsrSn());
                 strUserName = algUser.getUsrCode();
             }
             //在服务器本地创建项目 update xialf 20171213
             initProject(gitUser.getFilePath(),strUserName,algModule.getModId(),algModule.getLanSn());
             //commit and push 代码
             String version = jGitService.commitAndPushAllFiles(gitUser);
+            log.info("commit and push 代码成功，git串号:{}",gitUser.getUsrSn());
 
             AlgModuleVersion algModuleVersion = new AlgModuleVersion();
             algModuleVersion.setVerSn(UUIDUtil.createUUID());
@@ -179,10 +189,10 @@ public class ModuleServiceImpl implements ModuleService {
             algModuleVersion.setVerCodeL1(0);
             algModuleVersion.setVerCodeL2(0);
             algModuleVersion.setVerCodeL3(0);
-            //TODO 未实现版本 等其他信息
             algModuleVersion.setLatestCommit(version);
             algModuleVersion.setModSn(algModule.getModSn());
             algModuleVersionMapper.insert(algModuleVersion);
+            log.info("增加版本信息成功，版本串号:{}",algModuleVersion.getVerSn());
 
         } catch (Exception e) {
             log.error("算法新增增加失败。用户串号：{},语言串号：{},分类串号：{},协议串号：{}",algModule.getUsrSn(),algModule.getLanSn(),algModule.getCatSn(),algModule.getLicSn(),e);
@@ -287,11 +297,11 @@ public class ModuleServiceImpl implements ModuleService {
      * @author ：lindewei
      * @Description: 校验算法是否有重复
      */
-    public Boolean isRepeat(String modId,String usrSn) throws AlgException{
+    public Boolean isRepeat(String usrSn,String modId) throws AlgException{
         //项目modId大写转换小写。
         String strModId = modId.toLowerCase();
         //校验
-        int count = algModuleMapper.selectIsRepeat(strModId,usrSn);
-        return count>0?false:true;
+        int count = algModuleMapper.selectIsRepeat(usrSn,strModId);
+        return count>0?true:false;
     }
 }

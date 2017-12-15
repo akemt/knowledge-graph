@@ -135,7 +135,7 @@ public class KubernetesServiceImpl implements KubernetesService {
      * @return
      */
     private String getServiceName(String modId, String version){
-        return modId.toLowerCase()+"-"+version.replaceAll(".","-");
+        return modId.toLowerCase()+"-"+version.replaceAll("\\.","-");
     }
 
 }

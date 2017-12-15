@@ -23,13 +23,13 @@ public interface DataSetService {
      * @author ：lindewei
      * @Description: 我的数据集tree
      */
-    PageInfo<AlgDataSet> getDataSet(String usrSn, Pageable pageable) throws AlgException;
+    PageInfo<AlgDataSet> getDataSet(String usrSn, PageInfo pageInfo) throws AlgException;
 
     /**
      * @author ：lindewei
      * @Description: 我的数据List
      */
-    PageInfo<AlgData> getData(String usrSn, Pageable pageable) throws AlgException;
+    PageInfo<AlgData> getData(String usrSn, PageInfo pageInfo) throws AlgException;
 
     /**
      * @author ：lindewei

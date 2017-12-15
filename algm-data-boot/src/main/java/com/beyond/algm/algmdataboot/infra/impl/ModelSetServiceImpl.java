@@ -3,26 +3,24 @@ package com.beyond.algm.algmdataboot.infra.impl;
 
 import com.beyond.algm.algmdataboot.infra.ModelSetService;
 import com.beyond.algm.common.Assert;
+import com.beyond.algm.common.Result;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.mapper.AlgModelMapper;
+import com.beyond.algm.mapper.AlgModelSetMapper;
 import com.beyond.algm.mapper.AlgUserMapper;
+import com.beyond.algm.model.AlgModel;
+import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgModelSetVo;
 import com.beyond.algm.vo.ModelDataVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.beyond.algm.common.Result;
-import com.beyond.algm.model.AlgModelSet;
-import com.beyond.algm.model.AlgModel;
-import com.beyond.algm.mapper.AlgModelSetMapper;
-import com.beyond.algm.mapper.AlgModelMapper;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.springframework.data.domain.Pageable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -78,12 +76,26 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public Result addAlgModel(AlgModel algModel) throws Exception {
+    public Result addAlgModel(AlgModel algModel,String usrCode) throws AlgException {
         try {
+            if (Assert.isEmpty(algModel.getModelName())) {
+              throw new Exception("BEYOND.ALG.DATA.PAY.STATUS.0000011");
+            }
+            if (Assert.isNotEmpty(algModel.getModelEnName()) && algModelMapper.checkModelEnName(algModel.getUsrSn(),algModel.getModelEnName()) != 0 ){
+                throw new Exception("BEYOND.ALG.DATA.PAY.STATUS.0000012");
+            }
             //生成模型随机串号
             algModel.setModelSn(UUID.randomUUID().toString().replace("-", ""));
             // new Date()为获取当前系统时间
             algModel.setCreateTime(new Date());
+            //数据地址
+            String modelPath = null;
+            if(Assert.isEmpty(algModel.getModelEnName())){
+                modelPath = "model://" + usrCode + "/" + algModel.getModelSn();
+            }else {
+                modelPath = "model://" + usrCode + "/" + algModel.getModelEnName();
+            }
+            algModel.setModelAddress(modelPath);
             algModelMapper.insert(algModel);
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,8 +140,8 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public  PageInfo<AlgModelSetVo> queryAlgModelSet(String usrSn, Pageable pageable) throws AlgException {
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+    public  PageInfo<AlgModelSetVo> queryAlgModelSet(String usrSn, PageInfo pageInfo) throws AlgException {
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<AlgModelSetVo> algModelSetVoList = algModelSetMapper.queryModelSet(usrSn);
         if(Assert.isNotEmpty(algModelSetVoList)){
             String modelSetSn= algModelSetVoList.get(0).getModelSetSn();
@@ -144,8 +156,8 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public PageInfo<ModelDataVo> queryAlgModel( AlgModel algModel, Pageable pageable) throws AlgException {
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+    public PageInfo<ModelDataVo> queryAlgModel( AlgModel algModel, PageInfo pageInfo) throws AlgException {
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<ModelDataVo> allAlgModel = algModelMapper.queryModelPage(algModel);
         return new PageInfo<>(allAlgModel);
     }
@@ -155,10 +167,10 @@ public class ModelSetServiceImpl implements ModelSetService {
         return algUserMapper.selectUsrCode(usrCode);
     }
     @Override
-    public List<ModelDataVo> queryModelDataSet(ModelDataVo modelDataVo)throws AlgException{
+    public PageInfo<ModelDataVo> queryModelDataSet(ModelDataVo modelDataVo,PageInfo pageInfo)throws AlgException{
         //分页处理
-        PageHelper.startPage(modelDataVo.getPage(), modelDataVo.getRows());
-        List<ModelDataVo> modelDataVoList = algModelMapper.queryModelDataSet(modelDataVo);
-        return modelDataVoList;
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+        Page<ModelDataVo> modelDataVoList = algModelMapper.queryModelDataSet(modelDataVo);
+        return new PageInfo<>(modelDataVoList);
     }
 }

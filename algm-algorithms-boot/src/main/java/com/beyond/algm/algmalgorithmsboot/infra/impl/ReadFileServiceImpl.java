@@ -38,7 +38,7 @@ public class ReadFileServiceImpl implements ReadFileService {
             BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));//构造一个BufferedReader类来读取文件
             String s = null;
             while((s = br.readLine())!=null){//使用readLine方法，一次读一行
-                result.append(System.lineSeparator()+s);
+                result.append(s+System.lineSeparator());
             }
             br.close();
         }catch(Exception e){

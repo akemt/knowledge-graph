@@ -16,7 +16,7 @@ import java.util.List;
  * @date ：13:32 2017/9/25
  */
 public interface PayCashService {
-      PageInfo<AlgCashTrans> payRecord(PayRecordVo payRecordVo, Pageable pageable)throws AlgException;
+      PageInfo<AlgCashTrans> payRecord(PayRecordVo payRecordVo,PageInfo pageInfo)throws AlgException;
       void buyIntegral(PayVo payVo)throws AlgException;
       /**
        * @author :lindw

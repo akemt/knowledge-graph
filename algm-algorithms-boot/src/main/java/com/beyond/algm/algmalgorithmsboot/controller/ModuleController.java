@@ -88,12 +88,10 @@ public class ModuleController extends BaseController {
      * @return
      * @Description:删除本地文件同时同步服务器 author:zhangchuanzhi
      */
-    @RequestMapping(value = "/{usrCode}/{modId}/del", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result commitAndPushDelAllFiles(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId, GitUser gitUser) throws AlgException {
+    @RequestMapping(value = "/{usrCode}/{modId}/del", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result commitAndPushDelAllFiles(GitUser gitUser) throws AlgException {
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
-        gitUser.setModId(modId);
-        gitUser.setUsrCode(algUser.getUsrCode());
+        authService.isModuleByUser(algUser.getUsrCode(), gitUser.getModId());
         jGitService.commitAndPushDelAllFiles(gitUser);
         Result result = Result.successResponse();
         result.setMsg("删除"+ gitUser.getFileName() +"文件成功！");
@@ -134,15 +132,8 @@ public class ModuleController extends BaseController {
         algModule.setUsrSn(algUser.getUsrSn());
         algModule.setCreateSn(algUser.getUsrSn());
         //先保存到数据库
-        if(moduleService.isRepeat(algModule.getModId(),algUser.getUsrSn())){
-            //无算法重名，可以插入。
-            moduleService.addAlgModule(algModule, algUser);
-            return Result.successResponse();
-        }else {
-            //有重名存在。
-            String msg = "项目名已经存在，请重新输入！";
-            return Result.failure(msg);
-        }
+        moduleService.addAlgModule(algModule, algUser);
+        return Result.successResponse();
     }
 
     /**
@@ -310,13 +301,9 @@ public class ModuleController extends BaseController {
         //当前用户实体的isOrg把0-改成组织的IsOrg=1
         curAlgUser.setIsOrg(algUser.getIsOrg());
         //先保存到数据库
-        if (moduleService.isRepeat(algModule.getModId(), algUser.getUsrSn())) {
-            //algModule-算法实体信息，curAlgUser-当前登录用户实体信息。
-            moduleService.addAlgModule(algModule, curAlgUser);
-            return Result.successResponse();
-        } else {
-            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000023");
-        }
+        //algModule-算法实体信息，curAlgUser-当前登录用户实体信息。
+        moduleService.addAlgModule(algModule, curAlgUser);
+        return Result.successResponse();
     }
 
     /**

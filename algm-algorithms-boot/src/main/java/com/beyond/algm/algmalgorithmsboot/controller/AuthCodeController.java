@@ -8,6 +8,7 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgAuthCodeDomain;
 import com.beyond.algm.model.AlgUser;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.github.pagehelper.PageInfo;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 
 import java.util.List;
 
@@ -38,9 +36,11 @@ public class AuthCodeController extends BaseController {
     private AuthCodeDomainService authCodeDomainService;
 
     @RequestMapping(value = "/listAuthCode", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result<PageInfo<AlgAuthCode>> listAuthCode(@PageableDefault Pageable pageable) throws AlgException {
+    public Result<PageInfo<AlgAuthCode>> listAuthCode(PageInfo pageInfo) throws AlgException {
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser algUser = getUserInfo();
-        PageInfo<AlgAuthCode> result = authCodeService.listUserAuthCode(algUser.getUsrSn(),pageable);
+        PageInfo<AlgAuthCode> result = authCodeService.listUserAuthCode(algUser.getUsrSn(),pageInfo);
         return Result.ok(result);
     }
 

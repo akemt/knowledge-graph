@@ -6,6 +6,7 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
  * @date ：13:26 2017/9/25
  */
 
+import com.beyond.algm.algmalgorithmsboot.infra.AuthCodeService;
 import com.beyond.algm.algmalgorithmsboot.infra.GitLabService;
 import com.beyond.algm.algmalgorithmsboot.infra.KubernetesService;
 import com.beyond.algm.algmalgorithmsboot.infra.UserService;
@@ -20,6 +21,7 @@ import com.beyond.algm.mapper.AlgAccountMapper;
 import com.beyond.algm.mapper.AlgCashHisMapper;
 import com.beyond.algm.mapper.AlgUserMapper;
 import com.beyond.algm.model.AlgAccount;
+import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgCashHis;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.UserAccountVo;
@@ -56,6 +58,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private KubernetesService kubernetesService;
+    @Autowired
+    private AuthCodeService authCodeService;
+
 
     /**
      * @author ：zhangchuanzhi
@@ -101,7 +106,14 @@ public class UserServiceImpl implements UserService {
                 log.error("algUser insert false.", e.getMessage());
                 throw new AlgException("BEYOND.ALG.PLATFORM.ADDUSR.0000001", new String[]{"注册用户", user.getUsrCode(), user.getUsrCode()}, e);
             }
-
+            // 插入秘钥
+            String[] addUrl = new String[]{"algm://*"};
+            AlgAuthCode algAuthCode=new AlgAuthCode();
+            algAuthCode.setUsrSn(uuid);
+            algAuthCode.setCallFromClient("1");
+            algAuthCode.setAcdName("默认");
+            algAuthCode.setDataUseType("2");
+            authCodeService.generateKey(algAuthCode,addUrl);
             //为用户创建k8s命名空间
             kubernetesService.makeK8sNamespace(user.getUsrCode());
             //为用户创建k8s命名空间下的harbor镜像拉取密钥

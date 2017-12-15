@@ -133,4 +133,11 @@
     where alg_model.model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
     and  alg_model.usr_sn=#{usrSn,jdbcType=VARCHAR}
   </select>
+
+  <select id="checkModelEnName" resultType="java.lang.Integer"  parameterType="java.lang.String"  >
+    select count(*)
+    from alg_model
+    where usr_sn = #{arg0,jdbcType=VARCHAR}
+    <if test="arg1 != null and arg1 !=''">and model_en_name = #{arg1,jdbcType=VARCHAR}</if>
+  </select>
 </mapper>
