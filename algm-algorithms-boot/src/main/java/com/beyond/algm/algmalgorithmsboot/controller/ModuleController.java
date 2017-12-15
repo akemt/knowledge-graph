@@ -69,7 +69,7 @@ public class ModuleController extends BaseController {
         log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
         AlgUser algUser = getUserInfo();
         //权限验证
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
         AlgUser modUser = userService.findByUsrCode(usrCode);
         AlgModuleEditVo algModuleEditVo = moduleService.initModuleTree(modUser,algUser.getUsrCode(), modId, path,fileName);
         return Result.ok(algModuleEditVo);
@@ -81,9 +81,9 @@ public class ModuleController extends BaseController {
      * @Description:删除本地文件同时同步服务器 author:zhangchuanzhi
      */
     @RequestMapping(value = "/{usrCode}/{modId}/del", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result commitAndPushDelAllFiles(GitUser gitUser) throws AlgException {
+    public Result commitAndPushDelAllFiles(GitUser gitUser,@PathVariable("usrCode") String usrCode,@PathVariable("modId") String modId) throws AlgException {
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(algUser.getUsrCode(), gitUser.getModId());
+        authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
         jGitService.commitAndPushDelAllFiles(gitUser);
         Result result = Result.successResponse();
         result.setMsg("删除"+ gitUser.getFileName() +"文件成功！");
@@ -100,7 +100,7 @@ public class ModuleController extends BaseController {
     public Result buildAndUpLoadProject(@PathVariable("usrCode") String usrCode,@PathVariable("modId") String modId) throws AlgException,Exception {
         GitUser gitUser=new GitUser();
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
         gitUser.setUsrSn(algUser.getUsrSn());
         gitUser.setModId(modId);
         //   gitUser.setUsrCode(algUser.getUsrCode());
@@ -157,7 +157,7 @@ public class ModuleController extends BaseController {
         log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
         AlgUser curAlgUser = getUserInfo();
         //权限验证
-//        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        authService. isModuleByUser( usrCode,modId, curAlgUser.getUsrCode(),curAlgUser.getUsrSn());
 
         //验证组所有者，还是普通用户
         //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
@@ -199,7 +199,7 @@ public class ModuleController extends BaseController {
         log.info("depend write module file tree: usrCode:{} and modId: {} and fileContent:{}", usrCode, modId,fileContent);
         AlgUser curAlgUser = getUserInfo();
         //权限验证
-//        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        authService. isModuleByUser( usrCode,modId, curAlgUser.getUsrCode(),curAlgUser.getUsrSn());
         //验证组所有者，还是普通用户
         //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
         AlgUser algUser = userService.isOwnerByUsrCode(usrCode,curAlgUser.getUsrSn());
@@ -232,7 +232,7 @@ public class ModuleController extends BaseController {
     public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode,String verMark) throws AlgException {
         //权限验证
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
         publishService.publishModule(modId,usrCode,verMark);
         return Result.successResponse();
     }
@@ -261,7 +261,7 @@ public class ModuleController extends BaseController {
     public Result getAlgModuleVersion(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode) throws AlgException {
         //权限验证
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
         Map<String, Object> algModuleVersionMap = publishService.getAlgModuleVersion(modId, usrCode);
         return Result.ok(algModuleVersionMap);
     }
