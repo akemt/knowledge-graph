@@ -91,7 +91,6 @@ public class UserServiceImpl implements UserService {
             gitUser.setFullName(user.getUsrCode());
             gitUser.setUsrCode(user.getUsrCode());
             gitUser.setEmail(user.getEmail());
-          //  String passWord = AESUtil.encryptAES(user.getPasswd(), projectConfigEntity.getKeyAES());
             String passWord= DigestUtils.md5DigestAsHex(user.getPasswd().getBytes());
             user.setPasswd(passWord);
             //xialf 20171205 update
