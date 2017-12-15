@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = AlgmAlgorithmsBootApplication.class)
@@ -108,7 +109,7 @@ public class UserServiceTest {
 
     @Test
     public void ownOrganizeTest() throws AlgException {
-        List<AlgUser> algUsers = userService.ownOrganize("gaohaijun");
+        List<Map<String,Object>> algUsers = userService.ownOrganize("gaohaijun");
         System.out.println(JSONObject.toJSONString(algUsers));
     }
 }

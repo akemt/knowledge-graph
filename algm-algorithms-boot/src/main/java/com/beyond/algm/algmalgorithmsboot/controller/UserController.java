@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：zhangchuanzhi
@@ -142,7 +143,7 @@ public class UserController  extends BaseController {
     public Result getOwnOrganize() throws AlgException{
         AlgUser algUser = getUserInfo();
         log.info("用户名字:{}", algUser.getUsrCode());
-        List<AlgUser> algUsers = userService.ownOrganize(algUser.getUsrCode());
+        List<Map<String,Object>> algUsers = userService.ownOrganize(algUser.getUsrCode());
         return Result.ok(algUsers);
     }
 }

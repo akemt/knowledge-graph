@@ -36,6 +36,7 @@ import org.springframework.util.DigestUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -267,7 +268,7 @@ public class UserServiceImpl implements UserService {
      * @param usrCode
      * @return
      */
-    public List<AlgUser> ownOrganize(String usrCode) throws AlgException {
+    public List<Map<String,Object>> ownOrganize(String usrCode) throws AlgException {
         return algUserMapper.selectOwnOrganize(usrCode);
     }
 
