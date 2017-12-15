@@ -188,4 +188,9 @@
         where u.usr_sn in (select a.org_sn from alg_r_user_org_invite a where usr_sn = (
         select usr_sn from alg_user where usr_code = #{usrCode,jdbcType=VARCHAR}))
     </select>
+    <select id="countOrgCode" resultType="java.lang.Integer" parameterType="java.lang.String" >
+        select count(1) from alg_r_user_org_invite where org_sn=
+        (select usr_sn from alg_user where usr_code = #{arg0,jdbcType=VARCHAR})
+        and usr_sn=(select usr_sn from alg_user where usr_code = #{arg1,jdbcType=VARCHAR})
+    </select>
 </mapper>

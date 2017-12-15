@@ -72,4 +72,13 @@ public interface AlgUserMapper {
      * @param usrCode
      */
     List<AlgUser> selectOwnOrganize(String usrCode);
+
+    /**
+     * 根据组织编码获取组织个数
+     *
+     * @param
+     * @return
+     */
+    int countOrgCode(String usrCode,String sessionUsrCode);
+
 }

@@ -36,7 +36,7 @@ public class FileController extends BaseController {
     @RequestMapping(value = "/{usrCode}/{modId}/read", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result read(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String currentPath, String fileName) throws AlgException {
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        authService.isModuleByUser(usrCode, modId,algUser.getUsrCode(),algUser.getUsrSn());
         AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(algUser.getUsrCode(), modId, currentPath, fileName);
         return Result.ok(algFileReadWriteVo);
     }
@@ -46,7 +46,7 @@ public class FileController extends BaseController {
     public Result write(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String currentPath, String fileName, String fileContent) throws AlgException {
         log.info("在编辑页面，新建文件或者修改文件进行保存:{} ", "modId:" + modId, "----currentPath:" + currentPath, "----fileName:" + fileName, "----fileContent:" + fileContent);
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        authService.isModuleByUser(usrCode, modId,algUser.getUsrCode(),algUser.getUsrSn());
         writeFileService.writeFile(algUser.getUsrCode(), modId, currentPath, fileName, fileContent);//写入文件中，并且保存到路径下。
         return Result.successResponse();
     }
