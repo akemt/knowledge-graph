@@ -84,7 +84,7 @@ public class AntApiServiceImpl implements AntApiService {
         ModuleAdapter moduleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
 
         String modPath = pathService.getModuleBasePath(gitUser.getOrgUsrCode(), gitUser.getModId(), gitUser.getUsrCode(), gitUser.getIsOrg());
-        String path = modPath + File.separator + Constant.map.get(algProgramLang.getLanName());
+        String path = modPath + File.separator + Constant.buildMap.get(algProgramLang.getLanName());
         gitUser.setPath(modPath + File.separator + ".git");
 
         log.debug("项目编译路径:{},上传git路径:{}", path, gitUser.getPath());

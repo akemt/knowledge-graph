@@ -26,18 +26,21 @@ public class FileController extends BaseController {
     @Autowired
     private WriteFileService writeFileService;
     @Autowired
-    private ShowProjectFileService showProjectFileService;
-    @Autowired
-    private ModuleService moduleService;
-    @Autowired
     private AuthService authService;
+    @Autowired
+    private PathService pathService;
+    @Autowired
+    private UserService userService;
 
     // 读取文本
     @RequestMapping(value = "/{usrCode}/{modId}/read", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result read(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String currentPath, String fileName) throws AlgException {
-        AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(usrCode, modId,algUser.getUsrCode(),algUser.getUsrSn());
-        AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(algUser.getUsrCode(), modId, currentPath, fileName);
+        AlgUser curAlgUser = getUserInfo();
+        authService.isModuleByUser(usrCode, modId,curAlgUser.getUsrCode(),curAlgUser.getUsrSn());
+        //根据OrgCode，查询该用户信息
+        AlgUser algUser = userService.findByUsrCode(usrCode);
+        String modPath = pathService.getModuleBasePath(usrCode, modId, curAlgUser.getUsrCode(), algUser.getIsOrg());
+        AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(modPath, currentPath, fileName);
         return Result.ok(algFileReadWriteVo);
     }
 
@@ -45,9 +48,12 @@ public class FileController extends BaseController {
     @RequestMapping(value = "/{usrCode}/{modId}/write", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result write(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String currentPath, String fileName, String fileContent) throws AlgException {
         log.info("在编辑页面，新建文件或者修改文件进行保存:{} ", "modId:" + modId, "----currentPath:" + currentPath, "----fileName:" + fileName, "----fileContent:" + fileContent);
-        AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(usrCode, modId,algUser.getUsrCode(),algUser.getUsrSn());
-        writeFileService.writeFile(algUser.getUsrCode(), modId, currentPath, fileName, fileContent);//写入文件中，并且保存到路径下。
+        AlgUser curAlgUser = getUserInfo();
+        authService.isModuleByUser(usrCode, modId,curAlgUser.getUsrCode(),curAlgUser.getUsrSn());
+        //根据OrgCode，查询该用户信息
+        AlgUser algUser = userService.findByUsrCode(usrCode);
+        String modPath = pathService.getModuleBasePath(usrCode, modId, curAlgUser.getUsrCode(), algUser.getIsOrg());
+        writeFileService.writeFile(modPath, currentPath, fileName, fileContent);//写入文件中，并且保存到路径下。
         return Result.successResponse();
     }
 }
