@@ -104,7 +104,6 @@ public class ModuleController extends BaseController {
         authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
         gitUser.setUsrSn(algUser.getUsrSn());
         gitUser.setModId(modId);
-        //   gitUser.setUsrCode(algUser.getUsrCode());
         gitUser.setUsrCode(algUser.getUsrCode());
         gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(), projectConfigEntity.getKeyAES()));
         log.debug("用户名字:{},用户密码:{},用户usrSn:{},用户modId:{} ", gitUser.getUsrCode(), gitUser.getPassword(), gitUser.getUsrSn(), gitUser.getModId());
