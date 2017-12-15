@@ -15,9 +15,6 @@ import com.beyond.algm.model.AlgProgramLang;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgFileReadWriteVo;
 import com.beyond.algm.vo.AlgModuleEditVo;
-import com.beyond.algm.vo.AlgModuleListVo;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -54,6 +51,8 @@ public class ModuleController extends BaseController {
     private WriteFileService writeFileService;
     @Autowired
     private PublishService publishService;
+    @Autowired
+    private PathService pathService;
 
 
     //初始化、和返回上一级的目录
@@ -77,7 +76,7 @@ public class ModuleController extends BaseController {
         }
 
         AlgUser paramsUser = userService.findByUsrCode(usrCode);
-        AlgModuleEditVo algModuleEditVo = moduleService.algModule(paramsUser.getUsrCode(), paramsUser.getUsrSn(), modId, path);
+        AlgModuleEditVo algModuleEditVo = moduleService.algModule(paramsUser.getIsOrg(),algUser.getUsrCode() , paramsUser.getUsrCode(), paramsUser.getUsrSn(), modId, path);
         return Result.ok(algModuleEditVo);
     }
 
@@ -150,15 +149,34 @@ public class ModuleController extends BaseController {
     }
 
     /**
-     * @author ：lindewei
-     * @Description: 依赖文件读取
+     *编辑算法-点击组织算法左侧树形结构显示的代码结构-依赖文件读取
+     *
+     * @param usrCode
+     * @param modId
+     * @return
+     * @throws AlgException
+     * @author ：lindewei;xialf -update:20171214
      */
     @RequestMapping(value = "/{usrCode}/{modId}/dependRead", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result dependRead(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId) throws AlgException {
         log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
-        AlgUser algUser = getUserInfo();
+        AlgUser curAlgUser = getUserInfo();
         //权限验证
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
+//        authService.isModuleByUser(algUser.getUsrCode(), modId);
+
+        //验证组所有者，还是普通用户
+        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
+        AlgUser algUser = userService.isOwnerByUsrCode(usrCode,curAlgUser.getUsrSn());
+        String algProPath = "";
+        String algModId = "";
+        if(Assert.isNULL(algUser)) {//普通用户
+            algProPath = usrCode;
+            algModId = modId;
+        }else{//拥有者下的组织
+            algProPath = pathService.getOrgAlgBasePath(usrCode,modId);
+            algModId = curAlgUser.getUsrCode();
+        }
+
         //定义文件名和路径的变量
         String dependFile = null;
         //判断何种的对应的配置文件
@@ -167,20 +185,39 @@ public class ModuleController extends BaseController {
             dependFile = "ivy.xml";
         }
         //读取文件
-        AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(usrCode, modId, null, dependFile);
+        AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(algProPath, algModId, null, dependFile);
         return Result.ok(algFileReadWriteVo);
     }
 
     /**
-     * @author ：lindewei
-     * @Description: 依赖文件修改保存
+     * 编辑算法-右侧代码结构-依赖文件修改保存
+     *
+     * @param usrCode
+     * @param modId
+     * @param fileContent
+     * @return
+     * @throws AlgException
+     *  @author ：lindewei;xialf -update:20171214
      */
     @RequestMapping(value = "/{usrCode}/{modId}/dependWrite", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result dependWrite(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String fileContent) throws AlgException {
         log.info("depend write module file tree: usrCode:{} and modId: {} and fileContent:{}", usrCode, modId,fileContent);
-        AlgUser algUser = getUserInfo();
+        AlgUser curAlgUser = getUserInfo();
         //权限验证
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
+//        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        //验证组所有者，还是普通用户
+        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
+        AlgUser algUser = userService.isOwnerByUsrCode(usrCode,curAlgUser.getUsrSn());
+        String algProPath = "";
+        String algModId = "";
+        if(Assert.isNULL(algUser)) {//普通用户
+            algProPath = usrCode;
+            algModId = modId;
+        }else{//拥有者下的组织
+            algProPath = pathService.getOrgAlgBasePath(usrCode,modId);
+            algModId = curAlgUser.getUsrCode();
+        }
+
         //定义文件名和路径的变量
         String dependFile = null;
         //判断何种的对应的配置文件
@@ -188,7 +225,7 @@ public class ModuleController extends BaseController {
         if(algProgramLang.getLanName().equals("Java")){
             dependFile = "ivy.xml";
         }
-        writeFileService.writeFile(algUser.getUsrCode(), modId, null, dependFile, fileContent);//写入文件中，并且保存到路径下。
+        writeFileService.writeFile(algProPath, algModId, null, dependFile, fileContent);//写入文件中，并且保存到路径下。
         return Result.successResponse();
     }
 
@@ -252,8 +289,7 @@ public class ModuleController extends BaseController {
         //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
         AlgUser algUser = userService.isOwnerByUsrCode(orgUsrCode,curAlgUser.getUsrSn());
         if(Assert.isNULL(algUser)) {
-            String msg = "普通用户不可以创建算法，请重新输入！";
-            return Result.failure(msg);
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000022");
         }
         algModule.setUsrSn(algUser.getUsrSn());
         algModule.setCreateSn(curAlgUser.getUsrSn());
@@ -266,4 +302,44 @@ public class ModuleController extends BaseController {
         moduleService.addAlgModule(algModule, curAlgUser);
         return Result.successResponse();
     }
+
+    /**
+     * 编辑算法-初始化组织算法左侧树形结构
+     *
+     * @param orgUsrCode
+     * @param modId
+     * @param path
+     * @param fileName
+     * @return
+     * @throws AlgException
+     * @author xialf
+     */
+    @GetMapping(value = "initOrgAlg/{orgUsrCode}/{modId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result initTreeOrgAlgorithm(@PathVariable("orgUsrCode") String orgUsrCode, @PathVariable("modId") String modId, String path, String fileName) throws AlgException {
+
+        log.info("编辑算法-初始化组织算法左侧树形结构 -Controller(/orgUsrCode/addOrgAlg) : orgUsrCode:{} and modId : ", orgUsrCode,modId);
+        //查询当前登录用户信息
+        AlgUser curAlgUser = getUserInfo();
+        //验证组所有者，还是普通用户
+        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
+        AlgUser algUser = userService.isOwnerByUsrCode(orgUsrCode,curAlgUser.getUsrSn());
+        if(Assert.isNULL(algUser)) {
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000022");
+        }
+
+        if(Assert.isEmpty(path) && Assert.isEmpty(fileName)){
+            path = "";
+        }else if(Assert.isNotEmpty(path) && Assert.isEmpty(fileName)){
+            path = path;
+        }else if ("/".equals(path) && Assert.isNotEmpty(fileName)) {
+            // path为"/" 并且 fileName不为空
+            path = path + fileName;
+        }else {
+            // 1、path有目录时候，fileName不为空；2、或者path为"/"，fileName为空
+            path = path + File.separator + fileName;
+        }
+        AlgModuleEditVo algModuleEditVo = moduleService.algModule(algUser.getIsOrg(),curAlgUser.getUsrCode(), orgUsrCode, algUser.getUsrSn(), modId, path);
+        return Result.ok(algModuleEditVo);
+    }
+
 }

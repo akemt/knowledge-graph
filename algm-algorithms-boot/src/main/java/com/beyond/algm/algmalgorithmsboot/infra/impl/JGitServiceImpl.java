@@ -34,14 +34,12 @@ public class JGitServiceImpl implements JGitService {
         cloneCommand.setURI(gitUser.getProjectRepoURI());
         cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword()));
 
-        StringBuffer  strUrlUsrCodeAndModId= new StringBuffer();
+        String  strUrlUsrCodeAndModId = "";
         String strPath = null;
         if("1".equals(gitUser.getIsOrg())) {//组所有者-下面的组织
-            strUrlUsrCodeAndModId.append(gitUser.getOrgUsrCode());
-            strUrlUsrCodeAndModId.append(File.separator);
-            strUrlUsrCodeAndModId.append(gitUser.getModId());
+            strUrlUsrCodeAndModId = pathService.getOrgAlgBasePath(gitUser.getOrgUsrCode(),gitUser.getModId());
             //E:\repo\组织编号\项目名\当前用户编号\src\algmarket\TestJavaK1 如：E:\repo\testGroup1\Project01\gaohaijun\src\algmarket\TestJavaK1
-            strPath = pathService.getModuleBasePath(strUrlUsrCodeAndModId.toString(),gitUser.getUsrCode());
+            strPath = pathService.getModuleBasePath(strUrlUsrCodeAndModId,gitUser.getUsrCode());
         }else{
             //E:\repo\当前登录用户\项目名\src\algmarket\TestJavaK1 如：E:\repo\erniu4\Project01\src\algmarket\TestJavaK1
             strPath = pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId());
@@ -58,8 +56,8 @@ public class JGitServiceImpl implements JGitService {
         }
 
         if("1".equals(gitUser.getIsOrg())) {//组所有者-下面的组织
-            gitUser.setPath(pathService.getModuleBasePath(strUrlUsrCodeAndModId.toString(),gitUser.getUsrCode())+File.separator+".git");
-            gitUser.setFilePath(pathService.getModuleBasePath(strUrlUsrCodeAndModId.toString(),gitUser.getUsrCode()));
+            gitUser.setPath(pathService.getModuleBasePath(strUrlUsrCodeAndModId,gitUser.getUsrCode())+File.separator+".git");
+            gitUser.setFilePath(pathService.getModuleBasePath(strUrlUsrCodeAndModId,gitUser.getUsrCode()));
         }else{
             gitUser.setPath(pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+".git");
             gitUser.setFilePath(pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId()));

@@ -79,7 +79,7 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public AlgModuleEditVo algModule(String usrCode, String usrSn, String modId, String path) throws AlgException {
+    public AlgModuleEditVo algModule(String strIsOrg, String usrCode,String orgUsrCode, String usrSn, String modId, String path) throws AlgException {
         AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
 
         log.info("current user:{} ", usrCode);
@@ -89,17 +89,33 @@ public class ModuleServiceImpl implements ModuleService {
         log.info("current modSn:{} ", algModule.getModSn());
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         try {
+            FileNodes fileNodes = null;
             //项目名称初始化Tree
             // path 为空的情况是，是项目主文件路径
-            if (Assert.isEmpty(path)) {
-                path = pathService.getModuleMainFilePath(usrCode, modId, algModule.getLanSn());
-            } else if (path.equals("/")) {
-                path = pathService.getModuleBasePath(usrCode, modId);
-            } else {
-                path = pathService.getModuleBasePath(usrCode, modId) + File.separator + path;
+            if("1".equals(strIsOrg)){////组所有者-下面的组织算法
+                String  strUrlUsrCodeAndModId = pathService.getOrgAlgBasePath(orgUsrCode,modId);
+
+                String orgAlgPath = pathService.getModuleBasePath(strUrlUsrCodeAndModId,usrCode);
+                if (Assert.isEmpty(path)) {
+                    path = pathService.getModuleMainFilePath(orgAlgPath,modId, algModule.getLanSn());
+                } else if (path.equals("/")) {
+                    path = orgAlgPath;
+                } else {
+                    path = orgAlgPath + File.separator + path;
+                }
+                fileNodes = showProjectFileService.ShowProjectFile(path, strUrlUsrCodeAndModId,usrCode);
+            }else{
+                String usrAlgPath = pathService.getModuleBasePath(usrCode, modId);
+                if (Assert.isEmpty(path)) {
+                    path = pathService.getModuleMainFilePath(usrAlgPath, modId, algModule.getLanSn());
+                } else if (path.equals("/")) {
+                    path = usrAlgPath;
+                } else {
+                    path = usrAlgPath + File.separator + path;
+                }
+                fileNodes = showProjectFileService.ShowProjectFile(path, usrCode, modId);
             }
             //返回同级目录所有文件和文件夹.
-            FileNodes fileNodes = showProjectFileService.ShowProjectFile(path, usrCode, modId);
             log.info("current fileNodes {} ", fileNodes.toString());
             algModuleEditVo.setModId(algModule.getModId());
             algModuleEditVo.setModName(algModule.getModName());
