@@ -50,7 +50,8 @@ public class CephServiceImpl implements CephService {
         Bucket bucket=amazonS3.createBucket("algmarket");
         amazonS3.putObject(bucket.getName(), cephKey,targetFile);
         amazonS3.setObjectAcl(bucket.getName(), cephKey, CannedAccessControlList.PublicRead);
-        String pathUrl=  amazonS3.getUrl(bucket.getName(),cephKey).getPath();
+     //   String pathUrl=  amazonS3.getUrl(bucket.getName(),cephKey).getPath();
+        String pathUrl=  amazonS3.getUrl(bucket.getName(),cephKey).toString();
         log.info("ceph的url的存储:{}",pathUrl);
         AlgUser user=new AlgUser();
         user.setUsrCode(usrCode);
