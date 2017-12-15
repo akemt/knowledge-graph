@@ -162,7 +162,7 @@
 
     <!-- 获取组织成员列表 -->
     <select id="selectOrgMemberList" resultMap="BaseResultMap" parameterType="java.lang.String" >
-        select u.usr_sn, u.owner_id, u.usr_name, u.usr_code, u.usr_url, u.is_org, u.email, u.passwd, u.telephone, u.need_notify,u.private_token,  u.create_date, u.update_date
+        select u.usr_sn, u.owner_id, u.usr_name, u.usr_code, u.usr_url, u.is_org, u.email, u.telephone, u.need_notify,u.private_token, u.create_date, u.update_date
         from alg_user u
         where u.usr_sn in (select r.usr_sn from alg_r_user_org_invite r where r.org_sn = #{orgSn,jdbcType=VARCHAR})
     </select>
