@@ -86,12 +86,10 @@ public class ModuleController extends BaseController {
      * @return
      * @Description:删除本地文件同时同步服务器 author:zhangchuanzhi
      */
-    @RequestMapping(value = "/{usrCode}/{modId}/del", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result commitAndPushDelAllFiles(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId, GitUser gitUser) throws AlgException {
+    @RequestMapping(value = "/{usrCode}/{modId}/del", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result commitAndPushDelAllFiles(GitUser gitUser) throws AlgException {
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(algUser.getUsrCode(), modId);
-        gitUser.setModId(modId);
-        gitUser.setUsrCode(algUser.getUsrCode());
+        authService.isModuleByUser(algUser.getUsrCode(), gitUser.getModId());
         jGitService.commitAndPushDelAllFiles(gitUser);
         Result result = Result.successResponse();
         result.setMsg("删除"+ gitUser.getFileName() +"文件成功！");
