@@ -36,4 +36,6 @@ public interface AlgDataMapper {
     int update(AlgData record);
     String  dataUrl(AlgData record);
     String dataSn(AlgDataVo algDataVo);
+
+    int deleteData(AlgData algData);
 }

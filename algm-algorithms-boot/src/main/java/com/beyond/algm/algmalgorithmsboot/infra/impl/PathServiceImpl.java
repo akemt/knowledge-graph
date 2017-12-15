@@ -38,11 +38,22 @@ public class PathServiceImpl implements PathService {
     }
 
     @Override
+    public String getModuleBasePath(String orgCode, String modId,String usrCode,String isOrg) throws AlgException {
+        //项目名称初始化Tree
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder = initBaseFolder(stringBuilder, gitConfigModel.getLocalBasePath(), orgCode, modId);
+        if("1".equals(isOrg)){
+            stringBuilder.append(File.separator);
+            stringBuilder.append(usrCode);
+        }
+        return stringBuilder.toString();
+    }
+
+    @Override
     public String getModuleMainFilePath(String usrCode, String modId, String lanSn) throws AlgException {
         //项目名称初始化Tree
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(usrCode);
-//        stringBuilder = initBaseFolder(stringBuilder, gitConfigModel.getLocalBasePath(), usrCode, modId);
         stringBuilder.append(File.separator);
         stringBuilder.append(src);
         stringBuilder.append(File.separator);

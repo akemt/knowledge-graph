@@ -57,7 +57,6 @@ public class ModuleServiceImpl implements ModuleService {
     @Value("${spring.profiles.active}")
     private String active;
 
-    //update xialf,20171213
     @Override
     public void initProject(String strPath, String username,String projectName,String lanSn) throws Exception {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
@@ -79,11 +78,23 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public AlgModuleEditVo algModule(String strIsOrg, String usrCode,String orgUsrCode, String usrSn, String modId, String path) throws AlgException {
+    public AlgModuleEditVo initModuleTree(AlgUser modUser, String usrCode,String modId, String path,String fileName) throws AlgException {
         AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
 
+        if(Assert.isEmpty(path) && Assert.isEmpty(fileName)){
+            path = "";
+        }else if(Assert.isNotEmpty(path) && Assert.isEmpty(fileName)){
+            path = path;
+        }else if ("/".equals(path) && Assert.isNotEmpty(fileName)) {
+            // path为"/" 并且 fileName不为空
+            path = path + fileName;
+        }else {
+            // 1、path有目录时候，fileName不为空；2、或者path为"/"，fileName为空
+            path = path + File.separator + fileName;
+        }
+
         log.info("current user:{} ", usrCode);
-        AlgModule algModule = this.findByUsrSnAndModId(usrSn, modId);
+        AlgModule algModule = this.findByUsrSnAndModId(modUser.getUsrSn(), modId);
         log.info("current project id:{} ,name :{} ", algModule.getModId(), algModule.getModName());
         AlgModuleVersion algModuleVersion = getLastVersion(algModule.getModSn());
         log.info("current modSn:{} ", algModule.getModSn());
@@ -92,29 +103,17 @@ public class ModuleServiceImpl implements ModuleService {
             FileNodes fileNodes = null;
             //项目名称初始化Tree
             // path 为空的情况是，是项目主文件路径
-            if("1".equals(strIsOrg)){////组所有者-下面的组织算法
-                String  strUrlUsrCodeAndModId = pathService.getOrgAlgBasePath(orgUsrCode,modId);
 
-                String orgAlgPath = pathService.getModuleBasePath(strUrlUsrCodeAndModId,usrCode);
-                if (Assert.isEmpty(path)) {
-                    path = pathService.getModuleMainFilePath(orgAlgPath,modId, algModule.getLanSn());
-                } else if (path.equals("/")) {
-                    path = orgAlgPath;
-                } else {
-                    path = orgAlgPath + File.separator + path;
-                }
-                fileNodes = showProjectFileService.ShowProjectFile(path, strUrlUsrCodeAndModId,usrCode);
-            }else{
-                String usrAlgPath = pathService.getModuleBasePath(usrCode, modId);
-                if (Assert.isEmpty(path)) {
-                    path = pathService.getModuleMainFilePath(usrAlgPath, modId, algModule.getLanSn());
-                } else if (path.equals("/")) {
-                    path = usrAlgPath;
-                } else {
-                    path = usrAlgPath + File.separator + path;
-                }
-                fileNodes = showProjectFileService.ShowProjectFile(path, usrCode, modId);
+            String usrAlgPath = pathService.getModuleBasePath(modUser.getUsrCode(), modId,usrCode,modUser.getIsOrg());
+            if (Assert.isEmpty(path)) {
+                path = pathService.getModuleMainFilePath(usrAlgPath, modId, algModule.getLanSn());
+            } else if (path.equals("/")) {
+                path = usrAlgPath;
+            } else {
+                path = usrAlgPath + File.separator + path;
             }
+            fileNodes = showProjectFileService.ShowProjectFile(path, usrCode, modId);
+
             //返回同级目录所有文件和文件夹.
             log.info("current fileNodes {} ", fileNodes.toString());
             algModuleEditVo.setModId(algModule.getModId());

@@ -55,28 +55,23 @@ public class ModuleController extends BaseController {
     private PathService pathService;
 
 
-    //初始化、和返回上一级的目录
+    /**
+     *  返回项目树形目录
+     * @param usrCode
+     * @param modId
+     * @param path
+     * @param fileName
+     * @return
+     * @throws AlgException
+     */
     @GetMapping(value = "/{usrCode}/{modId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result initTree(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId, String path, String fileName) throws AlgException {
         log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
         AlgUser algUser = getUserInfo();
         //权限验证
-        authService.isModuleByUser(usrCode, modId,algUser.getUsrCode(),algUser.getUsrSn());
-
-        if(Assert.isEmpty(path) && Assert.isEmpty(fileName)){
-            path = "";
-        }else if(Assert.isNotEmpty(path) && Assert.isEmpty(fileName)){
-            path = path;
-        }else if ("/".equals(path) && Assert.isNotEmpty(fileName)) {
-            // path为"/" 并且 fileName不为空
-            path = path + fileName;
-        }else {
-            // 1、path有目录时候，fileName不为空；2、或者path为"/"，fileName为空
-            path = path + File.separator + fileName;
-        }
-
-        AlgUser paramsUser = userService.findByUsrCode(usrCode);
-        AlgModuleEditVo algModuleEditVo = moduleService.algModule(paramsUser.getIsOrg(),algUser.getUsrCode() , paramsUser.getUsrCode(), paramsUser.getUsrSn(), modId, path);
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
+        AlgUser modUser = userService.findByUsrCode(usrCode);
+        AlgModuleEditVo algModuleEditVo = moduleService.initModuleTree(modUser,algUser.getUsrCode(), modId, path,fileName);
         return Result.ok(algModuleEditVo);
     }
 
@@ -86,13 +81,13 @@ public class ModuleController extends BaseController {
      * @Description:删除本地文件同时同步服务器 author:zhangchuanzhi
      */
     @RequestMapping(value = "/{usrCode}/{modId}/del", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result commitAndPushDelAllFiles(GitUser gitUser,@PathVariable("usrCode") String usrCode,@PathVariable("modId") String modId) throws AlgException {
+    public Result commitAndPushDelAllFiles(GitUser gitUser) throws AlgException {
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(usrCode, modId,algUser.getUsrCode(),algUser.getUsrSn());
-/*        jGitService.commitAndPushDelAllFiles(gitUser);
+        authService.isModuleByUser(algUser.getUsrCode(), gitUser.getModId());
+        jGitService.commitAndPushDelAllFiles(gitUser);
         Result result = Result.successResponse();
-        result.setMsg("删除"+ gitUser.getFileName() +"文件成功！");*/
-        return null;
+        result.setMsg("删除"+ gitUser.getFileName() +"文件成功！");
+        return result;
 
     }
 
@@ -105,7 +100,7 @@ public class ModuleController extends BaseController {
     public Result buildAndUpLoadProject(@PathVariable("usrCode") String usrCode,@PathVariable("modId") String modId) throws AlgException,Exception {
         GitUser gitUser=new GitUser();
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(usrCode, modId,algUser.getUsrCode(),algUser.getUsrSn());
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
         gitUser.setUsrSn(algUser.getUsrSn());
         gitUser.setModId(modId);
         //   gitUser.setUsrCode(algUser.getUsrCode());
@@ -162,7 +157,7 @@ public class ModuleController extends BaseController {
         log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
         AlgUser curAlgUser = getUserInfo();
         //权限验证
-        authService.isModuleByUser(usrCode, modId,curAlgUser.getUsrCode(),curAlgUser.getUsrSn());
+//        authService.isModuleByUser(algUser.getUsrCode(), modId);
 
         //验证组所有者，还是普通用户
         //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
@@ -204,7 +199,7 @@ public class ModuleController extends BaseController {
         log.info("depend write module file tree: usrCode:{} and modId: {} and fileContent:{}", usrCode, modId,fileContent);
         AlgUser curAlgUser = getUserInfo();
         //权限验证
-        authService.isModuleByUser(usrCode, modId,curAlgUser.getUsrCode(),curAlgUser.getUsrSn());
+//        authService.isModuleByUser(algUser.getUsrCode(), modId);
         //验证组所有者，还是普通用户
         //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
         AlgUser algUser = userService.isOwnerByUsrCode(usrCode,curAlgUser.getUsrSn());
@@ -237,7 +232,7 @@ public class ModuleController extends BaseController {
     public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode,String verMark) throws AlgException {
         //权限验证
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(usrCode, modId,algUser.getUsrCode(),algUser.getUsrSn());
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
         publishService.publishModule(modId,usrCode,verMark);
         return Result.successResponse();
     }
@@ -266,7 +261,7 @@ public class ModuleController extends BaseController {
     public Result getAlgModuleVersion(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode) throws AlgException {
         //权限验证
         AlgUser algUser = getUserInfo();
-        authService.isModuleByUser(usrCode, modId,algUser.getUsrCode(),algUser.getUsrSn());
+        authService.isModuleByUser(algUser.getUsrCode(), modId);
         Map<String, Object> algModuleVersionMap = publishService.getAlgModuleVersion(modId, usrCode);
         return Result.ok(algModuleVersionMap);
     }
@@ -298,48 +293,9 @@ public class ModuleController extends BaseController {
         //当前用户实体的isOrg把0-改成组织的IsOrg=1
         curAlgUser.setIsOrg(algUser.getIsOrg());
         //先保存到数据库
-        //algModule-算法实体信息，curAlgUser-当前登录用户实体信息。
+        //initModuleTree-算法实体信息，curAlgUser-当前登录用户实体信息。
         moduleService.addAlgModule(algModule, curAlgUser);
         return Result.successResponse();
-    }
-
-    /**
-     * 编辑算法-初始化组织算法左侧树形结构
-     *
-     * @param orgUsrCode
-     * @param modId
-     * @param path
-     * @param fileName
-     * @return
-     * @throws AlgException
-     * @author xialf
-     */
-    @GetMapping(value = "initOrgAlg/{orgUsrCode}/{modId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result initTreeOrgAlgorithm(@PathVariable("orgUsrCode") String orgUsrCode, @PathVariable("modId") String modId, String path, String fileName) throws AlgException {
-
-        log.info("编辑算法-初始化组织算法左侧树形结构 -Controller(/orgUsrCode/addOrgAlg) : orgUsrCode:{} and modId : ", orgUsrCode,modId);
-        //查询当前登录用户信息
-        AlgUser curAlgUser = getUserInfo();
-        //验证组所有者，还是普通用户
-        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
-        AlgUser algUser = userService.isOwnerByUsrCode(orgUsrCode,curAlgUser.getUsrSn());
-        if(Assert.isNULL(algUser)) {
-            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000022");
-        }
-
-        if(Assert.isEmpty(path) && Assert.isEmpty(fileName)){
-            path = "";
-        }else if(Assert.isNotEmpty(path) && Assert.isEmpty(fileName)){
-            path = path;
-        }else if ("/".equals(path) && Assert.isNotEmpty(fileName)) {
-            // path为"/" 并且 fileName不为空
-            path = path + fileName;
-        }else {
-            // 1、path有目录时候，fileName不为空；2、或者path为"/"，fileName为空
-            path = path + File.separator + fileName;
-        }
-        AlgModuleEditVo algModuleEditVo = moduleService.algModule(algUser.getIsOrg(),curAlgUser.getUsrCode(), orgUsrCode, algUser.getUsrSn(), modId, path);
-        return Result.ok(algModuleEditVo);
     }
 
 }
