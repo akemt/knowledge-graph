@@ -50,10 +50,11 @@ public class PathServiceImpl implements PathService {
     }
 
     @Override
-    public String getModuleMainFilePath(String usrCode, String modId, String lanSn) throws AlgException {
+    public String getModuleMainFilePath(String basePath, String modId, String lanSn) throws AlgException {
         //项目名称初始化Tree
+        //TODO 需要兼容多语言的目录
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(usrCode);
+        stringBuilder.append(basePath);
         stringBuilder.append(File.separator);
         stringBuilder.append(src);
         stringBuilder.append(File.separator);

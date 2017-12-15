@@ -33,7 +33,7 @@ public interface PathService {
 
     /**
      * 返回项目主文件目录 例：E:\repo\erniu4\TestJavaK1\src\algmarket\TestJavaK1
-     * @param usrCode
+     * @param basePath
      * @param modId
      * @param lanSn
      * @return
@@ -41,7 +41,7 @@ public interface PathService {
      * 当组织时,则usrCode-\组织编号(名称) \项目名称(编号);modId-用户编号！
      *                当用户时,则usrCode-用户编号;modId-项目名称(编号) ！
      */
-    String getModuleMainFilePath(String usrCode, String modId, String lanSn) throws AlgException;
+    String getModuleMainFilePath(String basePath, String modId, String lanSn) throws AlgException;
 
     /**
      * 返回Spring Boot发布项目的用户级别目录 例：E:\alg-publish\gaohaijun

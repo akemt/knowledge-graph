@@ -104,13 +104,13 @@ public class ModuleServiceImpl implements ModuleService {
             //项目名称初始化Tree
             // path 为空的情况是，是项目主文件路径
 
-            String usrAlgPath = pathService.getModuleBasePath(modUser.getUsrCode(), modId,usrCode,modUser.getIsOrg());
+            String basePath = pathService.getModuleBasePath(modUser.getUsrCode(), modId,usrCode,modUser.getIsOrg());
             if (Assert.isEmpty(path)) {
-                path = pathService.getModuleMainFilePath(usrAlgPath, modId, algModule.getLanSn());
+                path = pathService.getModuleMainFilePath(basePath, modId, algModule.getLanSn());
             } else if (path.equals("/")) {
-                path = usrAlgPath;
+                path = basePath;
             } else {
-                path = usrAlgPath + File.separator + path;
+                path = basePath + File.separator + path;
             }
             fileNodes = showProjectFileService.ShowProjectFile(path, usrCode, modId);
 
