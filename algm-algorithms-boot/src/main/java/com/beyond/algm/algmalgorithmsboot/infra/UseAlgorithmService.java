@@ -10,6 +10,21 @@ import com.github.pagehelper.PageInfo;
  * @date ：12:56 2017/10/12
  */
 public interface UseAlgorithmService {
+   /**
+    *
+    * @param algRUserModuleCallTransVo
+    * @param pageInfo
+    * @return
+    * @throws AlgException
+    */
    PageInfo<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,PageInfo pageInfo)throws AlgException;
+
+   /**
+    *
+    * @param algRUserModuleCallTransVo
+    * @param pageInfo
+    * @return
+    * @throws AlgException
+    */
    PageInfo<AlgRUserModuleCallTransVo> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,PageInfo pageInfo)throws AlgException;
 }

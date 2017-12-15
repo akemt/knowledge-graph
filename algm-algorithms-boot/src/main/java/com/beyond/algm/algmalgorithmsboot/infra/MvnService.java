@@ -8,6 +8,12 @@ import com.beyond.algm.exception.AlgException;
  * @Date: create in 2017/11/23 11:03
  */
 public interface MvnService {
+    /**
+     *
+     * @param userCode
+     * @param modId
+     * @throws AlgException
+     */
     void mvnPackageMod(String userCode, String modId) throws AlgException;
 
 }

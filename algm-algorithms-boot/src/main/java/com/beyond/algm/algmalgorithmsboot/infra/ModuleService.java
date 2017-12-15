@@ -29,6 +29,12 @@ public interface ModuleService {
      */
     AlgModuleEditVo initModuleTree(AlgUser modUser, String usrCode,String modId, String path,String fileName) throws AlgException;
 
+    /**
+     *
+     * @param mod_sn
+     * @return
+     * @throws AlgException
+     */
     AlgModuleVersion getLastVersion(String mod_sn) throws AlgException;
 
     /**

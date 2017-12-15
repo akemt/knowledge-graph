@@ -13,10 +13,43 @@ import java.util.List;
  * @date ：13:32 2017/9/25
  */
 public interface UserService {
+    /**
+     *
+     * @param user
+     * @throws AlgException
+     * @throws Exception
+     */
     void createUser(AlgUser user) throws AlgException,Exception;
+
+    /**
+     *
+     * @param user
+     * @throws AlgException
+     * @throws Exception
+     */
     void userLogin(AlgUser user) throws AlgException,Exception;
+
+    /**
+     *
+     * @param userVo
+     * @throws AlgException
+     * @throws Exception
+     */
     void changePassword(UserVo userVo) throws AlgException,Exception;
+
+    /**
+     *
+     * @param user
+     * @throws AlgException
+     */
     void updateUserInformation(AlgUser user) throws AlgException;
+
+    /**
+     *
+     * @param accSn
+     * @return
+     * @throws AlgException
+     */
     UserAccountVo accountInformation(String accSn)throws AlgException;
 
     /**
