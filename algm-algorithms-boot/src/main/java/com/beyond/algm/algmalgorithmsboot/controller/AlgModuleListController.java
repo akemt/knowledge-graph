@@ -156,14 +156,6 @@ public class AlgModuleListController extends BaseController {
     public  Result<PageInfo<AlgModuleListVo>> myListAlg(PageInfo pageInfo,@RequestParam("orgUsrCode") String orgUsrCode) throws AlgException {
 
         log.info("查询组织算法 -Controller(/module/queryOrgAlgList) : orgUsrCode:{}", orgUsrCode);
-        //查询当前登录用户信息
-        AlgUser curAlgUser = getUserInfo();
-        //验证组所有者，还是普通用户
-        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
-        AlgUser algUser = userService.isOwnerByUsrCode(orgUsrCode,curAlgUser.getUsrSn());
-        if(Assert.isNULL(algUser)) {
-            throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000005");
-        }
         pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
         pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         PageInfo<AlgModuleListVo> algModuleListVo = algModuleListService.findModulePage(null, null, null, pageInfo,null,orgUsrCode);

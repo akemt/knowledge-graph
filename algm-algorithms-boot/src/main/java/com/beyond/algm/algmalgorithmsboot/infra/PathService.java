@@ -50,6 +50,17 @@ public interface PathService {
      */
     String getPublishPath(String usrCode, String modId);
 
+    /**
+     * 返回Spring Boot发布项目的用户级别目录
+     *
+     * @param usrCode 用户编号或者组织编号
+     * @param modId  算法编号
+     * @param curUsrCode 当前登录用户编号
+     * @param isOrg
+     * @return
+     */
+    public String getPublishPath(String usrCode, String modId,String curUsrCode,String isOrg);
+
 
     /**
      * 获取当前用户项目为modId的服务器项目根路径

@@ -2,6 +2,7 @@ package com.beyond.algm.algmalgorithmsboot.infra;
 
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.model.AlgUser;
 
 /**
  * @Author: qihe
@@ -10,7 +11,16 @@ import com.beyond.algm.exception.AlgException;
  */
 public interface AntApiService {
 
-    void moduleAntBuild(GitUser gitUser) throws AlgException;
+    /**
+     * 算法编译
+     *
+     * @param algUser
+     * @param usrCode
+     * @param modId
+     * @throws AlgException
+     * @author xialf
+     */
+    void moduleAntBuild(AlgUser algUser, String usrCode, String modId) throws AlgException;
 
     void moduleAntZip(String usrCode,String modId) throws AlgException;
 }

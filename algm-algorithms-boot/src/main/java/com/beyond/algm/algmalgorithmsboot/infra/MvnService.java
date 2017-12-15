@@ -9,11 +9,14 @@ import com.beyond.algm.exception.AlgException;
  */
 public interface MvnService {
     /**
+     *发布MVN 项目
      *
      * @param userCode
      * @param modId
+     * @param curUsrCode
+     * @param isOrg
      * @throws AlgException
      */
-    void mvnPackageMod(String userCode, String modId) throws AlgException;
+    void mvnPackageMod(String userCode, String modId,String curUsrCode,String isOrg) throws AlgException;
 
 }

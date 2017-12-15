@@ -33,22 +33,20 @@ public class DockerServiceImpl implements DockerService {
     @Value("${harbor.projectName}")
     private String projectName;
 
-    public String bulidDockerImage(String modId, String usrCode, String version,String targetPath) throws AlgException{
+    public String bulidDockerImage(String docTag,String targetPath) throws AlgException{
         // 结果举例 192.168.1.92:9443/algmarket/erniu3_testjava:0.0.3
-        String tag = getDockerTag(modId,usrCode,version);
-        log.debug("build image tag :{}",tag);
+        log.debug("build image tag :{}",docTag);
         Set tags = new HashSet<String>();
-        tags.add(tag);
+        tags.add(docTag);
         String imageId = dockerClient.buildImageCmd(new File(targetPath, "Dockerfile")).withTags(tags).withNoCache(true).exec(new BuildImageResultCallback()).awaitImageId();
         log.debug("build image id:{}",imageId);
         return imageId;
     }
 
 
-    public void pushDockerImageToHarbor(String modId, String usrCode, String version) throws AlgException{
-        String tag = getDockerTag(modId,usrCode,version);
+    public void pushDockerImageToHarbor(String docTag) throws AlgException{
         try{
-            dockerClient.pushImageCmd(tag).exec(new PushImageResultCallback()).awaitSuccess();
+            dockerClient.pushImageCmd(docTag).exec(new PushImageResultCallback()).awaitSuccess();
         }catch (Exception e){
             log.error("推送镜像失败:",e);
             new AlgException("BEYOND.ALG.MODILE.PUBLISH.0000001", Arrays.asList(""));
@@ -78,7 +76,11 @@ public class DockerServiceImpl implements DockerService {
         }
     }
 
-    public String getDockerTag(String modId, String usrCode, String version){
-        return harborHost + "/" +projectName+"/" + usrCode + "_" + modId.toLowerCase() + ":" + version;
+    public String getDockerTag(String modId, String usrCode, String version, String curUsrCode,String isOrg){
+        if ("1".equals(isOrg)) {
+            return harborHost + "/" +projectName+"/" + usrCode + "_" + modId.toLowerCase() + "_" + curUsrCode + ":" + version;
+        }else{
+            return harborHost + "/" +projectName+"/" + usrCode + "_" + modId.toLowerCase() + ":" + version;
+        }
     }
 }
