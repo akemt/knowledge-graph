@@ -91,33 +91,27 @@ public class DataSetController extends BaseController {
     @RequestMapping(value = "/deletedata", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result deleteData(String dataSn) throws AlgException {
         logger.info("数据集串号：{}",dataSn);
-        try{
-            AlgUser algUser = getUserInfo();
-            Result result=dataSetService.deleteData(dataSn);
-            return result;
-        }catch(Exception e)
-        {
-            logger.info("删除数据集失败",e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        AlgUser algUser = getUserInfo();
+        AlgData algData = new AlgData();
+        algData.setUsrSn(algUser.getUsrSn());
+        algData.setDataSn(dataSn);
+        int count =dataSetService.deleteData(algData);
+        return  Result.ok(count);
     }
 
     /**
      * @author ：Lindewei
      * @Description: 删除当前数据集
      */
-    @RequestMapping(value = "/deletedataSet", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deletedataSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result deleteDataSet(String dataSetSn) throws AlgException {
         logger.info("数据集串号：{}",dataSetSn);
-        try{
-            AlgUser algUser = getUserInfo();
-            Result result=dataSetService.deleteDataSet(dataSetSn);
-            return result;
-        }catch(Exception e)
-        {
-            logger.info("删除数据集失败",e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        AlgUser algUser = getUserInfo();
+        AlgDataSet algDataSet = new AlgDataSet();
+        algDataSet.setDataSetSn(dataSetSn);
+        algDataSet.setUsrSn(algUser.getUsrSn());
+        int count=dataSetService.deleteDataSet(algDataSet);
+        return  Result.ok(count);
     }
 
     /**

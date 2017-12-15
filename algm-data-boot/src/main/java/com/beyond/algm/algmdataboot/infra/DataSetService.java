@@ -41,13 +41,13 @@ public interface DataSetService {
      * @author ：lindewei
      * @Description: 删除数据
      */
-    Result deleteData(String dataSn) throws AlgException;
+    int deleteData(AlgData algData) throws AlgException;
 
     /**
      * @author ：lindewei
      * @Description: 删除当前数据集
      */
-    Result deleteDataSet(String dataSetSn) throws AlgException;
+    int deleteDataSet(AlgDataSet algDataSet) throws AlgException;
 
     /**
      * @author ：lindewei

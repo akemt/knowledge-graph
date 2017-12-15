@@ -90,37 +90,22 @@ public class DataSetServiceImpl implements DataSetService {
 
     //删除数据
     @Override
-    public Result deleteData(String dataSn) throws AlgException {
-        try{
-            if(Assert.isEmpty(dataSn))
-            {
-                return Result.failure("数据串号为空");
-            }
-            algDataMapper.deleteByPrimaryKey(dataSn);
-        }catch(Exception e){
-            log.error("删除数据失败。数据串号：{}",dataSn,e);
-            throw new AlgException("BEYOND.ALG.DATA.COMMON.DEL.0000002",new String[]{});
-        }
-        return Result.successResponse();
+    public int deleteData(AlgData algData) throws AlgException {
+        int delData = algDataMapper.deleteData(algData);
+        return delData;
     }
 
     //删除当前数据集
     @Override
-    public Result deleteDataSet(String dataSetSn) throws AlgException {
-        try{
-            if(Assert.isEmpty(dataSetSn))
-            {
-                return Result.failure("数据集串号为空");
-            }
-            if(algDataMapper.dataCount(dataSetSn) != 0){
-                return Result.failure("数据集下存在数据，不允许删除！");
-            }
-            algDataSetMapper.deleteByPrimaryKey(dataSetSn);
-        }catch(Exception e){
-            log.error("删除数据失败。数据集串号：{}",dataSetSn,e);
-            throw new AlgException("BEYOND.ALG.DATASET.COMMON.DEL.0000003",new String[]{});
+    public int deleteDataSet(AlgDataSet algDataSet) throws AlgException {
+        if(Assert.isEmpty(algDataSet.getDataSetSn())){
+            throw new AlgException("BEYOND.ALG.DATA.PAY.STATUS.0000013");
         }
-        return Result.successResponse();
+        if(algDataMapper.dataCount(algDataSet.getDataSetSn()) != 0){
+            throw new AlgException("BEYOND.ALG.DATA.PAY.STATUS.0000014");
+        }
+       int delDataSet = algDataSetMapper.deleteDataSet(algDataSet);
+       return  delDataSet;
     }
 
     //点击数据集关联查询数据

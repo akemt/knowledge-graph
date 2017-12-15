@@ -47,13 +47,13 @@ public class DataSetServiceTests {
     //删除数据
     @Test
     public void deleteDataTest() throws Exception {
-        dataSetService.deleteData("aa");
+        //dataSetService.deleteData("aa");
     }
 
     //删除当前数据集
     @Test
     public void deleteDataSetTest() throws Exception {
-        dataSetService.deleteDataSet("999");
+        //dataSetService.deleteDataSet("999");
     }
 
     //点击数据集关联查询数据
