@@ -76,6 +76,19 @@ public class PathServiceImpl implements PathService {
         return stringBuilder.toString();
     }
 
+    public String getPublishPath(String usrCode, String modId, String curUsrCode, String isOrg) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if ("1".equals(isOrg)) {
+            stringBuilder = initBaseFolder(stringBuilder, publishConfigModel.getLocalBasePath(), usrCode, modId);
+            stringBuilder.append(File.separator);
+            stringBuilder.append(curUsrCode);
+        } else {
+            stringBuilder = initBaseFolder(stringBuilder, publishConfigModel.getLocalBasePath(), curUsrCode, modId);
+        }
+
+        return stringBuilder.toString();
+    }
+
     @Override
     public String getOrgAlgBasePath(String orgUsrCode, String modId) throws AlgException {
         StringBuffer  strUrlUsrCodeAndModId = new StringBuffer();

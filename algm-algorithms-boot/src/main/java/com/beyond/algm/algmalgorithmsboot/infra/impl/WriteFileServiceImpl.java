@@ -21,13 +21,13 @@ public class WriteFileServiceImpl implements WriteFileService {
     @Autowired
     private PathService pathService;
     @Override
-    public void writeFile(String usrCode, String modId, String path, String fileName,String fileContent) throws AlgException {
+    public void writeFile(String modPath, String path, String fileName,String fileContent) throws AlgException {
         String writePath = null;
         try {
             if(Assert.isEmpty(path)){
-                writePath = pathService.getModuleBasePath(usrCode,modId) + File.separator + fileName;
+                writePath = modPath + File.separator + fileName;
             }else {
-                writePath = pathService.getModuleBasePath(usrCode,modId) + File.separator +path + File.separator + fileName;
+                writePath = modPath + File.separator +path + File.separator + fileName;
             }
         } catch (Exception e) {
             throw new AlgException("BEYOND.ALG.MODULE.WRITE.0000009",new String[]{},e);

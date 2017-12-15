@@ -6,7 +6,13 @@ import com.beyond.algm.vo.AlgFileReadWriteVo;
 public interface ReadFileService {
 
     /**
-     * 返回文件内容.
+     * 算法编辑-读取文件信息
+     *
+     * @param modPath
+     * @param path
+     * @param fileName
+     * @return
+     * @throws AlgException
      */
-    AlgFileReadWriteVo readFile(String usrCode, String modId, String path, String fileName) throws AlgException;
+    AlgFileReadWriteVo readFile(String modPath, String path, String fileName) throws AlgException;
 }

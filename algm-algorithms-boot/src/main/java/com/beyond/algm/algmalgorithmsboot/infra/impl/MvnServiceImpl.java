@@ -45,12 +45,12 @@ public class MvnServiceImpl implements MvnService {
         }
     }
 
-    public void mvnPackageMod(String userCode, String modId) throws AlgException {
+    public void mvnPackageMod(String userCode, String modId,String curUsrCode,String isOrg) throws AlgException {
         if (Assert.isEmpty(mavenHomePath) || "".equals(mavenHomePath)) {
             throw new AlgException("发布项目失败，获取不到 maven 路径！");
         }
         InvocationRequest request = new DefaultInvocationRequest();
-        String path = pathService.getPublishPath(userCode,modId)+ File.separator + Constant.POM_XML;
+        String path = pathService.getPublishPath(userCode,modId,curUsrCode,isOrg)+ File.separator + Constant.POM_XML;
         request.setPomFile(new File(path));
         request.setGoals(Arrays.asList("clean", "package -Dmaven.test.skip=true"));
         log.debug("come in maven package request");

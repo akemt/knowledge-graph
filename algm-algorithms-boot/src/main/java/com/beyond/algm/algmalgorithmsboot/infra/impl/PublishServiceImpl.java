@@ -53,11 +53,11 @@ public class PublishServiceImpl implements PublishService {
     private String active;
 
     @Override
-    public void initBootProject(String lanName, String usrCode, String modId, String modDesc, String version) throws AlgException {
+    public void initBootProject(String lanName,String curUsrCode,String isOrg, String usrCode, String modId, String modDesc, String version) throws AlgException {
 
         PublishAdapter publishAdapter =(PublishAdapter) AdapterUtil.publishAdapter(lanName);
-        String modPath = pathService.getModuleBasePath(usrCode,modId);
-        String publishPath = pathService.getPublishPath(usrCode, modId);
+        String modPath = pathService.getModuleBasePath(usrCode,modId,curUsrCode,isOrg);
+        String publishPath = pathService.getPublishPath(usrCode,modId,curUsrCode,isOrg);
         publishAdapter.initBootProject(usrCode, modId, modDesc, version, publishConfigModel, active,modPath,publishPath);
     }
 
@@ -65,7 +65,8 @@ public class PublishServiceImpl implements PublishService {
 
     @Transactional(rollbackFor = AlgException.class)
     @Override
-    public void publishModule(String modId,String usrCode,String verMark)throws AlgException{
+    public void publishModule(AlgUser curAlgUser, String modId,String usrCode,String verMark)throws AlgException{
+
         AlgUser algUser = algUserMapper.selectUsrCode(usrCode);
         AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(),modId);
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
@@ -74,28 +75,31 @@ public class PublishServiceImpl implements PublishService {
         String version = getVersionStr(algModuleVersion);
         //创建 发布包
         log.debug("come in module init boot ...");
-        initBootProject(algProgramLang.getLanName(),usrCode,modId,algModule.getModDesc(),version);
+        initBootProject(algProgramLang.getLanName(),curAlgUser.getUsrCode(),algUser.getIsOrg(),usrCode,modId,algModule.getModDesc(),version);
 
         //调用mvnService编译工程
         log.debug("come in module mvn package ...");
-        mvnService.mvnPackageMod(usrCode,modId);
+        mvnService.mvnPackageMod(usrCode,modId,curAlgUser.getUsrCode(),algUser.getIsOrg());
         // 制作Dockerfile
-        String publishPath = pathService.getPublishPath(usrCode, modId);
+        String publishPath = pathService.getPublishPath(usrCode, modId,curAlgUser.getUsrCode(),algUser.getIsOrg());
         String jarFileName = usrCode + "-" + modId + "-" + version + Constant.JAR_SUFFIX;
         log.debug("come in module docker file make ...");
         dockerService.makeDockerfile(active,algProgramLang.getLanName(),publishPath + File.separator + Constant.TARGET,jarFileName);
+
+        //docker 组装版本名称
+        String tag = dockerService.getDockerTag(modId,usrCode,version,curAlgUser.getUsrCode(),algUser.getIsOrg());
         //调用dockerApi封装docker镜像
         log.debug("come in module bulid image ...");
-        dockerService.bulidDockerImage(modId,usrCode,version,publishPath + File.separator + Constant.TARGET);
+        dockerService.bulidDockerImage(tag,publishPath + File.separator + Constant.TARGET);
         //推送到harbor上
         log.debug("come in module push image ...");
-        dockerService.pushDockerImageToHarbor(modId,usrCode,version);
+        dockerService.pushDockerImageToHarbor(tag);
 
-        log.info("pull docker image success,image tag is :{}",dockerService.getDockerTag(modId,usrCode,version));
+        log.info("pull docker image success,image tag is :{}",tag);
         //创建pod
-        kubernetesService.makeK8sPod(modId,usrCode,version);
+        kubernetesService.makeK8sPod(modId,usrCode,version,curAlgUser.getUsrCode(),algUser.getIsOrg());
         //创建service
-        kubernetesService.makeK8sService(modId,usrCode,version);
+        kubernetesService.makeK8sService(modId,usrCode,version,curAlgUser.getUsrCode(),algUser.getIsOrg());
     }
 
     @Override

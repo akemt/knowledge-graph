@@ -93,24 +93,22 @@ public class ModuleController extends BaseController {
     }
 
     /**
-     * @param :gitUser
+     * 算法编辑-ant项目进行编译打包同时解压到指定目录并且代码上传git上
+     *
+     * @param usrCode 用户usrCode,或者 组织usrCode
+     * @param modId
      * @return
-     * @Description:ant项目进行编译打包同时解压到指定目录并且代码上传git上 author:zhangchuanzhi
+     * @throws AlgException
+     * @throws Exception
      */
     @RequestMapping(value = "/{usrCode}/{modId}/build", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result buildAndUpLoadProject(@PathVariable("usrCode") String usrCode,@PathVariable("modId") String modId) throws AlgException,Exception {
-        GitUser gitUser=new GitUser();
+    public Result buildAndUpLoadProject(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId) throws AlgException, Exception {
+        log.info("算法编辑-Controller-编译接口[build] [start]");
         AlgUser algUser = getUserInfo();
-        authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
-        gitUser.setUsrSn(algUser.getUsrSn());
-        gitUser.setModId(modId);
-        gitUser.setUsrCode(algUser.getUsrCode());
-        gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(), projectConfigEntity.getKeyAES()));
-        log.debug("用户名字:{},用户密码:{},用户usrSn:{},用户modId:{} ", gitUser.getUsrCode(), gitUser.getPassword(), gitUser.getUsrSn(), gitUser.getModId());
-        antApiService.moduleAntBuild(gitUser);
+        log.info("当前用户编号:{},入参用户编号或组织编号:{},算法编号:{} ", algUser.getUsrCode(), usrCode, modId);
+        antApiService.moduleAntBuild(algUser, usrCode, modId);
         Result result = Result.successResponse();
         return result;
-
     }
 
     /**
@@ -154,22 +152,9 @@ public class ModuleController extends BaseController {
     public Result dependRead(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId) throws AlgException {
         log.info("get module file tree: usrCode{} and modId {} ", usrCode, modId);
         AlgUser curAlgUser = getUserInfo();
-        //权限验证
-        authService. isModuleByUser( usrCode,modId, curAlgUser.getUsrCode(),curAlgUser.getUsrSn());
-
-        //验证组所有者，还是普通用户
-        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
-        AlgUser algUser = userService.isOwnerByUsrCode(usrCode,curAlgUser.getUsrSn());
-        String algProPath = "";
-        String algModId = "";
-        if(Assert.isNULL(algUser)) {//普通用户
-            algProPath = usrCode;
-            algModId = modId;
-        }else{//拥有者下的组织
-            algProPath = pathService.getOrgAlgBasePath(usrCode,modId);
-            algModId = curAlgUser.getUsrCode();
-        }
-
+        //根据OrgCode，查询该用户信息
+        AlgUser algUser = userService.findByUsrCode(usrCode);
+        String modPath = pathService.getModuleBasePath(usrCode, modId, curAlgUser.getUsrCode(), algUser.getIsOrg());
         //定义文件名和路径的变量
         String dependFile = null;
         //判断何种的对应的配置文件
@@ -178,7 +163,7 @@ public class ModuleController extends BaseController {
             dependFile = "ivy.xml";
         }
         //读取文件
-        AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(algProPath, algModId, null, dependFile);
+        AlgFileReadWriteVo algFileReadWriteVo = readFileService.readFile(modPath, null, dependFile);
         return Result.ok(algFileReadWriteVo);
     }
 
@@ -194,44 +179,38 @@ public class ModuleController extends BaseController {
      */
     @RequestMapping(value = "/{usrCode}/{modId}/dependWrite", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result dependWrite(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String fileContent) throws AlgException {
-        log.info("depend write module file tree: usrCode:{} and modId: {} and fileContent:{}", usrCode, modId,fileContent);
+        log.info("depend write module file tree: usrCode:{} and modId: {} and fileContent:{}", usrCode, modId, fileContent);
         AlgUser curAlgUser = getUserInfo();
-        //权限验证
-        authService. isModuleByUser( usrCode,modId, curAlgUser.getUsrCode(),curAlgUser.getUsrSn());
-        //验证组所有者，还是普通用户
-        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
-        AlgUser algUser = userService.isOwnerByUsrCode(usrCode,curAlgUser.getUsrSn());
-        String algProPath = "";
-        String algModId = "";
-        if(Assert.isNULL(algUser)) {//普通用户
-            algProPath = usrCode;
-            algModId = modId;
-        }else{//拥有者下的组织
-            algProPath = pathService.getOrgAlgBasePath(usrCode,modId);
-            algModId = curAlgUser.getUsrCode();
-        }
+         //根据OrgCode，查询该用户信息
+        AlgUser algUser = userService.findByUsrCode(usrCode);
+        String modPath = pathService.getModuleBasePath(usrCode, modId, curAlgUser.getUsrCode(), algUser.getIsOrg());
 
         //定义文件名和路径的变量
         String dependFile = null;
         //判断何种的对应的配置文件
-        AlgProgramLang algProgramLang = moduleService.getLanguage(usrCode,modId);
-        if(algProgramLang.getLanName().equals("Java")){
+        AlgProgramLang algProgramLang = moduleService.getLanguage(usrCode, modId);
+        if (algProgramLang.getLanName().equals("Java")) {
             dependFile = "ivy.xml";
         }
-        writeFileService.writeFile(algProPath, algModId, null, dependFile, fileContent);//写入文件中，并且保存到路径下。
+        writeFileService.writeFile(modPath, null, dependFile, fileContent);//写入文件中，并且保存到路径下。
         return Result.successResponse();
     }
 
     /**
-     * @author ：lindewei
-     * @Description: 发布接口
+     * 算法编辑：发布接口
+     *
+     * @param modId
+     * @param usrCode 用户usrCode,或者 组织usrCode
+     * @param verMark
+     * @return
+     * @throws AlgException
      */
     @RequestMapping(value = "/{usrCode}/{modId}/publish", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode,String verMark) throws AlgException {
-        //权限验证
+    public Result publish(@PathVariable("modId") String modId, @PathVariable("usrCode") String usrCode, String verMark) throws AlgException {
+        log.info("算法编辑-Controller-发布接口[publish] [start]");
         AlgUser algUser = getUserInfo();
-        authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
-        publishService.publishModule(modId,usrCode,verMark);
+        log.info("当前用户编号:{},入参用户编号或组织编号:{},算法编号:{} ", algUser.getUsrCode(), usrCode, modId);
+        publishService.publishModule(algUser, modId, usrCode, verMark);
         return Result.successResponse();
     }
 
