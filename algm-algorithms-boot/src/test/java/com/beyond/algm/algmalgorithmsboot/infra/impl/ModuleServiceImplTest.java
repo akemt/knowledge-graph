@@ -45,7 +45,7 @@ public class ModuleServiceImplTest {
     @Test
     public void test() throws Exception {
 
-      /*  AlgUser algModule = userService.findByUsrCode("zhang1");*/
+      /*  AlgUser initModuleTree = userService.findByUsrCode("zhang1");*/
    //     System.out.println("12345678");
  //      String pass = AESUtil.Encrypt("12345678",projectConfigEntity.getKeyAES());
        String passwordEncryp=  AESUtil.decryptAES( "47c668187ec1fc010443a9372266d304",projectConfigEntity.getKeyAES());

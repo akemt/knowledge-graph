@@ -15,11 +15,21 @@ public interface PathService {
      * @param modId
      * @return
      * @throws Exception
-     * @deprecated   当组织时,则usrCode-\组织编号(名称) \项目名称(编号);modId-用户编号！
-     *                当用户时,则usrCode-用户编号;modId-项目名称(编号) ！
      * @author xialf
      */
     String getModuleBasePath(String usrCode, String modId) throws AlgException ;
+
+    /**
+     * 获取当前用户项目为modId的服务器项目根路径
+     * @param usrCode ;当
+     * @param modId
+     * @return
+     * @throws Exception
+     * 当组织时,则usrCode-\组织编号(名称) \项目名称(编号);modId-用户编号！
+     *                当用户时,则usrCode-用户编号;modId-项目名称(编号) ！
+     * @author xialf
+     */
+    String getModuleBasePath(String orgCode, String modId,String usrCode,String isOrg) throws AlgException ;
 
     /**
      * 返回项目主文件目录 例：E:\repo\erniu4\TestJavaK1\src\algmarket\TestJavaK1
@@ -28,7 +38,7 @@ public interface PathService {
      * @param lanSn
      * @return
      * @throws AlgException
-     * * @deprecated   当组织时,则usrCode-\组织编号(名称) \项目名称(编号);modId-用户编号！
+     * 当组织时,则usrCode-\组织编号(名称) \项目名称(编号);modId-用户编号！
      *                当用户时,则usrCode-用户编号;modId-项目名称(编号) ！
      */
     String getModuleMainFilePath(String usrCode, String modId, String lanSn) throws AlgException;
@@ -50,7 +60,7 @@ public interface PathService {
      * @return
      * @throws Exception
      * @author xialf
-     * @deprecated 当组织时, 则usrCode-\组织编号(名称) \项目名称(编号)
+     * 当组织时, 则usrCode-\组织编号(名称) \项目名称(编号)
      */
     String getOrgAlgBasePath(String orgUsrCode, String modId) throws AlgException;
 

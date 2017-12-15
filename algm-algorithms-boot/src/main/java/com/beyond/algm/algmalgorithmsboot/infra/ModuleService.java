@@ -19,16 +19,15 @@ public interface ModuleService {
     /**
      *  编辑算法-初始化组织算法左侧树形结构
      *
-     * @param strIsOrg
+     * @param modUser
      * @param usrCode 当前登录用户编号
-     * @param orgUsrCode 组织编号
-     * @param usrSn  编辑用户算法时，则为用户的usrId;编辑组织算法时，则组织的usrId
      * @param modId  算法编号
      * @param path
+     * @param fileName
      * @return
      * @throws AlgException
      */
-    AlgModuleEditVo algModule(String strIsOrg, String usrCode,String orgUsrCode,String usrSn,String modId,String path) throws AlgException;
+    AlgModuleEditVo initModuleTree(AlgUser modUser, String usrCode,String modId, String path,String fileName) throws AlgException;
 
     AlgModuleVersion getLastVersion(String mod_sn) throws AlgException;
 
