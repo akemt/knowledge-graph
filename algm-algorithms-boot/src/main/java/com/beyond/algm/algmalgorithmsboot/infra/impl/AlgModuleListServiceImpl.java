@@ -93,7 +93,10 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
         algStar.setUsrSn(usrSn);
         algStar.setCreatTime(new Date());
         try {
-            algStarMapper.insert(algStar);
+            int del = algStarMapper.deleteAlgStar(algStar);
+            if (del <= 0){
+                algStarMapper.insert(algStar);
+            }
         } catch (Exception e) {
             log.error("充值失败。收藏串号：{},模块串号：{},用户串号：{}",algStar.getStarSn(),algStar.getModSn(),
                     algStar.getUsrSn(),e);

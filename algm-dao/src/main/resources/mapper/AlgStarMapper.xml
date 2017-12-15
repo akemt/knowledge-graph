@@ -50,4 +50,10 @@
      where algStar.usr_sn= #{usrSn,jdbcType=VARCHAR}
      order by create_time desc
   </select>
+
+  <delete id="deleteAlgStar" parameterType="com.beyond.algm.model.AlgStar" >
+    delete from alg_star
+    where mod_sn = #{modSn,jdbcType=VARCHAR}
+    and usr_sn= #{usrSn,jdbcType=VARCHAR}
+  </delete>
 </mapper>
