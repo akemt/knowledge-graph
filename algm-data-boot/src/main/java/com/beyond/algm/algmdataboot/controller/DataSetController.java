@@ -103,7 +103,7 @@ public class DataSetController extends BaseController {
      * @author ：Lindewei
      * @Description: 删除当前数据集
      */
-    @RequestMapping(value = "/deletedataSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deletedataset", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result deleteDataSet(String dataSetSn) throws AlgException {
         logger.info("数据集串号：{}",dataSetSn);
         AlgUser algUser = getUserInfo();

@@ -149,7 +149,7 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
         Long count = algModuleVersionRepository.findByVerSnCount(modSn, verCodeL1, verCodeL2, verCodeL3);
         //判断是否存在
         if (count <= 0) {
-            throw new AlgException("您调用的版本不存在！");
+            throw new AlgException("BEYOND.ALG.CALL.COMMON.CHARGING.0000001");
         }
     }
 
@@ -182,11 +182,11 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
             }
             // 如果循环没有循环没有return，说明不包含，故没有权限直接返回false
             if(result){
-                throw new AlgException("当前key值没有访问此算法权限！");
+                throw new AlgException("BEYOND.ALG.CALL.COMMON.CHARGING.0000002");
             }
         } else {
             //判断algAuthCodeDomain对象是为空,直接返回false
-            throw new AlgException("请提供正确的key！");
+            throw new AlgException("BEYOND.ALG.CALL.COMMON.CHARGING.0000003");
         }
     }
 }

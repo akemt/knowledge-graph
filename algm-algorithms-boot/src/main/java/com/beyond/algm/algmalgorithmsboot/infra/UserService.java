@@ -6,6 +6,7 @@ import com.beyond.algm.vo.UserAccountVo;
 import com.beyond.algm.vo.UserVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：zhangchuanzhi
@@ -64,7 +65,7 @@ public interface UserService {
      * @param usrCode
      * @return
      */
-    List<AlgUser> ownOrganize(String usrCode) throws AlgException;
+    List<Map<String,Object>> ownOrganize(String usrCode) throws AlgException;
     /**
      * 验证是组所有者，还是普通用户
      *
