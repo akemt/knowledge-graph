@@ -3,6 +3,7 @@ package com.beyond.algm.algmalgorithmsboot.infra;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.*;
 import com.beyond.algm.vo.AlgModuleEditVo;
+import com.beyond.algm.vo.AlgModuleVo;
 
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ public interface ModuleService {
      * 新增算法
      * @param algModule 新增算法信息
      */
-    Boolean addAlgModule(AlgModule algModule,AlgUser algUser) throws AlgException;
+    Boolean addAlgModule(AlgModuleVo algModule, AlgUser algUser) throws AlgException;
 
     /**
      * lindewei

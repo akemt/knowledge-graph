@@ -8,6 +8,7 @@ import com.beyond.algm.common.AESUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgModule;
 import com.beyond.algm.model.AlgUser;
+import com.beyond.algm.vo.AlgModuleVo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +68,11 @@ public class ModuleServiceImplTest {
     public void addAlgModule() throws Exception {
 
 
-        AlgModule algModule = new AlgModule();
-        algModule.setOrgUsrCode("testGroup2");
+        AlgModuleVo algModule = new AlgModuleVo();
         algModule.setUsrSn("1ab380d8078d414f8edc4dcc33a65348");
         algModule.setCreateSn("64bd0e5ee1a6409f97d12c271bb8fa68");
         algModule.setModId("project09");
         algModule.setModName("项目09");
-        algModule.setOrgUsrCode("testGroup2");
         algModule.setLanSn("1");
         algModule.setCatSn("8d78dbea72fe4baf8fd12635c329b96b");
         algModule.setLicSn("1");

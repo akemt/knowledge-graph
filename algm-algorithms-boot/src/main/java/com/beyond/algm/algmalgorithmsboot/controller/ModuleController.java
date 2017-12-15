@@ -15,6 +15,7 @@ import com.beyond.algm.model.AlgProgramLang;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgFileReadWriteVo;
 import com.beyond.algm.vo.AlgModuleEditVo;
+import com.beyond.algm.vo.AlgModuleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -103,7 +104,6 @@ public class ModuleController extends BaseController {
         authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
         gitUser.setUsrSn(algUser.getUsrSn());
         gitUser.setModId(modId);
-        //   gitUser.setUsrCode(algUser.getUsrCode());
         gitUser.setUsrCode(algUser.getUsrCode());
         gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(), projectConfigEntity.getKeyAES()));
         log.debug("用户名字:{},用户密码:{},用户usrSn:{},用户modId:{} ", gitUser.getUsrCode(), gitUser.getPassword(), gitUser.getUsrSn(), gitUser.getModId());
@@ -119,10 +119,8 @@ public class ModuleController extends BaseController {
      * @param：User
      */
     @RequestMapping(value = "/module/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result AddAlgorithm(AlgModule algModule) throws AlgException {
+    public Result AddAlgorithm(AlgModuleVo algModule) throws AlgException {
         AlgUser algUser = getUserInfo();
-        algModule.setUsrSn(algUser.getUsrSn());
-        algModule.setCreateSn(algUser.getUsrSn());
         //先保存到数据库
         moduleService.addAlgModule(algModule, algUser);
         return Result.successResponse();
@@ -264,38 +262,6 @@ public class ModuleController extends BaseController {
         authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
         Map<String, Object> algModuleVersionMap = publishService.getAlgModuleVersion(modId, usrCode);
         return Result.ok(algModuleVersionMap);
-    }
-
-
-    /**
-     * 新增组织算法
-     * @param algModule
-     * @param orgUsrCode
-     * @return
-     * @throws AlgException
-     * @author xialf
-     */
-    @RequestMapping(value = "/module/addOrgAlg", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result AddOrgAlgorithm(AlgModule algModule,String orgUsrCode) throws AlgException {
-        log.info("新增组织算法 -Controller(/module/addOrgAlg) : orgUsrCode:{}", orgUsrCode);
-        //查询当前登录用户信息
-        AlgUser curAlgUser = getUserInfo();
-        //验证组所有者，还是普通用户
-        //传入的组织orgUsrCode与当前登录用户相比较：如果返回true,是组织拥有者。如果返回false,则是普通用户
-        AlgUser algUser = userService.isOwnerByUsrCode(orgUsrCode,curAlgUser.getUsrSn());
-        if(Assert.isNULL(algUser)) {
-            throw new AlgException("BEYOND.ALG.MODULE.ADD.0000022");
-        }
-        algModule.setUsrSn(algUser.getUsrSn());
-        algModule.setCreateSn(curAlgUser.getUsrSn());
-        //把组织编号，封装到AlgModule实体中
-        algModule.setOrgUsrCode(orgUsrCode);
-        //当前用户实体的isOrg把0-改成组织的IsOrg=1
-        curAlgUser.setIsOrg(algUser.getIsOrg());
-        //先保存到数据库
-        //initModuleTree-算法实体信息，curAlgUser-当前登录用户实体信息。
-        moduleService.addAlgModule(algModule, curAlgUser);
-        return Result.successResponse();
     }
 
 }
