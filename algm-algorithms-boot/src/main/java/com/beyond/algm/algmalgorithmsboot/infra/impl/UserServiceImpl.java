@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -84,13 +85,14 @@ public class UserServiceImpl implements UserService {
             user.setUsrSn(uuid);
             user.setUpdateDate(new Date());
             user.setCreateDate(new Date());
-            logger.info("密码：" + projectConfigEntity.getKeyAES());
+          //  logger.info("密码：" + projectConfigEntity.getKeyAES());
             GitUser gitUser = new GitUser();
             gitUser.setPassword(user.getPasswd());
             gitUser.setFullName(user.getUsrCode());
             gitUser.setUsrCode(user.getUsrCode());
             gitUser.setEmail(user.getEmail());
-            String passWord = AESUtil.encryptAES(user.getPasswd(), projectConfigEntity.getKeyAES());
+          //  String passWord = AESUtil.encryptAES(user.getPasswd(), projectConfigEntity.getKeyAES());
+            String passWord= DigestUtils.md5DigestAsHex(user.getPasswd().getBytes());
             user.setPasswd(passWord);
             //xialf 20171205 update
             GitlabUser gitlabUser = null;
@@ -139,8 +141,8 @@ public class UserServiceImpl implements UserService {
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000002", checkMessage);
         }
         // 对比密码
-        String passwordEncryp = AESUtil.decryptAES(user.getPasswd(), projectConfigEntity.getKeyAES());
-        if (!passwordEncryp.equals(password)) {
+      //  String passwordEncryp = AESUtil.decryptAES(user.getPasswd(), projectConfigEntity.getKeyAES());
+        if (!user.getPasswd().equals(DigestUtils.md5DigestAsHex(password.getBytes()))) {
             String[] checkMessage = {"密码", ""};
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000003", checkMessage);
         }
@@ -162,10 +164,10 @@ public class UserServiceImpl implements UserService {
         } else {
             // 当两次输入密码一致时候判断输入新密码和原始密码是否一致
             AlgUser algUser = findByUsrCode(user.getUsrCode());
-            String passwordEncryp = AESUtil.decryptAES(algUser.getPasswd(), projectConfigEntity.getKeyAES());
+         //   String passwordEncryp = AESUtil.decryptAES(algUser.getPasswd(), projectConfigEntity.getKeyAES());
             // 判断输入原始密码是否是数据库密码
-            if (user.getPasswd().equals(passwordEncryp)) {
-                if (user.getNewPassword().equals(passwordEncryp)) {
+            if (DigestUtils.md5DigestAsHex(user.getPasswd().getBytes()).equals(algUser.getPasswd())) {
+                if (DigestUtils.md5DigestAsHex(user.getNewPassword().getBytes()).equals(algUser.getPasswd())) {
                     String[] checkMessage = {"原始密码和新密码一致", ""};
                     throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000005", checkMessage);
                 }
@@ -174,7 +176,8 @@ public class UserServiceImpl implements UserService {
                 throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000003", checkMessage);
             }
         }
-        String newPassWord = AESUtil.encryptAES(user.getNewPassword(), projectConfigEntity.getKeyAES());
+      //  String newPassWord = AESUtil.encryptAES(user.getNewPassword(), projectConfigEntity.getKeyAES());
+        String newPassWord =DigestUtils.md5DigestAsHex(user.getNewPassword().getBytes());
         user.setPasswd(newPassWord);
         user.setUpdateDate(new Date());
         algUserMapper.update(user);
