@@ -139,8 +139,8 @@ public class AlgModuleListController extends BaseController {
     @RequestMapping(value = "/module/star", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result AddAlgorithm(String modSn) throws AlgException {
         AlgUser algUser = getUserInfo();
-        algModuleListService.modStar(modSn,algUser.getUsrSn());
-        return Result.successResponse();
+        int count = algModuleListService.modStar(modSn,algUser.getUsrSn());
+        return Result.ok(count);
     }
 
     /**

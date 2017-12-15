@@ -86,7 +86,7 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
 
     //收藏算法
     @Override
-    public void modStar(String modSn,String usrSn) throws AlgException{
+    public int modStar(String modSn,String usrSn) throws AlgException{
         AlgStar algStar = new AlgStar();
         algStar.setStarSn(UUIDUtil.createUUID());
         algStar.setModSn(modSn);
@@ -96,7 +96,9 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
             int del = algStarMapper.deleteAlgStar(algStar);
             if (del <= 0){
                 algStarMapper.insert(algStar);
+                del = 0;
             }
+            return del;
         } catch (Exception e) {
             log.error("充值失败。收藏串号：{},模块串号：{},用户串号：{}",algStar.getStarSn(),algStar.getModSn(),
                     algStar.getUsrSn(),e);
