@@ -3,6 +3,7 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
 import com.beyond.algm.algmalgorithmsboot.infra.PathService;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
@@ -145,12 +146,14 @@ public class JGitServiceImpl implements JGitService {
      * @return
      */
     public boolean commitAndPushDelAllFiles(GitUser gitUser)  throws AlgException{
+        //当前路径或者文件是否为空判断
+        if(Assert.isEmpty(gitUser.getCurrentPath()) && Assert.isEmpty(gitUser.getFileName())){
+            throw new AlgException("BEYOND.ALG.MODULE.GENERATE.00000012");
+        }
         logger.info("注册用户：{} 模块ID：{} 文件路径：{} 文件名{}",gitUser.getUsrCode(),gitUser.getModId(),gitUser.getCurrentPath(),gitUser.getFileName());
         String delPath = pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId()) + File.separator +gitUser.getCurrentPath() +File.separator+ gitUser.getFileName();//正式
         //本地删除
         FileUtil.delFile(delPath);
         return true;
-
-
     }
 }
