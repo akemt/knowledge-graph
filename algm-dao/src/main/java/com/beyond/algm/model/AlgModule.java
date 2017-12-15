@@ -35,16 +35,6 @@ public class AlgModule {
 
     private String modDesc;
 
-    private String orgUsrCode;
-
-    public String getOrgUsrCode() {
-        return orgUsrCode;
-    }
-
-    public void setOrgUsrCode(String orgUsrCode) {
-        this.orgUsrCode = orgUsrCode;
-    }
-
     public String getModSn() {
         return modSn;
     }

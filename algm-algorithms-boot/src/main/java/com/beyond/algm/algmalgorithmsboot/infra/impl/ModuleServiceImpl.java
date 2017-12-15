@@ -8,6 +8,7 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.*;
 import com.beyond.algm.model.*;
 import com.beyond.algm.vo.AlgModuleEditVo;
+import com.beyond.algm.vo.AlgModuleVo;
 import com.beyond.algm.vo.AlgorithmDetailVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,35 +142,42 @@ public class ModuleServiceImpl implements ModuleService {
      */
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public Boolean addAlgModule(AlgModule algModule,AlgUser algUser) throws AlgException {
-        //校验算法是否有重复
-        if(this.isRepeat(algUser.getUsrSn(),algModule.getModId())){
-            throw new AlgException("BEYOND.ALG.MODULE.ADD.00000011");
-        }
-        //模块串号
-        algModule.setModSn(UUIDUtil.createUUID());
+    public Boolean addAlgModule(AlgModuleVo algModule, AlgUser algUser) throws AlgException {
+
         // 新增算法
         try {
-            algModuleMapper.insert(algModule);
+            //模块串号
+            algModule.setModSn(UUIDUtil.createUUID());
+            algModule.setCreateSn(algUser.getUsrSn());
+
             log.info("新增算法，向模块表插入成功，项目串号:{}",algModule.getModSn());
             GitUser gitUser = new GitUser();
             gitUser.setModId(algModule.getModId());
             gitUser.setUsrCode(algUser.getUsrCode());
             gitUser.setPrivateToken(algUser.getPrivateToken());
-            gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
-            gitUser.setIsOrg(algUser.getIsOrg());
             String strUserName = "";
-            if("1".equals(algUser.getIsOrg())){//组所有者-下面的组织创建项目
+
+
+            if(Assert.isNotEmpty(algModule.getUsrSn())){//组所有者-下面的组织创建项目
+                AlgUser modUser = algUserMapper.selectByPrimaryKey(algModule.getUsrSn());
+                //校验算法是否有重复
+                isRepeat(algModule.getUsrSn(),algModule.getModId());
+                algModule.setUsrSn(algModule.getUsrSn());
+
+                gitUser.setIsOrg("1");
                 //组织编号
-                gitUser.setOrgUsrCode(algModule.getOrgUsrCode());
+                gitUser.setOrgUsrCode(modUser.getUsrCode());
 
                 //在git上组织创建项目
                 log.info("开始在git上组织创建项目，git串号:{}",gitUser.getUsrSn());
                 gitLabService.createGitLabGroupProject(gitUser);
                 log.info("结束在git上组织创建项目，git串号:{}",gitUser.getUsrSn());
-                strUserName = algModule.getOrgUsrCode();
+                strUserName = modUser.getUsrCode();
 
             }else{ //当前用户-下创建项目
+                isRepeat(algUser.getUsrSn(),algModule.getModId());
+                algModule.setUsrSn(algUser.getUsrSn());
+                gitUser.setIsOrg("0");
                 //在git上创建项目
                 log.info("开始在git上创建项目，git串号:{}",gitUser.getUsrSn());
                 gitLabService.createGitLabProject(gitUser);
@@ -182,6 +190,7 @@ public class ModuleServiceImpl implements ModuleService {
             String version = jGitService.commitAndPushAllFiles(gitUser);
             log.info("commit and push 代码成功，git串号:{}",gitUser.getUsrSn());
 
+            algModuleMapper.insert(algModule);
             AlgModuleVersion algModuleVersion = new AlgModuleVersion();
             algModuleVersion.setVerSn(UUIDUtil.createUUID());
             algModuleVersion.setCreateDate(new Date());
@@ -296,11 +305,14 @@ public class ModuleServiceImpl implements ModuleService {
      * @author ：lindewei
      * @Description: 校验算法是否有重复
      */
-    public Boolean isRepeat(String usrSn,String modId) throws AlgException{
+    public void isRepeat(String usrSn,String modId) throws AlgException{
         //项目modId大写转换小写。
         String strModId = modId.toLowerCase();
         //校验
         int count = algModuleMapper.selectIsRepeat(usrSn,strModId);
-        return count>0?true:false;
+        if(count>0){
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.00000011");
+        }
+
     }
 }

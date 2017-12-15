@@ -20,14 +20,13 @@ public interface PathService {
     String getModuleBasePath(String usrCode, String modId) throws AlgException ;
 
     /**
-     * 获取当前用户项目为modId的服务器项目根路径
-     * @param usrCode ;当
-     * @param modId
+     *获取当前用户项目为modId的服务器项目根路径
+     * @param orgCode 是组织 传入 组织code 不是组织 为null
+     * @param modId 算法Id
+     * @param usrCode 用户Id
+     * @param isOrg 组织-1 用户-0
      * @return
-     * @throws Exception
-     * 当组织时,则usrCode-\组织编号(名称) \项目名称(编号);modId-用户编号！
-     *                当用户时,则usrCode-用户编号;modId-项目名称(编号) ！
-     * @author xialf
+     * @throws AlgException
      */
     String getModuleBasePath(String orgCode, String modId,String usrCode,String isOrg) throws AlgException ;
 
