@@ -74,7 +74,7 @@ public class PublishServiceImpl implements PublishService {
         String version = getVersionStr(algModuleVersion);
         //创建 发布包
         log.debug("come in module init boot ...");
-        initBootProject(algProgramLang.getLanName(),usrCode,modId,algModule.getModDesc(),version,curAlgUser.getUsrCode(),curAlgUser.getIsOrg());
+        initBootProject(algProgramLang.getLanName(),usrCode,modId,algModule.getModDesc(),version,curAlgUser.getUsrCode(),algUser.getIsOrg());
 
         //调用mvnService编译工程
         log.debug("come in module mvn package ...");
