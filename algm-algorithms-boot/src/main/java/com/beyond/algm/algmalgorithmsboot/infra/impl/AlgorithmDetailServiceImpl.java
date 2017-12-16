@@ -42,7 +42,7 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
             algModuleVo.setSourceCodeUrl(sourceCodeUrl);
             algModuleVo.setCallAlgorithmUrl(callAlgorithmUrl);
             algModuleVo.setUrl("algm"+"/"+algorithmDetailVo.getUsrCode() +"/" + algorithmDetailVo.getModId());
-            algModuleVo.setDataUrl(algorithmDetailVo.getUsrCode() + "/" + algorithmDetailVo.getModId()+"/" + "edit");
+            algModuleVo.setEditUrl("algm"+"/"+algorithmDetailVo.getUsrCode() + "/" + algorithmDetailVo.getModId()+"/" + "edit");
             algModuleVo.setUsrCode(algorithmDetailVo.getUsrCode());
         }
         return algModuleVo;

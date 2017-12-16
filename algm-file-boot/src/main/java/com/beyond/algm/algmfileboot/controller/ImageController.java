@@ -48,7 +48,7 @@ public class ImageController extends BaseController {
 
     /**
      * @author ：zhangchuanzhi
-     * @Description:个人用户图片上传
+     * @Description:富文本编辑器
      * @param：accSn
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/11/24
