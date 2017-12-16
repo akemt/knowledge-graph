@@ -4,8 +4,9 @@ import com.beyond.algm.algmalgorithmsboot.adapter.infra.ModuleAdapter;
 import com.beyond.algm.algmalgorithmsboot.infra.AntApiService;
 import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
 import com.beyond.algm.algmalgorithmsboot.infra.PathService;
-import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
+import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
+import com.beyond.algm.common.AESUtil;
 import com.beyond.algm.common.AdapterUtil;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.constant.Constant;
@@ -38,7 +39,7 @@ import java.io.File;
 @Slf4j
 public class AntApiServiceImpl implements AntApiService {
     @Autowired
-    private GitConfigModel gitConfigModel;
+    private ProjectConfigEntity projectConfigEntity;
     @Autowired
     private AlgModuleMapper algModuleMapper;
     @Autowired
@@ -58,6 +59,7 @@ public class AntApiServiceImpl implements AntApiService {
         GitUser gitUser = new GitUser();
         gitUser.setModId(modId);
         gitUser.setUsrCode(algUser.getUsrCode());
+        gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
         //根据usrCode，查询用户或组织信息
         AlgUser modAlgUser = algUserMapper.selectUsrCode(usrCode);
         if ("1".equals(modAlgUser.getIsOrg())) {//组织算法
