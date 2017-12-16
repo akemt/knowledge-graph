@@ -59,7 +59,7 @@ public class DataSetServiceTests {
     //点击数据集关联查询数据
     @Test
     public void queryAlgDatabySetTest() throws Exception {
-        dataSetService.queryAlgDatabySet("777");
+        //dataSetService.queryAlgDatabySet("777");
     }
 
     //新增数据
