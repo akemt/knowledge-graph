@@ -86,13 +86,13 @@ public class UserServiceImpl implements UserService {
             user.setUsrSn(uuid);
             user.setUpdateDate(new Date());
             user.setCreateDate(new Date());
-          //  logger.info("密码：" + projectConfigEntity.getKeyAES());
+            logger.info("密码：" + projectConfigEntity.getKeyAES());
             GitUser gitUser = new GitUser();
             gitUser.setPassword(user.getPasswd());
             gitUser.setFullName(user.getUsrCode());
             gitUser.setUsrCode(user.getUsrCode());
             gitUser.setEmail(user.getEmail());
-            String passWord= DigestUtils.md5DigestAsHex(user.getPasswd().getBytes());
+            String passWord = AESUtil.encryptAES(user.getPasswd(), projectConfigEntity.getKeyAES());
             user.setPasswd(passWord);
             //xialf 20171205 update
             GitlabUser gitlabUser = null;
