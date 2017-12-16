@@ -82,4 +82,12 @@ public interface AlgUserMapper {
      */
     int countOrgCode(String usrCode,String sessionUsrCode);
 
+    /**
+     * 获取用户默认空间
+     *
+     * @param
+     * @return
+     */
+    String userSpace(String code);
+
 }

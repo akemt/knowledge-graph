@@ -95,8 +95,13 @@ public class UserServiceImpl implements UserService {
             String passWord = AESUtil.encryptAES(user.getPasswd(), projectConfigEntity.getKeyAES());
             user.setPasswd(passWord);
             user.setIsOrg("0");
+            user.setUsrAddSpace(Float.parseFloat("0"));
+            user.setUsrUsedSpace(Float.parseFloat("0"));
+            String space=algUserMapper.userSpace("usr_space");
+            user.setUsrSpace(Float.parseFloat(space));
+            algUserMapper.insert(user);
             //xialf 20171205 update
-            GitlabUser gitlabUser = null;
+          /*  GitlabUser gitlabUser = null;
             try {
                 gitlabUser = gitLabService.addGitLabUser(gitUser);
                 user.setPrivateToken(gitlabUser.getPrivateToken());
@@ -120,7 +125,7 @@ public class UserServiceImpl implements UserService {
             //为用户创建k8s命名空间
             kubernetesService.makeK8sNamespace(user.getUsrCode());
             //为用户创建k8s命名空间下的harbor镜像拉取密钥
-            kubernetesService.makeK8sSecretForNamespace(user.getUsrCode());
+            kubernetesService.makeK8sSecretForNamespace(user.getUsrCode());*/
 
         }
     }

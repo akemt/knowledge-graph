@@ -1,10 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.controller;
 
 import com.beyond.algm.algmalgorithmsboot.base.BaseController;
-import com.beyond.algm.algmalgorithmsboot.infra.AlgorithmCollectAndRankService;
-import com.beyond.algm.algmalgorithmsboot.infra.AlgorithmDetailService;
-import com.beyond.algm.algmalgorithmsboot.infra.UseAlgorithmService;
-import com.beyond.algm.algmalgorithmsboot.infra.UserService;
+import com.beyond.algm.algmalgorithmsboot.infra.*;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
@@ -37,6 +34,8 @@ public class ContentController extends BaseController {
     private AlgorithmDetailService algorithmDetailService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AuthService authService;
     /**
      * @author ：zhangchuanzhi
      * @Description:用户使用情况
@@ -131,6 +130,7 @@ public class ContentController extends BaseController {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
         AlgUser algUser = getUserInfo();
         if(Assert.isNotNULL(algUser)){
+            authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
             AlgorithmDetailVo algorithmDetailVo=new AlgorithmDetailVo();
             algorithmDetailVo.setModId(modId);
             algorithmDetailVo.setUsrSn(algUser.getUsrSn());
