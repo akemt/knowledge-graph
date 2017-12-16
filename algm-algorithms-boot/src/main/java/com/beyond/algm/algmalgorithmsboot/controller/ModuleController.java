@@ -215,17 +215,6 @@ public class ModuleController extends BaseController {
     }
 
     /**
-     * @author ：lindewei
-     * @Description: 分类接口
-     */
-    @RequestMapping(value = "/module/category", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result category() throws AlgException {
-        List<AlgAlgoCategory> AlgAlgoCategory = moduleService.category();
-        return Result.ok(AlgAlgoCategory);
-    }
-
-
-    /**
      * 发布接口-发布版本号、计算版权费用
      *
      * @param modId
@@ -242,5 +231,17 @@ public class ModuleController extends BaseController {
         Map<String, Object> algModuleVersionMap = publishService.getAlgModuleVersion(modId, usrCode);
         return Result.ok(algModuleVersionMap);
     }
+
+    /**
+     * @author ：lindewei
+     * @Description: 分类接口
+     */
+    @RequestMapping(value = "/module/category", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result category() throws AlgException {
+        List<AlgAlgoCategory> AlgAlgoCategory = moduleService.category();
+        return Result.ok(AlgAlgoCategory);
+    }
+
+
 
 }

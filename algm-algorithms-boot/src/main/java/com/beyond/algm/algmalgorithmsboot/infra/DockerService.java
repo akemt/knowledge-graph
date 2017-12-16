@@ -11,12 +11,14 @@ import com.beyond.algm.model.AlgModuleVersion;
 public interface DockerService {
     /**
      * 远程操作docker制作镜像
-     * @param docTag 版本名称
+     * @param modId 算法英文名称
+     * @param usrCode 用户英文名称
+     * @param version 发布的版本号
      * @param targetPath publish 项目目录下的target
      * @return 镜像Id
      * @throws AlgException
      */
-    String bulidDockerImage(String docTag,String targetPath) throws AlgException;
+    String bulidDockerImage(String modId, String usrCode, String version,String targetPath) throws AlgException;
 
     /**
      *  制作Dokcerfile文件在target文件下
@@ -30,20 +32,19 @@ public interface DockerService {
 
     /**
      * 推送镜像到harbor上
-     * @param docTag 版本名称
+     * @param modId 算法Id
+     * @param usrCode 用户Code
+     * @param version 版本 0.0.2
      * @throws AlgException
      */
-    void pushDockerImageToHarbor(String docTag) throws AlgException;
+    void pushDockerImageToHarbor(String modId, String usrCode, String version) throws AlgException;
 
     /**
-     *  获取 docker image tag 如erniu3_testjava:0.0.3
-     *
-     * @param modId  算法英文名称
-     * @param usrCode 用户英文名称或者组织英文名称
-     * @param version  发布的版本号
-     * @param curUsrCode 当前用户英文名称
-     * @param isOrg  1-组织；0-用户
+     * 获取 docker image tag
+     * @param modId
+     * @param usrCode
+     * @param version
      * @return
      */
-    String getDockerTag(String modId, String usrCode, String version, String curUsrCode,String isOrg);
+    String getDockerTag(String modId, String usrCode, String version);
 }

@@ -21,7 +21,7 @@ public class AntApiServiceImplTest {
     public void moduleAntBuildTest() throws Exception {
         GitUser gitUser=new GitUser();
         gitUser.setPath("123");
-        antApiService.moduleAntBuild(gitUser);
+//        antApiService.moduleAntBuild(gitUser);
     }
 
     @Test
