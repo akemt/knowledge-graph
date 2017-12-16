@@ -110,20 +110,10 @@ public class DataSetServiceImpl implements DataSetService {
 
     //点击数据集关联查询数据
     @Override
-    public Result queryAlgDatabySet(String dataSetSn) throws AlgException {
-        try {
-            Result result = new Result();
-            if(Assert.isEmpty(dataSetSn)) {
-                result.setMsg("数据集合串号为空");
-                return result;
-            }
-            List<AlgData> allAlgData = algDataMapper.queryAlgDatabySet(dataSetSn);
-            result.setData(allAlgData);
-            return result;
-        } catch (Exception e) {
-            log.error("获取所有数据集失败，模型集串号：{}",dataSetSn,e);
-            throw new AlgException("BEYOND.ALG.DATA.COMMON.FIND.0000004",new String[]{});
-        }
+    public PageInfo<AlgData> queryAlgDatabySet(String dataSetSn, PageInfo pageInfo) throws AlgException {
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+        Page<AlgData> algData = algDataMapper.queryAlgDatabySet(dataSetSn);
+        return new PageInfo<>(algData);
     }
 
     //新增数据

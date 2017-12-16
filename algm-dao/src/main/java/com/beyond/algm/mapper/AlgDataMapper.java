@@ -15,7 +15,7 @@ public interface AlgDataMapper {
 
     AlgData selectByPrimaryKey(String dataSn);
 
-    List<AlgData> queryAlgDatabySet(String dataSetSn);
+    Page<AlgData> queryAlgDatabySet(String dataSetSn);
 
     int updateByPrimaryKey(AlgData record);
 
