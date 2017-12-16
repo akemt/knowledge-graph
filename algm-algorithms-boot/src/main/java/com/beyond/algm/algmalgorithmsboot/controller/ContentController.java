@@ -129,7 +129,7 @@ public class ContentController extends BaseController {
     @RequestMapping(value="/{usrCode}/{modId}/algorithmdetail", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result getAlgorithmDetail(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId ) throws AlgException {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
-        AlgUser  algUser=userService.findByUsrCode(usrCode);
+        AlgUser algUser = getUserInfo();
         if(Assert.isNotNULL(algUser)){
             AlgorithmDetailVo algorithmDetailVo=new AlgorithmDetailVo();
             algorithmDetailVo.setModId(modId);
