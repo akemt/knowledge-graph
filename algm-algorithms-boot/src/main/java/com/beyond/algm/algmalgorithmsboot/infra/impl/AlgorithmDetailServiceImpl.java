@@ -22,7 +22,13 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
     private AlgModuleMapper algModuleMapper;
     @Override
     public AlgModuleVo getAlgorithmDetail(AlgorithmDetailVo algorithmDetailVo)throws AlgException {
+        int count = algModuleMapper.getCollectArticle(algorithmDetailVo);
         AlgModuleVo algModuleVo=algModuleMapper.getAlgorithmDetail(algorithmDetailVo);
+        if(count==0){
+            algModuleVo.setIsCollection("0");
+        }else{
+            algModuleVo.setIsCollection("1");
+        }
         if(Assert.isNotNULL(algModuleVo)) {
             if(Assert.isNotEmpty( algModuleVo.getVerCode())) {
                 StringBuffer str = new StringBuffer(algModuleVo.getVerCode());

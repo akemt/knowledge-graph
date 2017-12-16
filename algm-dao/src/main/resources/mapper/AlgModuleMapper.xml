@@ -265,4 +265,9 @@
         <if test="arg1 == 'callCnt'"> order by usa.call_cnt DESC </if>
         <if test="arg1 == 'creditCnt'"> order by usa.credit_cnt DESC </if>
     </select>
+
+    <select id="getCollectArticle" resultType="java.lang.Integer"  parameterType="com.beyond.algm.vo.AlgorithmDetailVo"  >
+        select count(*) from alg_star where usr_sn=#{usrSn,jdbcType=VARCHAR}
+        and mod_sn=(select mod_sn from alg_module where usr_sn= #{usrSn,jdbcType=VARCHAR} and mod_id=#{modId,jdbcType=VARCHAR})
+    </select>
 </mapper>

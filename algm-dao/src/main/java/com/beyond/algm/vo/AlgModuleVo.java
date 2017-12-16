@@ -21,5 +21,7 @@ public class AlgModuleVo extends AlgModule {
     private long callCnt;
     private String sourceCodeUrl;
     private String callAlgorithmUrl;
+    private String isCollection;
+
 
 }
