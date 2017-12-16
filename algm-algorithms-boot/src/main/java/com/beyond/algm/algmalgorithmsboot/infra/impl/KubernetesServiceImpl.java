@@ -39,11 +39,11 @@ public class KubernetesServiceImpl implements KubernetesService {
         log.debug("k8s namespaces : {}",client.namespaces().list().toString());
     }
 
-    public void makeK8sPod(String modId, String usrCode, String version, String curUsrCode,String isOrg) throws AlgException{
+    public void makeK8sPod(String modId, String usrCode, String version) throws AlgException{
 
         try{
             Map<String,String> map = new HashMap<String,String>();
-            map.put("app",getUsrCodeModIdVersion(modId, usrCode, version, curUsrCode,isOrg));
+            map.put("app",getUsrCodeModIdVersion(modId, usrCode, version));
 
             ReplicationController replicationController = new ReplicationControllerBuilder()
                     .withApiVersion("v1")
@@ -63,7 +63,7 @@ public class KubernetesServiceImpl implements KubernetesService {
                     .withNewSpec()
                     .addNewContainer()
                     .withName(usrCode.toLowerCase())
-                    .withImage(dockerService.getDockerTag(modId,usrCode,version, curUsrCode,isOrg))
+                    .withImage(dockerService.getDockerTag(modId,usrCode,version))
                     .withImagePullPolicy("Always")
                     .withPorts(new ContainerPortBuilder().withContainerPort(8080).build())
                     .endContainer()
@@ -81,9 +81,9 @@ public class KubernetesServiceImpl implements KubernetesService {
         }
     }
 
-    public void makeK8sService(String modId, String usrCode, String version, String curUsrCode,String isOrg) throws AlgException{
+    public void makeK8sService(String modId, String usrCode, String version) throws AlgException{
         Map<String,String> map = new HashMap<String,String>();
-        map.put("app",getUsrCodeModIdVersion(modId, usrCode, version, curUsrCode,isOrg));
+        map.put("app",getUsrCodeModIdVersion(modId, usrCode, version));
         try {
             io.fabric8.kubernetes.api.model.Service service = new ServiceBuilder()
                     .withKind("Service")
@@ -136,15 +136,6 @@ public class KubernetesServiceImpl implements KubernetesService {
      */
     private String getServiceName(String modId, String version){
         return modId.toLowerCase()+"-"+version.replaceAll("\\.","-");
-    }
-
-
-    public String getUsrCodeModIdVersion(String modId, String usrCode, String version, String curUsrCode, String isOrg) {
-        if ("1".equals(isOrg)) {
-            return usrCode.toLowerCase() + "-" + modId.toLowerCase() + "-" + curUsrCode + "-" + version;
-        } else {
-            return usrCode.toLowerCase() + "-" + modId.toLowerCase() + "-" + version;
-        }
     }
 
 }
