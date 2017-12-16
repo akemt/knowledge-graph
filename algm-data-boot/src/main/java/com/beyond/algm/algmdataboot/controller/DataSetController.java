@@ -119,17 +119,13 @@ public class DataSetController extends BaseController {
      * @Description: 点击数据集关联查询数据
      */
     @RequestMapping(value = "/showdata", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result showData(String dataSetSn) throws AlgException {
+    public Result<PageInfo<AlgData>> showData(String dataSetSn,PageInfo pageInfo) throws AlgException {
         logger.info("数据集串号：{}",dataSetSn);
-        try{
-            AlgUser algUser = getUserInfo();
-            Result result=dataSetService.queryAlgDatabySet(dataSetSn);
-            return result;
-        }catch(Exception e)
-        {
-            logger.info("查看数据集失败",e);
-            return new Result<>(ResultEnum.FAILURE.code, e.getMessage());
-        }
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
+        AlgUser algUser = getUserInfo();
+        PageInfo<AlgData> algData = dataSetService.queryAlgDatabySet(dataSetSn, pageInfo);
+        return Result.ok(algData);
     }
 
     /**
