@@ -76,8 +76,7 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
 
         //判断public还是private；
         if ("0".equals(algModuleVersion.getIsOwn())) {
-            algResult.setResult("该算法不公开，不可调用。");
-            return algResult;
+            throw new AlgException("BEYOND.ALG.CALL.COMMON.CHARGING.0000006");
         }
         log.info("判断是public");
 
@@ -99,7 +98,7 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
         //计算调用总价钱
         Float total = Float.valueOf(unitPrice).floatValue() * timeDif + (Assert.isEmpty(algModuleVersion.getVerLoyaltyFee())?new Float(0):algModuleVersion.getVerLoyaltyFee());
 
-        if (algAccount.getCashBal() >= total) {
+        if (algAccount.getFreeBal() >= total || algAccount.getCashBal() >= total) {
             //定义json、赋值。
             JSONObject algUserCall = new JSONObject();
             algUserCall.put("umcSn", UUIDUtil.createUUID());//调用串号
@@ -111,6 +110,16 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
             algUserCall.put("startTime", startTime);//调用开始时间
             algUserCall.put("endTime", endTime);//调用结束时间
             algUserCall.put("verSn", version);//版本
+            //是否计费标记
+            if(algAccount.getFreeBal() >= total){
+                //赠送
+                algUserCall.put("is_charging", 0);
+            }else {
+                //充值
+                algUserCall.put("is_charging", 1);
+            }
+            //项目串号
+            algUserCall.put("modSn", algModule.getModSn());//版本
 
             //rocketMq发送一条信息
             try {
@@ -120,21 +129,27 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            //剩余积分
-            Float remainingCost = algAccount.getCashBal() - total;
-
+            //余额扣除判断变量
+            int flg = 0;
+            //赠送剩余积分
             //todo 加对象锁，防止用户账户损失
-            //更新用户账户余额
-            int flg = algAccountRepository.updateUsrSnByCashBal(remainingCost, algUser.getUsrSn());
-            log.info("更新用户账户余额是否成功:{}", flg);
-            if (flg < 0) {
-                algResult.setResult("余额扣除失败，调用失败。");
-                return algResult;
+            if(algAccount.getFreeBal() >= total){
+                //更新用户账户赠送积分余额
+                Float remainingCostFb = algAccount.getFreeBal() - total;
+                flg = algAccountRepository.updateUsrSnByFreeBal(remainingCostFb, algUser.getUsrSn());
+                log.info("更新用户账户赠送积分余额是否成功:{}", flg);
+            }else {
+                //更新用户账户充值余额
+                Float remainingCostCb = algAccount.getCashBal() - total;
+                flg = algAccountRepository.updateUsrSnByCashBal(remainingCostCb, algUser.getUsrSn());
+                log.info("更新用户账户充值余额是否成功:{}", flg);
+            }
+            if (flg <= 0) {
+                throw new AlgException("BEYOND.ALG.CALL.COMMON.CHARGING.0000004");
             }
 
         } else {
-            algResult.setResult("余额不足，调用失败。");
+            throw new AlgException("BEYOND.ALG.CALL.COMMON.CHARGING.0000005");
         }
         //返回调用结果
         return algResult;
