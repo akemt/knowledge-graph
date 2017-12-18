@@ -210,12 +210,12 @@ public class UserServiceImpl implements UserService {
             String[] checkMessage = {"电话", ""};
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001", checkMessage);
         }
-        // 判断个人主页
+    /*    // 判断个人主页
         boolean webFlag = NumCheckUtil.checkWebsite(user.getUsrUrl());
         if (!webFlag) {
             String[] checkMessage = {"个人主页", ""};
             throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000001", checkMessage);
-        }
+        }*/
         // 判断名字是否全是中文
         boolean nameFlag = NumCheckUtil.isChineseStr(user.getUsrName());
         if (!nameFlag) {
