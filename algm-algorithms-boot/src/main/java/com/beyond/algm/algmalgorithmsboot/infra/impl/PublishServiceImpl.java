@@ -86,10 +86,12 @@ public class PublishServiceImpl implements PublishService {
         dockerService.makeDockerfile(active,algProgramLang.getLanName(),publishPath + File.separator + Constant.TARGET,jarFileName);
         //调用dockerApi封装docker镜像
         log.debug("come in module bulid image ...");
-        dockerService.bulidDockerImage(modId,usrCode,version,publishPath + File.separator + Constant.TARGET);
+        String dockerId = dockerService.bulidDockerImage(modId,usrCode,version,publishPath + File.separator + Constant.TARGET);
         //推送到harbor上
         log.debug("come in module push image ...");
         dockerService.pushDockerImageToHarbor(modId,usrCode,version);
+
+        //TODO 根据 dockerId 删除在服务器上 没有用的docker镜像
 
         log.info("pull docker image success,image tag is :{}",dockerService.getDockerTag(modId,usrCode,version));
         //创建pod

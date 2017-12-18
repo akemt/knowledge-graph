@@ -71,6 +71,9 @@ public class OrgServiceImpl implements OrgService {
             log.error("gitlab创建组织失败.", e);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000001", new String[]{"创建组织", org.getUsrCode(), owner.getUsrCode()}, e);
         }
+
+        //创建组织 k8s 命名空间 和 拉取harbor的密钥
+
         return org;
     }
 
