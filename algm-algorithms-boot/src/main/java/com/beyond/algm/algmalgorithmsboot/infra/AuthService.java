@@ -5,7 +5,7 @@ import com.beyond.algm.exception.AlgException;
 public interface AuthService {
 
 
-    void isModuleByUser(String usrCode,String modId) throws AlgException;
+    void isModuleByUser(String usrCode,String modId,String sessionUsrCode,String usrSn) throws AlgException;
 
     /**
      * @author ：zhangchuanzhi

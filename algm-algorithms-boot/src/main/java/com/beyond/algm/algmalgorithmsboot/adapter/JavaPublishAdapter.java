@@ -110,7 +110,7 @@ public class JavaPublishAdapter implements PublishAdapter {
 
 
     private void makeDistJar(String path,String packageName) throws AlgException{
-        File buildFile = new File(path + File.separator + Constant.map.get("Java"));
+        File buildFile = new File(path + File.separator + Constant.buildMap.get("Java"));
         Project project = new Project();
         DefaultLogger consoleLogger = new DefaultLogger();
         consoleLogger.setErrorPrintStream(System.err);

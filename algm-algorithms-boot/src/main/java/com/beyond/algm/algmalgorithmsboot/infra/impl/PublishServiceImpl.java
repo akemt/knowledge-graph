@@ -53,10 +53,10 @@ public class PublishServiceImpl implements PublishService {
     private String active;
 
     @Override
-    public void initBootProject(String lanName, String usrCode, String modId, String modDesc, String version) throws AlgException {
+    public void initBootProject(String lanName, String usrCode, String modId, String modDesc, String version,String curUsrCode,String isOrg) throws AlgException {
 
         PublishAdapter publishAdapter =(PublishAdapter) AdapterUtil.publishAdapter(lanName);
-        String modPath = pathService.getModuleBasePath(usrCode,modId);
+        String modPath = pathService.getModuleBasePath(usrCode,modId,curUsrCode,isOrg);
         String publishPath = pathService.getPublishPath(usrCode, modId);
         publishAdapter.initBootProject(usrCode, modId, modDesc, version, publishConfigModel, active,modPath,publishPath);
     }
@@ -65,7 +65,7 @@ public class PublishServiceImpl implements PublishService {
 
     @Transactional(rollbackFor = AlgException.class)
     @Override
-    public void publishModule(String modId,String usrCode,String verMark)throws AlgException{
+    public void publishModule(AlgUser curAlgUser,String modId,String usrCode,String verMark)throws AlgException{
         AlgUser algUser = algUserMapper.selectUsrCode(usrCode);
         AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(algUser.getUsrSn(),modId);
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
@@ -74,7 +74,7 @@ public class PublishServiceImpl implements PublishService {
         String version = getVersionStr(algModuleVersion);
         //创建 发布包
         log.debug("come in module init boot ...");
-        initBootProject(algProgramLang.getLanName(),usrCode,modId,algModule.getModDesc(),version);
+        initBootProject(algProgramLang.getLanName(),usrCode,modId,algModule.getModDesc(),version,curAlgUser.getUsrCode(),algUser.getIsOrg());
 
         //调用mvnService编译工程
         log.debug("come in module mvn package ...");
@@ -121,9 +121,9 @@ public class PublishServiceImpl implements PublishService {
             //高版本-HighVersion
             mapVer.put("H", (algModuleVersion.getVerCodeL1() + 1) + ".0.0");
             //中版本-MiddleVersion
-            mapVer.put("M", "0." + (algModuleVersion.getVerCodeL2() + 1) + ".0");
+            mapVer.put("M", algModuleVersion.getVerCodeL1() + "." + (algModuleVersion.getVerCodeL2() + 1) + ".0");
             //低版本-LowVersion
-            mapVer.put("L", "0.0." + (algModuleVersion.getVerCodeL3() + 1));
+            mapVer.put("L", algModuleVersion.getVerCodeL1() +  "." + algModuleVersion.getVerCodeL2() +  "."  + (algModuleVersion.getVerCodeL3() + 1));
             map.put("VerCode",mapVer);
             //显示版本费用
             map.put("VerLoyaltyFee", algModuleVersion.getVerLoyaltyFee());

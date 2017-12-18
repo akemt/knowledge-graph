@@ -20,14 +20,14 @@ public class ReadFileServiceImpl implements ReadFileService {
     private PathService pathService;
 
     @Override
-    public AlgFileReadWriteVo readFile(String usrCode, String modId, String path, String fileName) throws AlgException {
+    public AlgFileReadWriteVo readFile(String modPath, String path, String fileName) throws AlgException {
         AlgFileReadWriteVo algFileReadWriteVo = new AlgFileReadWriteVo();
         String readPath = null;
         try {
             if(Assert.isEmpty(path)){
-                readPath = pathService.getModuleBasePath(usrCode,modId) + File.separator + fileName;
+                readPath = modPath + File.separator + fileName;
             }else {
-                readPath = pathService.getModuleBasePath(usrCode,modId) + File.separator +path + File.separator + fileName;
+                readPath = modPath + File.separator +path + File.separator + fileName;
             }
         } catch (Exception e) {
             throw new AlgException("BEYOND.ALG.MODULE.READ.0000008",new String[]{},e);
@@ -38,7 +38,7 @@ public class ReadFileServiceImpl implements ReadFileService {
             BufferedReader br=new BufferedReader(new InputStreamReader(new FileInputStream(file),"UTF-8"));//构造一个BufferedReader类来读取文件
             String s = null;
             while((s = br.readLine())!=null){//使用readLine方法，一次读一行
-                result.append(System.lineSeparator()+s);
+                result.append(s+System.lineSeparator());
             }
             br.close();
         }catch(Exception e){

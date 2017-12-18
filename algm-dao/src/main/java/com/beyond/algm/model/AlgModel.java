@@ -27,6 +27,7 @@ public class AlgModel {
 
     private String comment;
 
+    private Integer  modelCredit;
     public String getModelSn() {
         return modelSn;
     }
@@ -121,5 +122,13 @@ public class AlgModel {
 
     public void setComment(String comment) {
         this.comment = comment == null ? null : comment.trim();
+    }
+
+    public Integer getModelCredit() {
+        return modelCredit;
+    }
+
+    public void setModelCredit(Integer modelCredit) {
+        this.modelCredit = modelCredit;
     }
 }

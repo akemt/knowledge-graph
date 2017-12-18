@@ -15,6 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 import java.util.List;
 
@@ -37,12 +40,14 @@ public class PayCashController extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：14:07 2017/10/11
      */
-    @RequestMapping(value="/payRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result payRecord(PayRecordVo payRecordVo) throws AlgException {
+    @RequestMapping(value="/payRecord", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result<PageInfo<AlgCashTrans>> payRecord(PayRecordVo payRecordVo,PageInfo pageInfo) throws AlgException {
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser algUser = getUserInfo();
         payRecordVo.setUsrSn(algUser.getUsrSn());
         logger.info("用户id:{},Page:{},Row:{}",payRecordVo.getUsrSn(),payRecordVo.getPage(),payRecordVo.getRows());
-        List<AlgCashTrans> algCashTransList= payCashService.payRecord(payRecordVo);
+        PageInfo<AlgCashTrans> algCashTransList= payCashService.payRecord(payRecordVo, pageInfo);
         return Result.ok(algCashTransList);
     }
 

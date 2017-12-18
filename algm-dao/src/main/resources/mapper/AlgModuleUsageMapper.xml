@@ -39,4 +39,18 @@
     select usg_sn, mod_sn, star_cnt, follow_cnt, call_cnt, credit_cnt
     from alg_module_usage
   </select>
+  <select id="selectStarCnt" resultType="java.lang.Long" parameterType="java.lang.String" >
+    select star_cnt
+    from alg_module_usage
+    where mod_sn = #{modSn,jdbcType=VARCHAR}
+  </select>
+  <update id="updateByModSn" parameterType="com.beyond.algm.model.AlgModuleUsage" >
+    update alg_module_usage
+    set mod_sn = #{modSn,jdbcType=VARCHAR},
+    star_cnt = #{starCnt,jdbcType=BIGINT},
+    follow_cnt = #{followCnt,jdbcType=BIGINT},
+    call_cnt = #{callCnt,jdbcType=BIGINT},
+    credit_cnt = #{creditCnt,jdbcType=DECIMAL}
+    where mod_sn = #{modSn,jdbcType=VARCHAR}
+  </update>
 </mapper>

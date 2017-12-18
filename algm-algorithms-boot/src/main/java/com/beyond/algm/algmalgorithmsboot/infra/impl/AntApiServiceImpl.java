@@ -4,32 +4,31 @@ import com.beyond.algm.algmalgorithmsboot.adapter.infra.ModuleAdapter;
 import com.beyond.algm.algmalgorithmsboot.infra.AntApiService;
 import com.beyond.algm.algmalgorithmsboot.infra.JGitService;
 import com.beyond.algm.algmalgorithmsboot.infra.PathService;
-import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
+import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
+import com.beyond.algm.common.AESUtil;
 import com.beyond.algm.common.AdapterUtil;
 import com.beyond.algm.common.Assert;
-import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.constant.Constant;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgModuleMapper;
 import com.beyond.algm.mapper.AlgModuleVersionMapper;
 import com.beyond.algm.mapper.AlgProgramLangMapper;
+import com.beyond.algm.mapper.AlgUserMapper;
 import com.beyond.algm.model.AlgModule;
 import com.beyond.algm.model.AlgModuleVersion;
 import com.beyond.algm.model.AlgProgramLang;
+import com.beyond.algm.model.AlgUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ivy.ant.IvyRetrieve;
 import org.apache.tools.ant.*;
 import org.apache.tools.ant.taskdefs.Jar;
 import org.apache.tools.ant.taskdefs.Manifest;
 import org.apache.tools.ant.taskdefs.ManifestException;
-import org.apache.tools.ant.taskdefs.Zip;
-import org.apache.tools.ant.types.FileSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @Author: qihe
@@ -40,7 +39,7 @@ import java.io.IOException;
 @Slf4j
 public class AntApiServiceImpl implements AntApiService {
     @Autowired
-    private GitConfigModel gitConfigModel;
+    private ProjectConfigEntity projectConfigEntity;
     @Autowired
     private AlgModuleMapper algModuleMapper;
     @Autowired
@@ -52,26 +51,49 @@ public class AntApiServiceImpl implements AntApiService {
     @Autowired
     private PathService pathService;
 
-    public void moduleAntBuild(GitUser gitUser) throws AlgException {
-        AlgModule algModule = findByUsrSnAndModId(gitUser.getUsrSn(),gitUser.getModId());
-        if(Assert.isNULL(algModule)){
-            String[] checkMessage = {"算法模块",""};
-            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000006",checkMessage);
+    @Autowired
+    private AlgUserMapper algUserMapper;
+
+    public void moduleAntBuild(AlgUser algUser, String usrCode, String modId) throws AlgException {
+
+        GitUser gitUser = new GitUser();
+        gitUser.setModId(modId);
+        gitUser.setUsrCode(algUser.getUsrCode());
+        gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
+        //根据usrCode，查询用户或组织信息
+        AlgUser modAlgUser = algUserMapper.selectUsrCode(usrCode);
+        if ("1".equals(modAlgUser.getIsOrg())) {//组织算法
+            gitUser.setOrgUsrCode(usrCode);
+            gitUser.setUsrSn(modAlgUser.getUsrSn());
+            gitUser.setIsOrg("1");
+        } else {//用户算法
+            gitUser.setUsrSn(algUser.getUsrSn());
+            gitUser.setIsOrg("0");
         }
-        log.debug("algModule模块的语言串号:{}",algModule.getLanSn());
+        AlgModule algModule = findByUsrSnAndModId(gitUser.getUsrSn(), gitUser.getModId());
+        if (Assert.isNULL(algModule)) {
+            String[] checkMessage = {"算法模块", ""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000006", checkMessage);
+        }
+        log.debug("algModule模块的语言串号:{}", algModule.getLanSn());
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
-        if(Assert.isNULL(algProgramLang)){
-            String[] checkMessage = {"语言模块",""};
-            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000006",checkMessage);
+        if (Assert.isNULL(algProgramLang)) {
+            String[] checkMessage = {"语言模块", ""};
+            throw new AlgException("BEYOND.ALG.SSO.COMMON.VALID.0000006", checkMessage);
         }
-        log.debug("语言表获得语言:{}",algProgramLang.getLanName());
+        log.info("语言表获得语言:{}", algProgramLang.getLanName());
         //适配器模式 调用创建算法项目适配器
-        ModuleAdapter moduleAdapter =(ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
-        String path=pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+ Constant.map.get(algProgramLang.getLanName());
-        gitUser.setPath(pathService.getModuleBasePath(gitUser.getUsrCode(),gitUser.getModId())+File.separator+".git");
-        log.debug("项目编译路径:{},上传git路径:{}",path,gitUser.getPath());
-        String version=jGitService.commitAndPushAllFiles(gitUser);
-        AlgModuleVersion algModuleVersion=new AlgModuleVersion();
+        ModuleAdapter moduleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
+
+        String modPath = pathService.getModuleBasePath(gitUser.getOrgUsrCode(), gitUser.getModId(), gitUser.getUsrCode(), gitUser.getIsOrg());
+        String path = modPath + File.separator + Constant.buildMap.get(algProgramLang.getLanName());
+        gitUser.setPath(modPath + File.separator + ".git");
+
+        log.debug("项目编译路径:{},上传git路径:{}", path, gitUser.getPath());
+
+        String version = jGitService.commitAndPushAllFiles(gitUser);
+
+        AlgModuleVersion algModuleVersion = new AlgModuleVersion();
         algModuleVersion.setLatestCommit(version);
         algModuleVersion.setModSn(algModule.getModSn());
         algModuleVersionMapper.updateLatestCommit(algModuleVersion);

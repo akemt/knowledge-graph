@@ -14,7 +14,7 @@
     <result column="need_notify" property="needNotify" jdbcType="VARCHAR" />
       <result column="usr_space" property="usrSpace" jdbcType="REAL"/>
       <result column="usr_add_space" property="usrAddSpace" jdbcType="REAL" />
-      <result column="usr_used_apace" property="usr_used_apace" jdbcType="REAL" />
+      <result column="usr_used_space" property="usrUsedSpace" jdbcType="REAL" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
       <result column="private_token" property="privateToken" jdbcType="VARCHAR" />
@@ -35,12 +35,13 @@
   <insert id="insert" parameterType="com.beyond.algm.model.AlgUser" >
     insert into alg_user (usr_sn, owner_id, usr_name, 
       usr_code, usr_url, is_org, 
-      email, passwd,telephone, need_notify,
+      email, passwd,telephone, need_notify,usr_space,usr_add_space,usr_used_space,
       create_date, update_date,private_token)
     values (#{usrSn,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{usrName,jdbcType=VARCHAR}, 
       #{usrCode,jdbcType=VARCHAR}, #{usrUrl,jdbcType=VARCHAR}, #{isOrg,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR}, #{needNotify,jdbcType=VARCHAR},
-      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP},#{privateToken,jdbcType=VARCHAR})
+       #{usrSpace,jdbcType=REAL}, #{usrAddSpace,jdbcType=REAL}, #{usrUsedSpace,jdbcType=REAL}
+      ,#{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP},#{privateToken,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgUser" >
     update alg_user
@@ -147,7 +148,7 @@
     <select id="selectOrgVoListByUsrSn" resultMap="OrgVoMap" parameterType="java.lang.String" >
         select org.usr_sn, org.owner_id, org.usr_name, org.usr_code, org.usr_url, org.is_org, org.email, org.passwd, org.telephone, org.need_notify,org.private_token,
           org.create_date, org.update_date, '0' as cash_bal, '0' as earn_bal, usr.usr_code as owner_usr_code, usr.usr_name as owner_usr_name,
-          concat('/algo/org/', org.usr_code) as url
+          concat('/algm/org/', org.usr_code) as url
         from alg_user org left join alg_user usr on org.owner_id = usr.usr_sn
         where org.usr_sn in (select r.org_sn from alg_r_user_org_invite r where r.usr_sn = #{usrSn,jdbcType=VARCHAR})
     </select>
@@ -162,7 +163,7 @@
 
     <!-- 获取组织成员列表 -->
     <select id="selectOrgMemberList" resultMap="BaseResultMap" parameterType="java.lang.String" >
-        select u.usr_sn, u.owner_id, u.usr_name, u.usr_code, u.usr_url, u.is_org, u.email, u.passwd, u.telephone, u.need_notify,u.private_token,  u.create_date, u.update_date
+        select u.usr_sn, u.owner_id, u.usr_name, u.usr_code, u.usr_url, u.is_org, u.email, u.telephone, u.need_notify,u.private_token, u.create_date, u.update_date
         from alg_user u
         where u.usr_sn in (select r.usr_sn from alg_r_user_org_invite r where r.org_sn = #{orgSn,jdbcType=VARCHAR})
     </select>
@@ -181,11 +182,20 @@
     </update>
 
     <!-- 查询一个用户都有哪些组织-->
-    <select id="selectOwnOrganize" resultMap="BaseResultMap" >
-        select usr_sn, owner_id, usr_name, usr_code, usr_url, is_org, email, passwd,telephone, need_notify,private_token,
-        create_date, update_date
+    <select id="selectOwnOrganize" resultType="java.util.HashMap">
+        select usr_sn,usr_name
         from alg_user u
         where u.usr_sn in (select a.org_sn from alg_r_user_org_invite a where usr_sn = (
         select usr_sn from alg_user where usr_code = #{usrCode,jdbcType=VARCHAR}))
     </select>
+    <select id="countOrgCode" resultType="java.lang.Integer" parameterType="java.lang.String" >
+        select count(1) from alg_r_user_org_invite where org_sn=
+        (select usr_sn from alg_user where usr_code = #{arg0,jdbcType=VARCHAR})
+        and usr_sn=(select usr_sn from alg_user where usr_code = #{arg1,jdbcType=VARCHAR})
+    </select>
+
+    <select id="userSpace" resultType="java.lang.String" parameterType="java.lang.String" >
+        select dic_value from alg_dic where dic_code = #{arg0,jdbcType=VARCHAR}
+    </select>
+
 </mapper>

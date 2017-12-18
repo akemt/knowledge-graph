@@ -17,7 +17,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -144,8 +143,8 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public PageInfo<OrgVo> getOrgList(String usrSn, Pageable pageable) {
-        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+    public PageInfo<OrgVo> getOrgList(String usrSn, PageInfo pageInfo) {
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<OrgVo> orgList = algUserMapper.selectOrgVoListByUsrSn(usrSn);
         for (OrgVo orgVo : orgList) {
             // 获取算法信息和调用次数

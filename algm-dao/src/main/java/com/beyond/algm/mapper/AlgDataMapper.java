@@ -15,7 +15,7 @@ public interface AlgDataMapper {
 
     AlgData selectByPrimaryKey(String dataSn);
 
-    List<AlgData> queryAlgDatabySet(String dataSetSn);
+    Page<AlgData> queryAlgDatabySet(String dataSetSn);
 
     int updateByPrimaryKey(AlgData record);
 
@@ -23,7 +23,7 @@ public interface AlgDataMapper {
 
     int dataCount(String dataSetSn);
 
-    List<AlgData> findDataList(String usrSn);
+    Page<AlgData> findDataList(String usrSn);
 
     //我的收藏-不同实现-数据列表
     List<AlgDifDataListVo> findDifDataList(Integer id);
@@ -36,4 +36,6 @@ public interface AlgDataMapper {
     int update(AlgData record);
     String  dataUrl(AlgData record);
     String dataSn(AlgDataVo algDataVo);
+
+    int deleteData(AlgData algData);
 }

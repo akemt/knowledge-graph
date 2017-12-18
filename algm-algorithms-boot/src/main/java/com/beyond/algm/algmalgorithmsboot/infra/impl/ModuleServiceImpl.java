@@ -2,15 +2,13 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.adapter.infra.ModuleAdapter;
 import com.beyond.algm.algmalgorithmsboot.infra.*;
-import com.beyond.algm.algmalgorithmsboot.model.GitConfigModel;
-import com.beyond.algm.algmalgorithmsboot.model.GitUser;
-import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
-import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigModel;
+import com.beyond.algm.algmalgorithmsboot.model.*;
 import com.beyond.algm.common.*;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.*;
 import com.beyond.algm.model.*;
 import com.beyond.algm.vo.AlgModuleEditVo;
+import com.beyond.algm.vo.AlgModuleVo;
 import com.beyond.algm.vo.AlgorithmDetailVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,40 +59,63 @@ public class ModuleServiceImpl implements ModuleService {
     private String active;
 
     @Override
-    public void initProject(AlgUser algUser, String projectName,String lanSn) throws Exception {
+    public void initProject(String strPath, String username,String projectName,String lanSn) throws Exception {
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
         //适配器模式 调用创建算法项目适配器
         ModuleAdapter createModuleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
-        createModuleAdapter.createModule(algUser.getUsrCode(), projectName, gitConfigModel, projectConfigModel,active);
+        createModuleAdapter.createModule(strPath, username,projectName, gitConfigModel, projectConfigModel,active);
 
     }
+//    public void initProject(AlgUser algUser, String projectName,String lanSn) throws Exception {
+//        AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(lanSn);
+//        //适配器模式 调用创建算法项目适配器
+//        ModuleAdapter createModuleAdapter = (ModuleAdapter) AdapterUtil.moduleAdapter(algProgramLang.getLanName());
+//        createModuleAdapter.createModule(algUser.getUsrCode(), projectName, gitConfigModel, projectConfigModel,active);
+//
+//    }
 
     public AlgModule findByUsrSnAndModId(String usrSn, String modId) throws AlgException {
         return algModuleMapper.selectByUsrSnAndModId(usrSn, modId);
     }
 
     @Override
-    public AlgModuleEditVo algModule(String usrCode, String usrSn, String modId, String path) throws AlgException {
+    public AlgModuleEditVo initModuleTree(AlgUser modUser, String usrCode,String modId, String path,String fileName) throws AlgException {
         AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
 
+        if(Assert.isEmpty(path) && Assert.isEmpty(fileName)){
+            path = "";
+        }else if(Assert.isNotEmpty(path) && Assert.isEmpty(fileName)){
+            path = path;
+        }else if ("/".equals(path) && Assert.isNotEmpty(fileName)) {
+            // path为"/" 并且 fileName不为空
+            path = path + fileName;
+        }else {
+            // 1、path有目录时候，fileName不为空；2、或者path为"/"，fileName为空
+            path = path + File.separator + fileName;
+        }
+
         log.info("current user:{} ", usrCode);
-        AlgModule algModule = this.findByUsrSnAndModId(usrSn, modId);
+        AlgModule algModule = this.findByUsrSnAndModId(modUser.getUsrSn(), modId);
         log.info("current project id:{} ,name :{} ", algModule.getModId(), algModule.getModName());
         AlgModuleVersion algModuleVersion = getLastVersion(algModule.getModSn());
         log.info("current modSn:{} ", algModule.getModSn());
         AlgProgramLang algProgramLang = algProgramLangMapper.selectByPrimaryKey(algModule.getLanSn());
         try {
+            FileNodes fileNodes = null;
             //项目名称初始化Tree
             // path 为空的情况是，是项目主文件路径
+
+            String basePath = pathService.getModuleBasePath(modUser.getUsrCode(), modId,usrCode,modUser.getIsOrg());
             if (Assert.isEmpty(path)) {
-                path = pathService.getModuleMainFilePath(usrCode, modId, algModule.getLanSn());
+                path = pathService.getModuleMainFilePath(basePath, modId, algModule.getLanSn());
             } else if (path.equals("/")) {
-                path = pathService.getModuleBasePath(usrCode, modId);
+                path = basePath;
             } else {
-                path = pathService.getModuleBasePath(usrCode, modId) + File.separator + path;
+                path = basePath + File.separator + path;
             }
+            fileNodes = showProjectFileService.ShowProjectFile(path, usrCode, modId,modUser.getUsrCode(),modUser.getIsOrg());
+
             //返回同级目录所有文件和文件夹.
-            FileNodes fileNodes = showProjectFileService.ShowProjectFile(path, usrCode, modId);
             log.info("current fileNodes {} ", fileNodes.toString());
             algModuleEditVo.setModId(algModule.getModId());
             algModuleEditVo.setModName(algModule.getModName());
@@ -121,34 +142,66 @@ public class ModuleServiceImpl implements ModuleService {
      */
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public Boolean addAlgModule(AlgModule algModule,AlgUser algUser) throws AlgException {
-        //模块串号
-        algModule.setModSn(UUIDUtil.createUUID());
+    public Boolean addAlgModule(AlgModuleVo algModule, AlgUser algUser) throws AlgException {
+
         // 新增算法
         try {
-            algModuleMapper.insert(algModule);
+            //模块串号
+            algModule.setModSn(UUIDUtil.createUUID());
+            algModule.setCreateSn(algUser.getUsrSn());
 
+            log.info("新增算法，向模块表插入成功，项目串号:{}",algModule.getModSn());
             GitUser gitUser = new GitUser();
             gitUser.setModId(algModule.getModId());
             gitUser.setUsrCode(algUser.getUsrCode());
+            gitUser.setPrivateToken(algUser.getPrivateToken());
             gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
-            //在git上创建项目
-            gitLabService.createGitLabProject(gitUser);
-            //在服务器本地创建项目
-            initProject(algUser,algModule.getModId(),algModule.getLanSn());
+            String strUserName = "";
+
+
+            if(Assert.isNotEmpty(algModule.getUsrSn())){//组所有者-下面的组织创建项目
+                AlgUser modUser = algUserMapper.selectByPrimaryKey(algModule.getUsrSn());
+                //校验算法是否有重复
+                isRepeat(algModule.getUsrSn(),algModule.getModId());
+                algModule.setUsrSn(algModule.getUsrSn());
+
+                gitUser.setIsOrg("1");
+                //组织编号
+                gitUser.setOrgUsrCode(modUser.getUsrCode());
+
+                //在git上组织创建项目
+                log.info("开始在git上组织创建项目，git串号:{}",gitUser.getUsrSn());
+                gitLabService.createGitLabGroupProject(gitUser);
+                log.info("结束在git上组织创建项目，git串号:{}",gitUser.getUsrSn());
+                strUserName = modUser.getUsrCode();
+
+            }else{ //当前用户-下创建项目
+                isRepeat(algUser.getUsrSn(),algModule.getModId());
+                algModule.setUsrSn(algUser.getUsrSn());
+                gitUser.setIsOrg("0");
+                //在git上创建项目
+                log.info("开始在git上创建项目，git串号:{}",gitUser.getUsrSn());
+                gitLabService.createGitLabProject(gitUser);
+                log.info("结束在git上创建项目，git串号:{}",gitUser.getUsrSn());
+                strUserName = algUser.getUsrCode();
+            }
+            //在服务器本地创建项目 update xialf 20171213
+            initProject(gitUser.getFilePath(),strUserName,algModule.getModId(),algModule.getLanSn());
             //commit and push 代码
             String version = jGitService.commitAndPushAllFiles(gitUser);
+            log.info("commit and push 代码成功，git串号:{}",gitUser.getUsrSn());
 
+            algModuleMapper.insert(algModule);
             AlgModuleVersion algModuleVersion = new AlgModuleVersion();
             algModuleVersion.setVerSn(UUIDUtil.createUUID());
             algModuleVersion.setCreateDate(new Date());
             algModuleVersion.setVerCodeL1(0);
             algModuleVersion.setVerCodeL2(0);
             algModuleVersion.setVerCodeL3(0);
-            //TODO 未实现版本 等其他信息
             algModuleVersion.setLatestCommit(version);
             algModuleVersion.setModSn(algModule.getModSn());
             algModuleVersionMapper.insert(algModuleVersion);
+            log.info("增加版本信息成功，版本串号:{}",algModuleVersion.getVerSn());
 
         } catch (Exception e) {
             log.error("算法新增增加失败。用户串号：{},语言串号：{},分类串号：{},协议串号：{}",algModule.getUsrSn(),algModule.getLanSn(),algModule.getCatSn(),algModule.getLicSn(),e);
@@ -253,11 +306,14 @@ public class ModuleServiceImpl implements ModuleService {
      * @author ：lindewei
      * @Description: 校验算法是否有重复
      */
-    public Boolean isRepeat(String modId,String usrSn) throws AlgException{
+    public void isRepeat(String usrSn,String modId) throws AlgException{
         //项目modId大写转换小写。
         String strModId = modId.toLowerCase();
         //校验
-        int count = algModuleMapper.selectIsRepeat(strModId,usrSn);
-        return count>0?false:true;
+        int count = algModuleMapper.selectIsRepeat(usrSn,strModId);
+        if(count>0){
+            throw new AlgException("BEYOND.ALG.MODULE.ADD.00000011");
+        }
+
     }
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class AlgModuleListVo {
+    private String modSn;
     private String modName;
     private String modId;
     private String createDate;
@@ -16,5 +17,6 @@ public class AlgModuleListVo {
     private String papertext;
     private String articleId;
     private String modDesc;
+    private String starSn;
 
 }

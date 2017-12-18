@@ -151,5 +151,9 @@
     data_set_sn =(select data_set_sn from alg_data_set where usr_sn=#{usrSn,jdbcType=VARCHAR} AND data_set_name=#{dataSetName,jdbcType=VARCHAR})
     and data_name=#{dataName,jdbcType=VARCHAR}
   </select>
-
+  <delete id="deleteData" parameterType="com.beyond.algm.model.AlgData" >
+    delete from alg_data
+    where data_sn = #{dataSn,jdbcType=VARCHAR}
+    and usr_sn= #{usrSn,jdbcType=VARCHAR}
+  </delete>
 </mapper>

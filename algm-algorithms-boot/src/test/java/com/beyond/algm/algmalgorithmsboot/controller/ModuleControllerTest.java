@@ -1,5 +1,6 @@
 package com.beyond.algm.algmalgorithmsboot.controller;
 
+import com.beyond.algm.model.AlgModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,5 +82,30 @@ public class ModuleControllerTest {
        )
                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
        System.out.println(result);
+    }
+
+    /**
+     * 新增组织算法
+     * @throws Exception
+     */
+    @Test
+    public void AddOrgAlgorithm() throws Exception {
+        String result = this.mockMvc.perform(post("/module/addOrgPro").contentType(MediaType.APPLICATION_JSON)
+               .param("orgUsrCode","testGroup2")
+                //一些是组织实体类
+                .param("modId","project09")
+                .param("modName","项目09")
+                .param("lanSn","1")
+                .param("catSn","86e89ac235ee4ba7ba7cec1907815ba8")
+                .param("licSn","1")
+                .param("atlSn","1")
+                .param("needWeb","1")
+                .param("envType","1")
+                .param("isTrain","1")
+                .param("isColony","1")
+                .param("modDesc","1")
+        )
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
     }
 }

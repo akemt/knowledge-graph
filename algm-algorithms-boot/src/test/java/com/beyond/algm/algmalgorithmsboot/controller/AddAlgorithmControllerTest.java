@@ -56,4 +56,12 @@ public class AddAlgorithmControllerTest {
                 .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
         System.out.println(result);
     }
+    //算法新增
+    @Test
+    public void modStar() throws Exception{
+        String result = this.mockMvc.perform(post("/module/star").contentType(MediaType.APPLICATION_JSON)
+                .param("modSn","qqq1"))
+                .andExpect(status().is(200)).andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 }

@@ -25,4 +25,18 @@ public interface KubernetesService {
      * @throws AlgException
      */
     void makeK8sService(String modId, String usrCode, String version) throws AlgException;
+
+    /**
+     * kubernetes 创建 命名空间
+     * @param usrCode
+     * @throws AlgException
+     */
+    void makeK8sNamespace(String usrCode) throws AlgException;
+
+    /**
+     * kubernetes 创建 以用户code为命名空间 docker拉取镜像密钥
+     * @param usrCode
+     * @throws AlgException
+     */
+    void makeK8sSecretForNamespace(String usrCode) throws AlgException;
 }

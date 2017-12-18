@@ -1,6 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.infra;
 
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.model.AlgUser;
 
 import java.util.Map;
 
@@ -13,19 +14,22 @@ public interface PublishService {
      * @param modId 算法模块Id
      * @param modDesc 项目描述
      * @param version
+     * @param curUsrCode  当前登录用户变化
+     * @param isOrg
      * @throws Exception
      */
-    void initBootProject(String lanSn, String userCode, String modId, String modDesc, String version) throws AlgException;
+    void initBootProject(String lanSn, String userCode, String modId, String modDesc, String version,String curUsrCode,String isOrg) throws AlgException;
 
 
     /**
      * 算法发布统一入口
+     * @param algUser 当前登录用户信息实体
      * @param modId 算法英文名称
      * @param usrCode 用户英文名称
      * @param verMark H,L,M 对应高、中、低
      * @throws AlgException
      */
-    void publishModule(String modId,String usrCode,String verMark) throws AlgException;
+    void publishModule(AlgUser algUser,String modId, String usrCode, String verMark) throws AlgException;
 
     /**
      * 通过参数获取版本号和版权费用

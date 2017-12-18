@@ -8,6 +8,7 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgAuthCodeDomain;
 import com.beyond.algm.model.AlgUser;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,9 +36,11 @@ public class AuthCodeController extends BaseController {
     private AuthCodeDomainService authCodeDomainService;
 
     @RequestMapping(value = "/listAuthCode", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result listAuthCode() throws AlgException {
+    public Result<PageInfo<AlgAuthCode>> listAuthCode(PageInfo pageInfo) throws AlgException {
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser algUser = getUserInfo();
-        List<AlgAuthCode> result = authCodeService.listUserAuthCode(algUser.getUsrSn());
+        PageInfo<AlgAuthCode> result = authCodeService.listUserAuthCode(algUser.getUsrSn(),pageInfo);
         return Result.ok(result);
     }
 

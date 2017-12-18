@@ -1,16 +1,19 @@
 package com.beyond.algm.algmdataboot.controller;
 
 
-
 import com.beyond.algm.algmdataboot.base.BaseController;
 import com.beyond.algm.algmdataboot.infra.AuthService;
+import com.beyond.algm.algmdataboot.infra.ModelSetService;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
+import com.beyond.algm.common.ResultEnum;
 import com.beyond.algm.exception.AlgException;
-import com.beyond.algm.model.AlgData;
+import com.beyond.algm.model.AlgModel;
+import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgModelSetVo;
 import com.beyond.algm.vo.ModelDataVo;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -19,14 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import com.beyond.algm.common.ResultEnum;
-import com.beyond.algm.algmdataboot.infra.ModelSetService;
-import com.beyond.algm.model.AlgModelSet;
-import com.beyond.algm.model.AlgModel;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -75,7 +72,7 @@ public class ModelSetController  extends BaseController {
      * @param： String modelSetSn
      * @date ：19:56 2017/10/18
      */
-    @RequestMapping(value = "/deleteModelSet", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deleteModelSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<Object>  deleteModelSet(String modelSetSn) throws AlgException{
         AlgUser algUser = getUserInfo();
         AlgModel algModel=new AlgModel();
@@ -99,7 +96,8 @@ public class ModelSetController  extends BaseController {
         logger.info("模型串号：{}");
         try {
             AlgUser algUser = getUserInfo();
-            Result result = modelSetService.addAlgModel(algModel);
+            algModel.setUsrSn(algUser.getUsrSn());
+            Result result = modelSetService.addAlgModel(algModel,algUser.getUsrCode());
             return result;
         } catch (Exception e) {
             logger.info("添加模型失败", e);
@@ -113,7 +111,7 @@ public class ModelSetController  extends BaseController {
      * @param: String modelSn
      * @date: 19:09 2017/10/18
      */
-    @RequestMapping(value = "/deleteModel", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deleteModel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result deleteModel(String modelSn)throws AlgException {
         AlgUser algUser = getUserInfo();
         // 预留方法判断是否是本人
@@ -149,11 +147,12 @@ public class ModelSetController  extends BaseController {
      * @date : 14:15 2017/10/21
      */
     @RequestMapping(value = "/queryModelSet", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result queryModelSet() throws AlgException{
+    public Result<PageInfo<AlgModelSetVo>> queryModelSet(PageInfo pageInfo) throws AlgException{
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         logger.info("查询用户的模型集");
         AlgUser algUser = getUserInfo();
-        List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet(algUser.getUsrSn());
-       // List<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet("8ec99d9819744a8aa0db947a6be6db4c");
+        PageInfo<AlgModelSetVo> AlgModelSetVoList=modelSetService.queryAlgModelSet(algUser.getUsrSn(), pageInfo);
         return Result.ok(AlgModelSetVoList);
     }
 
@@ -163,7 +162,9 @@ public class ModelSetController  extends BaseController {
      * @date : 14:18 2017/10/21
      */
     @RequestMapping(value = "/queryModel", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result<Object> queryModel(String modelSetSn)throws AlgException{
+    public Result<PageInfo<ModelDataVo>> queryModel(String modelSetSn,PageInfo pageInfo)throws AlgException{
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser algUser = getUserInfo();
         // 预留方法判断是否是本人
         logger.info("模型集串号：{},用户ID:{}",modelSetSn,algUser.getUsrSn());
@@ -171,7 +172,7 @@ public class ModelSetController  extends BaseController {
        algModelSet.setUsrSn(algUser.getUsrSn());
        //  algModelSet.setUsrSn("8ec99d9819744a8aa0db947a6be6db4c");
         algModelSet.setModelSetSn(modelSetSn);
-        List<ModelDataVo> mdelDataVoList=modelSetService.queryAlgModel(algModelSet);
+        PageInfo<ModelDataVo> mdelDataVoList=modelSetService.queryAlgModel(algModelSet, pageInfo);
         return Result.ok(mdelDataVoList);
     }
 
@@ -228,48 +229,20 @@ public class ModelSetController  extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：9:14 2017/11/09
      */
-    @RequestMapping(value="/{usrCode}/{modId}/modeldata", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result modeldata(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId,ModelDataVo modelDataVo ) throws AlgException {
+    @RequestMapping(value="/{usrCode}/{modId}/modeldata", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result modeldata(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId,PageInfo pageInfo) throws AlgException {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
         AlgUser algUser = modelSetService.findByUsrCode(usrCode);
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         if(Assert.isNULL(algUser)){
             String[] checkMessage = {"查询结果为空",""};
             throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);
         }
+        ModelDataVo modelDataVo =new ModelDataVo();
         modelDataVo.setUsrSn(algUser.getUsrSn());
-        List<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo);
+        PageInfo<ModelDataVo> mdelDataVoList=modelSetService.queryModelDataSet(modelDataVo,pageInfo);
         return  Result.ok(mdelDataVoList);
     }
-    /**
-     * @author ：zhangchuanzhi
-     * @Description: 数据文件增加
-     * @param：modelName模型名称，modelUuid模型主键
-     */
-    @RequestMapping(value = "/modelUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result dataFileUpload(MultipartFile file,String modelName ,String modelUuid) throws AlgException {
-        AlgUser algUser = getUserInfo();
-        AlgModel algModel =new AlgModel();
-        algModel.setModelEnName(file.getOriginalFilename());
-        algModel.setUsrSn(algUser.getUsrSn());
-        algModel.setModelSetSn(modelUuid);
-        // 留存权限接口
-        int count =modelSetService.checkFileName(algModel);
-        modelSetService.uploadModelSet(file,algUser.getUsrCode(),modelName,modelUuid,algUser.getUsrSn());
-        return Result.successResponse();
-    }
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description: 模型下载
-     */
-    @RequestMapping(value = "/{usrCode}/{modelSet}/{fileName}/modelDownUpload", method = RequestMethod.GET)
-    public Result modelDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet,@PathVariable("fileName") String fileName,HttpServletResponse response) throws AlgException {
-        AlgUser algUser = getUserInfo();
-        // 权限控制
-        authService.isModelByUser( usrCode, algUser.getUsrCode(), algUser.getUsrSn(), modelSet, fileName);
-        modelSetService.downModelUrl(algUser.getUsrSn(), modelSet, fileName,usrCode,response);
-        return Result.successResponse();
-    }
-
 
 }

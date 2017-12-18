@@ -7,6 +7,9 @@ import com.beyond.algm.mapper.AlgAuthCodeDomainMapper;
 import com.beyond.algm.mapper.AlgAuthCodeMapper;
 import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgAuthCodeDomain;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,16 +41,6 @@ public class AuthCodeServiceImpl implements AuthCodeService {
         algAuthCode.setCreateDate(new Date());
         //将对象AuthCode插入数据库
         algAuthCodeMapper.insert(algAuthCode);
-
-        //插入默认的Url “algo://*”
-        /*AlgAuthCodeDomain algAuthCodeDomainDefault  = new AlgAuthCodeDomain();
-        String addSnDefault = UUIDUtil.createUUID();
-        algAuthCodeDomainDefault.setAddSn(addSnDefault);
-        algAuthCodeDomainDefault.setAcdSn(algAuthCode.getAcdSn());
-        algAuthCodeDomainDefault.setAddUrl("algo://*");
-        //Result resultDomainDefault = authCodeDomainService.createAuthCodeDomain(algAuthCodeDomainDefault);
-        algAuthCodeDomainMapper.insert(algAuthCodeDomainDefault);*/
-
         //插入全部允许调用算法Url的路径
         addUrl(algAuthCode, addUrl);
     }
@@ -90,9 +83,10 @@ public class AuthCodeServiceImpl implements AuthCodeService {
     }
 
     @Override
-    public List<AlgAuthCode> listUserAuthCode(String usrSn) {
-        List<AlgAuthCode> userAllAuthCode = algAuthCodeMapper.selectByUsrSnKey(usrSn);
-        return userAllAuthCode;
+    public PageInfo<AlgAuthCode> listUserAuthCode(String usrSn, PageInfo pageInfo) {
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+        Page<AlgAuthCode> userAllAuthCode = algAuthCodeMapper.selectByUsrSnKey(usrSn);
+        return new PageInfo<>(userAllAuthCode);
     }
 
     private void addUrl(AlgAuthCode algAuthCode, String[] addUrl) {

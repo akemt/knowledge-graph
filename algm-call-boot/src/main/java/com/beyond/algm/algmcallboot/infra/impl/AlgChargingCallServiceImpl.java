@@ -1,6 +1,7 @@
 package com.beyond.algm.algmcallboot.infra.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.beyond.algm.algmcallboot.call.AlgmHttpCall;
 import com.beyond.algm.algmcallboot.infra.AlgChargingCallService;
 import com.beyond.algm.algmcallboot.model.*;
 import com.beyond.algm.algmcallboot.repository.*;
@@ -9,7 +10,9 @@ import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.List;
 
@@ -32,83 +35,71 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
     private RocketMQServiceImpl rocketMQService;
     @Autowired
     private AlgAuthCodeRepository algAuthCodeRepository;
+    @Value("${server.base.url}")
+    private String baseUrl;
 
     /**
      * lindewei
      * API调用计费
      */
-    public AlgResult addChargingCall(String usrCode,String modId,String version,String keyValue) throws AlgException{
+    public AlgResult addChargingCall(String usrCode, String modId, String version, String keyValue, String jsonStr) throws AlgException {
         //定义返回结果对象
-        AlgResult algResult =new AlgResult();
+        AlgResult algResult = new AlgResult();
         //获取用户信息
-        AlgUser algUser =algUserRepository.findByUsrCode(usrCode);
+        AlgUser algUser = algUserRepository.findByUsrCode(usrCode);
         log.info("获取用户信息，用户名:{},中文名:{}", algUser.getUsrCode(), algUser.getUsrName());
         //获取调用者的串号
         String usrSn = algAuthCodeRepository.findByAcdId(keyValue);
         log.info("获取调用者的串号:{}", usrSn);
         //权限验证
-        if(!isPower(algUser,modId,version,keyValue)){
-             algResult.setResult("没有权限。");
-            return algResult;
-        }
+        isAuthByCall(algUser, modId, version, keyValue);
         log.info("权限验证通过");
 
         //获取该项目的algModule对象
-        AlgModule algModule =algModuleRepository.findByModSn(algUser.getUsrSn(),modId);
+        AlgModule algModule = algModuleRepository.findByModSn(algUser.getUsrSn(), modId);
         log.info("获取该项目的algModule对象，modId:{}", algModule.getModId());
 
         //分解版本
-        Integer verCodeL1 = Integer.valueOf(version.substring(0,version.indexOf(".")));
-        Integer verCodeL2 = Integer.valueOf(version.substring(version.indexOf(".")+1,version.indexOf(".",
-                version.lastIndexOf("."))));
-        Integer verCodeL3 = Integer.valueOf(version.substring(version.lastIndexOf(".")+1,version.length()));
+        String[] versions = version.split("\\.");
+        int verCodeL1 = Integer.valueOf(versions[0]);
+        int verCodeL2 = Integer.valueOf(versions[1]);
+        int verCodeL3 = Integer.valueOf(versions[2]);
         log.info("分解版本，verCodeL1:{},verCodeL2:{},verCodeL3:{}", verCodeL1, verCodeL2, verCodeL3);
 
         //判断调用的方法是否存在。
-        if(!isVersion(algModule.getModSn(),verCodeL1,verCodeL2,verCodeL3)){
-            algResult.setResult("该调用的方法不存在。");
-            return algResult;
-        }
+        isVersionExistence(algModule.getModSn(), verCodeL1, verCodeL2, verCodeL3);
         log.info("调用的方法存在");
 
         //获取版本信息
-        AlgModuleVersion algModuleVersion = algModuleVersionRepository.verLoyaltyFee(algModule.getModSn(),verCodeL1,verCodeL2,verCodeL3);
+        AlgModuleVersion algModuleVersion = algModuleVersionRepository.verLoyaltyFee(algModule.getModSn(), verCodeL1, verCodeL2, verCodeL3);
         log.info("分解版本，verCodeL1:{},verCodeL2:{},verCodeL3:{}", verCodeL1, verCodeL2, verCodeL3);
 
         //判断public还是private；
-        if("0".equals(algModuleVersion.getIsOwn())){
+        if ("0".equals(algModuleVersion.getIsOwn())) {
             algResult.setResult("该算法不公开，不可调用。");
             return algResult;
         }
         log.info("判断是public");
 
         //查询平台收费单价
-        String unitPrice = algDicRepository.findByDicSn("price","price_default");
+        String unitPrice = algDicRepository.findByDicSn("price", "price_default");
 
         //开始调用
-        Long startTime =  new Date().getTime();
-
-        //TODO 用户调用方法，去执行的接口。
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-        }
-        algResult.setResult("执行结果成功。");//TODO 放入调用方法后的结果
+        Long startTime = new Date().getTime();
+        String result = new AlgmHttpCall(usrCode, modId, version, baseUrl, jsonStr).send();
+        algResult.setResult(result);
         //结束调用
-        Long endTime =  new Date().getTime();
+        Long endTime = new Date().getTime();
         //计算时间差
         Long timeDif = endTime - startTime;
 
         //查询用户当前积分信息。
         AlgAccount algAccount = algAccountRepository.findByUsrSn(algUser.getUsrSn());
         log.info("查询用户当前积分信息,积分串号:{}", algAccount.getAccSn());
-
         //计算调用总价钱
-        Float total = Float.valueOf(unitPrice).floatValue() * timeDif + algModuleVersion.getVerLoyaltyFee();
+        Float total = Float.valueOf(unitPrice).floatValue() * timeDif + (Assert.isEmpty(algModuleVersion.getVerLoyaltyFee())?new Float(0):algModuleVersion.getVerLoyaltyFee());
 
-        if(algAccount.getCashBal() >= total){
+        if (algAccount.getCashBal() >= total) {
             //定义json、赋值。
             JSONObject algUserCall = new JSONObject();
             algUserCall.put("umcSn", UUIDUtil.createUUID());//调用串号
@@ -135,14 +126,14 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
 
             //todo 加对象锁，防止用户账户损失
             //更新用户账户余额
-            int flg = algAccountRepository.updateUsrSnByCashBal(remainingCost,algUser.getUsrSn());
+            int flg = algAccountRepository.updateUsrSnByCashBal(remainingCost, algUser.getUsrSn());
             log.info("更新用户账户余额是否成功:{}", flg);
-            if( flg < 0){
+            if (flg < 0) {
                 algResult.setResult("余额扣除失败，调用失败。");
                 return algResult;
             }
 
-        }else {
+        } else {
             algResult.setResult("余额不足，调用失败。");
         }
         //返回调用结果
@@ -153,14 +144,12 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
      * lindewei
      * 判断调用的方法是否存在。
      */
-    public Boolean isVersion(String modSn,Integer verCodeL1,Integer verCodeL2,Integer verCodeL3)throws AlgException{
+    public void isVersionExistence(String modSn, Integer verCodeL1, Integer verCodeL2, Integer verCodeL3) throws AlgException {
         //查询数据库记录
-        Long count = algModuleVersionRepository.findByVerSnCount(modSn,verCodeL1,verCodeL2,verCodeL3);
+        Long count = algModuleVersionRepository.findByVerSnCount(modSn, verCodeL1, verCodeL2, verCodeL3);
         //判断是否存在
-        if(count > 0){
-            return true;//存在
-        }else {
-            return false;//不存在
+        if (count <= 0) {
+            throw new AlgException("BEYOND.ALG.CALL.COMMON.CHARGING.0000001");
         }
     }
 
@@ -168,35 +157,36 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
      * lindewei
      * 权限验证
      */
-    public Boolean isPower(AlgUser algUser,String modId,String version,String keyValue)throws AlgException{
+    public void isAuthByCall(AlgUser algUser, String modId, String version, String keyValue) throws AlgException {
         //获取algAuthCodeDomain对象集
-        List<String> algAuthCodeDomain = algAuthCodeDomainRepository.findByAddSn(algUser.getUsrSn(),keyValue);
-         //判断algAuthCodeDomain对象是否为空
-         if(Assert.isNotEmpty(algAuthCodeDomain)){
-             //权限路径
-             String str1 = null;
-             //调用方法路径
-             String str2 = "algo://" + algUser.getUsrCode() + "/" + modId + "/" + version + "/";
-
-             for(String url:algAuthCodeDomain){
-                 str1 = url;
-                 //如果权限路径不含有"*",进行判断
-                 if(str1.indexOf("*") != -1){
-                     str1 = str1.substring(0,str1.indexOf("*"));
-                 }
-                 //判断是否包含
-                 if(str2.indexOf(str1) != -1)
-                 {
-                     // 如果包含，说明有权限直接返回true
-                     return true;
-                 }
-             }
-             // 如果循环没有循环没有return，说明不包含，故没有权限直接返回false
-             return false;
-
-         }else {
-             //判断algAuthCodeDomain对象是为空,直接返回false
-             return false;
-         }
+        List<String> algAuthCodeDomain = algAuthCodeDomainRepository.findByAddSn(algUser.getUsrSn(), keyValue);
+        //判断algAuthCodeDomain对象是否为空
+        if (Assert.isNotEmpty(algAuthCodeDomain)) {
+            //权限路径
+            String str1 = null;
+            //调用方法路径
+            String str2 = "algm://" + algUser.getUsrCode() + "/" + modId + "/" + version + "/";
+            boolean result = true;
+            for (String url : algAuthCodeDomain) {
+                str1 = url;
+                //如果权限路径不含有"*",进行判断
+                if (str1.indexOf("*") != -1) {
+                    str1 = str1.substring(0, str1.indexOf("*"));
+                }
+                //判断是否包含
+                if (str2.indexOf(str1) != -1) {
+                    // 如果包含，说明有权限直接返回true
+                    result =false;
+                    break;
+                }
+            }
+            // 如果循环没有循环没有return，说明不包含，故没有权限直接返回false
+            if(result){
+                throw new AlgException("BEYOND.ALG.CALL.COMMON.CHARGING.0000002");
+            }
+        } else {
+            //判断algAuthCodeDomain对象是为空,直接返回false
+            throw new AlgException("BEYOND.ALG.CALL.COMMON.CHARGING.0000003");
+        }
     }
 }

@@ -7,20 +7,17 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
  */
 
 
-
-
 import com.beyond.algm.algmalgorithmsboot.infra.UseAlgorithmService;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgRUserModuleCallTransMapper;
 import com.beyond.algm.vo.AlgRUserModuleCallTransVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
-import java.util.List;
 
 
 @Service
@@ -36,12 +33,12 @@ public class UseAlgorithmServiceImpl implements UseAlgorithmService {
      * @date ：13:16 2017/10/12
      */
     @Override
-    public List<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo)throws AlgException{
+    public PageInfo<AlgRUserModuleCallTransVo> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,PageInfo pageInfo)throws AlgException{
         //分页处理
-        PageHelper.startPage(algRUserModuleCallTransVo.getPage(), algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+        Page<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
 
-        return lgRUserModuleCallTransList;
+        return new PageInfo<>(lgRUserModuleCallTransList);
     }
 
     /**
@@ -52,11 +49,11 @@ public class UseAlgorithmServiceImpl implements UseAlgorithmService {
      * @date ：17:34 2017/10/12
      */
    @Override
-    public List<AlgRUserModuleCallTransVo> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo)throws AlgException {
+    public PageInfo<AlgRUserModuleCallTransVo> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,PageInfo pageInfo)throws AlgException {
         //分页处理
-        PageHelper.startPage(algRUserModuleCallTransVo.getPage(), algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
-        return lgRUserModuleCallTransList;
+       PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+       Page<AlgRUserModuleCallTransVo> lgRUserModuleCallTransList=algRUserModuleCallTransMapper.selectAlgorithmRecord(algRUserModuleCallTransVo);
+        return new PageInfo<>(lgRUserModuleCallTransList);
     }
 }
 

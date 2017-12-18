@@ -32,15 +32,8 @@ public class JavaModuleAdapter implements ModuleAdapter {
 
 
     @Override
-    public void createModule(String username, String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel,String active) throws AlgException {
-        FileUtil.createDir(gitConfigModel.getLocalBasePath());
-
-        // 以用户名作为用户子目录名
-        String userPath = gitConfigModel.getLocalBasePath() + File.separator + username;
-        FileUtil.createDir(userPath);
-
-        // 以项目名作为项目子目录名
-        String projectPath = userPath + File.separator + projectName;
+    public void createModule(String projectPath, String username,String projectName, GitConfigModel gitConfigModel, ProjectConfigModel projectConfigModel,String active) throws AlgException {
+        //创建项目路径
         FileUtil.createDir(projectPath);
 
         // 先将直接拷贝的文件复制到目录下

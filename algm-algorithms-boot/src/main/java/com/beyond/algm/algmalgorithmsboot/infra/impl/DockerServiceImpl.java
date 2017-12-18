@@ -73,7 +73,7 @@ public class DockerServiceImpl implements DockerService {
             }
             // 生成pom.xml文件
             FreemarkerUtil.createFile(templatePath, lanName+"-"+"Dockerfile.ftl", targetPath, "Dockerfile", paramMap);
-           } catch (Exception e) {
+        } catch (Exception e) {
             throw new AlgException(e);
         }
     }

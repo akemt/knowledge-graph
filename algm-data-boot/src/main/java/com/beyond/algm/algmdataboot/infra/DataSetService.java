@@ -8,7 +8,8 @@ import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgDataDownLoadVo;
 import com.github.pagehelper.Page;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -22,13 +23,13 @@ public interface DataSetService {
      * @author ：lindewei
      * @Description: 我的数据集tree
      */
-    List<AlgDataSet> getDataSet(String usrSn) throws AlgException;
+    PageInfo<AlgDataSet> getDataSet(String usrSn, PageInfo pageInfo) throws AlgException;
 
     /**
      * @author ：lindewei
      * @Description: 我的数据List
      */
-    List<AlgData> getData(String usrSn) throws AlgException;
+    PageInfo<AlgData> getData(String usrSn, PageInfo pageInfo) throws AlgException;
 
     /**
      * @author ：lindewei
@@ -40,19 +41,19 @@ public interface DataSetService {
      * @author ：lindewei
      * @Description: 删除数据
      */
-    Result deleteData(String dataSn) throws AlgException;
+    int deleteData(AlgData algData) throws AlgException;
 
     /**
      * @author ：lindewei
      * @Description: 删除当前数据集
      */
-    Result deleteDataSet(String dataSetSn) throws AlgException;
+    int deleteDataSet(AlgDataSet algDataSet) throws AlgException;
 
     /**
      * @author ：lindewei
      * @Description: 点击数据集关联查询数据
      */
-    Result queryAlgDatabySet(String dataSetSn) throws AlgException;
+    PageInfo queryAlgDatabySet(String dataSetSn, PageInfo pageInfo) throws AlgException;
 
     /**
      * @author ：lindewei
@@ -82,35 +83,4 @@ public interface DataSetService {
      */
     List<AlgDataSet>  dataSetId(String usrSn,String dataSetName )throws AlgException;
 
-    /**
-     * @author ：zhangchuanzhi
-     * @Description: 个人数据文件上传
-     * @param： String dataSn
-     * @date ： 2017-10-22 21:54:06
-     */
-    void uploadDateSet(MultipartFile file, String usrCode,String dataSetName,String dataUuid,String usrSn) throws AlgException;
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:检查文件上传名字
-     * @param： String dataSn
-     * @date ： 2017-12-06 21:54:06
-     */
-    int checkFileName(AlgData algData) throws AlgException;
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:查找数据url
-     * @param： String usrSn，dataSetName
-     * @date ： 2017-12-06 21:54:06
-     */
-    String  dataUrl(AlgData algData)throws AlgException;
-
-
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:用户下载数据
-     * @param： String usrSn，dataSetName
-     * @date ： 2017-12-06 21:54:06
-     */
-    void  downDataUrl(String  usrSn,String dataSet,String fileName,String usrCode,HttpServletResponse response)throws AlgException;
 }

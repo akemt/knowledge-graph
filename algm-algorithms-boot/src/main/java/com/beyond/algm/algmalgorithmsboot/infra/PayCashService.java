@@ -4,6 +4,8 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.*;
 import com.beyond.algm.vo.PayRecordVo;
 import com.beyond.algm.vo.PayVo;
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -14,7 +16,7 @@ import java.util.List;
  * @date ：13:32 2017/9/25
  */
 public interface PayCashService {
-      List<AlgCashTrans> payRecord(PayRecordVo payRecordVo)throws AlgException;
+      PageInfo<AlgCashTrans> payRecord(PayRecordVo payRecordVo,PageInfo pageInfo)throws AlgException;
       void buyIntegral(PayVo payVo)throws AlgException;
       /**
        * @author :lindw

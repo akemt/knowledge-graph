@@ -25,9 +25,9 @@ public class OrgServiceImplTest {
     public void createOrgTest() throws AlgException {
 
         AlgUser org = new AlgUser();
-        org.setUsrCode("testOrg2");
-        org.setUsrName("测试组织2");
-        org.setEmail("test@qq.com");
+        org.setUsrCode("testOrg3");
+        org.setUsrName("测试组织3");
+        org.setEmail("test1@qq.com");
 
         AlgUser owner = new AlgUser();
         owner.setUsrSn("64bd0e5ee1a6409f97d12c271bb8fa68");
@@ -75,8 +75,8 @@ public class OrgServiceImplTest {
     @Test
     public void getOrgListTest() {
         PageRequest pageRequest = new PageRequest(0, 10);
-        PageInfo<OrgVo> result = orgService.getOrgList("64bd0e5ee1a6409f97d12c271bb8fa68", pageRequest);
-        System.out.println(JSONObject.toJSONString(result));
+        /*PageInfo<OrgVo> result = orgService.getOrgList("64bd0e5ee1a6409f97d12c271bb8fa68", pageRequest);
+        System.out.println(JSONObject.toJSONString(result));*/
     }
 
     @Test

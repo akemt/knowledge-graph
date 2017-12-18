@@ -5,6 +5,7 @@ import com.beyond.algm.vo.OrgVo;
 import com.github.pagehelper.Page;
 
 import java.util.List;
+import java.util.Map;
 
 public interface AlgUserMapper {
     int deleteByPrimaryKey(String usrSn);
@@ -71,5 +72,22 @@ public interface AlgUserMapper {
      *
      * @param usrCode
      */
-    List<AlgUser> selectOwnOrganize(String usrCode);
+    List<Map<String,Object>> selectOwnOrganize(String usrCode);
+
+    /**
+     * 根据组织编码获取组织个数
+     *
+     * @param
+     * @return
+     */
+    int countOrgCode(String usrCode,String sessionUsrCode);
+
+    /**
+     * 获取用户默认空间
+     *
+     * @param
+     * @return
+     */
+    String userSpace(String code);
+
 }

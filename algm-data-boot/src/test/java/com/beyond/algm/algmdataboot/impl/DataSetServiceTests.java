@@ -26,13 +26,13 @@ public class DataSetServiceTests {
     //我的数据集tree
     @Test
     public void getDataSetTest() throws Exception {
-        dataSetService.getDataSet("37bf2269ee4845da8e86861bbde2438a");
+        //dataSetService.getDataSet("37bf2269ee4845da8e86861bbde2438a");
     }
 
     //我的数据集tree
     @Test
     public void getDataTest() throws Exception {
-        dataSetService.getData("37bf2269ee4845da8e86861bbde2438a");
+        //dataSetService.getData("37bf2269ee4845da8e86861bbde2438a");
     }
 
     //添加数据集
@@ -47,19 +47,19 @@ public class DataSetServiceTests {
     //删除数据
     @Test
     public void deleteDataTest() throws Exception {
-        dataSetService.deleteData("aa");
+        //dataSetService.deleteData("aa");
     }
 
     //删除当前数据集
     @Test
     public void deleteDataSetTest() throws Exception {
-        dataSetService.deleteDataSet("999");
+        //dataSetService.deleteDataSet("999");
     }
 
     //点击数据集关联查询数据
     @Test
     public void queryAlgDatabySetTest() throws Exception {
-        dataSetService.queryAlgDatabySet("777");
+        //dataSetService.queryAlgDatabySet("777");
     }
 
     //新增数据

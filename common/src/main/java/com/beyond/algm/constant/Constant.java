@@ -27,9 +27,11 @@ public class Constant {
     //maven 打包后生成的target目录
     public static final String TARGET = "target";
 
-    public final static Map map = new HashMap();
+    //编译文件map
+    public final static Map buildMap = new HashMap();
+
     static {
-        map.put("Java", "build.xml");
-        map.put("C", "value2");
+        buildMap.put("Java", "build.xml");
+        buildMap.put("C", "value2");
     }
 }

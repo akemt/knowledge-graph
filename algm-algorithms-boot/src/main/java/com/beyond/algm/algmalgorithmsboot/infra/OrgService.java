@@ -4,7 +4,6 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.OrgVo;
 import com.github.pagehelper.PageInfo;
-import org.springframework.data.domain.Pageable;
 
 public interface OrgService {
 
@@ -47,10 +46,10 @@ public interface OrgService {
      * 获取组织列表
      *
      * @param usrSn    用户串号
-     * @param pageable 分页信息
+     * @param pageInfo 分页信息
      * @return 组织列表
      */
-    PageInfo<OrgVo> getOrgList(String usrSn, Pageable pageable);
+    PageInfo<OrgVo> getOrgList(String usrSn, PageInfo pageInfo);
 
     /**
      * 为组织添加成员

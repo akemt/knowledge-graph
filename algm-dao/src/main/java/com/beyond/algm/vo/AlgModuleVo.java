@@ -14,10 +14,17 @@ public class AlgModuleVo extends AlgModule {
     private String lanName;
     private String verCode;
     private String url;
-    private String dataUrl;
+    private String editUrl;
     private String usrCode;
     private long starCnt;
     private long followCnt;
     private long callCnt;
+    private String sourceCodeUrl;
+    private String callAlgorithmUrl;
+    private String isCollection;
+    private String evnName;
+    private String needWebName;
+    private String needCallOtherName;
+
 
 }

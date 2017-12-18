@@ -11,9 +11,6 @@ import lombok.Data;
 @Data
 public class ModelDataVo extends AlgModel{
     private String dataUrl;
-    private int page;
-    private int rows;
-    private int total;
     private String usrSn;
     private String createDate;
     private String dataName;

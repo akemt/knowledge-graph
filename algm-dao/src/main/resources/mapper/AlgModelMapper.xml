@@ -14,6 +14,7 @@
     <result column="model_size" property="modelSize" jdbcType="VARCHAR" />
     <result column="is_open_src" property="isOpenSrc" jdbcType="VARCHAR" />
     <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="model_credit" property="modelCredit" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="queryForListMap" type="com.beyond.algm.vo.ModelDataVo" extends="BaseResultMap">
     <result column="data_addr" jdbcType="VARCHAR" property="dataUrl" />
@@ -33,12 +34,12 @@
     insert into alg_model (model_sn, dat_sn, usr_sn, 
       model_set_sn, ver_sn, create_time, 
       model_address, model_name, model_en_name, 
-      model_size, is_open_src, comment
+      model_size, is_open_src, comment,model_credit
       )
     values (#{modelSn,jdbcType=VARCHAR}, #{datSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, 
       #{modelSetSn,jdbcType=VARCHAR}, #{verSn,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{modelAddress,jdbcType=VARCHAR}, #{modelName,jdbcType=VARCHAR}, #{modelEnName,jdbcType=VARCHAR}, 
-      #{modelSize,jdbcType=VARCHAR}, #{isOpenSrc,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}
+      #{modelSize,jdbcType=VARCHAR}, #{isOpenSrc,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR},#{modelCredit,jdbcType=INTEGER}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgModel" >
@@ -53,18 +54,19 @@
       model_en_name = #{modelEnName,jdbcType=VARCHAR},
       model_size = #{modelSize,jdbcType=VARCHAR},
       is_open_src = #{isOpenSrc,jdbcType=VARCHAR},
-      comment = #{comment,jdbcType=VARCHAR}
+      comment = #{comment,jdbcType=VARCHAR},
+      model_credit= #{modelCredit,jdbcType=INTEGER}
     where model_sn = #{modelSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select model_sn, dat_sn, usr_sn, model_set_sn, ver_sn, create_time, model_address, 
-    model_name, model_en_name, model_size, is_open_src, comment
+    model_name, model_en_name, model_size, is_open_src, comment,model_credit
     from alg_model
     where model_sn = #{modelSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select model_sn, dat_sn, usr_sn, model_set_sn, ver_sn, create_time, model_address, 
-    model_name, model_en_name, model_size, is_open_src, comment
+    model_name, model_en_name, model_size, is_open_src, comment,model_credit
     from alg_model
     where model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
   </select>
@@ -77,7 +79,7 @@
   </select>
 
   <select id="queryModel" resultMap="queryForListMap" parameterType="com.beyond.algm.model.AlgModel" >
-    select alg_model.model_sn, alg_model.dat_sn, alg_model.usr_sn, alg_model.model_set_sn, alg_model.ver_sn, date_format(alg_model.create_time,'%Y-%c-%d %h:%i:%s') create_time , alg_model.model_address,
+    select alg_model.model_credit,alg_model.model_sn, alg_model.dat_sn, alg_model.usr_sn, alg_model.model_set_sn, alg_model.ver_sn, date_format(alg_model.create_time,'%Y-%c-%d %h:%i:%s') create_time , alg_model.model_address,
     alg_model.model_name, alg_model.model_en_name, alg_model.model_size, alg_model.is_open_src, alg_model.comment,alg_data.data_name
     from alg_model left join  alg_data  on alg_data.data_sn =alg_model.dat_sn and alg_model.usr_sn =alg_data.usr_sn
     where alg_model.model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
@@ -125,4 +127,19 @@
     where model_sn = #{modelSn,jdbcType=VARCHAR}
           and usr_sn= #{usrSn,jdbcType=VARCHAR}
   </delete>
+
+  <select id="queryModelPage" resultMap="queryForListMap" parameterType="com.beyond.algm.model.AlgModel" >
+    select alg_model.model_credit,alg_model.model_sn, alg_model.dat_sn, alg_model.usr_sn, alg_model.model_set_sn, alg_model.ver_sn, date_format(alg_model.create_time,'%Y-%c-%d %h:%i:%s') create_time , alg_model.model_address,
+    alg_model.model_name, alg_model.model_en_name, alg_model.model_size, alg_model.is_open_src, alg_model.comment,alg_data.data_name
+    from alg_model left join  alg_data  on alg_data.data_sn =alg_model.dat_sn and alg_model.usr_sn =alg_data.usr_sn
+    where alg_model.model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
+    and  alg_model.usr_sn=#{usrSn,jdbcType=VARCHAR}
+  </select>
+
+  <select id="checkModelEnName" resultType="java.lang.Integer"  parameterType="java.lang.String"  >
+    select count(*)
+    from alg_model
+    where usr_sn = #{arg0,jdbcType=VARCHAR}
+    <if test="arg1 != null and arg1 !=''">and model_en_name = #{arg1,jdbcType=VARCHAR}</if>
+  </select>
 </mapper>

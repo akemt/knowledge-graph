@@ -1,15 +1,9 @@
 package com.beyond.algm.algmdataboot.infra.impl;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.Bucket;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.GetObjectRequest;
+
 import com.beyond.algm.algmdataboot.infra.DataSetService;
-import com.beyond.algm.algmdataboot.util.CephUtil;
 import com.beyond.algm.common.Assert;
-import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.common.Result;
-import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgDataMapper;
 import com.beyond.algm.mapper.AlgDataSetMapper;
@@ -22,16 +16,11 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -45,14 +34,6 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class DataSetServiceImpl implements DataSetService {
-    @Value("${ceph.host}")
-    private  String host;
-    @Value("${ceph.accessKey}")
-    private   String accessKey;
-    @Value("${ceph.secretKey}")
-    private  String secretKey;
-    @Value("${ceph.path}")
-    private  String path;
     @Autowired
     private AlgDataSetMapper algDataSetMapper;
     @Autowired
@@ -62,14 +43,18 @@ public class DataSetServiceImpl implements DataSetService {
 
     //我的数据集tree
     @Override
-    public List<AlgDataSet> getDataSet(String usrSn) throws AlgException{
-        return algDataSetMapper.selectAll(usrSn);
+    public PageInfo<AlgDataSet> getDataSet(String usrSn, PageInfo pageInfo) throws AlgException{
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+        Page<AlgDataSet> algDataSets = algDataSetMapper.selectAll(usrSn);
+        return new PageInfo<>(algDataSets);
     }
 
     //我的数据List
     @Override
-    public List<AlgData> getData(String usrSn) throws AlgException{
-        return algDataMapper.findDataList(usrSn);
+    public PageInfo<AlgData> getData(String usrSn, PageInfo pageInfo) throws AlgException{
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+        Page<AlgData> algData = algDataMapper.findDataList(usrSn);
+        return new PageInfo<>(algData);
     }
 
     //添加数据集
@@ -105,55 +90,30 @@ public class DataSetServiceImpl implements DataSetService {
 
     //删除数据
     @Override
-    public Result deleteData(String dataSn) throws AlgException {
-        try{
-            if(Assert.isEmpty(dataSn))
-            {
-                return Result.failure("数据串号为空");
-            }
-            algDataMapper.deleteByPrimaryKey(dataSn);
-        }catch(Exception e){
-            log.error("删除数据失败。数据串号：{}",dataSn,e);
-            throw new AlgException("BEYOND.ALG.DATA.COMMON.DEL.0000002",new String[]{});
-        }
-        return Result.successResponse();
+    public int deleteData(AlgData algData) throws AlgException {
+        int delData = algDataMapper.deleteData(algData);
+        return delData;
     }
 
     //删除当前数据集
     @Override
-    public Result deleteDataSet(String dataSetSn) throws AlgException {
-        try{
-            if(Assert.isEmpty(dataSetSn))
-            {
-                return Result.failure("数据集串号为空");
-            }
-            if(algDataMapper.dataCount(dataSetSn) != 0){
-                return Result.failure("数据集下存在数据，不允许删除！");
-            }
-            algDataSetMapper.deleteByPrimaryKey(dataSetSn);
-        }catch(Exception e){
-            log.error("删除数据失败。数据集串号：{}",dataSetSn,e);
-            throw new AlgException("BEYOND.ALG.DATASET.COMMON.DEL.0000003",new String[]{});
+    public int deleteDataSet(AlgDataSet algDataSet) throws AlgException {
+        if(Assert.isEmpty(algDataSet.getDataSetSn())){
+            throw new AlgException("BEYOND.ALG.DATA.PAY.STATUS.0000013");
         }
-        return Result.successResponse();
+        if(algDataMapper.dataCount(algDataSet.getDataSetSn()) != 0){
+            throw new AlgException("BEYOND.ALG.DATA.PAY.STATUS.0000014");
+        }
+       int delDataSet = algDataSetMapper.deleteDataSet(algDataSet);
+       return  delDataSet;
     }
 
     //点击数据集关联查询数据
     @Override
-    public Result queryAlgDatabySet(String dataSetSn) throws AlgException {
-        try {
-            Result result = new Result();
-            if(Assert.isEmpty(dataSetSn)) {
-                result.setMsg("数据集合串号为空");
-                return result;
-            }
-            List<AlgData> allAlgData = algDataMapper.queryAlgDatabySet(dataSetSn);
-            result.setData(allAlgData);
-            return result;
-        } catch (Exception e) {
-            log.error("获取所有数据集失败，模型集串号：{}",dataSetSn,e);
-            throw new AlgException("BEYOND.ALG.DATA.COMMON.FIND.0000004",new String[]{});
-        }
+    public PageInfo<AlgData> queryAlgDatabySet(String dataSetSn, PageInfo pageInfo) throws AlgException {
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+        Page<AlgData> algData = algDataMapper.queryAlgDatabySet(dataSetSn);
+        return new PageInfo<>(algData);
     }
 
     //新增数据
@@ -199,97 +159,6 @@ public class DataSetServiceImpl implements DataSetService {
         return allAlgData;
     }
 
-    /*@Override
-    public Result modifyData(AlgData algData) throws Exception {
-        try {
-            if (Assert.isEmpty(algData.getDataSn())) {
-                return Result.failure("数据串号为空！");
-            }
-            if (algDataMapper.checkDataEnName(algData) != 0 ){
-                return Result.failure("数据英文名已存在");
-            }
-            algDataMapper.updateByPrimaryKey(algData);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.failure("修改数据失败");
-        }
-        return Result.successResponse();
-    }*/
-    /**
-     * @author ：zhangchuanzhi
-     * @Description: 上传个人数据文件
-     * @param：
-     * @date ： 2017-10-22 21:54:06
-     */
-    @Override
-    @Transactional(rollbackFor = AlgException.class)
-    public void uploadDateSet(MultipartFile file, String usrCode,String dataSetName,String dataSetUuid,String usrSn) throws AlgException{
-        Float count=algUserMapper.selectCountSpace(usrCode);
-        Float fileSize= FileUtil.bytes2kb(file.getSize());
-          // 上传文件大于用户所剩存储空间
-         if(fileSize>count){
-             String[] checkMessage = {" 空间不足",""};
-             throw new AlgException("BEYOND.ALG.DATA.FILE.SPACE.0000007",checkMessage);
-
-         }
-        log.info("文件名:{},用户code:{},accessKey:{},secretKey:{},path:{},数据集合名称:{},数据集id:{},用户ID",file.getOriginalFilename(),usrCode,accessKey,secretKey,path,dataSetName,dataSetUuid,usrSn);
-        File targetFile = new File(path+file.getOriginalFilename());
-        if (!targetFile.exists()) {
-            targetFile.mkdirs();
-        }
-        try {
-            // 文件转存到硬盘
-            file.transferTo(targetFile);
-        } catch (Exception e) {
-            log.info("文件转存错误",e);
-        }
-        String key=dataSetName+"/"+file.getOriginalFilename();
-        String bucketName=usrCode;
-        AmazonS3 conn= CephUtil.connectCeph(accessKey,secretKey,host);
-        Bucket bucket=null;
-        if(!conn.doesBucketExistV2(bucketName)){
-            bucket=conn.createBucket(bucketName);
-        }
-        conn.putObject(bucketName,key,targetFile);
-        conn.setObjectAcl(bucketName,key, CannedAccessControlList.PublicRead);
-        String pathUrl=  conn.getUrl(bucketName,key).toString();
-        pathUrl= pathUrl.replace("http","data");
-        // 替换
-        log.info("保存路径：{}",pathUrl);
-        AlgUser user=new AlgUser();
-         // 增加占用空间
-        user.setUsrCode(usrCode);
-        user.setUsrUsedSpace(fileSize);
-        algUserMapper.updateSpace(user);
-        AlgData algData=new AlgData();
-        String uuid= UUIDUtil.createUUID();
-        log.info("生成数据主键:{}",uuid);
-        algData.setDataSn(uuid);
-        algData.setCreatTime(new Date());
-        algData.setDataName(file.getOriginalFilename());
-        algData.setUsrSn(usrSn);
-        algData.setDataSetSn(dataSetUuid);
-        algData.setDataAddr(pathUrl);
-        algData.setDataSize(fileSize.toString());
-        algDataMapper.insert(algData);
-        targetFile.delete();
-    }
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:检查文件上传名字
-     * @param： String dataSn
-     * @date ： 2017-12-06 21:54:06
-     */
-    @Override
-    public int checkFileName(AlgData algData) throws AlgException{
-      int count= algDataMapper.checkFileName(algData);
-      if(count>0){
-          String[] checkMessage = {" 文件名字重复",""};
-          throw new AlgException("BEYOND.ALG.DATA.FILE.NAME.0000006",checkMessage);
-      }
-      return  count;
-    }
-
     /**
      * @author ：zhangchuanzhi
      * @Description:获取数据集主键
@@ -306,75 +175,4 @@ public class DataSetServiceImpl implements DataSetService {
         return algDataSetList;
     }
 
-    /**
-     * @author ：zhangchuanzhi
-     * @Description:获取数据url
-     * @param： String algData
-     * @date ： 2017-12-06 21:54:06
-     */
-    @Override
-    public String  dataUrl(AlgData algData)throws AlgException{
-        String url= algDataMapper.dataUrl(algData);
-        return url;
-    }
-    /**
-     * @author ：zhangchuanzhii
-     * @Description:数据文件下载
-     * @param：
-     * @date ： 2017-12-06 21:54:06
-     */
-
-    @Override
-    public  void  downDataUrl(String  usrSn,String dataSet,String fileName,String usrCode,HttpServletResponse response)throws AlgException{
-/*        log.info("用户usrSn:{},用户数据集:{},accessKey:{},secretKey:{},path:{},用户usrCode{},文件名称：{}",usrSn,dataSet,accessKey,secretKey,path,usrCode,fileName);
-        List<AlgDataSet> algDataList =dataSetId(usrSn,dataSet);
-        AlgData algData=new AlgData();
-        algData.setUsrSn(usrSn);
-        algData.setDataName(fileName);
-        String url="";
-        for(AlgDataSet algDataSet:algDataList){
-            algData.setDataSn(algDataSet.getDataSetSn());
-            url=dataUrl(algData);
-            if(Assert.isNotEmpty(url)){
-                break;
-            }
-        }*/
-        String url=host+"/"+usrCode+"/"+dataSet+"/"+fileName;
-        log.info("生成url:{}",url);
-        if(Assert.isNotEmpty(url)){
-            AmazonS3 conn= CephUtil.connectCeph(accessKey,secretKey,host);
-            // 数据集+文件名
-            String key=dataSet+"/"+fileName;
-            File downloadFile=new File(path+fileName);
-            conn.getObject(
-                    new GetObjectRequest(usrCode, key),
-                    downloadFile
-            );
-            //设置响应头和客户端保存文件名
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("multipart/form-data");
-            response.setHeader("Content-Disposition", "attachment;fileName=" + fileName);
-            try {
-                //打开本地文件流
-                InputStream inputStream = new FileInputStream(downloadFile);
-                //激活下载操作
-                OutputStream os = response.getOutputStream();
-
-                //循环写入输出流
-                byte[] b = new byte[2048];
-                int length;
-                while ((length = inputStream.read(b)) > 0) {
-                    os.write(b, 0, length);
-                }
-
-                // 这里主要关闭。
-                os.close();
-                inputStream.close();
-            } catch (Exception e){
-            }
-        }else{
-            String[] checkMessage = {" 查询结果为空",""};
-            throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);
-        }
-    }
 }

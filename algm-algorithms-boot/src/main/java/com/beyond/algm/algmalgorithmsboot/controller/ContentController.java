@@ -1,17 +1,14 @@
 package com.beyond.algm.algmalgorithmsboot.controller;
 
 import com.beyond.algm.algmalgorithmsboot.base.BaseController;
-import com.beyond.algm.algmalgorithmsboot.infra.AlgorithmCollectAndRankService;
-import com.beyond.algm.algmalgorithmsboot.infra.AlgorithmDetailService;
-import com.beyond.algm.algmalgorithmsboot.infra.UseAlgorithmService;
-import com.beyond.algm.algmalgorithmsboot.infra.UserService;
+import com.beyond.algm.algmalgorithmsboot.infra.*;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.*;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +34,8 @@ public class ContentController extends BaseController {
     private AlgorithmDetailService algorithmDetailService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AuthService authService;
     /**
      * @author ：zhangchuanzhi
      * @Description:用户使用情况
@@ -44,12 +43,14 @@ public class ContentController extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：14:07 2017/10/11
      */
-    @RequestMapping(value="/algorithmRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) throws AlgException{
+    @RequestMapping(value="/algorithmRecord", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result<PageInfo<AlgRUserModuleCallTransVo>> algorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,PageInfo pageInfo) throws AlgException{
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser algUser = getUserInfo();
         algRUserModuleCallTransVo.setCallUsrSn(algUser.getUsrSn());
         log.info("调用用户id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getCallUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo);
+        PageInfo<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.algorithmRecord(algRUserModuleCallTransVo, pageInfo);
         return Result.ok(algRUserModuleCallTransList);
     }
     /**
@@ -59,12 +60,14 @@ public class ContentController extends BaseController {
      * @Modify By :zhangchuanzhi
      * @date ：17:07 2017/10/12
      */
-    @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Result earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo) throws AlgException{
+    @RequestMapping(value="/algorithmEarnRecord", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result<PageInfo<AlgRUserModuleCallTransVo>> earnRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo,PageInfo pageInfo) throws AlgException{
+        pageInfo.setPageNum(pageInfo.getPageNum()==0?1 : pageInfo.getPageNum());
+        pageInfo.setPageSize(pageInfo.getPageSize()==0?10 : pageInfo.getPageSize());
         AlgUser algUser = getUserInfo();
         algRUserModuleCallTransVo.setOwnerUsrSn(algUser.getUsrSn());
         log.info("算法创建者id:{},Page:{},Row:{}",algRUserModuleCallTransVo.getOwnerUsrSn(),algRUserModuleCallTransVo.getPage(),algRUserModuleCallTransVo.getRows());
-        List<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo);
+        PageInfo<AlgRUserModuleCallTransVo> algRUserModuleCallTransList= useAlgorithmService.earnRecord(algRUserModuleCallTransVo, pageInfo);
         return Result.ok(algRUserModuleCallTransList);
 
     }
@@ -125,12 +128,20 @@ public class ContentController extends BaseController {
     @RequestMapping(value="/{usrCode}/{modId}/algorithmdetail", method= RequestMethod.GET,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result getAlgorithmDetail(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId ) throws AlgException {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
-        AlgUser  algUser=userService.findByUsrCode(usrCode);
+        AlgUser algUser = getUserInfo();
         if(Assert.isNotNULL(algUser)){
+            authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
             AlgorithmDetailVo algorithmDetailVo=new AlgorithmDetailVo();
-            algorithmDetailVo.setModId(modId);
-            algorithmDetailVo.setUsrSn(algUser.getUsrSn());
-            algorithmDetailVo.setUsrCode(usrCode);
+            if(!usrCode.equals(algUser.getUsrCode())){
+                algorithmDetailVo.setModId(modId);
+                AlgUser group= userService.findByUsrCode(usrCode);
+                algorithmDetailVo.setUsrSn(group.getUsrSn());
+                algorithmDetailVo.setUsrCode(usrCode);
+            }else{
+                algorithmDetailVo.setModId(modId);
+                algorithmDetailVo.setUsrSn(algUser.getUsrSn());
+                algorithmDetailVo.setUsrCode(usrCode);
+            }
             AlgModuleVo algModuleVo = algorithmDetailService.getAlgorithmDetail(algorithmDetailVo);
             if(Assert.isNULL(algModuleVo)){
                 String[] checkMessage = {"查询失败"};

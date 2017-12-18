@@ -38,10 +38,26 @@ public class PathServiceImpl implements PathService {
     }
 
     @Override
-    public String getModuleMainFilePath(String usrCode, String modId, String lanSn) throws AlgException {
+    public String getModuleBasePath(String orgCode, String modId,String usrCode,String isOrg) throws AlgException {
         //项目名称初始化Tree
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder = initBaseFolder(stringBuilder, gitConfigModel.getLocalBasePath(), usrCode, modId);
+
+        if("1".equals(isOrg)){
+            stringBuilder = initBaseFolder(stringBuilder, gitConfigModel.getLocalBasePath(), orgCode, modId);
+            stringBuilder.append(File.separator);
+            stringBuilder.append(usrCode);
+        }else{
+            stringBuilder = initBaseFolder(stringBuilder, gitConfigModel.getLocalBasePath(), usrCode, modId);
+        }
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public String getModuleMainFilePath(String basePath, String modId, String lanSn) throws AlgException {
+        //项目名称初始化Tree
+        //TODO 需要兼容多语言的目录
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(basePath);
         stringBuilder.append(File.separator);
         stringBuilder.append(src);
         stringBuilder.append(File.separator);
@@ -58,6 +74,15 @@ public class PathServiceImpl implements PathService {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder = initBaseFolder(stringBuilder, publishConfigModel.getLocalBasePath(), usrCode, modId);
         return stringBuilder.toString();
+    }
+
+    @Override
+    public String getOrgAlgBasePath(String orgUsrCode, String modId) throws AlgException {
+        StringBuffer  strUrlUsrCodeAndModId = new StringBuffer();
+        strUrlUsrCodeAndModId.append(orgUsrCode);
+        strUrlUsrCodeAndModId.append(File.separator);
+        strUrlUsrCodeAndModId.append(modId);
+        return strUrlUsrCodeAndModId.toString();
     }
 
     /**

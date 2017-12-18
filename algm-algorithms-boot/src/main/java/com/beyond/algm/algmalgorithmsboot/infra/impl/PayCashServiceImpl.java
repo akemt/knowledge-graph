@@ -23,7 +23,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.data.domain.Pageable;
 import java.util.Date;
 import java.util.List;
 
@@ -47,11 +50,11 @@ public class PayCashServiceImpl implements PayCashService {
      * @date ：15:09 2017/10/09
      */
     @Override
-    public List<AlgCashTrans> payRecord(PayRecordVo payRecordVo)throws AlgException {
+    public PageInfo<AlgCashTrans> payRecord(PayRecordVo payRecordVo,PageInfo pageInfo)throws AlgException {
        //分页处理
-        PageHelper.startPage(payRecordVo.getPage(), payRecordVo.getRows());
-        List<AlgCashTrans> algCashTransList=algCashTransMapper.payRecord(payRecordVo.getUsrSn());
-        return algCashTransList;
+        PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
+        Page<AlgCashTrans> algCashTransList=algCashTransMapper.payRecord(payRecordVo.getUsrSn());
+        return new PageInfo<>(algCashTransList);
     }
 
     /**
