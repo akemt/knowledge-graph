@@ -132,9 +132,16 @@ public class ContentController extends BaseController {
         if(Assert.isNotNULL(algUser)){
             authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
             AlgorithmDetailVo algorithmDetailVo=new AlgorithmDetailVo();
-            algorithmDetailVo.setModId(modId);
-            algorithmDetailVo.setUsrSn(algUser.getUsrSn());
-            algorithmDetailVo.setUsrCode(usrCode);
+            if(!usrCode.equals(algUser.getUsrCode())){
+                algorithmDetailVo.setModId(modId);
+                AlgUser group= userService.findByUsrCode(usrCode);
+                algorithmDetailVo.setUsrSn(group.getUsrSn());
+                algorithmDetailVo.setUsrCode(usrCode);
+            }else{
+                algorithmDetailVo.setModId(modId);
+                algorithmDetailVo.setUsrSn(algUser.getUsrSn());
+                algorithmDetailVo.setUsrCode(usrCode);
+            }
             AlgModuleVo algModuleVo = algorithmDetailService.getAlgorithmDetail(algorithmDetailVo);
             if(Assert.isNULL(algModuleVo)){
                 String[] checkMessage = {"查询失败"};
