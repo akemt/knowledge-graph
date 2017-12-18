@@ -21,7 +21,7 @@ public class AuthServiceImpl implements AuthService{
         log.info("路径用户:{},算法名称:{}，登录用户:{}，用户串号:{}",usrCode,modId,sessionUsrCode,usrSn);
 
         if(!usrCode.equals(sessionUsrCode)){
-            int count= algUserMapper.countOrgByCode(sessionUsrCode);
+            int count= algUserMapper.countOrgByCode(usrCode);
             if(count>0){
                 int countOrgCode=algUserMapper.countOrgCode(usrCode,sessionUsrCode);
                 if(countOrgCode==0){

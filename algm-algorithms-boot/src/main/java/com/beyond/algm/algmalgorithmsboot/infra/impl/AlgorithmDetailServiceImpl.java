@@ -3,6 +3,7 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
 import com.beyond.algm.algmalgorithmsboot.infra.AlgorithmDetailService;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.mapper.AlgDicMapper;
 import com.beyond.algm.mapper.AlgModuleMapper;
 import com.beyond.algm.vo.AlgModuleVo;
 import com.beyond.algm.vo.AlgorithmDetailVo;
@@ -20,10 +21,15 @@ import java.io.File;
 public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
     @Autowired
     private AlgModuleMapper algModuleMapper;
+    @Autowired
+    private AlgDicMapper algDicMapper;
     @Override
     public AlgModuleVo getAlgorithmDetail(AlgorithmDetailVo algorithmDetailVo)throws AlgException {
         int count = algModuleMapper.getCollectArticle(algorithmDetailVo);
         AlgModuleVo algModuleVo=algModuleMapper.getAlgorithmDetail(algorithmDetailVo);
+        if(Assert.isNULL(algModuleVo)){
+            return null;
+        }
         if(count==0){
             algModuleVo.setIsCollection("0");
         }else{
@@ -42,8 +48,21 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
             algModuleVo.setSourceCodeUrl(sourceCodeUrl);
             algModuleVo.setCallAlgorithmUrl(callAlgorithmUrl);
             algModuleVo.setUrl("algm"+"/"+algorithmDetailVo.getUsrCode() +"/" + algorithmDetailVo.getModId());
-            algModuleVo.setDataUrl(algorithmDetailVo.getUsrCode() + "/" + algorithmDetailVo.getModId()+"/" + "edit");
+            algModuleVo.setEditUrl("algm"+"/"+algorithmDetailVo.getUsrCode() + "/" + algorithmDetailVo.getModId()+"/" + "edit");
             algModuleVo.setUsrCode(algorithmDetailVo.getUsrCode());
+            if(Assert.isNotEmpty(algModuleVo.getEnvType())){
+                String evnName=  algDicMapper.selectDicValue("run_env",algModuleVo.getEnvType());
+                algModuleVo.setEvnName(evnName);
+            }
+            if(Assert.isNotEmpty(algModuleVo.getNeedCallOther())){
+                String needCallOtherName=  algDicMapper.selectDicValue("module_access_mode",algModuleVo.getNeedCallOther());
+                algModuleVo.setNeedCallOtherName(needCallOtherName);
+            }
+            if(Assert.isNotEmpty(algModuleVo.getNeedWeb())){
+                String needWebName=  algDicMapper.selectDicValue("module_access_mode",algModuleVo.getNeedWeb());
+                algModuleVo.setNeedWebName(needWebName);
+            }
+
         }
         return algModuleVo;
     }

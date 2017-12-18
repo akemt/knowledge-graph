@@ -155,6 +155,7 @@ public class ModuleServiceImpl implements ModuleService {
             gitUser.setModId(algModule.getModId());
             gitUser.setUsrCode(algUser.getUsrCode());
             gitUser.setPrivateToken(algUser.getPrivateToken());
+            gitUser.setPassword(AESUtil.decryptAES(algUser.getPasswd(),projectConfigEntity.getKeyAES()));
             String strUserName = "";
 
 

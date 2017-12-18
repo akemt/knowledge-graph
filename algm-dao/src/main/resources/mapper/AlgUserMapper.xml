@@ -14,7 +14,7 @@
     <result column="need_notify" property="needNotify" jdbcType="VARCHAR" />
       <result column="usr_space" property="usrSpace" jdbcType="REAL"/>
       <result column="usr_add_space" property="usrAddSpace" jdbcType="REAL" />
-      <result column="usr_used_apace" property="usr_used_apace" jdbcType="REAL" />
+      <result column="usr_used_space" property="usrUsedSpace" jdbcType="REAL" />
     <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
     <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
       <result column="private_token" property="privateToken" jdbcType="VARCHAR" />
@@ -35,12 +35,13 @@
   <insert id="insert" parameterType="com.beyond.algm.model.AlgUser" >
     insert into alg_user (usr_sn, owner_id, usr_name, 
       usr_code, usr_url, is_org, 
-      email, passwd,telephone, need_notify,
+      email, passwd,telephone, need_notify,usr_space,usr_add_space,usr_used_space,
       create_date, update_date,private_token)
     values (#{usrSn,jdbcType=VARCHAR}, #{ownerId,jdbcType=VARCHAR}, #{usrName,jdbcType=VARCHAR}, 
       #{usrCode,jdbcType=VARCHAR}, #{usrUrl,jdbcType=VARCHAR}, #{isOrg,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR}, #{needNotify,jdbcType=VARCHAR},
-      #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP},#{privateToken,jdbcType=VARCHAR})
+       #{usrSpace,jdbcType=REAL}, #{usrAddSpace,jdbcType=REAL}, #{usrUsedSpace,jdbcType=REAL}
+      ,#{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP},#{privateToken,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgUser" >
     update alg_user
@@ -192,4 +193,9 @@
         (select usr_sn from alg_user where usr_code = #{arg0,jdbcType=VARCHAR})
         and usr_sn=(select usr_sn from alg_user where usr_code = #{arg1,jdbcType=VARCHAR})
     </select>
+
+    <select id="userSpace" resultType="java.lang.String" parameterType="java.lang.String" >
+        select dic_value from alg_dic where dic_code = #{arg0,jdbcType=VARCHAR}
+    </select>
+
 </mapper>
