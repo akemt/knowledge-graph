@@ -23,7 +23,7 @@ public interface PayCashService {
        * @Description:用户注册，赠送积分
        * @date ：11:32 2017/12/5
        */
-      int presentCash(String usrSn, float freeBal)throws AlgException;
+      int presentCash(String usrSn)throws AlgException;
       /**
        * @author :lindw
        * @Description:积分充值

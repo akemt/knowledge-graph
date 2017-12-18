@@ -6,10 +6,7 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
  * @date ：13:26 2017/9/25
  */
 
-import com.beyond.algm.algmalgorithmsboot.infra.AuthCodeService;
-import com.beyond.algm.algmalgorithmsboot.infra.GitLabService;
-import com.beyond.algm.algmalgorithmsboot.infra.KubernetesService;
-import com.beyond.algm.algmalgorithmsboot.infra.UserService;
+import com.beyond.algm.algmalgorithmsboot.infra.*;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.algmalgorithmsboot.model.ProjectConfigEntity;
 import com.beyond.algm.common.AESUtil;
@@ -62,6 +59,8 @@ public class UserServiceImpl implements UserService {
     private KubernetesService kubernetesService;
     @Autowired
     private AuthCodeService authCodeService;
+    @Autowired
+    private PayCashService payCashService;
 
 
     /**
@@ -125,7 +124,8 @@ public class UserServiceImpl implements UserService {
             kubernetesService.makeK8sNamespace(user.getUsrCode());
             //为用户创建k8s命名空间下的harbor镜像拉取密钥
             kubernetesService.makeK8sSecretForNamespace(user.getUsrCode());
-
+            //注册用户赠送积分。
+            payCashService.presentCash(uuid);
         }
     }
 
