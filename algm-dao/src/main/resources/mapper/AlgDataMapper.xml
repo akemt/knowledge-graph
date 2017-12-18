@@ -161,11 +161,8 @@
     update alg_data
 
     <trim prefix="set" suffixOverrides=",">
-      <if test="datSn != null" >
-        dat_sn = #{datSn,jdbcType=VARCHAR},
-      </if>
-      <if test="verSn != null" >
-        ver_sn = #{verSn,jdbcType=VARCHAR},
+      <if test="dataName != null" >
+        data_name = #{dataName,jdbcType=VARCHAR},
       </if>
       <if test="dataEnName != null" >
         data_en_name = #{dataEnName,jdbcType=VARCHAR},

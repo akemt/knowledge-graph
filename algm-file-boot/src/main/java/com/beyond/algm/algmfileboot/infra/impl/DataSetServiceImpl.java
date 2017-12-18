@@ -91,7 +91,8 @@ public class DataSetServiceImpl implements DataSetService {
         conn.putObject(bucketName,key,targetFile);
         conn.setObjectAcl(bucketName,key, CannedAccessControlList.PublicRead);
         String pathUrl=  conn.getUrl(bucketName,key).toString();
-        pathUrl= pathUrl.replace("http","data");
+        String pathHost="http://"+host;
+        pathUrl= pathUrl.replace(pathHost,"data:/");
         // 替换
         log.info("保存路径：{}",pathUrl);
         AlgUser user=new AlgUser();
