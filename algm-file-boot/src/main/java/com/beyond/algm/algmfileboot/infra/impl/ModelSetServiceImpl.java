@@ -79,7 +79,7 @@ public class ModelSetServiceImpl implements ModelSetService {
      */
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public void uploadModelSet(MultipartFile file, String usrCode, String modelName, String modelUuid,String usrSn) throws AlgException{
+    public AlgModel uploadModelSet(MultipartFile file, String usrCode, String modelName, String modelUuid,String usrSn) throws AlgException{
         Float count=algUserMapper.selectCountSpace(usrCode);
         Float fileSize= FileUtil.bytes2kb(file.getSize());
         // 上传文件大于用户所剩存储空间
@@ -105,6 +105,7 @@ public class ModelSetServiceImpl implements ModelSetService {
         if(!conn.doesBucketExistV2(bucketName)){
             bucket=conn.createBucket(bucketName);
         }
+         // 此步骤没有考虑
         conn.putObject(bucketName,key,targetFile);
         conn.setObjectAcl(bucketName,key, CannedAccessControlList.PublicRead);
         String pathUrl=  conn.getUrl(bucketName,key).toString();
@@ -117,6 +118,7 @@ public class ModelSetServiceImpl implements ModelSetService {
         AlgModel algModel=new AlgModel();
         String uuid= UUIDUtil.createUUID();
         log.info("生成数据主键:{}",uuid);
+        targetFile.delete();
         algModel.setModelSn(uuid);
         algModel.setUsrSn(usrSn);
         algModel.setModelSetSn(modelUuid);
@@ -125,7 +127,7 @@ public class ModelSetServiceImpl implements ModelSetService {
         algModel.setModelAddress(pathUrl);
         algModel.setModelSize(fileSize.toString());
         algModelMapper.insert(algModel);
-        targetFile.delete();
+        return algModel;
     }
     /**
      * @author ：zhangchuanzhi

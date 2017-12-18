@@ -39,7 +39,7 @@
     values (#{modelSn,jdbcType=VARCHAR}, #{datSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, 
       #{modelSetSn,jdbcType=VARCHAR}, #{verSn,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{modelAddress,jdbcType=VARCHAR}, #{modelName,jdbcType=VARCHAR}, #{modelEnName,jdbcType=VARCHAR}, 
-      #{modelSize,jdbcType=VARCHAR}, #{isOpenSrc,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR},#{model_credit,jdbcType=INTEGER}
+      #{modelSize,jdbcType=VARCHAR}, #{isOpenSrc,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR},#{modelCredit,jdbcType=INTEGER}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgModel" >
@@ -55,7 +55,7 @@
       model_size = #{modelSize,jdbcType=VARCHAR},
       is_open_src = #{isOpenSrc,jdbcType=VARCHAR},
       comment = #{comment,jdbcType=VARCHAR},
-      model_credit= #{model_credit,jdbcType=INTEGER}
+      model_credit= #{modelCredit,jdbcType=INTEGER}
     where model_sn = #{modelSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >

@@ -45,8 +45,8 @@ public class ModelController extends BaseController {
         algModel.setModelSetSn(modelUuid);
         // 留存权限接口
         int count =modelSetService.checkFileName(algModel);
-        modelSetService.uploadModelSet(file,algUser.getUsrCode(),modelName,modelUuid,algUser.getUsrSn());
-        return Result.successResponse();
+        AlgModel algModelValue= modelSetService.uploadModelSet(file,algUser.getUsrCode(),modelName,modelUuid,algUser.getUsrSn());
+        return Result.ok(algModelValue);
     }
 
     /**

@@ -35,7 +35,7 @@ public interface ModelSetService {
      * @param： String dataSn
      * @date ： 2017-10-22 21:54:06
      */
-    void uploadModelSet(MultipartFile file, String usrCode, String modelName, String dataUuid, String usrSn) throws AlgException;
+    AlgModel uploadModelSet(MultipartFile file, String usrCode, String modelName, String dataUuid, String usrSn) throws AlgException;
 
     /**
      * @author ：zhangchuanzhi
