@@ -186,7 +186,7 @@
 
     <select id="getAlgorithmDetail" resultMap="queryForListMap"  parameterType="com.beyond.algm.vo.AlgorithmDetailVo" >
         select algModule.mod_sn,algModule.mod_id,algModule.need_web,algModule.usr_sn
-        ,algModule.env_type,algModule.need_call_other,algLicense.lic_name,lan.lan_name
+        ,algModule.env_type,algModule.need_call_other,algLicense.lic_name,lan.lan_name,algModule.is_train
         ,algModuleVersion.ver_code,algModuleUsage.star_cnt,algModuleUsage.follow_cnt,algModuleUsage.call_cnt
         from alg_module algModule
         left join alg_license algLicense on algModule.lic_sn=algLicense.lic_sn

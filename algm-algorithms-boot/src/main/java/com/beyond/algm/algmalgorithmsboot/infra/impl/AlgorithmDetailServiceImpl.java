@@ -52,6 +52,14 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
             algModuleVo.setUsrCode(algorithmDetailVo.getUsrCode());
             if(Assert.isNotEmpty(algModuleVo.getEnvType())){
                 String evnName=  algDicMapper.selectDicValue("run_env",algModuleVo.getEnvType());
+                String colonyName=algDicMapper.selectDicValue("is_colony",algModuleVo.getEnvType());
+              //  algModuleVo.setEvnName(evnName);
+                if(algModuleVo.getIsColony().equals("1")){
+                    evnName=evnName+","+colonyName;
+                }else{
+                    String schoolName=algDicMapper.selectDicValue("stand_env",algModuleVo.getEnvType());
+                    evnName=evnName+","+colonyName+","+schoolName;
+                }
                 algModuleVo.setEvnName(evnName);
             }
             if(Assert.isNotEmpty(algModuleVo.getNeedCallOther())){
@@ -61,6 +69,13 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
             if(Assert.isNotEmpty(algModuleVo.getNeedWeb())){
                 String needWebName=  algDicMapper.selectDicValue("module_access_mode",algModuleVo.getNeedWeb());
                 algModuleVo.setNeedWebName(needWebName);
+            }
+            if(Assert.isNotEmpty(algModuleVo.getNeedWeb())){
+               if(Assert.isNotEmpty(algModuleVo.getNeedCallOther())){
+                   algModuleVo.setRuntime(algModuleVo.getNeedWebName()+","+algModuleVo.getNeedCallOtherName()+","+algModuleVo.getEvnName());
+               }else{
+                   algModuleVo.setRuntime(algModuleVo.getNeedWebName()+","+algModuleVo.getEvnName());
+               }
             }
 
         }

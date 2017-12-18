@@ -22,6 +22,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * RocketMQ Consumer
+ * create by JR.Elephant on 2017/11/30
+ * */
+
 @SpringBootConfiguration
 @Slf4j
 public class ConsumerRunner implements ApplicationRunner {

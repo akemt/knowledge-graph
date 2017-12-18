@@ -13,7 +13,7 @@
     <result column="data_loc" property="dataLoc" jdbcType="VARCHAR" />
     <result column="is_open_src" property="isOpenSrc" jdbcType="VARCHAR" />
     <result column="data_abs" property="dataAbs" jdbcType="VARCHAR" />
-    <result column="data_content" property="dataContent" jdbcType="VARCHAR" />
+    <result column="data_content" property="dataContent" jdbcType="LONGVARCHAR" />
     <result column="data_credit" property="dataCredit" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="DifDataResultMap" type="com.beyond.algm.vo.AlgDifDataListVo">
@@ -39,7 +39,7 @@
     values (#{dataSn,jdbcType=VARCHAR}, #{dataSetSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, 
       #{dataName,jdbcType=VARCHAR}, #{dataEnName,jdbcType=VARCHAR}, #{creatTime,jdbcType=TIMESTAMP}, 
       #{dataSize,jdbcType=VARCHAR}, #{dataAddr,jdbcType=VARCHAR}, #{dataLoc,jdbcType=VARCHAR}, 
-      #{isOpenSrc,jdbcType=VARCHAR}, #{dataAbs,jdbcType=VARCHAR}, #{dataContent,jdbcType=VARCHAR}, 
+      #{isOpenSrc,jdbcType=VARCHAR}, #{dataAbs,jdbcType=VARCHAR}, #{dataContent,jdbcType=LONGVARCHAR},
       #{dataCredit,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgData" >
@@ -54,7 +54,7 @@
       data_loc = #{dataLoc,jdbcType=VARCHAR},
       is_open_src = #{isOpenSrc,jdbcType=VARCHAR},
       data_abs = #{dataAbs,jdbcType=VARCHAR},
-      data_content = #{dataContent,jdbcType=VARCHAR},
+      data_content = #{dataContent,jdbcType=LONGVARCHAR},
       data_credit = #{dataCredit,jdbcType=INTEGER}
     where data_sn = #{dataSn,jdbcType=VARCHAR}
   </update>
@@ -115,7 +115,7 @@
         data_name like concat('%',#{_parameter,jdbcType=VARCHAR},'%')
       </if>
       <if test="_parameter != null and _parameter !=''"> or
-        data_content like concat('%',#{_parameter,jdbcType=VARCHAR},'%')
+        data_content like concat('%',#{_parameter,jdbcType=LONGVARCHAR},'%')
       </if>
     </where>
   </select>
@@ -156,4 +156,44 @@
     where data_sn = #{dataSn,jdbcType=VARCHAR}
     and usr_sn= #{usrSn,jdbcType=VARCHAR}
   </delete>
+
+  <update id="updateData" parameterType="com.beyond.algm.model.AlgData" >
+    update alg_data
+
+    <trim prefix="set" suffixOverrides=",">
+      <if test="dataName != null" >
+        data_name = #{dataName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataEnName != null" >
+        data_en_name = #{dataEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null" >
+        creat_time = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataSize != null" >
+        data_size = #{dataSize,jdbcType=VARCHAR},
+      </if>
+      <if test="dataAddr != null" >
+        data_addr = #{dataAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="dataLoc != null" >
+        data_loc = #{dataLoc,jdbcType=VARCHAR},
+      </if>
+      <if test="isOpenSrc != null" >
+        is_open_src = #{isOpenSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="dataAbs != null" >
+        data_abs = #{dataAbs,jdbcType=VARCHAR},
+      </if>
+      <if test="dataContent != null" >
+        data_content = #{dataContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="dataCredit != null" >
+        data_credit = #{dataCredit,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    where data_sn = #{dataSn,jdbcType=VARCHAR}
+          and usr_sn = #{usrSn,jdbcType=VARCHAR}
+          and data_set_sn = #{dataSetSn,jdbcType=VARCHAR}
+  </update>
 </mapper>

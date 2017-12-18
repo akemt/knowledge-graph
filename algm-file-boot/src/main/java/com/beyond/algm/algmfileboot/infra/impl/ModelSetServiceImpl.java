@@ -109,7 +109,8 @@ public class ModelSetServiceImpl implements ModelSetService {
         conn.putObject(bucketName,key,targetFile);
         conn.setObjectAcl(bucketName,key, CannedAccessControlList.PublicRead);
         String pathUrl=  conn.getUrl(bucketName,key).toString();
-        pathUrl= pathUrl.replace("http","model");
+        String pathHost="http://"+host;
+        pathUrl= pathUrl.replace(pathHost,"model:/");
         log.info("保存路径：{}",pathUrl);
         AlgUser user=new AlgUser();
         user.setUsrCode(usrCode);
