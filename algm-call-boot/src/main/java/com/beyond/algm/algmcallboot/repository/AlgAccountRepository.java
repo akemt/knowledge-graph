@@ -18,4 +18,9 @@ public interface AlgAccountRepository extends JpaRepository<AlgAccount,String> {
     @Modifying(clearAutomatically = true)
     @Query(value = "update alg_account as c set c.cash_bal = ?1 where c.usr_sn = ?2",nativeQuery = true)
     int updateUsrSnByCashBal(float cash_bal,String usr_sn);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(value = "update alg_account as c set c.free_bal = ?1 where c.usr_sn = ?2",nativeQuery = true)
+    int updateUsrSnByFreeBal(float free_bal,String usr_sn);
 }
