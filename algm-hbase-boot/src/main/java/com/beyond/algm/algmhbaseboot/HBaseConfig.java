@@ -10,6 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * HBase Configuration
+ * create by JR.Elephant on 2017/11/30
+ * */
+
 @SpringBootConfiguration
 @Slf4j
 public class HBaseConfig {

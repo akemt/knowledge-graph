@@ -20,6 +20,11 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * HBaseServiceImpl
+ * create by JR.Elephant on 2017/11/30
+ * */
+
 @Service
 @Slf4j
 public class HBaseServiceImpl implements HBaseService {
