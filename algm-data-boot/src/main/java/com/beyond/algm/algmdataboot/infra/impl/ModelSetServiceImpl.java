@@ -85,18 +85,18 @@ public class ModelSetServiceImpl implements ModelSetService {
                 throw new Exception("BEYOND.ALG.DATA.PAY.STATUS.0000012");
             }
             //生成模型随机串号
-            algModel.setModelSn(UUID.randomUUID().toString().replace("-", ""));
+       //     algModel.setModelSn(UUID.randomUUID().toString().replace("-", ""));
             // new Date()为获取当前系统时间
             algModel.setCreateTime(new Date());
             //数据地址
-            String modelPath = null;
+  /*          String modelPath = null;
             if(Assert.isEmpty(algModel.getModelEnName())){
                 modelPath = "model://" + usrCode + "/" + algModel.getModelSn();
             }else {
                 modelPath = "model://" + usrCode + "/" + algModel.getModelEnName();
             }
-            algModel.setModelAddress(modelPath);
-            algModelMapper.insert(algModel);
+            algModel.setModelAddress(modelPath);*/
+            algModelMapper.updateMode(algModel);
         } catch (Exception e) {
             e.printStackTrace();
             return Result.failure("添加模型失败");

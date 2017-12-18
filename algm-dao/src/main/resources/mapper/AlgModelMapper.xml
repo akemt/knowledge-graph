@@ -14,6 +14,7 @@
     <result column="model_size" property="modelSize" jdbcType="VARCHAR" />
     <result column="is_open_src" property="isOpenSrc" jdbcType="VARCHAR" />
     <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="model_content" property="modelContent" jdbcType="LONGVARCHAR" />
     <result column="model_credit" property="modelCredit" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="queryForListMap" type="com.beyond.algm.vo.ModelDataVo" extends="BaseResultMap">
@@ -34,12 +35,12 @@
     insert into alg_model (model_sn, dat_sn, usr_sn, 
       model_set_sn, ver_sn, create_time, 
       model_address, model_name, model_en_name, 
-      model_size, is_open_src, comment,model_credit
+      model_size, is_open_src,comment,model_content,model_credit
       )
     values (#{modelSn,jdbcType=VARCHAR}, #{datSn,jdbcType=VARCHAR}, #{usrSn,jdbcType=VARCHAR}, 
       #{modelSetSn,jdbcType=VARCHAR}, #{verSn,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{modelAddress,jdbcType=VARCHAR}, #{modelName,jdbcType=VARCHAR}, #{modelEnName,jdbcType=VARCHAR}, 
-      #{modelSize,jdbcType=VARCHAR}, #{isOpenSrc,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR},#{modelCredit,jdbcType=INTEGER}
+      #{modelSize,jdbcType=VARCHAR}, #{isOpenSrc,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR},#{modelContent,jdbcType=LONGVARCHAR},#{modelCredit,jdbcType=INTEGER}
       )
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.beyond.algm.model.AlgModel" >
@@ -55,18 +56,19 @@
       model_size = #{modelSize,jdbcType=VARCHAR},
       is_open_src = #{isOpenSrc,jdbcType=VARCHAR},
       comment = #{comment,jdbcType=VARCHAR},
+      model_content = #{modelContent,jdbcType=LONGVARCHAR},
       model_credit= #{modelCredit,jdbcType=INTEGER}
     where model_sn = #{modelSn,jdbcType=VARCHAR}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select model_sn, dat_sn, usr_sn, model_set_sn, ver_sn, create_time, model_address, 
-    model_name, model_en_name, model_size, is_open_src, comment,model_credit
+    model_name, model_en_name, model_size, is_open_src, comment,model_content,model_credit
     from alg_model
     where model_sn = #{modelSn,jdbcType=VARCHAR}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select model_sn, dat_sn, usr_sn, model_set_sn, ver_sn, create_time, model_address, 
-    model_name, model_en_name, model_size, is_open_src, comment,model_credit
+    model_name, model_en_name, model_size, is_open_src, comment,model_content,model_credit
     from alg_model
     where model_set_sn = #{modelSetSn,jdbcType=VARCHAR}
   </select>
@@ -142,4 +144,47 @@
     where usr_sn = #{arg0,jdbcType=VARCHAR}
     <if test="arg1 != null and arg1 !=''">and model_en_name = #{arg1,jdbcType=VARCHAR}</if>
   </select>
+
+  <update id="updateMode" parameterType="com.beyond.algm.model.AlgModel" >
+    update alg_model
+    <trim prefix="set" suffixOverrides=",">
+      <if test="datSn != null" >
+        dat_sn = #{datSn,jdbcType=VARCHAR},
+      </if>
+      <if test="verSn != null" >
+        ver_sn = #{verSn,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modelAddress != null" >
+        model_address = #{modelAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="modelName != null" >
+        model_name = #{modelName,jdbcType=VARCHAR},
+      </if>
+      <if test="modelEnName != null" >
+        model_en_name = #{modelEnName,jdbcType=VARCHAR},
+      </if>
+      <if test="modelSize != null" >
+        model_size = #{modelSize,jdbcType=VARCHAR},
+      </if>
+      <if test="isOpenSrc != null" >
+        is_open_src = #{isOpenSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="modelContent != null" >
+        model_content = #{modelContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="modelCredit != null" >
+        model_credit = #{modelCredit,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    where model_sn = #{modelSn,jdbcType=VARCHAR}
+    and usr_sn=#{usrSn,jdbcType=VARCHAR}
+    and model_set_sn= #{modelSetSn,jdbcType=VARCHAR}
+  </update>
+
 </mapper>
