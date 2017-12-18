@@ -132,6 +132,7 @@ public class DataSetServiceImpl implements DataSetService {
             algData.setUsrSn(algUser.getUsrSn());*/
             //上传时间
             algData.setCreatTime(new Date());
+            algData.setUsrSn(algUser.getUsrSn());
             //数据地址
         /*    String dataPath = null;
             if(Assert.isEmpty(algData.getDataEnName())){
