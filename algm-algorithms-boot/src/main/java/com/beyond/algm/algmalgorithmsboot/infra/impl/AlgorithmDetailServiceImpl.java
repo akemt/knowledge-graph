@@ -72,9 +72,9 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
             }
             if(Assert.isNotEmpty(algModuleVo.getNeedWeb())){
                if(Assert.isNotEmpty(algModuleVo.getNeedCallOther())){
-                   algModuleVo.setRuntime(algModuleVo.getNeedWebName()+","+algModuleVo.getNeedCallOtherName()+","+algModuleVo.getEvnName());
+                   algModuleVo.setRuntime(algModuleVo.getNeedWebName()+","+algModuleVo.getNeedCallOtherName());
                }else{
-                   algModuleVo.setRuntime(algModuleVo.getNeedWebName()+","+algModuleVo.getEvnName());
+                   algModuleVo.setRuntime(algModuleVo.getNeedWebName());
                }
             }
 
