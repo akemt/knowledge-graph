@@ -65,7 +65,7 @@ public class ModelSetServiceImpl implements ModelSetService {
     public int checkFileName(AlgModel algModel) throws AlgException{
         int count= algModelMapper.checkFileName(algModel);
         if(count>0){
-            String[] checkMessage = {" 文件名字重复",""};
+            String[] checkMessage = {" 文件名字",""};
             throw new AlgException("BEYOND.ALG.DATA.FILE.NAME.0000006",checkMessage);
         }
         return count;
