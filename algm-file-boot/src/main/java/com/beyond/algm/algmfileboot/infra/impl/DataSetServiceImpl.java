@@ -62,7 +62,7 @@ public class DataSetServiceImpl implements DataSetService {
      */
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public void uploadDateSet(MultipartFile file, String usrCode,String dataSetName,String dataSetUuid,String usrSn) throws AlgException{
+    public AlgData uploadDateSet(MultipartFile file, String usrCode,String dataSetName,String dataSetUuid,String usrSn) throws AlgException{
         Float count=algUserMapper.selectCountSpace(usrCode);
         Float fileSize= FileUtil.bytes2kb(file.getSize());
           // 上传文件大于用户所剩存储空间
@@ -111,6 +111,7 @@ public class DataSetServiceImpl implements DataSetService {
         algData.setDataSize(fileSize.toString());
         algDataMapper.insert(algData);
         targetFile.delete();
+        return algData;
     }
     /**
      * @author ：zhangchuanzhi

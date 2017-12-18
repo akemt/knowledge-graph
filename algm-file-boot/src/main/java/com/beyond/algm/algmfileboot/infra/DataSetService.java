@@ -25,7 +25,7 @@ public interface DataSetService {
      * @param： String dataSn
      * @date ： 2017-10-22 21:54:06
      */
-    void uploadDateSet(MultipartFile file, String usrCode, String dataSetName, String dataUuid, String usrSn) throws AlgException;
+    AlgData uploadDateSet(MultipartFile file, String usrCode, String dataSetName, String dataUuid, String usrSn) throws AlgException;
     /**
      * @author ：zhangchuanzhi
      * @Description:检查文件上传名字

@@ -44,8 +44,8 @@ public class DataController  extends BaseController {
         algData.setDataSetSn(dataSetUuid);
         // 留存权限接口
         int count =dataSetService.checkFileName(algData);
-        dataSetService.uploadDateSet(file,algUser.getUsrCode(),dataSetName,dataSetUuid,algUser.getUsrSn());
-        return Result.successResponse();
+        AlgData algDataValue= dataSetService.uploadDateSet(file,algUser.getUsrCode(),dataSetName,dataSetUuid,algUser.getUsrSn());
+        return Result.ok(algDataValue);
     }
 
 
