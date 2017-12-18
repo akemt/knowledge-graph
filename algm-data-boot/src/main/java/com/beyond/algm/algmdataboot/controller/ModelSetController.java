@@ -72,7 +72,7 @@ public class ModelSetController  extends BaseController {
      * @param： String modelSetSn
      * @date ：19:56 2017/10/18
      */
-    @RequestMapping(value = "/deleteModelSet", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deleteModelSet", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result<Object>  deleteModelSet(String modelSetSn) throws AlgException{
         AlgUser algUser = getUserInfo();
         AlgModel algModel=new AlgModel();
@@ -111,7 +111,7 @@ public class ModelSetController  extends BaseController {
      * @param: String modelSn
      * @date: 19:09 2017/10/18
      */
-    @RequestMapping(value = "/deleteModel", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/deleteModel", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result deleteModel(String modelSn)throws AlgException {
         AlgUser algUser = getUserInfo();
         // 预留方法判断是否是本人
