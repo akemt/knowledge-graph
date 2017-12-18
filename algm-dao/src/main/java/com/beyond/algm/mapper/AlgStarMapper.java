@@ -19,4 +19,6 @@ public interface AlgStarMapper {
     List<CollectArticlesVo> selectArticles(CollectArticlesVo collectArticlesVo);
 
     int deleteAlgStar(AlgStar algStar);
+
+    int selectStarCnt(AlgStar algStar);
 }
