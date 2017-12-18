@@ -56,4 +56,11 @@
     where mod_sn = #{modSn,jdbcType=VARCHAR}
     and usr_sn= #{usrSn,jdbcType=VARCHAR}
   </delete>
+
+  <select id="selectStarCnt" resultType="java.lang.Integer" parameterType="com.beyond.algm.model.AlgStar" >
+    select count(*)
+    from alg_star
+    where mod_sn = #{modSn,jdbcType=VARCHAR}
+    and usr_sn= #{usrSn,jdbcType=VARCHAR}
+  </select>
 </mapper>
