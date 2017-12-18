@@ -113,7 +113,7 @@ public class ModuleServiceImpl implements ModuleService {
             } else {
                 path = basePath + File.separator + path;
             }
-            fileNodes = showProjectFileService.ShowProjectFile(path, usrCode, modId);
+            fileNodes = showProjectFileService.ShowProjectFile(path, usrCode, modId,modUser.getUsrCode(),modUser.getIsOrg());
 
             //返回同级目录所有文件和文件夹.
             log.info("current fileNodes {} ", fileNodes.toString());

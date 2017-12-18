@@ -20,11 +20,11 @@ public class ShowProjectFileServiceImpl implements ShowProjectFileService{
     private PathService pathService;
 
     @Override
-    public FileNodes ShowProjectFile(String currentPath,String usrCode,String modId) throws AlgException{
+    public FileNodes ShowProjectFile(String currentPath,String curUsrCode, String modId,String usrCode,String isOrg) throws AlgException{
 
         log.info("ShowProjectFile currentPath :{}",currentPath);
         // 获取用户下项目根路径
-        String splitPath = pathService.getModuleBasePath(usrCode,modId);
+        String splitPath = pathService.getModuleBasePath(usrCode,modId,curUsrCode,isOrg);
         //转换标注路径
         File file = new File(currentPath);
         currentPath = file.getPath();
