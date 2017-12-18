@@ -79,6 +79,6 @@ public class DockerServiceImpl implements DockerService {
     }
 
     public String getDockerTag(String modId, String usrCode, String version){
-        return harborHost + "/" +projectName+"/" + usrCode + "_" + modId.toLowerCase() + ":" + version;
+        return harborHost + "/" +projectName+"/" + usrCode.toLowerCase() + "_" + modId.toLowerCase() + ":" + version;
     }
 }
