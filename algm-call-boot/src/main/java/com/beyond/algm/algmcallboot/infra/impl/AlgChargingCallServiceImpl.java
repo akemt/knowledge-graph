@@ -42,9 +42,7 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
      * lindewei
      * API调用计费
      */
-    public AlgResult addChargingCall(String usrCode, String modId, String version, String keyValue, String jsonStr) throws AlgException {
-        //定义返回结果对象
-        AlgResult algResult = new AlgResult();
+    public String addChargingCall(String usrCode, String modId, String version, String keyValue, String jsonStr) throws AlgException {
         //获取用户信息
         AlgUser algUser = algUserRepository.findByUsrCode(usrCode);
         log.info("获取用户信息，用户名:{},中文名:{}", algUser.getUsrCode(), algUser.getUsrName());
@@ -86,7 +84,6 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
         //开始调用
         Long startTime = new Date().getTime();
         String result = new AlgmHttpCall(usrCode, modId, version, baseUrl, jsonStr).send();
-        algResult.setResult(result);
         //结束调用
         Long endTime = new Date().getTime();
         //计算时间差
@@ -152,7 +149,7 @@ public class AlgChargingCallServiceImpl implements AlgChargingCallService {
             throw new AlgException("BEYOND.ALG.CALL.COMMON.CHARGING.0000005");
         }
         //返回调用结果
-        return algResult;
+        return result;
     }
 
     /**

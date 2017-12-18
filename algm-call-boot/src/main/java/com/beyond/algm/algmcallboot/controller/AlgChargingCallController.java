@@ -29,7 +29,7 @@ public class AlgChargingCallController {
                                   @PathVariable("version") String version, @RequestBody(required = false) String jsonStr, HttpServletRequest request) throws AlgException{
         String keyValue = request.getHeader("KeyValue");
         log.info("用户名:{},项目ID:{},版本:{},key:{}", usrCode, modId, version, keyValue);
-        AlgResult algResult = algChargingCallService.addChargingCall(usrCode,modId,version,keyValue,jsonStr);
+        String algResult = algChargingCallService.addChargingCall(usrCode,modId,version,keyValue,jsonStr);
         return Result.ok(algResult);
     }
 }
