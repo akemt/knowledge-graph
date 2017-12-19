@@ -59,7 +59,7 @@ public class DataController  extends BaseController {
      * @author ：zhangchuanzhi
      * @Description: 数据下载
      */
-    @RequestMapping(value = "/data/{usrCode}/{dataSet}/{fileName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/data/{usrCode}/{dataSet}/{fileName:.+}", method = RequestMethod.GET)
     public Result dataDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("dataSet") String dataSet, @PathVariable("fileName") String fileName, HttpServletResponse response) throws AlgException {
         AlgUser algUser = getUserInfo();
         // 权限控制预留接口
@@ -72,7 +72,7 @@ public class DataController  extends BaseController {
      * @author ：zhangchuanzhi
      * @Description: 数据下载
      */
-    @RequestMapping(value = "/data/{usrCode}/{dataSet}/{fileName}", method = RequestMethod.POST)
+    @RequestMapping(value = "/data/{usrCode}/{dataSet}/{fileName:.+}", method = RequestMethod.POST)
     public Result dataDownFileHttpClient(@PathVariable("usrCode") String usrCode, @PathVariable("dataSet") String dataSet, @PathVariable("fileName") String fileName, HttpServletRequest request, HttpServletResponse response) throws AlgException {
         String keyValue = request.getHeader("KeyValue");
         if (Assert.isNotEmpty(keyValue)) {
