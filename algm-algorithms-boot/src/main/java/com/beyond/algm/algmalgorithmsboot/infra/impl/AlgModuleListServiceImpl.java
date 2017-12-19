@@ -1,6 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.infra.AlgModuleListService;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.*;
@@ -94,6 +95,7 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
         Long starCntCount = algModuleUsageMapper.selectStarCntCount(modSn);
         //查取该算法目前收藏数
         Long starCnt = algModuleUsageMapper.selectStarCnt(modSn);
+        starCnt = Assert.isEmpty(starCnt)?0:starCnt;
         log.info("该算法目前人收藏是否有人收藏:{}",starCnt);
 
         //创建收藏统计表（alg_module_usage）对象
