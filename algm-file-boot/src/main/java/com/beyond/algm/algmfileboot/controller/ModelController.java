@@ -57,7 +57,7 @@ public class ModelController extends BaseController {
      * @author ：zhangchuanzhi
      * @Description: 模型下载
      */
-    @RequestMapping(value = "/model/{usrCode}/{modelSet}/{fileName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/model/{usrCode}/{modelSet}/{fileName:.+}", method = RequestMethod.GET)
     public Result modelDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet, @PathVariable("fileName") String fileName, HttpServletResponse response) throws AlgException {
         AlgUser algUser = getUserInfo();
         // 权限控制
@@ -67,7 +67,7 @@ public class ModelController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/model/{usrCode}/{modelSet}/{fileName}", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/model/{usrCode}/{modelSet}/{fileName:.+}", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result modelDownFileHttpClient(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet,
                                           @PathVariable("fileName") String fileName,
                                           HttpServletRequest request, HttpServletResponse response) throws AlgException {
