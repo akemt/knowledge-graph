@@ -225,10 +225,14 @@ public class ModuleServiceImpl implements ModuleService {
             //协议
             List<AlgLicense> license = algLicenseMapper.selectAll();
             map.put("license",license);
-            //集群
-            String moduleAccessMode="module_access_mode";
-            List<AlgDic> AccessandCall =algDicMapper.getDictionarylist(moduleAccessMode);
-            map.put("moduleAccessMode",AccessandCall);
+            //网络接入
+            String needWeb="need_web";
+            List<AlgDic> AccessandCallNw =algDicMapper.getDictionarylist(needWeb);
+            map.put("needWeb",AccessandCallNw);
+            //调用第三方算法
+            String needCallOther="need_call_other";
+            List<AlgDic> AccessandCallNco =algDicMapper.getDictionarylist(needCallOther);
+            map.put("needCallOther",AccessandCallNco);
             String runEnv="run_env";
             List<AlgDic> RunandEnv =algDicMapper.getDictionarylist(runEnv);
             map.put("runEnv",RunandEnv);
