@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：zhangchuanzhi
@@ -53,6 +54,11 @@ public class AlgorithmCollectAndRankServiceImpl  implements AlgorithmCollectAndR
     public List<AlgArticleListVo>searchArticles(AlgArticleListVo algArticleListVo)throws AlgException{
         List<AlgArticleListVo>  algArticleListVoList=algArticleListMapper.searchArticles(algArticleListVo);
         return algArticleListVoList;
+    }
+
+    @Override
+    public  List<Map<String,Object>> queryAlgArticlesListByTitle(String strTitle) throws AlgException {
+        return algArticleListMapper.queryAlgArticlesListByTitle(strTitle);
     }
 
 }
