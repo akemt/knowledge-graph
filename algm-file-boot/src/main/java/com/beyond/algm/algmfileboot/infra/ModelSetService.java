@@ -2,6 +2,7 @@ package com.beyond.algm.algmfileboot.infra;
 
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgModel;
 import com.beyond.algm.model.AlgModelSet;
 import com.beyond.algm.model.AlgUser;
@@ -44,4 +45,12 @@ public interface ModelSetService {
      * @date ： 2017-12-06 21:54:06
      */
     void  downModelUrl(String usrSn, String modelSet, String fileName, String usrCode, HttpServletResponse response)throws AlgException;
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:查询用户usrSn
+     * @param： String usrSn，
+     * @date ： 2017-12-19 21:54:06
+     */
+    AlgAuthCode selectUsr(String acdId)throws AlgException;
 }

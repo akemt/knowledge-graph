@@ -2,6 +2,7 @@ package com.beyond.algm.algmfileboot.infra;
 
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgDataSet;
 import com.beyond.algm.model.AlgUser;
@@ -50,4 +51,13 @@ public interface DataSetService {
      * @date ： 2017-12-06 21:54:06
      */
     void  downDataUrl(String usrSn, String dataSet, String fileName, String usrCode, HttpServletResponse response)throws AlgException;
+
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description:查询用户usrSn
+     * @param： String acdId，
+     * @date ： 2017-12-19 21:54:06
+     */
+    AlgAuthCode selectUsr(String acdId)throws AlgException;
 }

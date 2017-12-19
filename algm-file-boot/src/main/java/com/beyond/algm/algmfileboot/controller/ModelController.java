@@ -3,13 +3,17 @@ package com.beyond.algm.algmfileboot.controller;
 import com.beyond.algm.algmfileboot.base.BaseController;
 import com.beyond.algm.algmfileboot.infra.AuthService;
 import com.beyond.algm.algmfileboot.infra.ModelSetService;
+import com.beyond.algm.algmfileboot.infra.UserService;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgModel;
 import com.beyond.algm.model.AlgUser;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import com.beyond.algm.common.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +33,8 @@ public class ModelController extends BaseController {
     private AuthService authService;
     @Autowired
     private ModelSetService modelSetService;
+    @Autowired
+    private UserService  userService;
     /**
      * @author ：zhangchuanzhi
      * @Description: 数据文件增加
@@ -66,9 +72,16 @@ public class ModelController extends BaseController {
                                           @PathVariable("fileName") String fileName,
                                           HttpServletRequest request, HttpServletResponse response) throws AlgException {
         String keyValue = request.getHeader("KeyValue");
-        AlgUser algUser = null;
-        authService.isModelByUser( usrCode, algUser.getUsrCode(), algUser.getUsrSn(), modelSet, fileName);
-        modelSetService.downModelUrl(algUser.getUsrSn(), modelSet, fileName,usrCode,response);
+        if (Assert.isNotEmpty(keyValue)) {
+            AlgAuthCode algAuthCode= modelSetService.selectUsr(keyValue);
+            AlgUser algUser= userService.findByUsrCode(algAuthCode.getUsrSn());
+            authService.isModelByUser( usrCode, algUser.getUsrCode(), algUser.getUsrSn(), modelSet, fileName);
+            modelSetService.downModelUrl(algUser.getUsrSn(), modelSet, fileName,usrCode,response);
+        }else{
+            // 到时候优化
+            return Result.failureResponse();
+        }
+
         return Result.successResponse();
     }
 }

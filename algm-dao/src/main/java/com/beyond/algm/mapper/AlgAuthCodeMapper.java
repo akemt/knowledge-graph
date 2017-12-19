@@ -16,4 +16,6 @@ public interface AlgAuthCodeMapper {
     Page<AlgAuthCode> selectByUsrSnKey(String usrSn);
 
     int updateByPrimaryKeySelective(AlgAuthCode record);
+
+    AlgAuthCode selectUsr(String acdId);
 }

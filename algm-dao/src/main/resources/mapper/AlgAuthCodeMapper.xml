@@ -82,4 +82,10 @@
     from alg_auth_code
     where usr_sn = #{usrSn,jdbcType=VARCHAR}
   </select>
+
+  <select id="selectUsr" resultMap="AlgAuthCodeVoMap">
+    select usr_sn
+    from alg_auth_code
+    where acd_id = #{acdId,jdbcType=VARCHAR}
+  </select>
 </mapper>

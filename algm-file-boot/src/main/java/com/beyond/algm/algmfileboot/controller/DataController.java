@@ -3,8 +3,11 @@ package com.beyond.algm.algmfileboot.controller;
 import com.beyond.algm.algmfileboot.base.BaseController;
 import com.beyond.algm.algmfileboot.infra.AuthService;
 import com.beyond.algm.algmfileboot.infra.DataSetService;
+import com.beyond.algm.algmfileboot.infra.UserService;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgUser;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -30,6 +34,8 @@ public class DataController  extends BaseController {
     private DataSetService dataSetService;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private UserService userService;
     /**
      * @author ：zhangchuanzhi
      * @Description: 数据文件增加
@@ -59,6 +65,24 @@ public class DataController  extends BaseController {
         // 权限控制预留接口
         authService.isDataByUser(usrCode,algUser.getUsrCode(),algUser.getUsrSn(),dataSet,fileName);
         dataSetService.downDataUrl(algUser.getUsrSn(), dataSet, fileName,usrCode,response);
+        return Result.successResponse();
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 数据下载
+     */
+    @RequestMapping(value = "/data/{usrCode}/{dataSet}/{fileName}", method = RequestMethod.POST)
+    public Result dataDownFileHttpClient(@PathVariable("usrCode") String usrCode, @PathVariable("dataSet") String dataSet, @PathVariable("fileName") String fileName, HttpServletRequest request, HttpServletResponse response) throws AlgException {
+        String keyValue = request.getHeader("KeyValue");
+        if (Assert.isNotEmpty(keyValue)) {
+            AlgAuthCode algAuthCode= dataSetService.selectUsr(keyValue);
+            AlgUser algUser= userService.findByUsrCode(algAuthCode.getUsrSn());
+            authService.isDataByUser(usrCode,algUser.getUsrCode(),algUser.getUsrSn(),dataSet,fileName);
+            dataSetService.downDataUrl(algUser.getUsrSn(), dataSet, fileName,usrCode,response);
+        }else{
+            return Result.failureResponse();
+        }
         return Result.successResponse();
     }
 }
