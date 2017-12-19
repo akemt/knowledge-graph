@@ -48,7 +48,9 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
             algModuleVo.setSourceCodeUrl(sourceCodeUrl);
             algModuleVo.setCallAlgorithmUrl(callAlgorithmUrl);
             algModuleVo.setUrl("algm"+"/"+algorithmDetailVo.getUsrCode() +"/" + algorithmDetailVo.getModId());
-            algModuleVo.setEditUrl("algm"+"/"+algorithmDetailVo.getUsrCode() + "/" + algorithmDetailVo.getModId()+"/" + "edit");
+            if(algorithmDetailVo.getAuthCode()) {
+                algModuleVo.setEditUrl("algm" + "/" + algorithmDetailVo.getUsrCode() + "/" + algorithmDetailVo.getModId() + "/" + "edit");
+            }
             algModuleVo.setUsrCode(algorithmDetailVo.getUsrCode());
             if(Assert.isNotEmpty(algModuleVo.getEnvType())){
                 String evnName=  algDicMapper.selectDicValue("run_env",algModuleVo.getEnvType());

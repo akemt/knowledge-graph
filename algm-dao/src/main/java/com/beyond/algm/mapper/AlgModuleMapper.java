@@ -52,4 +52,6 @@ public interface AlgModuleMapper {
     Page<AlgModuleListVo> findModuleByStar(String catSn, String usage, String modName, String id, String usrCode);
 
     int getCollectArticle(AlgorithmDetailVo algorithmDetailVo);
+
+
 }

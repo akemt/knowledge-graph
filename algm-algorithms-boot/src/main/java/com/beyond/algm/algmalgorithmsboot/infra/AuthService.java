@@ -20,6 +20,6 @@ public interface AuthService {
      * @param：
      * @date ： 2017-12-11 21:54:06
      */
-    void isModuleAuth(String usrCode,String modId,String sessionUsrCode,String usrSn) throws AlgException;
+    Boolean isModuleAuth(String usrCode,String modId,String sessionUsrCode,String usrSn) throws AlgException;
 
 }
