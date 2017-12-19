@@ -10,6 +10,7 @@ import com.beyond.algm.model.AlgArticleList;
 import com.beyond.algm.model.AlgUser;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
+import com.beyond.algm.vo.AlgStarDataVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -139,8 +140,8 @@ public class AlgModuleListController extends BaseController {
     @RequestMapping(value = "/module/star", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result AddAlgorithm(String modSn) throws AlgException {
         AlgUser algUser = getUserInfo();
-        Long count = algModuleListService.modStar(modSn,algUser.getUsrSn());
-        return Result.ok(count);
+        AlgStarDataVo algStarDataVo = algModuleListService.modStar(modSn,algUser.getUsrSn());
+        return Result.ok(algStarDataVo);
     }
 
     /**
