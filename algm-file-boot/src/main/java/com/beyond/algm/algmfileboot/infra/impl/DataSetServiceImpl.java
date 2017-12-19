@@ -10,9 +10,11 @@ import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.mapper.AlgAuthCodeMapper;
 import com.beyond.algm.mapper.AlgDataMapper;
 import com.beyond.algm.mapper.AlgDataSetMapper;
 import com.beyond.algm.mapper.AlgUserMapper;
+import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgData;
 import com.beyond.algm.model.AlgUser;
 import lombok.extern.slf4j.Slf4j;
@@ -53,7 +55,8 @@ public class DataSetServiceImpl implements DataSetService {
     private AlgUserMapper algUserMapper;
     @Autowired
     AmazonS3 conn;
-
+    @Autowired
+    private AlgAuthCodeMapper algAuthCodeMapper;
     /**
      * @author ：zhangchuanzhi
      * @Description: 上传个人数据文件
@@ -164,5 +167,17 @@ public class DataSetServiceImpl implements DataSetService {
             String[] checkMessage = {" 查询结果为空",""};
             throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);
         }
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 返回用户
+     * @param：
+     * @date ： 2017-10-22 21:54:06
+     */
+    @Override
+    public AlgAuthCode selectUsr(String acdId)throws AlgException{
+        AlgAuthCode algAuthCode = algAuthCodeMapper.selectUsr(acdId);
+        return algAuthCode;
     }
 }

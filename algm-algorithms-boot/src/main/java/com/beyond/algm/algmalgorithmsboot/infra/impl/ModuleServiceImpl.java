@@ -149,6 +149,12 @@ public class ModuleServiceImpl implements ModuleService {
             //模块串号
             algModule.setModSn(UUIDUtil.createUUID());
             algModule.setCreateSn(algUser.getUsrSn());
+            //是否要存取网络
+            String needWeb = Assert.isEmpty(algModule.getNeedWeb())?"0":algModule.getNeedWeb();
+            algModule.setNeedWeb(needWeb);
+            //是否要调用其他算法
+            String needCallOther = Assert.isEmpty(algModule.getNeedCallOtherName())?"0":algModule.getNeedCallOtherName();
+            algModule.setNeedCallOtherName(needCallOther);
 
             log.info("新增算法，向模块表插入成功，项目串号:{}",algModule.getModSn());
             GitUser gitUser = new GitUser();

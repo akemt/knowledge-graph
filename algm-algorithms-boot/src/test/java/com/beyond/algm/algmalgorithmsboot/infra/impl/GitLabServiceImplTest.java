@@ -4,8 +4,11 @@ import com.beyond.algm.algmalgorithmsboot.AlgmAlgorithmsBootApplication;
 import com.beyond.algm.algmalgorithmsboot.infra.GitLabService;
 import com.beyond.algm.algmalgorithmsboot.model.GitUser;
 import com.beyond.algm.exception.AlgException;
+import org.gitlab.api.GitlabAPI;
 import org.gitlab.api.models.GitlabGroup;
 import org.gitlab.api.models.GitlabProject;
+import org.gitlab.api.models.GitlabSession;
+import org.gitlab.api.models.GitlabUser;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +91,17 @@ public class GitLabServiceImplTest {
         gitUser.setIsOrg("1");
         GitlabProject result = gitLabService.createGitLabGroupProject(gitUser);
     }
+    @Test
+    public void test() throws Exception {
+ /*       GitlabAPI gitlabAPI = GitlabAPI.connect("http://192.168.1.88","jsu-pVsb8T5JegQjMGzM");
+        GitlabSession gitlabSession = GitlabAPI.connect("http://192.168.1.88", "zhang1", "12345678");
+        GitlabUser abc=  gitlabAPI.updateUser(gitlabSession.getId(),
+               "", "123456789", "",
+                "", "", "",
+                "", "", 100000,
+                "","",
+                "",false,true);*/
 
+    }
 
 }
