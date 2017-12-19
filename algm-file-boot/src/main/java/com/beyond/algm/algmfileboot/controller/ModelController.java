@@ -58,12 +58,11 @@ public class ModelController extends BaseController {
      * @Description: 模型下载
      */
     @RequestMapping(value = "/model/{usrCode}/{modelSet}/{fileName:.+}", method = RequestMethod.GET)
-    public Result modelDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet, @PathVariable("fileName") String fileName, HttpServletResponse response) throws AlgException {
+    public void modelDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet, @PathVariable("fileName") String fileName, HttpServletResponse response) throws AlgException {
         AlgUser algUser = getUserInfo();
         // 权限控制
         authService.isModelByUser( usrCode, algUser.getUsrCode(), algUser.getUsrSn(), modelSet, fileName);
         modelSetService.downModelUrl(algUser.getUsrSn(), modelSet, fileName,usrCode,response);
-        return Result.successResponse();
     }
 
 

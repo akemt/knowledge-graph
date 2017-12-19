@@ -60,12 +60,11 @@ public class DataController  extends BaseController {
      * @Description: 数据下载
      */
     @RequestMapping(value = "/data/{usrCode}/{dataSet}/{fileName:.+}", method = RequestMethod.GET)
-    public Result dataDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("dataSet") String dataSet, @PathVariable("fileName") String fileName, HttpServletResponse response) throws AlgException {
+    public void dataDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("dataSet") String dataSet, @PathVariable("fileName") String fileName, HttpServletResponse response) throws AlgException {
         AlgUser algUser = getUserInfo();
         // 权限控制预留接口
         authService.isDataByUser(usrCode,algUser.getUsrCode(),algUser.getUsrSn(),dataSet,fileName);
         dataSetService.downDataUrl(algUser.getUsrSn(), dataSet, fileName,usrCode,response);
-        return Result.successResponse();
     }
 
     /**
