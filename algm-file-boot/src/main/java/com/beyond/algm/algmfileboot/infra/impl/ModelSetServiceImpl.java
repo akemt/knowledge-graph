@@ -130,6 +130,7 @@ public class ModelSetServiceImpl implements ModelSetService {
         algModel.setCreateTime(new Date());
         algModel.setModelAddress(pathUrl);
         algModel.setModelSize(fileSize.toString());
+        algModel.setIsOpenSrc("0");
         algModelMapper.insert(algModel);
         return algModel;
     }
