@@ -126,22 +126,10 @@ public class DataSetServiceImpl implements DataSetService {
             if (Assert.isNotEmpty(algData.getDataEnName()) && algDataMapper.checkDataEnName(algUser.getUsrSn(),algData.getDataEnName()) != 0 ){
                 return Result.failure("数据英文名已存在！");
             }
-  /*          //生成数据集随机串
-            algData.setDataSn(UUID.randomUUID().toString().replace("-", ""));
-            //用户串号
-            algData.setUsrSn(algUser.getUsrSn());*/
+
             //上传时间
             algData.setCreatTime(new Date());
             algData.setUsrSn(algUser.getUsrSn());
-            //数据地址
-        /*    String dataPath = null;
-            if(Assert.isEmpty(algData.getDataEnName())){
-                dataPath = "data://" + algUser.getUsrCode() + "/" + algData.getDataSn();
-            }else {
-                dataPath = "data://" + algUser.getUsrCode() + "/" + algData.getDataEnName();
-            }
-            algData.setDataAddr(dataPath);*/
-
             algDataMapper.updateData(algData);
         } catch (Exception e) {
             log.error("新增数据失败。数据串号：{},数据集串号：{},用户串号：{},数据名称：{},数据英文名称：{}",algData.getDataSn(),algData.getDataSetSn(),algData.getUsrSn(),

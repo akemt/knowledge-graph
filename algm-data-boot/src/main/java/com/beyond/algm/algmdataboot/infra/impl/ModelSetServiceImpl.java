@@ -86,8 +86,6 @@ public class ModelSetServiceImpl implements ModelSetService {
             if (Assert.isNotEmpty(algModel.getModelEnName()) && algModelMapper.checkModelEnName(algModel.getUsrSn(),algModel.getModelEnName()) != 0 ){
                 throw new Exception("BEYOND.ALG.DATA.PAY.STATUS.0000012");
             }
-            //生成模型随机串号
-            algModel.setModelSn(UUID.randomUUID().toString().replace("-", ""));
             // new Date()为获取当前系统时间
             algModel.setCreateTime(new Date());
             //数据地址
