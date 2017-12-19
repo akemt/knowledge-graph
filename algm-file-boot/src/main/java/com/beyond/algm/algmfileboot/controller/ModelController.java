@@ -53,7 +53,7 @@ public class ModelController extends BaseController {
      * @author ：zhangchuanzhi
      * @Description: 模型下载
      */
-    @RequestMapping(value = "/{usrCode}/{modelSet}/{fileName}/modelDownUpload", method = RequestMethod.GET)
+    @RequestMapping(value = "/model/{usrCode}/{modelSet}/{fileName}", method = RequestMethod.GET)
     public Result modelDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet, @PathVariable("fileName") String fileName, HttpServletResponse response) throws AlgException {
         AlgUser algUser = getUserInfo();
         // 权限控制
