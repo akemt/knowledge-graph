@@ -77,7 +77,6 @@ public class OrgServiceImpl implements OrgService {
 
         //创建组织 k8s 命名空间 和 拉取harbor的密钥
         kubernetesService.makeK8sSecretForNamespace(org.getUsrCode());
-        kubernetesService.makeK8sSecretForNamespace(org.getUsrCode());
         return org;
     }
 
