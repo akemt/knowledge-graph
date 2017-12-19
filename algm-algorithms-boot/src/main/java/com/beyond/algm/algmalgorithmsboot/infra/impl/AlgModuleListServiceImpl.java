@@ -90,9 +90,11 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
     @Override
     @Transactional(rollbackFor = AlgException.class)
     public Long modStar(String modSn,String usrSn) throws AlgException{
-        //查取该算法目前人收藏
+        //查取该算法目前是否有人收藏
+        Long starCntCount = algModuleUsageMapper.selectStarCntCount(modSn);
+        //查取该算法目前收藏数
         Long starCnt = algModuleUsageMapper.selectStarCnt(modSn);
-        log.info("该算法目前人收藏个数:{}",starCnt);
+        log.info("该算法目前人收藏是否有人收藏:{}",starCnt);
 
         //创建收藏统计表（alg_module_usage）对象
         AlgModuleUsage algModuleUsage = new AlgModuleUsage();
@@ -112,7 +114,7 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
             int del = algStarMapper.deleteAlgStar(algStar);
             log.info("取消收藏");
             //收藏统计表（alg_module_usage）重新更新收藏总数。
-            if(starCnt>0){
+            if(starCntCount>0){
                 algModuleUsage.setStarCnt(--starCnt);
                 algModuleUsageMapper.updateByModSn(algModuleUsage);
                 log.info("取消收藏，重新更新收藏总数:{}",starCnt);
@@ -124,7 +126,7 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
             algStarMapper.insert(algStar);
             log.info("该用户表收藏该算法");
             //更新收藏统计表（alg_module_usage）该算法的收藏总数。
-            if(starCnt>0){
+            if(starCntCount>0){
                 //该算法有用户收藏过，更新收藏总数
                 algModuleUsage.setStarCnt(++starCnt);
                 algModuleUsageMapper.updateByModSn(algModuleUsage);

@@ -39,8 +39,8 @@
     select usg_sn, mod_sn, star_cnt, follow_cnt, call_cnt, credit_cnt
     from alg_module_usage
   </select>
-  <select id="selectStarCnt" resultType="java.lang.Long" parameterType="java.lang.String" >
-    select star_cnt
+  <select id="selectStarCntCount" resultType="java.lang.Long" parameterType="java.lang.String" >
+    select count(*)
     from alg_module_usage
     where mod_sn = #{modSn,jdbcType=VARCHAR}
   </select>
@@ -53,4 +53,9 @@
     credit_cnt = #{creditCnt,jdbcType=DECIMAL}
     where mod_sn = #{modSn,jdbcType=VARCHAR}
   </update>
+  <select id="selectStarCnt" resultType="java.lang.Long" parameterType="java.lang.String" >
+    select ifnull(star_cnt,0)
+    from alg_module_usage
+    where mod_sn = #{modSn,jdbcType=VARCHAR}
+  </select>
 </mapper>
