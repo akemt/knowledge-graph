@@ -66,13 +66,15 @@ public class ModelSetServiceImpl implements ModelSetService {
     }
 
     @Override
-    public int deleteModelSet(AlgModel algModel) throws AlgException {
+    public void deleteModelSet(AlgModel algModel) throws AlgException {
             int count= algModelMapper.checkData(algModel);
             if(count==0) {
                 algModelSetMapper.deleteByPrimaryKey(algModel);
-                return  1;
+            }else{
+                String[] checkMessage = {"模型集下存在数据，不允许删除",""};
+                throw new AlgException("BEYOND.ALG.MODEL.STATUS.0000015",checkMessage);
             }
-            return 0;
+
     }
 
     @Override
@@ -85,7 +87,7 @@ public class ModelSetServiceImpl implements ModelSetService {
                 throw new Exception("BEYOND.ALG.DATA.PAY.STATUS.0000012");
             }
             //生成模型随机串号
-       //     algModel.setModelSn(UUID.randomUUID().toString().replace("-", ""));
+            algModel.setModelSn(UUID.randomUUID().toString().replace("-", ""));
             // new Date()为获取当前系统时间
             algModel.setCreateTime(new Date());
             //数据地址

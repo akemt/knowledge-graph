@@ -81,8 +81,8 @@ public class ModelSetController  extends BaseController {
         algModel.setModelSetSn(modelSetSn);
         algModel.setUsrSn(algUser.getUsrSn());
        // algModel.setUsrSn("3");
-        int count= modelSetService.deleteModelSet(algModel);
-        return Result.ok(count);
+        modelSetService.deleteModelSet(algModel);
+        return Result.ok("1");
     }
 
     /**
