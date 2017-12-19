@@ -131,7 +131,7 @@ public class ContentController extends BaseController {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
         AlgUser algUser = getUserInfo();
         if(Assert.isNotNULL(algUser)){
-            authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
+            authService.isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
             AlgorithmDetailVo algorithmDetailVo=new AlgorithmDetailVo();
             if(!usrCode.equals(algUser.getUsrCode())){
                 algorithmDetailVo.setModId(modId);
