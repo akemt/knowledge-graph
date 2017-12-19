@@ -31,7 +31,7 @@ public class ModelSetServiceTests {
         AlgModel algModel=new AlgModel();
         algModel.setModelSetSn("4");
         algModel.setUsrSn("1");
-        int count =modelSetService.deleteModelSet(algModel);
+       // int count =modelSetService.deleteModelSet(algModel);
 
     }
 }
