@@ -67,4 +67,10 @@
     LEFT JOIN (SELECT group_concat(fullname) fullname,sid from alg_author_list GROUP BY sid) algAuthorList ON algArticleList.sid=algAuthorList.sid
     WHERE algArticleList.id=#{id,jdbcType=INTEGER}
   </select>
+  <select id="queryAlgArticlesListByTitle" resultType="java.util.HashMap" parameterType="java.lang.String">
+     SELECT a.id,a.title
+	   FROM alg_article_list a
+      where 1=1
+      and LOWER(a.title) like CONCAT('%',LOWER(#{strTitle}),'%');
+  </select>
 </mapper>

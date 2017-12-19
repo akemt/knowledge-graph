@@ -21,7 +21,7 @@
         <!--The FILE and ASYNC appenders are here as examples for a production configuration -->
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${dev_dir}/algmarket-algorithms.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <fileNamePattern>${dev_dir}/algmarket-quartz.%d{yyyy-MM-dd}.log</fileNamePattern>
                 <maxHistory>30</maxHistory>
             </rollingPolicy>
             <encoder>
@@ -67,7 +67,7 @@
         <!--The FILE and ASYNC appenders are here as examples for a production configuration -->
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>algmarket-algorithms.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <fileNamePattern>algmarket-quartz.%d{yyyy-MM-dd}.log</fileNamePattern>
                 <maxHistory>30</maxHistory>
             </rollingPolicy>
             <encoder>

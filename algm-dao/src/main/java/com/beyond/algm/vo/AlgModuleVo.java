@@ -25,6 +25,7 @@ public class AlgModuleVo extends AlgModule {
     private String evnName;
     private String needWebName;
     private String needCallOtherName;
+    private String runtime ;
 
 
 }

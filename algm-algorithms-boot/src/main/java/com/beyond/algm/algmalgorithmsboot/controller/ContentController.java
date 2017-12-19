@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ：zhangchuanzhi
@@ -130,7 +131,7 @@ public class ContentController extends BaseController {
         log.info("查看算法用户:{},算法模块项目名称id:{}",usrCode,modId);
         AlgUser algUser = getUserInfo();
         if(Assert.isNotNULL(algUser)){
-            authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
+          //  authService.isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
             AlgorithmDetailVo algorithmDetailVo=new AlgorithmDetailVo();
             if(!usrCode.equals(algUser.getUsrCode())){
                 algorithmDetailVo.setModId(modId);
@@ -150,5 +151,22 @@ public class ContentController extends BaseController {
             return Result.ok(algModuleVo);
         }
         return null;
+    }
+
+
+    /**
+     * 查询文献文章列表-支持模糊查询
+     *
+     * @param title
+     * @return
+     * @throws AlgException
+     * @ author
+     */
+    @RequestMapping(value = "/algArticleList/{title}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result algArticleList(@PathVariable("title") String title) throws AlgException {
+
+        List<Map<String,Object>> algArticleListVoList = algorithmCollectAndRankService.queryAlgArticlesListByTitle(title);
+
+        return Result.ok(algArticleListVoList);
     }
 }

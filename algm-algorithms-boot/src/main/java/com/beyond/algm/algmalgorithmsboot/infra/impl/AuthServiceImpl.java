@@ -25,18 +25,18 @@ public class AuthServiceImpl implements AuthService{
             if(count>0){
                 int countOrgCode=algUserMapper.countOrgCode(usrCode,sessionUsrCode);
                 if(countOrgCode==0){
-                    log.warn("获取版本失败，你没有权限");
-                    throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
+                    log.warn("不在组织内获取版本失败，你没有权限");
+                    throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000011");
                 }
             }else if(count==0){
-                log.warn("获取版本失败，你没有权限");
-                throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
+                log.warn("不是组织,获取版本失败，你没有权限");
+                throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000012");
             }
         }else{
             AlgModule algModule = algModuleMapper.selectByUsrSnAndModId(usrSn, modId);
             if ((Assert.isNULL(algModule))) {
-                log.warn("获取版本失败，你没有权限");
-                throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000010");
+                log.warn("获取版本算法失败，你没有权限");
+                throw new AlgException("BEYOND.ALG.MODULE.GETVERSION.0000013");
             }
         }
     }

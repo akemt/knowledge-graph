@@ -3,19 +3,21 @@ package com.beyond.algm.algmfileboot.controller;
 import com.beyond.algm.algmfileboot.base.BaseController;
 import com.beyond.algm.algmfileboot.infra.AuthService;
 import com.beyond.algm.algmfileboot.infra.ModelSetService;
+import com.beyond.algm.algmfileboot.infra.UserService;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgModel;
 import com.beyond.algm.model.AlgUser;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.beyond.algm.common.Assert;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -31,6 +33,8 @@ public class ModelController extends BaseController {
     private AuthService authService;
     @Autowired
     private ModelSetService modelSetService;
+    @Autowired
+    private UserService  userService;
     /**
      * @author ：zhangchuanzhi
      * @Description: 数据文件增加
@@ -53,12 +57,30 @@ public class ModelController extends BaseController {
      * @author ：zhangchuanzhi
      * @Description: 模型下载
      */
-    @RequestMapping(value = "/{usrCode}/{modelSet}/{fileName}/modelDownUpload", method = RequestMethod.GET)
-    public Result modelDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet, @PathVariable("fileName") String fileName, HttpServletResponse response) throws AlgException {
+    @RequestMapping(value = "/model/{usrCode}/{modelSet}/{fileName:.+}", method = RequestMethod.GET)
+    public void modelDownFile(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet, @PathVariable("fileName") String fileName, HttpServletResponse response) throws AlgException {
         AlgUser algUser = getUserInfo();
         // 权限控制
         authService.isModelByUser( usrCode, algUser.getUsrCode(), algUser.getUsrSn(), modelSet, fileName);
         modelSetService.downModelUrl(algUser.getUsrSn(), modelSet, fileName,usrCode,response);
+    }
+
+
+    @RequestMapping(value = "/model/{usrCode}/{modelSet}/{fileName:.+}", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result modelDownFileHttpClient(@PathVariable("usrCode") String usrCode, @PathVariable("modelSet") String modelSet,
+                                          @PathVariable("fileName") String fileName,
+                                          HttpServletRequest request, HttpServletResponse response) throws AlgException {
+        String keyValue = request.getHeader("KeyValue");
+        if (Assert.isNotEmpty(keyValue)) {
+            AlgAuthCode algAuthCode= modelSetService.selectUsr(keyValue);
+            AlgUser algUser= userService.findByUsrCode(algAuthCode.getUsrSn());
+            authService.isModelByUser( usrCode, algUser.getUsrCode(), algUser.getUsrSn(), modelSet, fileName);
+            modelSetService.downModelUrl(algUser.getUsrSn(), modelSet, fileName,usrCode,response);
+        }else{
+            // 到时候优化
+            return Result.failureResponse();
+        }
+
         return Result.successResponse();
     }
 }

@@ -4,6 +4,7 @@ import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.model.AlgArticleList;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
+import com.beyond.algm.vo.AlgStarDataVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import org.springframework.data.domain.Pageable;
@@ -32,5 +33,5 @@ public interface AlgModuleListService {
     List<AlgDifDataListVo> findDifDataList(Integer id) throws AlgException;
 
     //收藏算法
-    Long modStar(String modSn,String usrSn) throws AlgException;
+    AlgStarDataVo modStar(String modSn, String usrSn) throws AlgException;
 }

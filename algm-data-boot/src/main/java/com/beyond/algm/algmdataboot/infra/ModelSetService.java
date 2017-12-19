@@ -34,7 +34,7 @@ public interface ModelSetService {
      * @param： String modelSetSn
      * @date ： 18:59 2017/10/18
      */
-    int deleteModelSet(AlgModel algModel) throws AlgException;
+    void deleteModelSet(AlgModel algModel) throws AlgException;
 
     /**
      * @author ：huangjinqing

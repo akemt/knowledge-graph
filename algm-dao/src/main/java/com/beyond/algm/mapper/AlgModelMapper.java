@@ -35,5 +35,5 @@ public interface AlgModelMapper {
 
     int checkModelEnName(String usrSn,String modelEnName);
 
-
+    void updateMode(AlgModel record);
 }

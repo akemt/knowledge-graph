@@ -63,7 +63,7 @@ public class PayCashServiceImpl implements PayCashService {
      * @date ：11:32 2017/12/5
      */
     @Override
-    public int presentCash(String usrSn, float freeBal)throws AlgException{
+    public int presentCash(String usrSn)throws AlgException{
         //查询该用户是否在积分表存在。
         if(algAccountMapper.presentCash(usrSn) > 0){
             return 0;
@@ -72,7 +72,9 @@ public class PayCashServiceImpl implements PayCashService {
         AlgAccount algAccount = new AlgAccount();
         algAccount.setAccSn(UUIDUtil.createUUID());
         algAccount.setUsrSn(usrSn);
-        algAccount.setFreeBal(freeBal);
+        //字典表取
+        String core = algDicMapper.selectDicValue("integral","integral_default");
+        algAccount.setFreeBal(Float.parseFloat(core));
         algAccount.setFreeSetTime(new Date());
         //往积分表插入该用户，并赠送积分。
         logger.info("注册用户时，积分赠送，积分串号setAccSn ：{}",algAccount.getAccSn());

@@ -10,9 +10,11 @@ import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
+import com.beyond.algm.mapper.AlgAuthCodeMapper;
 import com.beyond.algm.mapper.AlgModelMapper;
 import com.beyond.algm.mapper.AlgModelSetMapper;
 import com.beyond.algm.mapper.AlgUserMapper;
+import com.beyond.algm.model.AlgAuthCode;
 import com.beyond.algm.model.AlgModel;
 
 import com.beyond.algm.model.AlgUser;
@@ -54,7 +56,8 @@ public class ModelSetServiceImpl implements ModelSetService {
     private AlgUserMapper algUserMapper;
     @Autowired
     AmazonS3 conn;
-
+    @Autowired
+    private AlgAuthCodeMapper algAuthCodeMapper;
     /**
      * @author ：zhangchuanzhi
      * @Description:检查文件上传名字
@@ -65,7 +68,7 @@ public class ModelSetServiceImpl implements ModelSetService {
     public int checkFileName(AlgModel algModel) throws AlgException{
         int count= algModelMapper.checkFileName(algModel);
         if(count>0){
-            String[] checkMessage = {" 文件名字重复",""};
+            String[] checkMessage = {" 文件名字",""};
             throw new AlgException("BEYOND.ALG.DATA.FILE.NAME.0000006",checkMessage);
         }
         return count;
@@ -109,7 +112,8 @@ public class ModelSetServiceImpl implements ModelSetService {
         conn.putObject(bucketName,key,targetFile);
         conn.setObjectAcl(bucketName,key, CannedAccessControlList.PublicRead);
         String pathUrl=  conn.getUrl(bucketName,key).toString();
-        pathUrl= pathUrl.replace("http","model");
+        String pathHost="http://"+host;
+        pathUrl= pathUrl.replace(pathHost,"model:/");
         log.info("保存路径：{}",pathUrl);
         AlgUser user=new AlgUser();
         user.setUsrCode(usrCode);
@@ -126,6 +130,7 @@ public class ModelSetServiceImpl implements ModelSetService {
         algModel.setCreateTime(new Date());
         algModel.setModelAddress(pathUrl);
         algModel.setModelSize(fileSize.toString());
+        algModel.setIsOpenSrc("0");
         algModelMapper.insert(algModel);
         return algModel;
     }
@@ -152,5 +157,17 @@ public class ModelSetServiceImpl implements ModelSetService {
             String[] checkMessage = {" 查询结果为空",""};
             throw new AlgException("BEYOND.ALG.MODEL.COMMON.VALID.0000003",checkMessage);
         }
+    }
+
+    /**
+     * @author ：zhangchuanzhi
+     * @Description: 返回用户
+     * @param：
+     * @date ： 2017-10-22 21:54:06
+     */
+    @Override
+    public AlgAuthCode selectUsr(String acdId)throws AlgException{
+        AlgAuthCode algAuthCode = algAuthCodeMapper.selectUsr(acdId);
+        return algAuthCode;
     }
 }

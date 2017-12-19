@@ -31,8 +31,8 @@ public class AlgChargingCallServiceImplTest {
     @Test
     public void addChargingCall() throws Exception {
         System.out.println("1111111111111111111111111122222222222999999999999");
-        AlgResult aaa = algChargingCallService.addChargingCall("lindw","TestJava","1.3.8","9a98142cbff747b38461259d5638ebf2", "11");
-        System.out.println(aaa.toString());
+        String aaa = algChargingCallService.addChargingCall("lindw","TestJava","1.3.8","9a98142cbff747b38461259d5638ebf2", "11");
+        System.out.println(aaa);
     }
 
 }

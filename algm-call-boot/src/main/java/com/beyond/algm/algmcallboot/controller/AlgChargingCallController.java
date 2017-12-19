@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @Slf4j
 @RequestMapping
@@ -24,9 +26,10 @@ public class AlgChargingCallController {
      */
     @RequestMapping(value = "/{usrCode}/{modId}/{version:.+}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result algChargingCall(@PathVariable("usrCode") String usrCode, @PathVariable("modId") String modId,
-                                  @PathVariable("version") String version, String keyValue,@RequestBody(required = false) String jsonStr) throws AlgException{
+                                  @PathVariable("version") String version, @RequestBody(required = false) String jsonStr, HttpServletRequest request) throws AlgException{
+        String keyValue = request.getHeader("KeyValue");
         log.info("用户名:{},项目ID:{},版本:{},key:{}", usrCode, modId, version, keyValue);
-        AlgResult algResult = algChargingCallService.addChargingCall(usrCode,modId,version,keyValue,jsonStr);
+        String algResult = algChargingCallService.addChargingCall(usrCode,modId,version,keyValue,jsonStr);
         return Result.ok(algResult);
     }
 }

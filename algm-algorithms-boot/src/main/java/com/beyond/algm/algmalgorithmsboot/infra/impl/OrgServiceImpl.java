@@ -1,6 +1,7 @@
 package com.beyond.algm.algmalgorithmsboot.infra.impl;
 
 import com.beyond.algm.algmalgorithmsboot.infra.GitLabService;
+import com.beyond.algm.algmalgorithmsboot.infra.KubernetesService;
 import com.beyond.algm.algmalgorithmsboot.infra.OrgService;
 import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.UUIDUtil;
@@ -27,14 +28,16 @@ import java.util.List;
 @Service
 public class OrgServiceImpl implements OrgService {
 
-    @Autowired(required = false)
+    @Autowired
     private AlgUserMapper algUserMapper;
-    @Autowired(required = false)
+    @Autowired
     private AlgRUserOrgInviteMapper algRUserOrgInviteMapper;
     @Autowired
     private GitLabService gitLabService;
-    @Autowired(required = false)
+    @Autowired
     private AlgModuleMapper algModuleMapper;
+    @Autowired
+    private KubernetesService kubernetesService;
 
     @Override
     @Transactional(rollbackFor = AlgException.class)
@@ -71,6 +74,9 @@ public class OrgServiceImpl implements OrgService {
             log.error("gitlab创建组织失败.", e);
             throw new AlgException("BEYOND.ALG.ORG.GITLAB.0000001", new String[]{"创建组织", org.getUsrCode(), owner.getUsrCode()}, e);
         }
+
+        //创建组织 k8s 命名空间 和 拉取harbor的密钥
+        kubernetesService.makeK8sSecretForNamespace(org.getUsrCode());
         return org;
     }
 

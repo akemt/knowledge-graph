@@ -149,6 +149,12 @@ public class ModuleServiceImpl implements ModuleService {
             //模块串号
             algModule.setModSn(UUIDUtil.createUUID());
             algModule.setCreateSn(algUser.getUsrSn());
+            //是否要存取网络
+            String needWeb = Assert.isEmpty(algModule.getNeedWeb())?"0":algModule.getNeedWeb();
+            algModule.setNeedWeb(needWeb);
+            //是否要调用其他算法
+            String needCallOther = Assert.isEmpty(algModule.getNeedCallOtherName())?"0":algModule.getNeedCallOtherName();
+            algModule.setNeedCallOtherName(needCallOther);
 
             log.info("新增算法，向模块表插入成功，项目串号:{}",algModule.getModSn());
             GitUser gitUser = new GitUser();
@@ -225,10 +231,14 @@ public class ModuleServiceImpl implements ModuleService {
             //协议
             List<AlgLicense> license = algLicenseMapper.selectAll();
             map.put("license",license);
-            //集群
-            String moduleAccessMode="module_access_mode";
-            List<AlgDic> AccessandCall =algDicMapper.getDictionarylist(moduleAccessMode);
-            map.put("moduleAccessMode",AccessandCall);
+            //网络接入
+            String needWeb="need_web";
+            List<AlgDic> AccessandCallNw =algDicMapper.getDictionarylist(needWeb);
+            map.put("needWeb",AccessandCallNw);
+            //调用第三方算法
+            String needCallOther="need_call_other";
+            List<AlgDic> AccessandCallNco =algDicMapper.getDictionarylist(needCallOther);
+            map.put("needCallOther",AccessandCallNco);
             String runEnv="run_env";
             List<AlgDic> RunandEnv =algDicMapper.getDictionarylist(runEnv);
             map.put("runEnv",RunandEnv);

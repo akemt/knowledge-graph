@@ -28,6 +28,8 @@ public class AlgModel {
     private String comment;
 
     private Integer  modelCredit;
+
+    private String modelContent;
     public String getModelSn() {
         return modelSn;
     }
@@ -130,5 +132,13 @@ public class AlgModel {
 
     public void setModelCredit(Integer modelCredit) {
         this.modelCredit = modelCredit;
+    }
+
+    public String getModelContent() {
+        return modelContent;
+    }
+
+    public void setModelContent(String modelContent) {
+        this.modelContent = modelContent;
     }
 }

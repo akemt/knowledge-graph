@@ -14,5 +14,5 @@ public interface AlgChargingCallService {
      * @return
      * @throws AlgException
      */
-    AlgResult addChargingCall(String usrCode, String modId, String version, String keyValue,String jsonStr) throws AlgException;
+    String addChargingCall(String usrCode, String modId, String version, String keyValue,String jsonStr) throws AlgException;
 }
