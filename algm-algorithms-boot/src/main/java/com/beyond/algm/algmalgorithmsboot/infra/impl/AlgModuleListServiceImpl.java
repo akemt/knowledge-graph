@@ -10,6 +10,7 @@ import com.beyond.algm.model.AlgModuleUsage;
 import com.beyond.algm.model.AlgStar;
 import com.beyond.algm.vo.AlgDifDataListVo;
 import com.beyond.algm.vo.AlgModuleListVo;
+import com.beyond.algm.vo.AlgStarDataVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -90,7 +91,9 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
     //收藏算法
     @Override
     @Transactional(rollbackFor = AlgException.class)
-    public Long modStar(String modSn,String usrSn) throws AlgException{
+    public AlgStarDataVo modStar(String modSn, String usrSn) throws AlgException{
+        //收藏标志
+        int starState = 0;
         //查取该算法目前是否有人收藏
         Long starCntCount = algModuleUsageMapper.selectStarCntCount(modSn);
         //查取该算法目前收藏数
@@ -126,6 +129,7 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
             algStar.setStarSn(UUIDUtil.createUUID());
             algStar.setCreatTime(new Date());
             algStarMapper.insert(algStar);
+            starState = 1;
             log.info("该用户表收藏该算法");
             //更新收藏统计表（alg_module_usage）该算法的收藏总数。
             if(starCntCount>0){
@@ -141,6 +145,9 @@ public class AlgModuleListServiceImpl implements AlgModuleListService {
                 log.info("该算法无用户收藏过，新插入一条:{}",starCnt);
             }
         }
-        return starCnt;
+        AlgStarDataVo algStarDataVo = new AlgStarDataVo();
+        algStarDataVo.setStarCount(starCnt);
+        algStarDataVo.setStarState(starState);
+        return algStarDataVo;
     }
 }
