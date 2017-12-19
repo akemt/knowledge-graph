@@ -36,6 +36,7 @@
         <result column="papertext" property="papertext" jdbcType="VARCHAR"/>
         <result column="article_id" property="articleId" jdbcType="VARCHAR"/>
         <result column="star_sn" property="starSn" jdbcType="VARCHAR"/>
+        <result column="article_url" property="articleUrl" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="queryForListMap" type="com.beyond.algm.vo.AlgModuleVo" extends="BaseResultMap">
         <result column="lic_name" jdbcType="VARCHAR" property="licName" />
@@ -120,7 +121,8 @@
         us.usr_name as usr_name,
         concat('/algm','/',us.usr_code,'/',mo.mod_id) as url,
 	    art.papertext as papertext,
-	    art.id as article_id
+	    art.id as article_id,
+	    case when art.id is not null then concat('/algm/article/',art.id) else '/' end as article_url
     </sql>
     <select id="findModuleList" resultMap="ModuleListMap">
         select
@@ -242,7 +244,8 @@
         concat('/algm','/',us.usr_code,'/',mo.mod_id) as url,
         art.papertext as papertext,
         art.id as article_id,
-        star.star_sn as star_sn
+        star.star_sn as star_sn,
+        case when art.id is not null then concat('/algm/article/',art.id) else '/' end as article_url
         from alg_module mo
         left join alg_algo_category ac on mo.cat_sn = ac.cat_sn
         left join alg_module_usage usa on usa.mod_sn = mo.mod_sn
