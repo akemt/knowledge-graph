@@ -72,7 +72,7 @@ public class ModuleController extends BaseController {
         //权限验证
         authService. isModuleByUser( usrCode,modId, algUser.getUsrCode(),algUser.getUsrSn());
         AlgUser modUser = userService.findByUsrCode(usrCode);
-        AlgModuleEditVo algModuleEditVo = moduleService.initModuleTree(modUser,algUser.getUsrCode(), modId, path,fileName);
+        AlgModuleEditVo algModuleEditVo = moduleService.initModuleTree(modUser,algUser, modId, path,fileName);
         return Result.ok(algModuleEditVo);
     }
 

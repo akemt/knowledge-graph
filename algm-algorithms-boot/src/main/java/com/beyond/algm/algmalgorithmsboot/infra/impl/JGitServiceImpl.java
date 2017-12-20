@@ -11,6 +11,7 @@ import org.eclipse.jgit.api.*;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,5 +139,36 @@ public class JGitServiceImpl implements JGitService {
         //本地删除
         FileUtil.delFile(delPath);
         return true;
+    }
+
+
+    /**
+     * pull要在/.git目录中进行
+     *
+     * @param repoDir
+     */
+    public void gitPull(File repoDir, GitUser gitUser) throws AlgException {
+        File RepoGitDir = new File(repoDir.getAbsolutePath() + "/.git");
+        if (!RepoGitDir.exists()) {
+            logger.info("Error! Not Exists : " + RepoGitDir.getAbsolutePath());
+        } else {
+            Repository repo = null;
+            try {
+                CredentialsProvider cp = new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword());
+                repo = new FileRepository(RepoGitDir.getAbsolutePath());
+                Git git = new Git(repo);
+                PullCommand pullCmd = git.pull();
+                pullCmd.setCredentialsProvider(cp);
+                pullCmd.call();
+
+                logger.info("Pulled from remote repository to local repository at " + repo.getDirectory());
+            } catch (Exception e) {
+                logger.info(e.getMessage() + " : " + RepoGitDir.getAbsolutePath());
+            } finally {
+                if (repo != null) {
+                    repo.close();
+                }
+            }
+        }
     }
 }

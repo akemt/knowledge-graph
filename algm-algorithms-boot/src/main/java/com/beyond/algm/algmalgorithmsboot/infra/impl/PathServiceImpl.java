@@ -94,7 +94,7 @@ public class PathServiceImpl implements PathService {
      * @param modId
      * @return
      */
-    private StringBuilder initBaseFolder(StringBuilder stringBuilder, String basePath, String usrCode, String modId) {
+    public StringBuilder initBaseFolder(StringBuilder stringBuilder, String basePath, String usrCode, String modId) {
         stringBuilder.append(basePath);
         stringBuilder.append(File.separator);
         stringBuilder.append(usrCode);
