@@ -59,8 +59,13 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
                 if(algModuleVo.getIsColony().equals("0")){
                     evnName=evnName+","+colonyName;
                 }else{
-                    String schoolName=algDicMapper.selectDicValue("stand_env",algModuleVo.getColonyPlanId());
+                    if(algModuleVo.getEnvType().equals("1")){
+                    String schoolName=algDicMapper.selectDicValue("gpu_env",algModuleVo.getColonyPlanId());
                     evnName=evnName+","+colonyName+","+schoolName;
+                    }else{
+                        String schoolName=algDicMapper.selectDicValue("stand_env",algModuleVo.getColonyPlanId());
+                        evnName=evnName+","+colonyName+","+schoolName;
+                    }
                 }
                 algModuleVo.setEvnName(evnName);
             }
