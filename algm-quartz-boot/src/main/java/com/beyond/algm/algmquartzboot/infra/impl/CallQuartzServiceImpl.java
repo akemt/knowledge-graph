@@ -1,5 +1,7 @@
 package com.beyond.algm.algmquartzboot.infra.impl;
 
+import com.alibaba.rocketmq.shade.com.alibaba.fastjson.JSONArray;
+import com.alibaba.rocketmq.shade.com.alibaba.fastjson.JSONObject;
 import com.beyond.algm.algmquartzboot.infra.CallQuartzService;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
@@ -29,15 +31,25 @@ public class CallQuartzServiceImpl implements CallQuartzService {
      * @return
      */
     @Override
-    public void callQuartzs()throws AlgException {
+    public void callQuartzs(JSONArray jsonArray)throws AlgException {
         List<AlgRUserModuleCallTrans> list = new ArrayList<AlgRUserModuleCallTrans>();
-        for (int i=0; i<500; i++){
-            AlgRUserModuleCallTrans algRUserModuleCallTrans = new AlgRUserModuleCallTrans();
-            algRUserModuleCallTrans.setUmcSn(UUIDUtil.createUUID());
-            algRUserModuleCallTrans.setVerSn(UUIDUtil.createUUID());
-            algRUserModuleCallTrans.setCallUsrSn(UUIDUtil.createUUID());
-            algRUserModuleCallTrans.setEndTime(new Date());
-            list.add(algRUserModuleCallTrans);
+        if(jsonArray.size()>0){
+            for(int i=0;i<jsonArray.size();i++){
+                //创建对象
+                AlgRUserModuleCallTrans algRUserModuleCallTrans = new AlgRUserModuleCallTrans();
+                // 遍历 jsonarray 数组，把每一个对象转成 json 对象
+                JSONObject job = jsonArray.getJSONObject(i);
+                // 得到每个对象中的属性值
+                algRUserModuleCallTrans.setUmcSn(String.valueOf(job.get("UMC_SN")));
+                algRUserModuleCallTrans.setVerSn(String.valueOf(job.get("VER_SN")));
+                algRUserModuleCallTrans.setCallUsrSn(String.valueOf(job.get("CALL_USR_SN")));
+                //algRUserModuleCallTrans.setOwnerUsrSn(String.valueOf(job.get("OWNER_USR_SN")))
+                algRUserModuleCallTrans.setDuration(Long.valueOf(String.valueOf(job.get("DURATION"))));
+                //algRUserModuleCallTrans.setBilledCallCnt(Long.valueOf(String.valueOf(job.get("BILLED_CALL_CNT"))));
+                algRUserModuleCallTrans.setCallPayAmount(Float.parseFloat(String.valueOf(job.get("CALL_PAY_AMOUNT"))));
+                //algRUserModuleCallTrans.setModCallCnt(Long.valueOf(String.valueOf(job.get("ALL_CALL_AMOUNT"))));
+                list.add(algRUserModuleCallTrans);
+            }
         }
         algRUserModuleCallTransMapper.insertList(list);
     }
@@ -50,7 +62,7 @@ public class CallQuartzServiceImpl implements CallQuartzService {
         Long count = algModuleUsageMapper.selectStarCntCount(modSn);
         //创建AlgModuleUsage对象
         AlgModuleUsage algModuleUsage = new AlgModuleUsage();
-
+        //TODO 目前只一个modsn循环查一次，要给成存储过程做。
         if(count > 0){
             //存在调用记录，直接更新。
             Long callCount = algModuleUsageMapper.selectCallCnt(modSn);

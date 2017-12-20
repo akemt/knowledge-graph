@@ -1,5 +1,6 @@
 package com.beyond.algm.algmquartzboot.infra;
 
+import com.alibaba.rocketmq.shade.com.alibaba.fastjson.JSONArray;
 import com.beyond.algm.exception.AlgException;
 
 public interface CallQuartzService {
@@ -9,5 +10,5 @@ public interface CallQuartzService {
      * @param
      * @return
      */
-    void callQuartzs()throws AlgException;
+    void callQuartzs(JSONArray jsonArray)throws AlgException;
 }
