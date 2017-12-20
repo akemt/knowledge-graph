@@ -166,7 +166,7 @@
                 <if test="arg4 != null and arg4 !=''">and us.usr_code = #{arg4,jdbcType=VARCHAR}</if>
             </trim>
         </where>
-        <if test="arg1 == ''"> order by usa.star_cnt DESC </if>
+        <if test="arg1 == ''or arg1 == null"> order by amv.createDate DESC </if>
         <if test="arg1 == 'starCnt'"> order by usa.star_cnt DESC </if>
         <if test="arg1 == 'followCnt'"> order by usa.follow_cnt DESC </if>
         <if test="arg1 == 'callCnt'"> order by usa.call_cnt DESC </if>
@@ -216,7 +216,7 @@
                 <if test="arg3 != null and arg3 !=''">and star.usr_sn = #{arg3,jdbcType=VARCHAR}</if>
             </trim>
         </where>
-        <if test="arg1 == ''"> order by usa.star_cnt DESC </if>
+        <if test="arg1 == '' or arg1 == null"> order by star.creat_time DESC </if>
         <if test="arg1 == 'starCnt'"> order by usa.star_cnt DESC </if>
         <if test="arg1 == 'followCnt'"> order by usa.follow_cnt DESC </if>
         <if test="arg1 == 'callCnt'"> order by usa.call_cnt DESC </if>
@@ -262,7 +262,7 @@
                 <if test="arg4 != null and arg4 !=''">and us.usr_code = #{arg4,jdbcType=VARCHAR}</if>
             </trim>
         </where>
-        <if test="arg1 == ''"> order by usa.star_cnt DESC </if>
+        <if test="arg1 == ''or arg1 == null"> order by amv.createDate DESC </if>
         <if test="arg1 == 'starCnt'"> order by usa.star_cnt DESC </if>
         <if test="arg1 == 'followCnt'"> order by usa.follow_cnt DESC </if>
         <if test="arg1 == 'callCnt'"> order by usa.call_cnt DESC </if>
