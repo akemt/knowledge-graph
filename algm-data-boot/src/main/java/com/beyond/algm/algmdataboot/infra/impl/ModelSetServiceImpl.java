@@ -3,6 +3,7 @@ package com.beyond.algm.algmdataboot.infra.impl;
 
 import com.beyond.algm.algmdataboot.infra.ModelSetService;
 import com.beyond.algm.common.Assert;
+import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -159,6 +161,14 @@ public class ModelSetServiceImpl implements ModelSetService {
     public PageInfo<ModelDataVo> queryAlgModel( AlgModel algModel, PageInfo pageInfo) throws AlgException {
         PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<ModelDataVo> allAlgModel = algModelMapper.queryModelPage(algModel);
+       if(allAlgModel.size()>0){
+            for(int i=0;i<allAlgModel.size();i++){
+                if(Assert.isNotEmpty(allAlgModel.get(i).getModelSize())) {
+                    String size = FileUtil.byteConversionGBMBKB(Long.parseLong(allAlgModel.get(i).getModelSize()));
+                    allAlgModel.get(i).setModelSize(size) ;
+                }
+            }
+       }
         return new PageInfo<>(allAlgModel);
     }
     @Override

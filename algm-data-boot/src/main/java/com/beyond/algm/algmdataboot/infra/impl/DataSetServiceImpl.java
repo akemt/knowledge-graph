@@ -3,6 +3,7 @@ package com.beyond.algm.algmdataboot.infra.impl;
 
 import com.beyond.algm.algmdataboot.infra.DataSetService;
 import com.beyond.algm.common.Assert;
+import com.beyond.algm.common.FileUtil;
 import com.beyond.algm.common.Result;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgDataMapper;
@@ -113,6 +114,14 @@ public class DataSetServiceImpl implements DataSetService {
     public PageInfo<AlgData> queryAlgDatabySet(String dataSetSn, PageInfo pageInfo) throws AlgException {
         PageHelper.startPage(pageInfo.getPageNum(), pageInfo.getPageSize());
         Page<AlgData> algData = algDataMapper.queryAlgDatabySet(dataSetSn);
+        if(algData.size()>0){
+            for(int i=0;i<algData.size();i++){
+                if(Assert.isNotEmpty(algData.get(i).getDataSize())) {
+                    String size = FileUtil.byteConversionGBMBKB(Long.parseLong(algData.get(i).getDataSize()));
+                    algData.get(i).setDataSize(size) ;
+                }
+            }
+        }
         return new PageInfo<>(algData);
     }
 
