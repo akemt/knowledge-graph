@@ -49,6 +49,7 @@ public class CallQuartzServiceImpl implements CallQuartzService {
                 algRUserModuleCallTrans.setCallPayAmount(Float.parseFloat(String.valueOf(job.get("CALL_PAY_AMOUNT"))));
                 //algRUserModuleCallTrans.setModCallCnt(Long.valueOf(String.valueOf(job.get("ALL_CALL_AMOUNT"))));
                 list.add(algRUserModuleCallTrans);
+                this.updateUsage(String.valueOf(job.get("MOD_SN")),Long.valueOf(String.valueOf(job.get("ALL_CALL_AMOUNT"))));
             }
         }
         algRUserModuleCallTransMapper.insertList(list);
