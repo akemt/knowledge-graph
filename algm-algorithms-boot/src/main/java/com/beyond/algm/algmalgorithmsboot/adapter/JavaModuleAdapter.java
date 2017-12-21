@@ -39,7 +39,7 @@ public class JavaModuleAdapter implements ModuleAdapter {
         // 先将直接拷贝的文件复制到目录下
         String templatePath = null;
 
-        if(Assert.isNotEmpty(active)&&active.equals("dev")){
+        if(Assert.isNotEmpty(active)&&(active.equals("dev") || active.equals("testdev"))){
             try {
                 templatePath = "file:" + new ClassPathResource("/templates/project/java/").getFile().getPath()+File.separator;
             }catch (Exception e){
