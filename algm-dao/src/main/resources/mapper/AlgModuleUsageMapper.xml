@@ -58,4 +58,9 @@
     from alg_module_usage
     where mod_sn = #{modSn,jdbcType=VARCHAR}
   </select>
+  <select id="selectCallCnt" resultType="java.lang.Long" parameterType="java.lang.String" >
+    select ifnull(call_cnt,0)
+    from alg_module_usage
+    where mod_sn = #{modSn,jdbcType=VARCHAR}
+  </select>
 </mapper>

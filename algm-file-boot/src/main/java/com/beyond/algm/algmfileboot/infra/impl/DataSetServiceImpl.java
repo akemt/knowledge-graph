@@ -112,7 +112,7 @@ public class DataSetServiceImpl implements DataSetService {
         algData.setUsrSn(usrSn);
         algData.setDataSetSn(dataSetUuid);
         algData.setDataAddr(pathUrl);
-        algData.setDataSize(fileSize.toString());
+        algData.setDataSize(file.getSize()+"");
         algData.setIsOpenSrc("0");
         algDataMapper.insert(algData);
         targetFile.delete();
