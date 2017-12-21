@@ -104,4 +104,12 @@ public class GitLabServiceImplTest {
 
     }
 
+    @Test
+    public void cloneToLocalPath() throws Exception {
+        GitUser gitUser = new GitUser();
+        gitUser.setPrivateToken("wJcznjQ-98fV6xFHnQMZ");
+        gitUser.setModId("modoulTest01");
+//        gitLabService.createGitLabGroupProject(gitUser);
+    }
+
 }

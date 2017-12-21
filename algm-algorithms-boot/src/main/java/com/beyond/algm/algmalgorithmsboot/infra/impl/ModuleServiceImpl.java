@@ -79,10 +79,37 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public AlgModuleEditVo initModuleTree(AlgUser modUser, String usrCode,String modId, String path,String fileName) throws AlgException {
+    public AlgModuleEditVo initModuleTree(AlgUser modUser, AlgUser curAlgUser,String modId, String path,String fileName) throws AlgException {
         AlgModuleEditVo algModuleEditVo = new AlgModuleEditVo();
 
-        if(Assert.isEmpty(path) && Assert.isEmpty(fileName)){
+        String usrCode = curAlgUser.getUsrCode();
+        String basePath = pathService.getModuleBasePath(modUser.getUsrCode(), modId, usrCode, modUser.getIsOrg());
+        if (Assert.isEmpty(path) && Assert.isEmpty(fileName)) {
+            GitUser gitUser = new GitUser();
+            gitUser.setUsrCode(curAlgUser.getUsrCode());
+            gitUser.setPrivateToken(curAlgUser.getPrivateToken());
+            gitUser.setPassword(AESUtil.decryptAES(curAlgUser.getPasswd(), projectConfigEntity.getKeyAES()));
+
+            //页面初始化时，判断本地.git文件是否存在；
+            String locBasePath = basePath + File.separator + ".git";
+
+            File file = new File(locBasePath);
+
+            if (file.exists()) {//存在:需要pull一下。
+                jGitService.gitPull(new File(basePath), gitUser);
+            } else {// 不存在：需要去Git服务器clone 一下。
+                String remotePath = gitConfigModel.getBaseUrl() + "/" + modUser.getUsrCode() + "/" + modId + ".git";
+
+                gitUser.setProjectRepoURI(remotePath);
+
+                gitUser.setIsOrg(modUser.getIsOrg());
+                //组织编号
+                gitUser.setOrgUsrCode(modUser.getUsrCode());
+
+                gitUser.setModId(modId);
+
+                jGitService.gitCloneProject(gitUser);
+            }
             path = "";
         }else if(Assert.isNotEmpty(path) && Assert.isEmpty(fileName)){
             path = path;
@@ -104,8 +131,6 @@ public class ModuleServiceImpl implements ModuleService {
             FileNodes fileNodes = null;
             //项目名称初始化Tree
             // path 为空的情况是，是项目主文件路径
-
-            String basePath = pathService.getModuleBasePath(modUser.getUsrCode(), modId,usrCode,modUser.getIsOrg());
             if (Assert.isEmpty(path)) {
                 path = pathService.getModuleMainFilePath(basePath, modId, algModule.getLanSn());
             } else if (path.equals("/")) {

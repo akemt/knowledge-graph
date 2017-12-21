@@ -62,4 +62,15 @@ public interface PathService {
      */
     String getOrgAlgBasePath(String orgUsrCode, String modId) throws AlgException;
 
+    /**
+     * 初始化项目基础目录 例：E:\repo\erniu4\TestJavaK1
+     *
+     * @param stringBuilder
+     * @param basePath
+     * @param usrCode
+     * @param modId
+     * @return
+     */
+    StringBuilder initBaseFolder(StringBuilder stringBuilder, String basePath, String usrCode, String modId);
+
 }

@@ -27,4 +27,13 @@ public interface JGitService {
     boolean commitAndPushDelAllFiles(GitUser gitUser) throws AlgException;
 
     public void gitShowStatus(File repoDir)throws AlgException;
+
+    /**
+     * 通过本地路径，从Git服务器上更新pull项目
+     *
+     * @param repoDir
+     * @param gitUser
+     * @throws AlgException
+     */
+    public void gitPull(File repoDir,GitUser gitUser)throws AlgException;
 }
