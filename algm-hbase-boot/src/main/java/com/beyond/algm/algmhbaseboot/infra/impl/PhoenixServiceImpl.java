@@ -166,7 +166,7 @@ public class PhoenixServiceImpl implements PhoenixService {
                 "  B.SUM_ALL_CALL_AMOUNT " +
                 "  FROM ( " +
                 "    SELECT " +
-                "    DISTINCT UMC_SN,MOD_SN,VER_SN,CALL_USR_SN,OWNER_USR_SN " +
+                "    DISTINCT UMC_SN,MOD_SN,VER_SN,CALL_USR_SN,OWNER_USR_SN,START_TIME,END_TIME " +
                 "    FROM ALG_R_USER_MODULE_CALL_TRANS " +
                 "    WHERE TIMEST > " + startTimeStamp +
                 "    AND TIMEST < " + endTimeStamp +
