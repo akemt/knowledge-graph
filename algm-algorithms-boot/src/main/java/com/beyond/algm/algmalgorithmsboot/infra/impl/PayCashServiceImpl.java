@@ -7,6 +7,7 @@ package com.beyond.algm.algmalgorithmsboot.infra.impl;
  */
 
 import com.beyond.algm.algmalgorithmsboot.infra.PayCashService;
+import com.beyond.algm.common.Assert;
 import com.beyond.algm.common.UUIDUtil;
 import com.beyond.algm.exception.AlgException;
 import com.beyond.algm.mapper.AlgAccountMapper;
@@ -97,7 +98,8 @@ public class PayCashServiceImpl implements PayCashService {
             //查兑换率
             String rate = algDicMapper.selectDicValue("rate","rate_default");
             //设置账户钱：余额积分+充值积分
-            Float total = algAccount.getCashBal() + algCashTrans.getCashPayAmount() * Float.parseFloat(rate);
+            Float cashBal = Assert.isEmpty(algAccount.getCashBal())?0:algAccount.getCashBal();
+            Float total = cashBal + algCashTrans.getCashPayAmount() * Float.parseFloat(rate);
             algAccount.setCashBal(total);
         try {
             //更新余额。
