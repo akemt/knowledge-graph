@@ -41,7 +41,7 @@ public class PathServiceImpl implements PathService {
     public String getModuleBasePath(String orgCode, String modId,String usrCode,String isOrg) throws AlgException {
         //项目名称初始化Tree
         StringBuilder stringBuilder = new StringBuilder();
-
+         log.info("orgcode值:{},isOrg值:{}",orgCode,isOrg);
         if("1".equals(isOrg)){
             stringBuilder = initBaseFolder(stringBuilder, gitConfigModel.getLocalBasePath(), orgCode, modId);
             stringBuilder.append(File.separator);
