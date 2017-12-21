@@ -40,14 +40,14 @@ public class CallQuartzServiceImpl implements CallQuartzService {
                 // 遍历 jsonarray 数组，把每一个对象转成 json 对象
                 JSONObject job = jsonArray.getJSONObject(i);
                 // 得到每个对象中的属性值
-                algRUserModuleCallTrans.setUmcSn(String.valueOf(job.get("UMC_SN")));
+                algRUserModuleCallTrans.setUmcSn(UUIDUtil.createUUID());
                 algRUserModuleCallTrans.setVerSn(String.valueOf(job.get("VER_SN")));
                 algRUserModuleCallTrans.setCallUsrSn(String.valueOf(job.get("CALL_USR_SN")));
-                //algRUserModuleCallTrans.setOwnerUsrSn(String.valueOf(job.get("OWNER_USR_SN")))
+                algRUserModuleCallTrans.setOwnerUsrSn(String.valueOf(job.get("OWNER_USR_SN")));
                 algRUserModuleCallTrans.setDuration(Long.valueOf(String.valueOf(job.get("DURATION"))));
-                //algRUserModuleCallTrans.setBilledCallCnt(Long.valueOf(String.valueOf(job.get("BILLED_CALL_CNT"))));
+                algRUserModuleCallTrans.setBilledCallCnt(Long.valueOf(String.valueOf(job.get("BILLED_CALL_CNT"))));
                 algRUserModuleCallTrans.setCallPayAmount(Float.parseFloat(String.valueOf(job.get("CALL_PAY_AMOUNT"))));
-                //algRUserModuleCallTrans.setModCallCnt(Long.valueOf(String.valueOf(job.get("ALL_CALL_AMOUNT"))));
+                algRUserModuleCallTrans.setModCallCnt(Long.valueOf(String.valueOf(job.get("ALL_CALL_AMOUNT"))));
                 list.add(algRUserModuleCallTrans);
                 this.updateUsage(String.valueOf(job.get("MOD_SN")),Long.valueOf(String.valueOf(job.get("ALL_CALL_AMOUNT"))));
             }
