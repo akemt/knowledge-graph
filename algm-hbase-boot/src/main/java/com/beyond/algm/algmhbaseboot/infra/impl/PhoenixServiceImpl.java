@@ -1,44 +1,34 @@
-package com.beyond.algm.algmhbaseboot.infra;
+package com.beyond.algm.algmhbaseboot.infra.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.beyond.algm.algmhbaseboot.infra.PhoenixService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Set;
 
 /**
- * Phoenix Runner
- * create by JR.Elephant on 2017/12/18
+ * Phoenix Service
+ * create by Jr.Elephant on 2017/12/18
  * */
-
-@SpringBootConfiguration
 @Slf4j
-public class PhoenixRunner {
+@Service
+public class PhoenixServiceImpl implements PhoenixService {
 
-    @Value("${phoenix.zkHosts}")
-    private String zkHosts;
-    @Value("${phoenix.className}")
-    private String className;
-
+    @Autowired
     private Connection connection;
+
     private Statement statement;
 
-    /**
-     * initialize
-     * */
-    public PhoenixRunner(){
-        // phoenix驱动
+    @Override
+    public void initStatement(){
         try {
-            Class.forName(className);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        // 建立与hbase的连接
-        try {
-            connection = DriverManager.getConnection(zkHosts);
             statement = connection.createStatement();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,6 +38,7 @@ public class PhoenixRunner {
     /**
      * close all connection
      * */
+    @Override
     public void closeAll() throws SQLException {
         if (statement != null) {
             statement.close();
@@ -60,7 +51,13 @@ public class PhoenixRunner {
     /**
      * insert table by Json
      * */
+    @Override
     public void insertByJson(JSONObject obj) throws SQLException {
+        //获取statement
+        if (statement == null) {
+            initStatement();
+        }
+
         // 各种串号
         String alg_sn = "-1";
         String umc_sn = "-1";
@@ -121,12 +118,12 @@ public class PhoenixRunner {
         String sql = "UPSERT INTO ALG_R_USER_MODULE_CALL_TRANS("
                 + "ALG_SN,UMC_SN,MOD_SN,VER_SN,CALL_USR_SN,OWNER_USR_SN,DURATION,CALL_PAY_AMOUNT,IS_CHARGING,START_TIME,END_TIME"
                 + ") VALUES ("
-                + "'" + alg_sn + "'" + ","
-                + "'" + umc_sn + "'" + ","
-                + "'" + mod_sn + "'" + ","
-                + "'" + ver_sn + "'" + ","
-                + "'" + call_usr_sn + "'" + ","
-                + "'" + owner_usr_sn + "'" + ","
+                + "'" + alg_sn + "',"
+                + "'" + umc_sn + "',"
+                + "'" + mod_sn + "',"
+                + "'" + ver_sn + "',"
+                + "'" + call_usr_sn + "',"
+                + "'" + owner_usr_sn + "',"
                 + duration + ","
                 + call_pay_amount + ","
                 + is_charging + ","
@@ -140,9 +137,10 @@ public class PhoenixRunner {
     /**
      * query
      * */
-    public void query () {
-        // 获取系统时间(缓冲时间10分钟)
-        long endTimeStamp = System.currentTimeMillis()-600000;
+    @Override
+    public void queryAndSendMySQL() {
+        // 获取系统时间(缓冲时间2分钟)
+        long endTimeStamp = System.currentTimeMillis()-120000;
         // 5分钟
         long startTimeStamp = endTimeStamp-300000;
         // 指定sql语句
@@ -152,10 +150,10 @@ public class PhoenixRunner {
                 "TA.VER_SN as VER_SN, " +
                 "TA.CALL_USR_SN as CALL_USR_SN, " +
                 "TA.OWNER_USR_SN as OWNER_USR_SN, " +
-                "TA.SUM_DURATION as SUM_DURATION, " +
-                "TA.SUM_CALL_PAY_AMOUNT as SUM_CALL_PAY_AMOUNT, " +
-                "TA.SUM_ALL_CALL_AMOUNT as SUM_ALL_CALL_AMOUNT, " +
-                "TB.SUM_BILLED_CALL_CNT as SUM_BILLED_CALL_CNT " +
+                "TA.SUM_DURATION as DURATION, " +
+                "TA.SUM_CALL_PAY_AMOUNT as CALL_PAY_AMOUNT, " +
+                "TA.SUM_ALL_CALL_AMOUNT as ALL_CALL_AMOUNT, " +
+                "TB.SUM_BILLED_CALL_CNT as BILLED_CALL_CNT " +
                 "FROM ( " +
                 "  SELECT " +
                 "  A.UMC_SN, " +
@@ -174,9 +172,10 @@ public class PhoenixRunner {
                 "    AND TIMEST < " + endTimeStamp +
                 "  ) A LEFT JOIN ( " +
                 "    SELECT " +
-                "    UMC_SN, " +
                 "    MOD_SN, " +
                 "    VER_SN, " +
+                "    CALL_USR_SN, " +
+                "    OWNER_USR_SN, " +
                 "    SUM(DURATION) AS SUM_DURATION, " +
                 "    SUM(CALL_PAY_AMOUNT) AS SUM_CALL_PAY_AMOUNT, " +
                 "    COUNT(1) AS SUM_ALL_CALL_AMOUNT " +
@@ -184,29 +183,34 @@ public class PhoenixRunner {
                 "    WHERE TIMEST > " + startTimeStamp +
                 "    AND TIMEST < " + endTimeStamp +
                 "    GROUP BY " +
-                "    UMC_SN, " +
-                "    MOD_SN, " +
-                "    VER_SN " +
-                "  ) B ON A.UMC_SN = B.UMC_SN " +
-                "  AND A.MOD_SN = B.MOD_SN " +
-                "  AND A.VER_SN = B.VER_SN " +
-                ") TA LEFT JOIN ( " +
-                "  SELECT  " +
-                "    UMC_SN, " +
+                "    CALL_USR_SN, " +
                 "    MOD_SN, " +
                 "    VER_SN, " +
+                "    OWNER_USR_SN " +
+                "  ) B ON A.OWNER_USR_SN = B.OWNER_USR_SN " +
+                "  AND A.MOD_SN = B.MOD_SN " +
+                "  AND A.VER_SN = B.VER_SN " +
+                "  AND A.CALL_USR_SN = B.CALL_USR_SN " +
+                ") TA LEFT JOIN ( " +
+                "  SELECT  " +
+                "    MOD_SN, " +
+                "    VER_SN, " +
+                "    CALL_USR_SN, " +
+                "    OWNER_USR_SN, " +
                 "    COUNT(1) AS SUM_BILLED_CALL_CNT " +
                 "  FROM ALG_R_USER_MODULE_CALL_TRANS " +
                 "  WHERE IS_CHARGING = 1 " +
                 "  AND TIMEST > " + startTimeStamp +
                 "  AND TIMEST < " + endTimeStamp +
                 "  GROUP BY " +
-                "    UMC_SN, " +
+                "    CALL_USR_SN, " +
                 "    MOD_SN, " +
-                "    VER_SN " +
-                ") TB ON TA.UMC_SN = TB.UMC_SN " +
+                "    VER_SN, " +
+                "    OWNER_USR_SN " +
+                ") TB ON TA.OWNER_USR_SN = TB.OWNER_USR_SN " +
                 "AND TA.MOD_SN = TB.MOD_SN " +
-                "AND TA.VER_SN = TB.VER_SN "
+                "AND TA.VER_SN = TB.VER_SN " +
+                "AND TA.CALL_USR_SN = TB.CALL_USR_SN "
                 ;
 
         // 获取结果集 -------------------------

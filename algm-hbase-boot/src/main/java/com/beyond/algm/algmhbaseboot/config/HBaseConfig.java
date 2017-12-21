@@ -1,4 +1,4 @@
-package com.beyond.algm.algmhbaseboot;
+package com.beyond.algm.algmhbaseboot.config;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Bean;
  * create by JR.Elephant on 2017/11/30
  * */
 
-@SpringBootConfiguration
+//@SpringBootConfiguration
 @Slf4j
 public class HBaseConfig {
 
@@ -29,7 +29,7 @@ public class HBaseConfig {
     private static Configuration conf;
     private static Connection connection;
 
-    @Bean
+//    @Bean
     public synchronized Connection getHBaseConnection(){
         if (conf == null) {
             try {

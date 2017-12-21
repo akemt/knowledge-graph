@@ -22,10 +22,10 @@ import java.util.Set;
 
 /**
  * HBaseServiceImpl
- * create by JR.Elephant on 2017/11/30
+ * create by Jr.Elephant on 2017/11/30
  * */
 
-@Service
+//@Service
 @Slf4j
 public class HBaseServiceImpl implements HBaseService {
 

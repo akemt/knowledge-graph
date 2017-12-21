@@ -11,6 +11,7 @@ public class AlgmHbaseBootApplicationTests {
 
 	@Test
 	public void contextLoads() {
+
 	}
 
 }
