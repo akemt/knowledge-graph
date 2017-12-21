@@ -153,7 +153,9 @@ public class PhoenixServiceImpl implements PhoenixService {
                 "TA.SUM_DURATION as DURATION, " +
                 "TA.SUM_CALL_PAY_AMOUNT as CALL_PAY_AMOUNT, " +
                 "TA.SUM_ALL_CALL_AMOUNT as ALL_CALL_AMOUNT, " +
-                "TB.SUM_BILLED_CALL_CNT as BILLED_CALL_CNT " +
+                "TB.SUM_BILLED_CALL_CNT as BILLED_CALL_CNT, " +
+                "TA.START_TIME as START_TIME, " +
+                "TA.END_TIME as END_TIME " +
                 "FROM ( " +
                 "  SELECT " +
                 "  A.UMC_SN, " +
@@ -163,7 +165,9 @@ public class PhoenixServiceImpl implements PhoenixService {
                 "  A.OWNER_USR_SN, " +
                 "  B.SUM_DURATION, " +
                 "  ROUND(B.SUM_CALL_PAY_AMOUNT,2) AS SUM_CALL_PAY_AMOUNT, " +
-                "  B.SUM_ALL_CALL_AMOUNT " +
+                "  B.SUM_ALL_CALL_AMOUNT, " +
+                "  A.START_TIME, " +
+                "  A.END_TIME " +
                 "  FROM ( " +
                 "    SELECT " +
                 "    DISTINCT UMC_SN,MOD_SN,VER_SN,CALL_USR_SN,OWNER_USR_SN,START_TIME,END_TIME " +
