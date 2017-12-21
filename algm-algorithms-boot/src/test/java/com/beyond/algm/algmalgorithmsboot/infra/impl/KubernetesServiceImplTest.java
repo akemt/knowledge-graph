@@ -19,6 +19,11 @@ import static org.junit.Assert.*;
 @SpringBootTest(classes = AlgmAlgorithmsBootApplication.class)
 public class KubernetesServiceImplTest {
     @Test
+    public void makeK8sNamespace() throws Exception {
+        kubernetesService.makeK8sNamespace("qihe");
+    }
+
+    @Test
     public void makeK8sSecretForNamespace() throws Exception {
         kubernetesService.makeK8sSecretForNamespace("qihe");
     }
