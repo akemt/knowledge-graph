@@ -48,34 +48,43 @@ public class AlgorithmDetailServiceImpl implements AlgorithmDetailService {
             algModuleVo.setSourceCodeUrl(sourceCodeUrl);
             algModuleVo.setCallAlgorithmUrl(callAlgorithmUrl);
             algModuleVo.setUrl("algm"+"/"+algorithmDetailVo.getUsrCode() +"/" + algorithmDetailVo.getModId());
-            algModuleVo.setEditUrl("algm"+"/"+algorithmDetailVo.getUsrCode() + "/" + algorithmDetailVo.getModId()+"/" + "edit");
+            if(algorithmDetailVo.getAuthCode()) {
+                algModuleVo.setEditUrl("algm" + "/" + algorithmDetailVo.getUsrCode() + "/" + algorithmDetailVo.getModId() + "/" + "edit");
+            }
             algModuleVo.setUsrCode(algorithmDetailVo.getUsrCode());
             if(Assert.isNotEmpty(algModuleVo.getEnvType())){
                 String evnName=  algDicMapper.selectDicValue("run_env",algModuleVo.getEnvType());
-                String colonyName=algDicMapper.selectDicValue("is_colony",algModuleVo.getEnvType());
+                String colonyName=algDicMapper.selectDicValue("is_colony",algModuleVo.getIsColony());
               //  algModuleVo.setEvnName(evnName);
-                if(algModuleVo.getIsColony().equals("1")){
+                if(algModuleVo.getIsColony().equals("0")){
                     evnName=evnName+","+colonyName;
                 }else{
-                    String schoolName=algDicMapper.selectDicValue("stand_env",algModuleVo.getEnvType());
+                    if(algModuleVo.getEnvType().equals("1")){
+                    String schoolName=algDicMapper.selectDicValue("gpu_env",algModuleVo.getColonyPlanId());
                     evnName=evnName+","+colonyName+","+schoolName;
+                    }else{
+                        String schoolName=algDicMapper.selectDicValue("stand_env",algModuleVo.getColonyPlanId());
+                        evnName=evnName+","+colonyName+","+schoolName;
+                    }
                 }
                 algModuleVo.setEvnName(evnName);
             }
             if(Assert.isNotEmpty(algModuleVo.getNeedCallOther())){
-                String needCallOtherName=  algDicMapper.selectDicValue("module_access_mode",algModuleVo.getNeedCallOther());
+                String needCallOtherName=  algDicMapper.selectDicValue("need_call_other",algModuleVo.getNeedCallOther());
                 algModuleVo.setNeedCallOtherName(needCallOtherName);
             }
             if(Assert.isNotEmpty(algModuleVo.getNeedWeb())){
-                String needWebName=  algDicMapper.selectDicValue("module_access_mode",algModuleVo.getNeedWeb());
+                String needWebName=  algDicMapper.selectDicValue("need_web",algModuleVo.getNeedWeb());
                 algModuleVo.setNeedWebName(needWebName);
             }
-            if(Assert.isNotEmpty(algModuleVo.getNeedWeb())){
-               if(Assert.isNotEmpty(algModuleVo.getNeedCallOther())){
+            if(Assert.isNotEmpty(algModuleVo.getNeedWebName())){
+               if(Assert.isNotEmpty(algModuleVo.getNeedCallOtherName())){
                    algModuleVo.setRuntime(algModuleVo.getNeedWebName()+","+algModuleVo.getNeedCallOtherName());
                }else{
                    algModuleVo.setRuntime(algModuleVo.getNeedWebName());
                }
+            }else{
+                algModuleVo.setRuntime(algModuleVo.getNeedCallOtherName());
             }
 
         }

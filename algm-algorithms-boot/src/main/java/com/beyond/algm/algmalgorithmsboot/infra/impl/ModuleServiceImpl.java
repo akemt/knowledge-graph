@@ -264,15 +264,19 @@ public class ModuleServiceImpl implements ModuleService {
             String needCallOther="need_call_other";
             List<AlgDic> AccessandCallNco =algDicMapper.getDictionarylist(needCallOther);
             map.put("needCallOther",AccessandCallNco);
+            //运行环境
             String runEnv="run_env";
             List<AlgDic> RunandEnv =algDicMapper.getDictionarylist(runEnv);
             map.put("runEnv",RunandEnv);
+            // 单机、集群
             String iscolony="is_colony";
             List<AlgDic> SingandClu =algDicMapper.getDictionarylist(iscolony);
             map.put("iscolony",SingandClu);
+            //集群：主机
             String standenv="stand_env";
             List<AlgDic> Single =algDicMapper.getDictionarylist(standenv);
             map.put("standenv",Single);
+            //集群：GPU
             String gpuenv="gpu_env";
             List<AlgDic> Cluster =algDicMapper.getDictionarylist(gpuenv);
             map.put("gpuenv",Cluster);

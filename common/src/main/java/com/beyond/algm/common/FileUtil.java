@@ -4,9 +4,12 @@ package com.beyond.algm.common;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class FileUtil {
-
+    private  static final int GB = 1024 * 1024 * 1024;//定义GB的计算常量
+    private  static final int MB = 1024 * 1024;//定义MB的计算常量
+    private  static final int KB = 1024;//定义KB的计算常量
     /**
      * 将内容回写到文件中
      *
@@ -110,5 +113,25 @@ public class FileUtil {
         BigDecimal megabyte = new BigDecimal(1024 * 1024);
         float returnValue = filesize.divide(megabyte, 2, BigDecimal.ROUND_UP).floatValue();
         return returnValue;
+    }
+
+    /**
+     * 将文件大小转换kb,mb,gb
+     * @param bytes
+     * @return
+     */
+    public static String  byteConversionGBMBKB(long bytes) {
+        DecimalFormat df = new DecimalFormat("#.0");
+        String fileSizeString = "";
+        if (bytes < KB) {
+            fileSizeString = df.format((double) bytes) + "B";
+        } else if (bytes < MB) {
+            fileSizeString = df.format((double) bytes / 1024) + "K";
+        } else if (bytes < GB) {
+            fileSizeString = df.format((double) bytes / 1048576) + "M";
+        } else {
+            fileSizeString = df.format((double) bytes / 1073741824) + "G";
+        }
+        return fileSizeString;
     }
 }

@@ -12,4 +12,5 @@ public class AlgorithmDetailVo {
     private String usrSn;
     private String modId;
     private String usrCode;
+    private Boolean authCode;
 }

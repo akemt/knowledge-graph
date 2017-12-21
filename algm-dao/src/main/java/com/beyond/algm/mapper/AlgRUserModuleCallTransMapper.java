@@ -17,4 +17,6 @@ public interface AlgRUserModuleCallTransMapper {
     int updateByPrimaryKey(AlgRUserModuleCallTrans record);
 
     Page<AlgRUserModuleCallTransVo> selectAlgorithmRecord(AlgRUserModuleCallTransVo algRUserModuleCallTransVo);
+
+    int insertList(List<AlgRUserModuleCallTrans> recordList);
 }

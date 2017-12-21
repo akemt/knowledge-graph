@@ -14,9 +14,15 @@ public interface AlgModuleUsageMapper {
 
     int updateByPrimaryKey(AlgModuleUsage record);
 
-    //查取该算法目前人收藏
+    //查取该算法目前是否有人收藏
+    Long selectStarCntCount(String modSn);
+
+    //查取该算法目前收藏数
     Long selectStarCnt(String modSn);
 
     //收藏时，更新个数。
     int updateByModSn(AlgModuleUsage record);
+
+    //查取该算法目前调用数
+    Long selectCallCnt(String modSn);
 }

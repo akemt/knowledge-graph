@@ -1,7 +1,7 @@
-package com.beyond.algm.algmhbaseboot;
+package com.beyond.algm.algmhbaseboot.runner;
 
 import com.alibaba.fastjson.JSONObject;
-import com.beyond.algm.algmhbaseboot.infra.HBaseService;
+import com.beyond.algm.algmhbaseboot.infra.PhoenixService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
@@ -17,22 +17,24 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringBootConfiguration;
 
-import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 /**
  * RocketMQ Consumer
- * create by JR.Elephant on 2017/11/30
+ * create by Jr.Elephant on 2017/11/30
  * */
 
 @SpringBootConfiguration
 @Slf4j
 public class ConsumerRunner implements ApplicationRunner {
 
+//    @Autowired
+//    private HBaseService hBaseService;
     @Autowired
-    private HBaseService hBaseService;
+    private PhoenixService phoenixService;
 
     @Value("${rocketMQ.group1}")
     private String rocketMQGroup1;
@@ -40,12 +42,17 @@ public class ConsumerRunner implements ApplicationRunner {
     private String nameSrvAddr;
     @Value("${rocketMQ.topic1}")
     private String rocketMQTopic1;
+    @Value("${rocketMQ.topic2}")
+    private String rocketMQTopic2;
     @Value("${hbase.tableName1}")
     private String tableName1;
 
 
     @Override
     public void run(ApplicationArguments var1) throws Exception{
+        // create phoenix statement
+        phoenixService.initStatement();
+        //-----------------------------
 
         // create PushConsumer instance
         DefaultMQPushConsumer pushConsumer = new DefaultMQPushConsumer(rocketMQGroup1);
@@ -53,7 +60,7 @@ public class ConsumerRunner implements ApplicationRunner {
         pushConsumer.setNamesrvAddr(nameSrvAddr);
         // Specify the topic of the subscription
         try {
-            pushConsumer.subscribe(rocketMQTopic1, "*");
+            pushConsumer.subscribe(rocketMQTopic2, "*");
         } catch (MQClientException e) {
             e.printStackTrace();
         }
@@ -79,14 +86,25 @@ public class ConsumerRunner implements ApplicationRunner {
                     JSONObject jsonValue = JSONObject.parseObject(new String(msg.getBody()));
                     //---------------------test2----------------------
                     log.info(jsonValue.toString());
+
                     //-----------------------------------------------
                     //------------------有问题，少条，少字段（同时大批量）；无问题（非同时）
-
+                    /* 直接写入hbase
                     try {
                         hBaseService.insertTableByJson(tableName1, jsonValue);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    */
+                    // 使用phoenix写入hbase
+                    try {
+                        phoenixService.insertByJson(jsonValue);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    //---------------------------test-----------------------------
+                    System.out.print(new String(msg.getBody()));
+                    //------------------------------------------------------------
                 }
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }

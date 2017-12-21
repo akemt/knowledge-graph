@@ -34,8 +34,9 @@ public class JGitServiceImpl implements JGitService {
         //Git git = Git.cloneRepository().setURI(projectRepoURI).setDirectory(new File("E:/repo")).call();
         CloneCommand cloneCommand = Git.cloneRepository();
         cloneCommand.setURI(gitUser.getProjectRepoURI());
-        cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword()));
 
+        cloneCommand.setCredentialsProvider(new UsernamePasswordCredentialsProvider(gitUser.getUsrCode(), gitUser.getPassword()));
+        log.info("url:{},用户名:{}",gitUser.getProjectRepoURI(),gitUser.getUsrCode());
         String strPath = pathService.getModuleBasePath(gitUser.getOrgUsrCode(), gitUser.getModId(), gitUser.getUsrCode(), gitUser.getIsOrg());
         cloneCommand.setDirectory(new File(strPath));
         try {

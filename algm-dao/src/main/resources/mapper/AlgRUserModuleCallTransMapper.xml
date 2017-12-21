@@ -76,5 +76,17 @@
    </if>
   order by callTran.start_time desc
   </select>
-
+  <insert id="insertList" useGeneratedKeys="true" parameterType="java.util.List">
+    <selectKey resultType="long" keyProperty="id" order="AFTER">
+      SELECT
+      LAST_INSERT_ID()
+    </selectKey>
+    insert into alg_r_user_module_call_trans (umc_sn, ver_sn, call_usr_sn, owner_usr_sn, start_time, end_time,
+    duration, billed_call_cnt, call_pay_amount, mod_call_cnt)
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{item.umcSn}, #{item.verSn}, #{item.callUsrSn}, #{item.ownerUsrSn}, #{item.startTime}, #{item.endTime},
+      #{item.duration}, #{item.billedCallCnt}, #{item.callPayAmount}, #{item.modCallCnt})
+    </foreach>
+  </insert>
 </mapper>
