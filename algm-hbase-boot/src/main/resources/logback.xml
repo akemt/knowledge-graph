@@ -96,7 +96,7 @@
     </springProfile>
 
     <!--生产环境-->
-    <springProfile name="pro">
+    <springProfile name="test">
         <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
         <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
 
@@ -113,7 +113,7 @@
         <!--The FILE and ASYNC appenders are here as examples for a production configuration -->
         <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <fileNamePattern>${dev_dir}/algmarket-hbase.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <fileNamePattern>algmarket-hbase.%d{yyyy-MM-dd}.log</fileNamePattern>
                 <maxHistory>30</maxHistory>
             </rollingPolicy>
             <encoder>
