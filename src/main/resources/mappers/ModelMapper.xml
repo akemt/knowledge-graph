@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hiekn.plantdata.mapper.ModelMapper" >
+
+<!--实体类-实体-->
+    <resultMap id="ModelTypeResultMap" type="com.hiekn.plantdata.Entity.EntityType">
+        <id column="ID" property="ID" jdbcType="VARCHAR"/>
+        <result column="EntSID" property="EntSID" jdbcType="VARCHAR"/>
+        <result column="usrSID" property="usrSID" jdbcType="VARCHAR"/>
+        <result column="EntName" property="EntName" jdbcType="VARCHAR"/>
+        <result column="EntTmpl" property="EntTmpl" jdbcType="INTEGER"/>
+    </resultMap>
+
+<!--实体类-关系-->
+    <resultMap id="ModelRelTypeeResultMap" type="com.hiekn.plantdata.Entity.EntRelType">
+        <id column="RtpSID" property="RtpSID" jdbcType="VARCHAR"/>
+        <result column="usrSID" property="usrSID" jdbcType="VARCHAR"/>
+        <result column="RtpName" property="RtpName" jdbcType="VARCHAR"/>
+        <result column="EntSID" property="EntSID" jdbcType="VARCHAR"/>
+    </resultMap>
+
+<!--实体类-属性-->
+    <resultMap id="ModelAttribTypeResultMap" type="com.hiekn.plantdata.Entity.EntAttribType">
+        <id column="AtbSID" property="AtbSID" jdbcType="VARCHAR"/>
+        <result column="usrSID" property="usrSID" jdbcType="VARCHAR"/>
+        <result column="DtpSID" property="DtpSID" jdbcType="VARCHAR"/>
+        <result column="AtbName" property="AtbName" jdbcType="VARCHAR"/>
+        <result column="ObjType" property="ObjType" jdbcType="VARCHAR"/>
+        <result column="ObjSID" property="ObjSID" jdbcType="VARCHAR"/>
+        <result column="UntName" property="UntName" jdbcType="VARCHAR"/>
+        <result column="EntSID" property="EntSID" jdbcType="VARCHAR"/>
+    </resultMap>
+
+<!--保存实体类内容-->
+    <insert id="saveEntitysClassInfo" parameterType="com.hiekn.plantdata.Entity.EntityType">
+        INSERT INTO EntityType(ID,EntSID,EntName,usrSID,EntTmpl)
+        VALUES(#{ID,jdbcType=VARCHAR},#{EntSID,jdbcType=VARCHAR},#{EntName,jdbcType=VARCHAR},#{usrSID,jdbcType=VARCHAR},#{EntTmpl,jdbcType=VARCHAR});
+    </insert>
+
+    <!--保存实体类关系内容-->
+    <insert id="saveEntClassRelInfo" parameterType="com.hiekn.plantdata.Entity.EntRelType">
+        INSERT INTO EntRelType(RtpSID,RtpName,usrSID,EntSID)
+        VALUES(#{RtpSID,jdbcType=VARCHAR},#{RtpName,jdbcType=VARCHAR},#{usrSID,jdbcType=VARCHAR},#{EntSID,jdbcType=VARCHAR});
+    </insert>
+
+    <!--保存实体类属性内容-->
+    <insert id="saveEntClassAttrInfo" parameterType="com.hiekn.plantdata.Entity.EntAttribType">
+        INSERT INTO EntAttribType(AtbSID,AtbName,usrSID,DtpSID,ObjType,ObjSID,UntName,EntSID)
+        VALUES(#{AtbSID,jdbcType=VARCHAR},#{AtbName,jdbcType=VARCHAR},#{usrSID,jdbcType=VARCHAR},#{DtpSID,jdbcType=VARCHAR},
+        #{ObjType,jdbcType=VARCHAR},#{ObjSID,jdbcType=VARCHAR},#{UntName,jdbcType=VARCHAR},#{EntSID,jdbcType=VARCHAR});
+    </insert>
+    <!--根据实体类ID ，删除其下的属性-->
+    <delete id="deleteEntClassAttrInfoByEntID" parameterType="java.lang.String">
+        DELETE FROM EntAttribType WHERE usrSID=#{0} and EntSID=#{1}
+    </delete>
+
+    <!--根据实体类ID ，删除其下的关系-->
+    <delete id="deleteEntClassRelInfoByEntID" parameterType="java.lang.String">
+          DELETE FROM EntRelType WHERE usrSID=#{0} and EntSID=#{1}
+    </delete>
+
+
+    <!--根据条件查询，该用户下的实体类型-->
+    <select id="getUsrGraphEntityTypeList"  parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT EntSID as id,EntName from EntityType u where u.usrSID=#{0}  ORDER BY EntSID;
+    </select>
+
+    <!--根据条件查询，该用户下的实体类型-->
+    <select id="getUsrGraphEntityTypeListByName"  parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT EntSID as id,EntName from EntityType u where u.usrSID=#{0} and u.EntName=#{1} ORDER BY EntSID;
+    </select>
+
+    <!--根据条件查询，该用户下的属性-->
+    <select id="getUsrGraphEntityAttrList"  parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT AtbSID as id,AtbName from EntAttribType u where u.usrSID=#{0} and u.EntSID=#{1} ORDER BY AtbSID;
+    </select>
+
+    <!--根据条件查询，该用户下的关系-->
+    <select id="getUsrGraphEntityRelList"  parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT RtpSID  as id,RtpName from EntRelType u where u.usrSID=#{0} and u.EntSID=#{1} ORDER BY RtpSID;
+    </select>
+</mapper>
